@@ -72,17 +72,18 @@ import UIKit
     }
     
     @IBOutlet public weak var reloadIndicatorView: UIActivityIndicatorView?
+    internal var _emptyView: UIView?
     @IBOutlet public var emptyView: UIView? { //set from XIB or overwrite
         set {
-            self.emptyView = newValue
+            _emptyView = newValue
         }
         get {
             if collectionView == nil || dataSource == nil {
                 return nil
             }
             
-            if self.emptyView != nil {
-                return self.emptyView
+            if _emptyView != nil {
+                return _emptyView
             }
             
             let noContent = UILabel()
@@ -106,10 +107,8 @@ import UIKit
         }
         
         didSet {
-            if let dataSource = self.dataSource {
-                if dataSource.feed?.canReload == true && dataSource.feed?.shouldReload() == true {
-                    dataSource.feed?.reload()
-                }
+            if dataSource?.feed?.canReload == true && dataSource?.feed?.shouldReload() == true {
+                dataSource?.feed?.reload()
             }
             
             addDataSourceObservers()
@@ -199,7 +198,7 @@ import UIKit
             if hideReloadViewIfHasContent && dataSource.hasContent() {
                 
             } else {
-                if self.refreshControl?.refreshing == false {
+                if refreshControl == nil || (refreshControl?.refreshing == false) {
                     reloadIndicatorView?.startAnimating()
                 }
             }
@@ -362,8 +361,8 @@ extension CollectionFeedController {
         }
         
         if let dataSource = self.dataSource as? NSObject {
-            dataSource.removeObserver(self, forKeyPath: "feed.reloading")
-            dataSource.removeObserver(self, forKeyPath: "feed.loadingMore")
+            dataSource.removeObserver(self, forKeyPath: "feed.isReloading")
+            dataSource.removeObserver(self, forKeyPath: "feed.isLoadingMore")
             dataSource.removeObserver(self, forKeyPath: "feed.canReload")
             dataSource.removeObserver(self, forKeyPath: "feed.canLoadMore")
         }
@@ -377,8 +376,8 @@ extension CollectionFeedController {
         dataSource.delegate = self;
         
         if let dataSource = self.dataSource as? NSObject {
-            dataSource.addObserver(self, forKeyPath: "feed.reloading", options: [.New, .Old], context: nil)
-            dataSource.addObserver(self, forKeyPath: "feed.loadingMore", options: [.New, .Old], context: nil)
+            dataSource.addObserver(self, forKeyPath: "feed.isReloading", options: [.New, .Old], context: nil)
+            dataSource.addObserver(self, forKeyPath: "feed.isLoadingMore", options: [.New, .Old], context: nil)
             dataSource.addObserver(self, forKeyPath: "feed.canReload", options: [.New, .Old], context: nil)
             dataSource.addObserver(self, forKeyPath: "feed.canLoadMore", options: [.New, .Old], context: nil)
         }
@@ -415,11 +414,11 @@ extension CollectionFeedController {
         }
         
         updateEmptyViewAppearenceAnimated(true)
-        if keyPath == "feed.reloading" {
+        if keyPath == "feed.isReloading" {
             updateReloadingIndicatorView()
         }
         
-        if keyPath == "feed.canLoadMore" || keyPath == "feed.loadingMore" {
+        if keyPath == "feed.canLoadMore" || keyPath == "feed.isLoadingMore" {
             updateCanShowLoadMoreViewAnimated(true)
         }
     }
@@ -592,18 +591,30 @@ extension CollectionFeedController {
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        let content = dataSource!.objectAtIndexPath(NSIndexPath(forItem: 0, inSection: section))
-        return cellController.sectionInsetForContent(content, collectionView: collectionView)
+        if dataSource?.numberOfRowsInSection(section) > 0 {
+            let content = dataSource!.objectAtIndexPath(NSIndexPath(forItem: 0, inSection: section))
+            return cellController.sectionInsetForContent(content, collectionView: collectionView)
+        } else {
+            return UIEdgeInsetsZero
+        }
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
-        let content = dataSource!.objectAtIndexPath(NSIndexPath(forItem: 0, inSection: section))
-        return cellController.minimumInteritemSpacingForContent(content, collectionView: collectionView)
+        if dataSource?.numberOfRowsInSection(section) > 0 {
+            let content = dataSource!.objectAtIndexPath(NSIndexPath(forItem: 0, inSection: section))
+            return cellController.minimumInteritemSpacingForContent(content, collectionView: collectionView)
+        } else {
+            return 0.0
+        }
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
-        let content = dataSource!.objectAtIndexPath(NSIndexPath(forItem: 0, inSection: section))
-        return cellController.minimumLineSpacingForContent(content, collectionView: collectionView)
+        if dataSource?.numberOfRowsInSection(section) > 0 {
+            let content = dataSource!.objectAtIndexPath(NSIndexPath(forItem: 0, inSection: section))
+            return cellController.minimumLineSpacingForContent(content, collectionView: collectionView)
+        } else {
+            return 0.0
+        }
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {

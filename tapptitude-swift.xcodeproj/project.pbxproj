@@ -17,6 +17,9 @@
 		232C366E1C74A93600ADA5F5 /* LoadMoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 232C366D1C74A93600ADA5F5 /* LoadMoreView.xib */; };
 		232E26331C78BBF50074467C /* CollectionFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232E26321C78BBF50074467C /* CollectionFeedController.swift */; };
 		234ECBF31C747FE800135CF9 /* tapptitude-swift.h in Headers */ = {isa = PBXBuildFile; fileRef = 234ECBF21C747FE800135CF9 /* tapptitude-swift.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		23A4F7231C78DE20006430BF /* DataFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A4F7221C78DE20006430BF /* DataFeed.swift */; };
+		23A4F7251C78E65B006430BF /* SimpleDataFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A4F7241C78E65B006430BF /* SimpleDataFeed.swift */; };
+		23A4F7271C78E8E6006430BF /* PaginatedDataFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A4F7261C78E8E6006430BF /* PaginatedDataFeed.swift */; };
 		23A550C31C78808600695BF3 /* CollectionCellControllerProtocol.swift in Headers */ = {isa = PBXBuildFile; fileRef = 232C365F1C74806500ADA5F5 /* CollectionCellControllerProtocol.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		23A550C41C78808600695BF3 /* CollectionCellController.swift in Headers */ = {isa = PBXBuildFile; fileRef = 232C36611C7481B300ADA5F5 /* CollectionCellController.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		23A550C51C78808600695BF3 /* DataSourceProtocol.swift in Headers */ = {isa = PBXBuildFile; fileRef = 232C36631C7482DC00ADA5F5 /* DataSourceProtocol.swift */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -40,6 +43,9 @@
 		234ECBEF1C747FE800135CF9 /* Tapptitude.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Tapptitude.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		234ECBF21C747FE800135CF9 /* tapptitude-swift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "tapptitude-swift.h"; sourceTree = "<group>"; };
 		234ECBF41C747FE800135CF9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		23A4F7221C78DE20006430BF /* DataFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataFeed.swift; sourceTree = "<group>"; };
+		23A4F7241C78E65B006430BF /* SimpleDataFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleDataFeed.swift; sourceTree = "<group>"; };
+		23A4F7261C78E8E6006430BF /* PaginatedDataFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaginatedDataFeed.swift; sourceTree = "<group>"; };
 		23A550CB1C7886EA00695BF3 /* CollectionFeedController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollectionFeedController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -80,6 +86,9 @@
 				232C36631C7482DC00ADA5F5 /* DataSourceProtocol.swift */,
 				232C36671C7483CB00ADA5F5 /* DataSource.swift */,
 				232C36651C74838700ADA5F5 /* DataFeedProtocol.swift */,
+				23A4F7221C78DE20006430BF /* DataFeed.swift */,
+				23A4F7241C78E65B006430BF /* SimpleDataFeed.swift */,
+				23A4F7261C78E8E6006430BF /* PaginatedDataFeed.swift */,
 				232C36691C74A37800ADA5F5 /* CollectionFeedViewController.swift */,
 				232E26321C78BBF50074467C /* CollectionFeedController.swift */,
 				23A550CB1C7886EA00695BF3 /* CollectionFeedController.xib */,
@@ -180,11 +189,14 @@
 				232C36641C7482DC00ADA5F5 /* DataSourceProtocol.swift in Sources */,
 				232C36661C74838700ADA5F5 /* DataFeedProtocol.swift in Sources */,
 				232C36601C74806500ADA5F5 /* CollectionCellControllerProtocol.swift in Sources */,
+				23A4F7231C78DE20006430BF /* DataFeed.swift in Sources */,
 				232C36681C7483CB00ADA5F5 /* DataSource.swift in Sources */,
 				232C36621C7481B300ADA5F5 /* CollectionCellController.swift in Sources */,
 				232E26331C78BBF50074467C /* CollectionFeedController.swift in Sources */,
 				232C366A1C74A37800ADA5F5 /* CollectionFeedViewController.swift in Sources */,
 				232C366C1C74A8F600ADA5F5 /* LoadMoreView.swift in Sources */,
+				23A4F7251C78E65B006430BF /* SimpleDataFeed.swift in Sources */,
+				23A4F7271C78E8E6006430BF /* PaginatedDataFeed.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

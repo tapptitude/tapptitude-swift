@@ -8,10 +8,33 @@
 
 import UIKit
 
+class APIMock: TTCancellable {
+    func cancel() {
+        wasCancelled = true
+    }
+    
+    var wasCancelled = false
+    var callback: (content: [AnyObject]?, error: NSError?)->Void
+    
+    init(callback: (content: [AnyObject]?, error: NSError?)->Void) {
+        self.callback = callback
+        
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(5 * Double(NSEC_PER_SEC)))
+        dispatch_after(delayTime, dispatch_get_main_queue()) {
+            print("test")
+            if !self.wasCancelled {
+                callback(content: nil, error: nil)
+            }
+        }
+    }
+}
+
 class FeedController: CollectionFeedController {
     
     override func viewDidLoad() {
-        self.dataSource = DataSource(content: ["arra"])
+        super.viewDidLoad()
+        
+//        self.dataSource = DataSource(content: ["arra"])
         let cellController = CollectionCellController<String, UICollectionViewCell>(cellSize: CGSize(width: 50, height: 50))
         cellController.configureCellBlock = { cell, content, indexPath in
             cell.backgroundColor = UIColor.redColor()
@@ -25,14 +48,16 @@ class FeedController: CollectionFeedController {
         }
         self.cellController = cellController
         
-        super.viewDidLoad()
+        let dataSource = DataSource(content: [])
+        dataSource.feed = SimpleDataFeed(loadOperation: { (callback: (content: [AnyObject]?, error: NSError?) -> Void) -> TTCancellable? in
+            return APIMock(callback: callback)
+        })
         
-        self.dataSource = DataSource(content: ["arra"])
+        
+        self.dataSource = dataSource
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
-        self.dataSource = nil;
     }
 }

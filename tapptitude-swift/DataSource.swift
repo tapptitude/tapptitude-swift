@@ -9,20 +9,21 @@
 import Foundation
 
 
-public class DataSource : TTDataSource {
+public class DataSource : NSObject, TTDataSource {
     lazy private var _content : [AnyObject] = [AnyObject]()
     
     public init(content : [AnyObject]) {
+        super.init()
         _content = content
     }
     
     public var delegate : TTDataSourceDelegate?
-    public var feed : TTDataFeed? {
+    public dynamic var feed : DataFeed? {
         willSet {
-        feed?.delegate = nil
+            feed?.delegate = nil
         }
         didSet {
-        feed?.delegate = self
+            feed?.delegate = self
         }
     }
     

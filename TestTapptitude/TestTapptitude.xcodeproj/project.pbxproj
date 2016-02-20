@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		23A4F7211C78C9DA006430BF /* CollectionFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A4F7201C78C9DA006430BF /* CollectionFeedController.swift */; };
+		23A4F72B1C78EA1D006430BF /* SimpleDataFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A4F7281C78EA1D006430BF /* SimpleDataFeed.swift */; };
+		23A4F72C1C78EA1D006430BF /* PaginatedDataFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A4F7291C78EA1D006430BF /* PaginatedDataFeed.swift */; };
+		23A4F72D1C78EA1D006430BF /* DataFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A4F72A1C78EA1D006430BF /* DataFeed.swift */; };
 		23A550DA1C78A1BC00695BF3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A550D91C78A1BC00695BF3 /* AppDelegate.swift */; };
 		23A550DC1C78A1BC00695BF3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A550DB1C78A1BC00695BF3 /* ViewController.swift */; };
 		23A550DF1C78A1BC00695BF3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23A550DD1C78A1BC00695BF3 /* Main.storyboard */; };
@@ -27,6 +30,9 @@
 
 /* Begin PBXFileReference section */
 		23A4F7201C78C9DA006430BF /* CollectionFeedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionFeedController.swift; path = "../../tapptitude-swift/CollectionFeedController.swift"; sourceTree = "<group>"; };
+		23A4F7281C78EA1D006430BF /* SimpleDataFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SimpleDataFeed.swift; path = "../../tapptitude-swift/SimpleDataFeed.swift"; sourceTree = "<group>"; };
+		23A4F7291C78EA1D006430BF /* PaginatedDataFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaginatedDataFeed.swift; path = "../../tapptitude-swift/PaginatedDataFeed.swift"; sourceTree = "<group>"; };
+		23A4F72A1C78EA1D006430BF /* DataFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataFeed.swift; path = "../../tapptitude-swift/DataFeed.swift"; sourceTree = "<group>"; };
 		23A550D61C78A1BB00695BF3 /* TestTapptitude.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestTapptitude.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		23A550D91C78A1BC00695BF3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		23A550DB1C78A1BC00695BF3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -77,6 +83,9 @@
 		23A550D81C78A1BB00695BF3 /* TestTapptitude */ = {
 			isa = PBXGroup;
 			children = (
+				23A4F7281C78EA1D006430BF /* SimpleDataFeed.swift */,
+				23A4F7291C78EA1D006430BF /* PaginatedDataFeed.swift */,
+				23A4F72A1C78EA1D006430BF /* DataFeed.swift */,
 				23A550D91C78A1BC00695BF3 /* AppDelegate.swift */,
 				23A550FD1C78A28900695BF3 /* CollectionCellController.swift */,
 				23A550FE1C78A28900695BF3 /* CollectionCellControllerProtocol.swift */,
@@ -179,10 +188,13 @@
 				23A551091C78A28900695BF3 /* CollectionFeedViewController.swift in Sources */,
 				23A550DC1C78A1BC00695BF3 /* ViewController.swift in Sources */,
 				23A5510B1C78A28900695BF3 /* DataFeedProtocol.swift in Sources */,
+				23A4F72B1C78EA1D006430BF /* SimpleDataFeed.swift in Sources */,
 				23A551111C78A32300695BF3 /* FeedController.swift in Sources */,
 				23A4F7211C78C9DA006430BF /* CollectionFeedController.swift in Sources */,
 				23A550DA1C78A1BC00695BF3 /* AppDelegate.swift in Sources */,
 				23A551081C78A28900695BF3 /* CollectionCellControllerProtocol.swift in Sources */,
+				23A4F72C1C78EA1D006430BF /* PaginatedDataFeed.swift in Sources */,
+				23A4F72D1C78EA1D006430BF /* DataFeed.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
