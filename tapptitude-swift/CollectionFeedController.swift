@@ -21,7 +21,7 @@ import UIKit
         collectionView?.delegate = nil;
         collectionView?.dataSource = nil;
         displayedEmptyView?.removeFromSuperview()
-        removeDataSourceObservers()
+        dataSource?.delegate = nil
     }
     
     public override func viewDidLoad() {
@@ -103,15 +103,18 @@ import UIKit
         willSet {
             displayedEmptyView?.removeFromSuperview()
             displayedEmptyView = nil
-            removeDataSourceObservers()
+            if self == (dataSource?.delegate as? CollectionFeedController) {
+                dataSource?.delegate = nil
+            }
         }
         
         didSet {
-            if dataSource?.feed?.canReload == true && dataSource?.feed?.shouldReload() == true {
-                dataSource?.feed?.reload()
+            let feed = dataSource?.feed
+            if feed?.canReload == true && feed?.shouldReload() == true {
+                feed?.reload()
             }
             
-            addDataSourceObservers()
+            dataSource?.delegate = self
             reloadDataOnCollectionView()
             
             updateReloadingIndicatorView()
@@ -236,27 +239,17 @@ import UIKit
     public var numberOfPagesToPreload: Int = 2 // load more content when last 2 pages are visible
     public var canShowLoadMoreView : Bool = false
     public func shouldShowLoadMoreForSection(section: Int) -> Bool { // default - YES only for last section
-        guard let dataSource = self.dataSource else {
-            return false
-        }
-        
-        return (section == dataSource.numberOfSections() - 1);
+        return (dataSource != nil && (section == dataSource!.numberOfSections() - 1))
     }
     
     public var loadMoreViewXIBName: String! = "LoadMoreView" // Expected same methods as in LoadMoreView
     internal func updateCanShowLoadMoreViewAnimated(animated:Bool) {
         let feed = self.dataSource?.feed
-        if supportsLoadMore && feed?.canLoadMore == true {
-            if let indexPath = collectionView?.indexPathsForVisibleItems().last {
-                self.checkIfShouldLoadMoreContentForIndexPath(indexPath)
-            }
-        }
-        
         let showLoadMore = supportsLoadMore && (feed?.canLoadMore == true || feed?.isLoadingMore == true)
         
         print("showLoadMore = \(showLoadMore)")
         if canShowLoadMoreView != showLoadMore {
-            if animated {
+            if animated && collectionView?.indexPathsForVisibleItems().count > 0 {
                 collectionView?.performBatchUpdates({ () -> Void in
                     self.canShowLoadMoreView = showLoadMore
                     self.collectionView?.collectionViewLayout.invalidateLayout()
@@ -266,6 +259,17 @@ import UIKit
                 collectionView?.collectionViewLayout.invalidateLayout()
             }
             print("canShowLoadMoreView = \(canShowLoadMoreView)")
+        }
+    }
+    
+    public func checkIfShouldLoadMoreContent() {
+        let feed = self.dataSource?.feed
+        if autoLoadMoreContent && supportsLoadMore && feed?.canLoadMore == true {
+            if let indexPath = collectionView?.indexPathsForVisibleItems().last {
+                self.checkIfShouldLoadMoreContentForIndexPath(indexPath)
+            } else {
+                dataSource?.feed?.loadMore()
+            }
         }
     }
     
@@ -349,78 +353,7 @@ import UIKit
 }
 
 
-
-// KVOs
-extension CollectionFeedController {
-    internal func removeDataSourceObservers() {
-        guard var dataSource = self.dataSource else {
-            return
-        }
-        
-        if self == (dataSource.delegate as? CollectionFeedController) {
-            dataSource.delegate = nil
-        }
-        
-        if let dataSource = self.dataSource as? NSObject {
-            dataSource.removeObserver(self, forKeyPath: "feed.isReloading")
-            dataSource.removeObserver(self, forKeyPath: "feed.isLoadingMore")
-            dataSource.removeObserver(self, forKeyPath: "feed.canReload")
-            dataSource.removeObserver(self, forKeyPath: "feed.canLoadMore")
-        }
-    }
-    
-    internal func addDataSourceObservers() {
-        guard var dataSource = self.dataSource else {
-            return
-        }
-        
-        dataSource.delegate = self;
-        
-        if let dataSource = self.dataSource as? NSObject {
-            dataSource.addObserver(self, forKeyPath: "feed.isReloading", options: [.New, .Old], context: nil)
-            dataSource.addObserver(self, forKeyPath: "feed.isLoadingMore", options: [.New, .Old], context: nil)
-            dataSource.addObserver(self, forKeyPath: "feed.canReload", options: [.New, .Old], context: nil)
-            dataSource.addObserver(self, forKeyPath: "feed.canLoadMore", options: [.New, .Old], context: nil)
-        }
-    }
-    
-    public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        guard let newObject = object as? TTDataSource else {
-            if (super.respondsToSelector(Selector("observeValueForKeyPath:ofObject:change:context:"))) {
-                super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
-            }
-            return
-        }
-        
-        guard let dataSource = self.dataSource else {
-            return
-        }
-        
-        if (dataSource as? NSObject) != (newObject as? NSObject) {
-            return
-        }
-        
-        let newValue = change?[NSKeyValueChangeNewKey]
-        let oldValue = change?[NSKeyValueChangeOldKey]
-        if newValue?.isEqual(oldValue) == true {
-            return
-        }
-        
-        updateEmptyViewAppearenceAnimated(true)
-        if keyPath == "feed.isReloading" {
-            updateReloadingIndicatorView()
-        }
-        
-        if keyPath == "feed.canLoadMore" || keyPath == "feed.isLoadingMore" {
-            updateCanShowLoadMoreViewAnimated(true)
-        }
-    }
-}
-
-
-
 extension CollectionFeedController : TTDataFeedDelegate {
-    
     public func dataFeed(dataFeed: TTDataFeed?, failedWithError error: NSError) {
         refreshControl?.endRefreshing()
     }
@@ -431,6 +364,19 @@ extension CollectionFeedController : TTDataFeedDelegate {
     
     public func dataFeed(dataFeed: TTDataFeed?, didLoadMoreContent content: [AnyObject]?) {
         
+    }
+    
+    public func dataFeed(dataFeed: TTDataFeed?, isReloading: Bool) {
+        checkIfShouldLoadMoreContent()
+        updateReloadingIndicatorView()
+        updateCanShowLoadMoreViewAnimated(true)
+        updateEmptyViewAppearenceAnimated(true)
+    }
+    
+    public func dataFeed(dataFeed: TTDataFeed?, isLoadingMore: Bool) {
+        checkIfShouldLoadMoreContent()
+        updateCanShowLoadMoreViewAnimated(true)
+        updateEmptyViewAppearenceAnimated(true)
     }
 }
 

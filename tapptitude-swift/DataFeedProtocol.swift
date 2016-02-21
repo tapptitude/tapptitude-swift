@@ -33,4 +33,7 @@ public protocol TTDataFeedDelegate {
     
     func dataFeed(dataFeed: TTDataFeed?, didReloadContent content: [AnyObject]?)
     func dataFeed(dataFeed: TTDataFeed?, didLoadMoreContent content: [AnyObject]?)
+    
+    func dataFeed(dataFeed: TTDataFeed?, isReloading: Bool)
+    func dataFeed(dataFeed: TTDataFeed?, isLoadingMore: Bool)
 }

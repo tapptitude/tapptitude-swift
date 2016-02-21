@@ -15,11 +15,7 @@ public protocol TTCancellable {
 public typealias TTCallback = (content: [AnyObject]?, error: NSError?)->Void
 public typealias TTNextOffsetCallback = (content: [AnyObject]?, nextOffset: AnyObject?, error: NSError?)->Void // next offset is given by backend
 
-public class DataFeed: NSObject, TTDataFeed {
-    override init() {
-        super.init()
-    }
-    
+public class DataFeed: TTDataFeed {    
     public var delegate: TTDataFeedDelegate?
     
     public func reloadOperationWithCallback(callback: TTCallback) -> TTCancellable? {
@@ -42,16 +38,18 @@ public class DataFeed: NSObject, TTDataFeed {
     }
     
     //MARK: Reload -
-    public dynamic var canReload: Bool {
+    public var canReload: Bool {
         return !isReloading
     }
     public func reload() {
         if canReload {
+            print("Reloading content...")
+            isReloading = true
+            
             if isLoadingMore {
                 cancelLoadMore()
             }
             
-            print("Reloading content...")
             executingReloadOperation?.cancel()
             executingReloadOperation = reloadOperationWithCallback({ [unowned self] (content, error) in
                 self.executingReloadOperation = nil
@@ -65,27 +63,30 @@ public class DataFeed: NSObject, TTDataFeed {
                 
                 self.isReloading = false
             })
-            
-            isReloading = true
         }
     }
     public func cancelReload() {
-        if (isReloading) {
+        if isReloading {
             executingReloadOperation?.cancel()
             executingReloadOperation = nil
             
             isReloading = false
         }
     }
+    var didReloadContent: Bool {
+        return (lastReloadDate != nil)
+    }
     
     
     //MARK: Load More -
-    public dynamic var canLoadMore: Bool {
-        return !isReloading && !isLoadingMore
+    public var canLoadMore: Bool {
+        return !isReloading && !isLoadingMore && didReloadContent
     }
     public func loadMore() {
         if canLoadMore {
             print("Loading more content...")
+            isLoadingMore = true
+            
             executingLoadMoreOperation?.cancel()
             executingLoadMoreOperation = loadMoreOperationWithCallback({[unowned self] (content, error) in
                 self.executingLoadMoreOperation = nil
@@ -98,12 +99,10 @@ public class DataFeed: NSObject, TTDataFeed {
                 
                 self.isLoadingMore = false
             })
-            
-            isLoadingMore = true
         }
     }
     public func cancelLoadMore() {
-        if (isLoadingMore) {
+        if isLoadingMore {
             executingLoadMoreOperation?.cancel()
             executingLoadMoreOperation = nil
             
@@ -111,16 +110,14 @@ public class DataFeed: NSObject, TTDataFeed {
         }
     }
     
-    public dynamic var isReloading: Bool = false
-    public dynamic var isLoadingMore: Bool = false
-    
-    public override class func keyPathsForValuesAffectingValueForKey(key: String) -> Set<String> {
-        var keyPaths = super.keyPathsForValuesAffectingValueForKey(key)
-        if key == "canLoadMore" {
-            keyPaths = Set(["isReloading", "isLoadingMore"]).union(keyPaths)
-        } else if key == "canReload" {
-            keyPaths = Set(["isReloading"]).union(keyPaths)
+    public var isReloading: Bool = false {
+        didSet {
+            delegate?.dataFeed(self, isReloading: isReloading)
         }
-        return keyPaths;
+    }
+    public var isLoadingMore: Bool = false {
+        didSet {
+            delegate?.dataFeed(self, isLoadingMore: isLoadingMore)
+        }
     }
 }

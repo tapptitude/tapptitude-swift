@@ -24,7 +24,7 @@ public protocol TTDataSource : TTDataFeedDelegate {
     func indexPathForObject(object: AnyObject) -> NSIndexPath?
     
     var delegate: TTDataSourceDelegate? { get set }
-    var feed: DataFeed? { get set }
+    var feed: TTDataFeed? { get set }
     
     var dataSourceID: String? { get set } //usefull information
 }

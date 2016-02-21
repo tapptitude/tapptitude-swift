@@ -41,7 +41,7 @@ class APIPaginatedMock: TTCancellable {
     init(offset:Int, limit:Int, callback: (content: [AnyObject]?, error: NSError?)->Void) {
         self.callback = callback
         
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(5 * Double(NSEC_PER_SEC)))
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(3 * Double(NSEC_PER_SEC)))
         dispatch_after(delayTime, dispatch_get_main_queue()) {
             print("test")
             if !self.wasCancelled {
@@ -67,7 +67,7 @@ class APIPaginateOffsetdMock: TTCancellable {
     init(offset:String?, limit:Int, callback: (content: [AnyObject]?, nextOffset:AnyObject?, error: NSError?)->Void) {
         self.callback = callback
         
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(2 * Double(NSEC_PER_SEC)))
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC)))
         dispatch_after(delayTime, dispatch_get_main_queue()) {
             print("test")
             if !self.wasCancelled {
@@ -94,6 +94,7 @@ class FeedController: CollectionFeedController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        addPullToRefresh()
 //        self.dataSource = DataSource(content: ["arra"])
         let cellController = CollectionCellController<String, UICollectionViewCell>(cellSize: CGSize(width: 50, height: 50))
         cellController.configureCellBlock = { cell, content, indexPath in

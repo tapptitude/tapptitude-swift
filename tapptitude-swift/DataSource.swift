@@ -9,16 +9,15 @@
 import Foundation
 
 
-public class DataSource : NSObject, TTDataSource {
+public class DataSource : TTDataSource {
     lazy private var _content : [AnyObject] = [AnyObject]()
     
     public init(content : [AnyObject]) {
-        super.init()
         _content = content
     }
     
     public var delegate : TTDataSourceDelegate?
-    public dynamic var feed : DataFeed? {
+    public var feed : TTDataFeed? {
         willSet {
             feed?.delegate = nil
         }
@@ -147,6 +146,18 @@ extension DataSource : TTDataFeedDelegate {
             delegate?.dataSourceDidLoadMoreContent(self)
         } else {
             // no content loaded
+        }
+    }
+    
+    public func dataFeed(dataFeed: TTDataFeed?, isReloading: Bool) {
+        if let delegate = delegate as? TTDataFeedDelegate {
+            delegate.dataFeed(dataFeed, isReloading: isReloading)
+        }
+    }
+    
+    public func dataFeed(dataFeed: TTDataFeed?, isLoadingMore: Bool) {
+        if let delegate = delegate as? TTDataFeedDelegate {
+            delegate.dataFeed(dataFeed, isLoadingMore: isLoadingMore)
         }
     }
 }

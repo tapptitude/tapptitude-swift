@@ -48,14 +48,7 @@ public class PaginatedDataFeed: DataFeed {
     }
     
     
-    public var hasMorePages: Bool = false {
-        willSet {
-            willChangeValueForKey("canLoadMore")
-        }
-        didSet {
-            didChangeValueForKey("canLoadMore")
-        }
-    }
+    public var hasMorePages: Bool = false
 }
 
 
@@ -99,12 +92,5 @@ public class PaginatedOffsetDataFeed : DataFeed {
     }
     
     
-    public var hasMorePages: Bool = false {
-        willSet {
-            willChangeValueForKey("canLoadMore")
-        }
-        didSet {
-            didChangeValueForKey("canLoadMore")
-        }
-    }
+    public var hasMorePages: Bool = false
 }
