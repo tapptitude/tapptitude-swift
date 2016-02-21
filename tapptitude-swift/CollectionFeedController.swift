@@ -152,10 +152,10 @@ import UIKit
     internal var displayedEmptyView : UIView?
     // UI appearence
     public func updateEmptyViewAppearenceAnimated(animated: Bool) {
-        let feedIsReloading = (dataSource?.feed?.isReloading == true)
+        let feedIsLoading = (dataSource?.feed?.isReloading == true) || (dataSource?.feed?.isLoadingMore == true)
         let hasContent = dataSource?.hasContent() == true
         
-        if (feedIsReloading || hasContent) && displayedEmptyView != nil {
+        if (feedIsLoading || hasContent) && displayedEmptyView != nil {
             if animated {
                 let emptyView = displayedEmptyView
                 displayedEmptyView = nil
@@ -170,7 +170,7 @@ import UIKit
                 displayedEmptyView?.removeFromSuperview()
                 displayedEmptyView = nil
             }
-        } else if !hasContent && !feedIsReloading {
+        } else if !hasContent && !feedIsLoading {
             if displayedEmptyView == nil {
                 if let newEmptyView = emptyView { // get new empty view
                     newEmptyView.alpha = 1.0
@@ -243,12 +243,12 @@ import UIKit
         return (section == dataSource.numberOfSections() - 1);
     }
     
-    public var loadMoreViewXIBName: String! = "TTLoadMoreView" // Expected same methods as in TTLoadMoreView
+    public var loadMoreViewXIBName: String! = "LoadMoreView" // Expected same methods as in LoadMoreView
     internal func updateCanShowLoadMoreViewAnimated(animated:Bool) {
         let feed = self.dataSource?.feed
         let showLoadMore = supportsLoadMore && (feed?.canLoadMore == true || feed?.isLoadingMore == true)
         
-        print(showLoadMore)
+        print("showLoadMore = \(showLoadMore)")
         if canShowLoadMoreView != showLoadMore {
             if animated {
                 collectionView?.performBatchUpdates({ () -> Void in
@@ -259,7 +259,7 @@ import UIKit
                 canShowLoadMoreView = showLoadMore
                 collectionView?.collectionViewLayout.invalidateLayout()
             }
-            print(canShowLoadMoreView)
+            print("canShowLoadMoreView = \(canShowLoadMoreView)")
         }
     }
     
@@ -395,15 +395,7 @@ extension CollectionFeedController {
             return
         }
         
-        guard let currentDataSource = dataSource as? NSObject else {
-            return
-        }
-        
-        guard let newDataSource = newObject as? NSObject else {
-            return
-        }
-        
-        if currentDataSource != newDataSource {
+        if (dataSource as? NSObject) != (newObject as? NSObject) {
             return
         }
         
@@ -539,7 +531,7 @@ extension CollectionFeedController : UICollectionViewDataSource {
         let showLoadMore = kind == UICollectionElementKindSectionFooter && canShowLoadMoreView
         if showLoadMore {
             let reusableView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: loadMoreViewXIBName, forIndexPath: indexPath)
-            if let loadMoreView = reusableView as? TTLoadMoreView {
+            if let loadMoreView = reusableView as? LoadMoreView {
                 loadMoreView.loadingView?.hidden = false
                 loadMoreView.startAnimating()
                 

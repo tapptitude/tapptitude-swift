@@ -12,6 +12,9 @@ public protocol TTCancellable {
     func cancel()
 }
 
+public typealias TTCallback = (content: [AnyObject]?, error: NSError?)->Void
+public typealias TTNextOffsetCallback = (content: [AnyObject]?, nextOffset: AnyObject?, error: NSError?)->Void // next offset is given by backend
+
 public class DataFeed: NSObject, TTDataFeed {
     override init() {
         super.init()
@@ -19,20 +22,23 @@ public class DataFeed: NSObject, TTDataFeed {
     
     public var delegate: TTDataFeedDelegate?
     
-    public func reloadOperationWithCallback(callback: (content: [AnyObject]?, error: NSError?)->Void) -> TTCancellable? {
+    public func reloadOperationWithCallback(callback: TTCallback) -> TTCancellable? {
         return nil
     }
     
-    public func loadMoreOperationWithCallback(callback: (content: [AnyObject]?, error: NSError?)->Void) -> TTCancellable? {
+    public func loadMoreOperationWithCallback(callback: TTCallback) -> TTCancellable? {
         return nil
     }
     
     internal var executingReloadOperation: TTCancellable?;
     internal var executingLoadMoreOperation: TTCancellable?;
     
-    
+    //Mark: re-update content
+    public var enableReloadAfterXSeconds = 5 * 60.0
+    public var lastReloadDate : NSDate?
     public func shouldReload() -> Bool {
-        return false
+        let shouldReload = canReload && (lastReloadDate == nil || (lastReloadDate?.timeIntervalSinceNow > enableReloadAfterXSeconds))
+        return shouldReload
     }
     
     //MARK: Reload -
@@ -105,8 +111,6 @@ public class DataFeed: NSObject, TTDataFeed {
     
     public dynamic var isReloading: Bool = false
     public dynamic var isLoadingMore: Bool = false
-    
-    public var lastReloadDate : NSDate?
     
     public override class func keyPathsForValuesAffectingValueForKey(key: String) -> Set<String> {
         var keyPaths = super.keyPathsForValuesAffectingValueForKey(key)

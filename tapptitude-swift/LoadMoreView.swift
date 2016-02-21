@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class TTLoadMoreView : UICollectionReusableView {
+public class LoadMoreView : UICollectionReusableView {
     
     @IBOutlet weak public var loadingView: UIActivityIndicatorView?
     

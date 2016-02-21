@@ -9,25 +9,20 @@
 import Foundation
 
 class SimpleDataFeed : DataFeed {
-    var enableReloadAfterXSeconds = 5 * 60.0
     
-    private var loadOperation : ((content: [AnyObject]?, error: NSError?)->Void) -> TTCancellable?
     
-    init (loadOperation: ((content: [AnyObject]?, error: NSError?)->Void)-> TTCancellable?) {
-        self.loadOperation = loadOperation
+    private var loadOperation: (TTCallback) -> TTCancellable?
+    
+    init (load: (callback:TTCallback)-> TTCancellable?) {
+        self.loadOperation = load
         super.init()
     }
     
-    override func reloadOperationWithCallback(callback: (content: [AnyObject]?, error: NSError?) -> Void) -> TTCancellable? {
+    override func reloadOperationWithCallback(callback: TTCallback) -> TTCancellable? {
         return loadOperation(callback)
     }
     
     override var canLoadMore: Bool {
         return false
-    }
-    
-    override func shouldReload() -> Bool {
-        let shouldReload = canReload && (lastReloadDate == nil || (lastReloadDate?.timeIntervalSinceNow > enableReloadAfterXSeconds))
-        return shouldReload
     }
 }
