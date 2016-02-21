@@ -72,13 +72,13 @@ class APIPaginateOffsetdMock: TTCancellable {
             print("test")
             if !self.wasCancelled {
                 if offset == nil {
-                    callback(content: ["5"], nextOffset: "1", error: nil)
+                    callback(content: nil, nextOffset: "1", error: nil)
                 } else if offset == "1" {
                     callback(content: [""], nextOffset: "2", error: nil)
                 } else if offset == "2" {
                     callback(content: [""], nextOffset: "3", error: nil)
                 } else if offset == "3" {
-                    callback(content: [""], nextOffset: "4", error: nil)
+                    callback(content: nil, nextOffset: "4", error: nil)
                 } else if offset == "4" {
                     callback(content: [""], nextOffset: "5", error: nil)
                 } else if offset == "5" {

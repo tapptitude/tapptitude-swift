@@ -51,6 +51,7 @@ public class DataFeed: NSObject, TTDataFeed {
                 cancelLoadMore()
             }
             
+            print("Reloading content...")
             executingReloadOperation?.cancel()
             executingReloadOperation = reloadOperationWithCallback({ [unowned self] (content, error) in
                 self.executingReloadOperation = nil
@@ -84,6 +85,7 @@ public class DataFeed: NSObject, TTDataFeed {
     }
     public func loadMore() {
         if canLoadMore {
+            print("Loading more content...")
             executingLoadMoreOperation?.cancel()
             executingLoadMoreOperation = loadMoreOperationWithCallback({[unowned self] (content, error) in
                 self.executingLoadMoreOperation = nil

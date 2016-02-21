@@ -233,7 +233,7 @@ import UIKit
     /* Load More */
     public var supportsLoadMore: Bool = true
     public var autoLoadMoreContent: Bool = true
-    public var numberOfPagesToPreload: Int = 2
+    public var numberOfPagesToPreload: Int = 2 // load more content when last 2 pages are visible
     public var canShowLoadMoreView : Bool = false
     public func shouldShowLoadMoreForSection(section: Int) -> Bool { // default - YES only for last section
         guard let dataSource = self.dataSource else {
@@ -246,6 +246,12 @@ import UIKit
     public var loadMoreViewXIBName: String! = "LoadMoreView" // Expected same methods as in LoadMoreView
     internal func updateCanShowLoadMoreViewAnimated(animated:Bool) {
         let feed = self.dataSource?.feed
+        if supportsLoadMore && feed?.canLoadMore == true {
+            if let indexPath = collectionView?.indexPathsForVisibleItems().last {
+                self.checkIfShouldLoadMoreContentForIndexPath(indexPath)
+            }
+        }
+        
         let showLoadMore = supportsLoadMore && (feed?.canLoadMore == true || feed?.isLoadingMore == true)
         
         print("showLoadMore = \(showLoadMore)")
@@ -264,15 +270,11 @@ import UIKit
     }
     
     internal func checkIfShouldLoadMoreContentForIndexPath(indexPath:NSIndexPath?) {  //Future - indexPath used for identifying section
-        guard let dataSource = self.dataSource else {
+        guard let feed = self.dataSource?.feed else {
             return
         }
         
-        guard dataSource.feed != nil else {
-            return
-        }
-        
-        guard indexPath != nil && supportsLoadMore && dataSource.feed?.canLoadMore == true else {
+        guard indexPath != nil && supportsLoadMore && feed.canLoadMore == true else {
             return
         }
         
@@ -281,20 +283,19 @@ import UIKit
         }
         
         if shouldShowLoadMoreForSection(indexPath!.section) {
-            var shouldLoadMore = false
+            var preloadMoreContent = false
             let bounds = collectionView.bounds
             let contentSize = collectionView.contentSize
             let numberOfPagesToPreload = CGFloat(self.numberOfPagesToPreload)
             
             if scrollDirection == .Vertical {
-                shouldLoadMore = (contentSize.height - CGRectGetMaxY(bounds)) < (numberOfPagesToPreload * bounds.size.height)
+                preloadMoreContent = (contentSize.height - CGRectGetMaxY(bounds)) < (numberOfPagesToPreload * bounds.size.height)
             } else  {
-                shouldLoadMore = (contentSize.width - CGRectGetMaxX(bounds)) < (numberOfPagesToPreload * bounds.size.width)
+                preloadMoreContent = (contentSize.width - CGRectGetMaxX(bounds)) < (numberOfPagesToPreload * bounds.size.width)
             }
             
-            if shouldLoadMore {
-                dataSource.feed?.loadMore()
-                print("Loading more content...")
+            if preloadMoreContent {
+                feed.loadMore()
             }
         }
     }
@@ -305,15 +306,15 @@ import UIKit
     /* Force Touch Preview */
     public var forceTouchPreviewEnabled: Bool = false {
         didSet {
-        if !isViewLoaded() {
-            return
-        }
-        
-        if (self.forceTouchPreviewEnabled) {
-            registerForceTouchPreview()
-        } else {
-            unregisterForceTouchPreview()
-        }
+            if !isViewLoaded() {
+                return
+            }
+            
+            if (self.forceTouchPreviewEnabled) {
+                registerForceTouchPreview()
+            } else {
+                unregisterForceTouchPreview()
+            }
         }
     }
     internal func registerForceTouchPreview() {
