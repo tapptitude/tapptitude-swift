@@ -97,11 +97,11 @@ class FeedController: CollectionFeedController {
         addPullToRefresh()
 //        self.dataSource = DataSource(content: ["arra"])
         let cellController = CollectionCellController<String, UICollectionViewCell>(cellSize: CGSize(width: 50, height: 50))
-        cellController.configureCellBlock = { cell, content, indexPath in
+        cellController.configureCell = { cell, content, indexPath in
             cell.backgroundColor = UIColor.redColor()
             print(cell)
         }
-        cellController.didSelectContentBlock = { _, _, _ in
+        cellController.didSelectContent = { _, _, _ in
             let controller = CollectionFeedController()
             print(controller.view)
             print(controller.collectionView)

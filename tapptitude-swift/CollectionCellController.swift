@@ -12,15 +12,15 @@ public class CollectionCellController<ObjectClass, CellName> : TTCollectionCellC
     public typealias ObjectType = ObjectClass
     public typealias CellType = CellName
     
-    public var didSelectContentBlock : ((content: ObjectType, indexPath: NSIndexPath, collectionView: UICollectionView) -> Void)?
-    public var configureCellBlock : ((cell: CellType, content: ObjectType, indexPath: NSIndexPath) -> Void)?
+    public var didSelectContent : ((content: ObjectType, indexPath: NSIndexPath, collectionView: UICollectionView) -> Void)?
+    public var configureCell : ((cell: CellType, content: ObjectType, indexPath: NSIndexPath) -> Void)?
     
     public func didSelectContent(content: ObjectType, indexPath: NSIndexPath, collectionView: UICollectionView) {
-        didSelectContentBlock?(content: content, indexPath: indexPath, collectionView: collectionView)
+        didSelectContent?(content: content, indexPath: indexPath, collectionView: collectionView)
     }
     
     public func configureCell(cell: CellType, forContent content: ObjectType, indexPath: NSIndexPath) {
-        configureCellBlock?(cell: cell, content: content, indexPath: indexPath)
+        configureCell?(cell: cell, content: content, indexPath: indexPath)
     }
     
     public var sectionInset = UIEdgeInsetsZero
