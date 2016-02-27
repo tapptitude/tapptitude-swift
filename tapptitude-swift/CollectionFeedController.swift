@@ -350,6 +350,14 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         }
         collectionView?.reloadData()
     }
+    
+    
+    public var animatedUpdates = false {
+        didSet {
+            animatedUpdater = animatedUpdates ? CollectionViewAnimatedUpdater() : nil
+        }
+    }
+    private var animatedUpdater: CollectionViewAnimatedUpdater?
 }
 
 
@@ -393,19 +401,50 @@ extension CollectionFeedController : TTDataSourceDelegate {
     }
 }
 
-//extension CollectionFeedController : TTDataSourceIncrementalChangesDelegate {
-//    func dataSourceWillChangeContent(dataSource: TTDataSource) {
-//
-//    }
-//
-//    func dataSourceDidChangeContent(dataSource: TTDataSource) {
-//        reloadDataOnCollectionView()
-//
-//        if dataSource.feed?.isReloading == true { // check for the empty view
-//            updateEmptyViewAppearenceAnimated(true)
-//        }
-//    }
-//}
+// MARK: Incremental Changes on Data source
+extension CollectionFeedController : TTDataSourceIncrementalChangesDelegate {
+    public func dataSourceWillChangeContent(dataSource: TTDataSource) {
+        animatedUpdater?.collectionViewWillChangeContent(collectionView!)
+    }
+
+    public func dataSourceDidChangeContent(dataSource: TTDataSource) {
+        if animatedUpdater == nil {
+            reloadDataOnCollectionView()
+        } else {
+            animatedUpdater?.collectionViewDidChangeContent(collectionView!)
+        }
+
+        if dataSource.feed == nil || dataSource.feed!.isReloading == false { // check for the empty view
+            updateEmptyViewAppearenceAnimated(true)
+        }
+    }
+    
+    public func dataSource(dataSource: TTDataSource, didUpdateItemsAtIndexPaths indexPaths: [NSIndexPath]) {
+        animatedUpdater?.collectionView(collectionView!, didUpdateItems: indexPaths)
+    }
+    
+    public func dataSource(dataSource: TTDataSource, didDeleteItemsAtIndexPaths indexPaths: [NSIndexPath]) {
+        animatedUpdater?.collectionView(collectionView!, didDeleteItems: indexPaths)
+    }
+    
+    public func dataSource(dataSource: TTDataSource, didInsertItemsAtIndexPaths indexPaths: [NSIndexPath]) {
+        animatedUpdater?.collectionView(collectionView!, didInsertItems: indexPaths)
+    }
+    
+    public func dataSource(dataSource: TTDataSource, didMoveItemsAtIndexPaths fromIndexPaths: [NSIndexPath], toIndexPaths: [NSIndexPath]) {
+        animatedUpdater?.collectionView(collectionView!, didMoveItemsAtIndexPaths: fromIndexPaths, toIndexPaths: toIndexPaths)
+    }
+    
+    public func dataSource(dataSource: TTDataSource, didInsertSections addedSections: NSIndexSet) {
+        animatedUpdater?.collectionView(collectionView!, didInsertSections: addedSections)
+    }
+    public func dataSource(dataSource: TTDataSource, didDeleteSections deletedSections: NSIndexSet) {
+        animatedUpdater?.collectionView(collectionView!, didDeleteSections: deletedSections)
+    }
+    public func dataSource(dataSource: TTDataSource, didUpdateSections updatedSections: NSIndexSet) {
+        animatedUpdater?.collectionView(collectionView!, didUpdateSections: updatedSections)
+    }
+}
 
 // MARK: Data Source -
 extension CollectionFeedController : UICollectionViewDataSource {

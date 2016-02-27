@@ -129,6 +129,7 @@ class FeedController: CollectionFeedController {
         })
         
         self.dataSource = dataSource
+        animatedUpdates = true
     }
     
     override func viewDidAppear(animated: Bool) {

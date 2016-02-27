@@ -49,6 +49,8 @@ class EditViewController: CollectionFeedController {
         self.dataSource = DataSource(content:[1, 2])
         self.collectionView!.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "test")
         self.automaticallyAdjustsScrollViewInsets = false;
+        
+        animatedUpdates = true
     }
     
     @IBAction func plusAction(sender: AnyObject) {

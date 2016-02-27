@@ -72,10 +72,10 @@ public class DataSource : TTDataSource {
 public protocol TTDataSourceIncrementalChangesDelegate {
     func dataSourceWillChangeContent(dataSource: TTDataSource)
     
-    func dataSource(dataSource: TTDataSource, didUpdateItemsAtIndexPaths indexPaths: [AnyObject])
-    func dataSource(dataSource: TTDataSource, didDeleteItemsAtIndexPaths indexPaths: [AnyObject])
-    func dataSource(dataSource: TTDataSource, didInsertItemsAtIndexPaths indexPaths: [AnyObject])
-    func dataSource(dataSource: TTDataSource, didMoveItemsAtIndexPaths fromIndexPaths: [AnyObject], toIndexPaths: [AnyObject])
+    func dataSource(dataSource: TTDataSource, didUpdateItemsAtIndexPaths indexPaths: [NSIndexPath])
+    func dataSource(dataSource: TTDataSource, didDeleteItemsAtIndexPaths indexPaths: [NSIndexPath])
+    func dataSource(dataSource: TTDataSource, didInsertItemsAtIndexPaths indexPaths: [NSIndexPath])
+    func dataSource(dataSource: TTDataSource, didMoveItemsAtIndexPaths fromIndexPaths: [NSIndexPath], toIndexPaths: [NSIndexPath])
     
     func dataSource(dataSource: TTDataSource, didInsertSections addedSections: NSIndexSet)
     func dataSource(dataSource: TTDataSource, didDeleteSections deletedSections: NSIndexSet)
