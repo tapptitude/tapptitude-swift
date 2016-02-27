@@ -113,24 +113,23 @@ class FeedController: CollectionFeedController {
         cellController.minimumLineSpacing = 10
         self.cellController = cellController
         
-        self.dataSource = DataSource(load: { (callback) -> TTCancellable? in
-            return APIMock(callback: { (content, error) in
-                var newContent = content
-                newContent?.append("2312")
-                callback(content: newContent, error: error)
-            })
-        })
-        
-        let dataSource = DataSource()
-//        dataSource.feed = SimpleDataFeed(){ (callback) -> TTCancellable? in
+//        self.dataSource = DataSource(load: { (callback) -> TTCancellable? in
 //            return APIMock(callback: { (content, error) in
 //                var newContent = content
 //                newContent?.append("2312")
 //                callback(content: newContent, error: error)
 //            })
-//        }
+//        })
         
+        self.dataSource = DataSource(pageSize: 10) { (offset, limit, callback) -> TTCancellable? in
+            return APIMock(callback: { (content, error) in
+                var newContent = content
+                newContent?.append("2312")
+                callback(content: newContent, error: error)
+            })
+        }
         
+//        let dataSource = DataSource()
 //        dataSource.feed = PaginatedDataFeed(loadPage: { (offset, limit, callback) -> TTCancellable? in
 //            return APIPaginatedMock(offset: offset, limit: limit, callback: callback)
 //        })

@@ -51,6 +51,15 @@ public class PaginatedDataFeed: DataFeed {
     public var hasMorePages: Bool = false
 }
 
+extension DataSource {
+    convenience init(pageSize:Int, loadPage: (offset:Int, limit:Int, callback:TTCallback) -> TTCancellable?) {
+        self.init()
+        let feed = PaginatedDataFeed(loadPage: loadPage)
+        feed.limit = pageSize
+        feed.delegate = self
+        self.feed = feed
+    }
+}
 
 
 public class PaginatedOffsetDataFeed : DataFeed {
