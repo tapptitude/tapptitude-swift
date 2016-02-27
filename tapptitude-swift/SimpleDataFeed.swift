@@ -10,7 +10,6 @@ import Foundation
 
 class SimpleDataFeed : DataFeed {
     
-    
     private var loadOperation: (TTCallback) -> TTCancellable?
     
     init (load: (callback:TTCallback)-> TTCancellable?) {

@@ -54,10 +54,11 @@ public class PaginatedDataFeed: DataFeed {
 
 
 public class PaginatedOffsetDataFeed : DataFeed {
+    //TODO: Fix offset type, it should match with callback signature used for API
 //    public typealias OffsetType = NextOffsetType
     
     public var limit: Int = 1
-    public var offset: AnyObject? // dependend on backend API
+    public var offset: AnyObject? // dependends on backend API
     
     private var loadPageNextOffsetOperation: (offset:AnyObject?, limit:Int, callback:TTNextOffsetCallback) -> TTCancellable? // next page offset is given by backend
     

@@ -67,6 +67,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
                     }
                 }
                 updateCollectionViewScrollDirection()
+                updateCollectionViewLayoutAttributes()
             }
         }
     }
@@ -129,6 +130,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         }
         didSet {
             cellController.parentViewController = self
+            updateCollectionViewLayoutAttributes()
         }
     }
     
@@ -148,6 +150,19 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         
         if let layout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.scrollDirection = self.scrollDirection
+        }
+    }
+    
+    internal func updateCollectionViewLayoutAttributes() {
+        if cellController == nil || collectionView == nil {
+            return
+        }
+        
+        if let layout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
+            layout.sectionInset = cellController.sectionInset
+            layout.minimumLineSpacing = cellController.minimumLineSpacing
+            layout.minimumInteritemSpacing = cellController.minimumInteritemSpacing
+            layout.itemSize = cellController.cellSize
         }
     }
     
@@ -305,7 +320,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     }
     
     
-    //MARK: Force Touch Preview -
+    //MARK: ForceTouch Preview -
     weak var forceTouchPreviewContext: UIViewControllerPreviewing?
     public var forceTouchPreviewEnabled: Bool = false {
         didSet {
@@ -540,19 +555,16 @@ extension CollectionFeedController {
         let content = dataSource!.objectAtIndexPath(indexPath)
         cellController.didSelectContent(content, indexPath: indexPath, collectionView: collectionView)
     }
-    
-    //    func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-    //        guard let dataSource = self.dataSource else {
-    //            return false
-    //        }
-    //
-    //        if cellController.respondsToSelector(Selector("shouldHighlightContent:atIndexPath:")) {
-    //            let content = dataSource.objectAtIndexPath(indexPath)
-    //            return cellController.shouldHighlightContent!(content, atIndexPath: indexPath)
-    //        }
-    //
-    //        return true
-    //    }
+
+//    TODO: Fix should highlight
+//    func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+//        if cellController.respondsToSelector(Selector("shouldHighlightContent:atIndexPath:")) {
+//            let content = dataSource.objectAtIndexPath(indexPath)
+//            return cellController.shouldHighlightContent!(content, atIndexPath: indexPath)
+//        }
+//
+//        return true
+//    }
 }
 
 // MARK: Layout Size -
@@ -596,7 +608,7 @@ extension CollectionFeedController {
     }
 }
 
-
+//MARK: ForceTouch Delegate
 extension CollectionFeedController : UIViewControllerPreviewingDelegate {
     @available(iOS 9.0, *)
     public func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {

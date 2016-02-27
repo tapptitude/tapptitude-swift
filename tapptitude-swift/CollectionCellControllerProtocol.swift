@@ -77,6 +77,7 @@ extension TTCollectionCellController {
         return content is ObjectType
     }
     
+    // TODO: enable passing multiple cell xibs with same cell class but different reuse identifiers
     public func classToInstantiateCellForContent(content: ObjectType) -> AnyClass? {
         if let classType = CellType.self as? AnyClass {
             return classType
