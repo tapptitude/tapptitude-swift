@@ -113,8 +113,15 @@ class FeedController: CollectionFeedController {
         cellController.minimumLineSpacing = 10
         self.cellController = cellController
         
-        let dataSource = DataSource()
+        self.dataSource = DataSource(load: { (callback) -> TTCancellable? in
+            return APIMock(callback: { (content, error) in
+                var newContent = content
+                newContent?.append("2312")
+                callback(content: newContent, error: error)
+            })
+        })
         
+        let dataSource = DataSource()
 //        dataSource.feed = SimpleDataFeed(){ (callback) -> TTCancellable? in
 //            return APIMock(callback: { (content, error) in
 //                var newContent = content
@@ -123,17 +130,17 @@ class FeedController: CollectionFeedController {
 //            })
 //        }
         
+        
 //        dataSource.feed = PaginatedDataFeed(loadPage: { (offset, limit, callback) -> TTCancellable? in
 //            return APIPaginatedMock(offset: offset, limit: limit, callback: callback)
 //        })
         
-        dataSource.feed = PaginatedOffsetDataFeed(loadPage: { (offset, limit, callback) -> TTCancellable? in
-            let newOffset = offset as? String
-            return APIPaginateOffsetdMock(offset: newOffset, limit: limit, callback: callback)
-        })
+//        dataSource.feed = PaginatedOffsetDataFeed(loadPage: { (offset, limit, callback) -> TTCancellable? in
+//            let newOffset = offset as? String
+//            return APIPaginateOffsetdMock(offset: newOffset, limit: limit, callback: callback)
+//        })
+//        self.dataSource = dataSource
         
-//        self.dataSource = DataSource(content:["23"])
-        self.dataSource = dataSource
         animatedUpdates = true
     }
     

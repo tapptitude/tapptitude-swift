@@ -25,3 +25,11 @@ class SimpleDataFeed : DataFeed {
         return false
     }
 }
+
+extension DataSource {
+    convenience init (load: (callback:TTCallback)-> TTCancellable?) {
+        self.init()
+        feed = SimpleDataFeed(load: load)
+        feed?.delegate = self
+    }
+}

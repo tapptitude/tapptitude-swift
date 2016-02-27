@@ -499,7 +499,7 @@ extension CollectionFeedController : UICollectionViewDataSource {
         assert(cell.reuseIdentifier == reuseIdentifier , "Cell returned from cell controller \(cellController) had reuseIdenfier \(cell.reuseIdentifier), which must be equal to the cell controller's reuseIdentifierForContent, which returned \(reuseIdentifier)")
         
         // pass parentViewController
-        cell.tt_parentViewController = cellController.parentViewController;
+        cell.parentViewController = cellController.parentViewController;
         
         //        if cellController.respondsToSelector(Selector("configureCell:forContent:indexPath:dataSourceCount:")) {
         //            let sectionCount = dataSource.numberOfRowsInSection(indexPath.section)
@@ -543,7 +543,7 @@ extension CollectionFeedController : UICollectionViewDataSource {
     }
     
     public func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
-        cell.tt_parentViewController = nil
+        cell.parentViewController = nil
     }
 }
 

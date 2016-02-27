@@ -150,7 +150,7 @@ extension UICollectionViewCell {
         static var viewExtension = "viewExtension"
     }
     
-    public var tt_parentViewController : UIViewController? {
+    public var parentViewController : UIViewController? {
         get {
             return objc_getAssociatedObject(self, &AssociatedKey.viewExtension) as? UIViewController ?? nil
         }
