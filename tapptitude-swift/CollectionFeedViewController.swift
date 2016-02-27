@@ -37,3 +37,15 @@ protocol TTCollectionFeedController : class, UICollectionViewDelegateFlowLayout,
     // helpers
     func scrollToContent(content: AnyObject!, animated: Bool)
 }
+
+
+protocol TTCollectionFeedControllerMutable : class {
+    var dataSource: TTDataSource? {get set}
+    var dataSourceMutable: TTDataSourceMutable? {get}
+}
+
+extension TTCollectionFeedControllerMutable {
+    var dataSourceMutable: TTDataSourceMutable? {
+        return dataSource as? TTDataSourceMutable
+    }
+}

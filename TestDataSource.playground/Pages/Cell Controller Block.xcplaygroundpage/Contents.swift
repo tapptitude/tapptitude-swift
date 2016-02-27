@@ -14,7 +14,6 @@ cellController.configureCell(UICollectionViewCell(), forContent: object, indexPa
 cellController.parentViewController = nil
 cellController.parentViewController = UIViewController()
 
-//let feedController = CollectionFeedController(nibName: "CollectionFeedController", bundle: nil)
 let feedController = CollectionFeedController()
 feedController.dataSource = dataSource
 feedController.cellController = cellController
@@ -23,11 +22,11 @@ print(feedController.view)
 feedController.collectionView?.backgroundColor = UIColor.grayColor()
 
 
-cellController.configureCellBlock = { cell, content, indexPath in
+cellController.configureCell = { cell, content, indexPath in
     cell.backgroundColor = UIColor.redColor()
     print(cell)
 }
-cellController.didSelectContentBlock = { content, indexPath, collectionView in
+cellController.didSelectContent = { content, indexPath, collectionView in
     print("did select", content)
     let cell = collectionView.cellForItemAtIndexPath(indexPath)
     print(cellController.parentViewController!)

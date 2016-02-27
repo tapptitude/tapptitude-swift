@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2322500C1C81B53B00AA9C25 /* CollectionFeedController.swift in Headers */ = {isa = PBXBuildFile; fileRef = 232E26321C78BBF50074467C /* CollectionFeedController.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		232C36601C74806500ADA5F5 /* CollectionCellControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232C365F1C74806500ADA5F5 /* CollectionCellControllerProtocol.swift */; };
 		232C36621C7481B300ADA5F5 /* CollectionCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232C36611C7481B300ADA5F5 /* CollectionCellController.swift */; };
 		232C36641C7482DC00ADA5F5 /* DataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232C36631C7482DC00ADA5F5 /* DataSourceProtocol.swift */; };
@@ -112,6 +113,7 @@
 				23A550C61C78808600695BF3 /* DataSource.swift in Headers */,
 				23A550C71C78808600695BF3 /* DataFeedProtocol.swift in Headers */,
 				23A550C81C78808600695BF3 /* CollectionFeedViewController.swift in Headers */,
+				2322500C1C81B53B00AA9C25 /* CollectionFeedController.swift in Headers */,
 				23A550C91C78808600695BF3 /* LoadMoreView.swift in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

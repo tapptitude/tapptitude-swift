@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc public class CollectionFeedController: UIViewController, TTCollectionFeedController {
+public class CollectionFeedController: UIViewController, TTCollectionFeedController, TTCollectionFeedControllerMutable {
     public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
@@ -233,7 +233,7 @@ import UIKit
         }
     }
     
-    /* Load More */
+    //MARK: Load More -
     public var supportsLoadMore: Bool = true
     public var autoLoadMoreContent: Bool = true
     public var numberOfPagesToPreload: Int = 2 // load more content when last 2 pages are visible
@@ -307,7 +307,7 @@ import UIKit
     
     
     
-    /* Force Touch Preview */
+    //MARK: Force Touch Preview -
     public var forceTouchPreviewEnabled: Bool = false {
         didSet {
             if !isViewLoaded() {
@@ -328,7 +328,7 @@ import UIKit
         // TODO: implement into an extensions
     }
     
-    /* Pull to Refresh functionality */
+    //MARK: Pull to Refresh -
     @IBOutlet public  weak var refreshControl: UIRefreshControl?
     public func pullToRefreshAction(sender: AnyObject!) {
         dataSource?.feed?.reload()
@@ -353,6 +353,7 @@ import UIKit
 }
 
 
+//MARK: Data Feed -
 extension CollectionFeedController : TTDataFeedDelegate {
     public func dataFeed(dataFeed: TTDataFeed?, failedWithError error: NSError) {
         refreshControl?.endRefreshing()
@@ -406,6 +407,7 @@ extension CollectionFeedController : TTDataSourceDelegate {
 //    }
 //}
 
+// MARK: Data Source -
 extension CollectionFeedController : UICollectionViewDataSource {
     
     public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
@@ -500,7 +502,7 @@ extension CollectionFeedController : UICollectionViewDataSource {
 
 
 
-
+// MARK: Did Select -
 extension CollectionFeedController {
     public func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let content = dataSource!.objectAtIndexPath(indexPath)
@@ -521,6 +523,7 @@ extension CollectionFeedController {
     //    }
 }
 
+// MARK: Layout Size -
 extension CollectionFeedController {
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         let content = dataSource!.objectAtIndexPath(indexPath)
@@ -560,3 +563,9 @@ extension CollectionFeedController {
         return ((canShowLoadMoreView && shouldShowLoadMoreForSection(section)) ? CGSizeMake(30, 40) : CGSizeZero)
     }
 }
+
+//extension CollectionFeedController {
+//    var dataSourceMutable: TTDataSourceMutable? {
+//        return dataSource as? TTDataSourceMutable
+//    }
+//}
