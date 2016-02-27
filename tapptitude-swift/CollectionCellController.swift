@@ -24,8 +24,8 @@ public class CollectionCellController<ObjectClass, CellName> : TTCollectionCellC
     }
     
     public var sectionInset = UIEdgeInsetsZero
-    public var minimumLineSpacing = 0.0
-    public var minimumInteritemSpacing = 0.0
+    public var minimumLineSpacing: CGFloat = 0.0
+    public var minimumInteritemSpacing: CGFloat = 0.0
     public var cellSize : CGSize!
     
     public var parentViewController : UIViewController?

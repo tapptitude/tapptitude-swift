@@ -98,7 +98,7 @@ class FeedController: CollectionFeedController {
         
         addPullToRefresh()
 //        self.dataSource = DataSource(content: ["arra"])
-        let cellController = CollectionCellController<String, UICollectionViewCell>(cellSize: CGSize(width: 50, height: 50))
+        let cellController = CollectionCellController<String, UICollectionViewCell>(cellSize: CGSize(width: 100, height: 100))
         cellController.configureCell = { cell, content, indexPath in
             cell.backgroundColor = UIColor.redColor()
             print(cell)
@@ -109,6 +109,8 @@ class FeedController: CollectionFeedController {
             print(controller.collectionView)
             self.showViewController(controller, sender: nil)
         }
+        cellController.minimumInteritemSpacing = 20
+        cellController.minimumLineSpacing = 10
         self.cellController = cellController
         
         let dataSource = DataSource(content: [])

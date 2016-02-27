@@ -40,8 +40,8 @@ class EditViewController: CollectionFeedController {
         collectionView!.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "test")
         
         let cellController = CollectionCellController<Int, TextCell>(cellSize: CGSize(width:60, height:60))
-        cellController.minimumLineSpacing = 5
-        cellController.minimumInteritemSpacing = 5
+        cellController.minimumLineSpacing = 20
+        cellController.minimumInteritemSpacing = 20
         cellController.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         cellController.configureCell = { cell, content, indexPath in
             cell.label.text = "\(content)"
@@ -49,6 +49,8 @@ class EditViewController: CollectionFeedController {
         
         self.cellController = cellController
         self.dataSource = DataSource(content:[1, 2])
+        
+        collectionView?.reloadData()
         
         animatedUpdates = true
     }

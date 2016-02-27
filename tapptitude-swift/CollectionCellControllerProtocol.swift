@@ -118,13 +118,6 @@ extension TTCollectionCellController {
         didSelectContent(content as! ObjectType, indexPath: indexPath, collectionView: collectionView)
     }
     
-    
-    // sizes
-    public var sectionInset : UIEdgeInsets { return UIEdgeInsetsZero }
-    public var minimumLineSpacing : CGFloat { return 0.0 }
-    public var minimumInteritemSpacing : CGFloat { return 0.0 }
-//    public var cellSize : CGSize
-    
     public func cellSizeForContent(content: ObjectType, collectionView: UICollectionView) -> CGSize {
         return cellSize
     }
@@ -137,7 +130,6 @@ extension TTCollectionCellController {
     public func minimumInteritemSpacingForContent(content: ObjectType, collectionView: UICollectionView) -> CGFloat {
         return minimumInteritemSpacing
     }
-    
     
     public func cellSizeForContent(content: AnyObject, collectionView: UICollectionView) -> CGSize {
         return cellSizeForContent(content as! ObjectType, collectionView: collectionView)
