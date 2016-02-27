@@ -113,7 +113,7 @@ class FeedController: CollectionFeedController {
         cellController.minimumLineSpacing = 10
         self.cellController = cellController
         
-        let dataSource = DataSource(content: [])
+        let dataSource = DataSource()
         
 //        dataSource.feed = SimpleDataFeed(){ (callback) -> TTCancellable? in
 //            return APIMock(callback: { (content, error) in

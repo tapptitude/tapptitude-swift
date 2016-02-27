@@ -12,8 +12,11 @@ import Foundation
 public class DataSource : TTDataSource {
     lazy private var _content : [AnyObject] = [AnyObject]()
     
-    public init(content : [AnyObject]) {
+    public init(_ content : [AnyObject]) {
         _content = content
+    }
+    public init() {
+        _content = []
     }
     
     public var delegate : TTDataSourceDelegate?
