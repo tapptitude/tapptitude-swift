@@ -94,6 +94,8 @@ class FeedController: CollectionFeedController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        collectionView!.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "test")
+        
         addPullToRefresh()
 //        self.dataSource = DataSource(content: ["arra"])
         let cellController = CollectionCellController<String, UICollectionViewCell>(cellSize: CGSize(width: 50, height: 50))
@@ -128,11 +130,27 @@ class FeedController: CollectionFeedController {
             return APIPaginateOffsetdMock(offset: newOffset, limit: limit, callback: callback)
         })
         
+//        self.dataSource = DataSource(content:["23"])
         self.dataSource = dataSource
         animatedUpdates = true
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        let size: CGSize = dataSource!.hasContent() == true ? CGSizeMake(0, 30) : CGSizeZero
+        return size
+    }
+    
+    override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+        if kind == UICollectionElementKindSectionHeader {
+            let header: UICollectionReusableView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "test", forIndexPath: indexPath);
+            header.backgroundColor = UIColor.darkGrayColor();
+            return header;
+        } else {
+            return super.collectionView(collectionView, viewForSupplementaryElementOfKind: kind, atIndexPath: indexPath)
+        }
     }
 }

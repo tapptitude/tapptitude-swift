@@ -305,27 +305,20 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     }
     
     
-    
-    
     //MARK: Force Touch Preview -
+    weak var forceTouchPreviewContext: UIViewControllerPreviewing?
     public var forceTouchPreviewEnabled: Bool = false {
         didSet {
             if !isViewLoaded() {
                 return
             }
             
-            if (self.forceTouchPreviewEnabled) {
+            if forceTouchPreviewEnabled {
                 registerForceTouchPreview()
             } else {
                 unregisterForceTouchPreview()
             }
         }
-    }
-    internal func registerForceTouchPreview() {
-        // TODO: implement into an extensions
-    }
-    internal func unregisterForceTouchPreview() {
-        // TODO: implement into an extensions
     }
     
     //MARK: Pull to Refresh -
@@ -603,8 +596,61 @@ extension CollectionFeedController {
     }
 }
 
-//extension CollectionFeedController {
-//    var dataSourceMutable: TTDataSourceMutable? {
-//        return dataSource as? TTDataSourceMutable
-//    }
-//}
+
+extension CollectionFeedController : UIViewControllerPreviewingDelegate {
+    @available(iOS 9.0, *)
+    public func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        let point = collectionView!.convertPoint(location, fromView: self.view)
+        guard let indexPath = collectionView!.indexPathForItemAtPoint(point) else {
+            return nil
+        }
+        
+        let content = dataSource!.objectAtIndexPath(indexPath)
+        let previousParentController = cellController.parentViewController
+        let parentController = UIViewController()
+        var dummyNavigationController: DummyNavigationController? = DummyNavigationController(rootViewController: parentController)
+        cellController.parentViewController = parentController
+        cellController.didSelectContent(content, indexPath: indexPath, collectionView: collectionView!)
+        cellController.parentViewController = previousParentController
+        
+        let controller = dummyNavigationController!.capturedViewController
+        dummyNavigationController = nil // destroy
+        if let controller = controller {
+            controller.preferredContentSize = CGSizeZero
+            
+            let cell = collectionView!.cellForItemAtIndexPath(indexPath)
+            previewingContext.sourceRect = cell!.convertRect(cell!.bounds, toView:self.view)
+        }
+        
+        return controller
+    }
+    
+    public func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
+        showViewController(viewControllerToCommit, sender: self)
+    }
+    
+    internal class DummyNavigationController : UINavigationController {
+        var capturedViewController: UIViewController?
+        override func pushViewController(viewController: UIViewController, animated: Bool) {
+            capturedViewController = viewController
+        }
+    }
+    
+    internal func registerForceTouchPreview() {
+        if #available(iOS 9, *) {
+            if traitCollection.forceTouchCapability == .Available {
+                forceTouchPreviewContext = registerForPreviewingWithDelegate(self, sourceView: self.view!)
+            }
+        }
+    }
+    internal func unregisterForceTouchPreview() {
+        if #available(iOS 9, *) {
+            if traitCollection.forceTouchCapability == .Available {
+                if forceTouchPreviewContext != nil {
+                    unregisterForPreviewingWithContext(forceTouchPreviewContext!)
+                    forceTouchPreviewContext = nil
+                }
+            }
+        }
+    }
+}

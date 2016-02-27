@@ -37,6 +37,8 @@ class EditViewController: CollectionFeedController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        collectionView!.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "test")
+        
         let cellController = CollectionCellController<Int, TextCell>(cellSize: CGSize(width:60, height:60))
 //        cellController.minimumLineSpacing = 5
 //        cellController.minimumInteritemSpacing = 5
@@ -47,8 +49,6 @@ class EditViewController: CollectionFeedController {
         
         self.cellController = cellController
         self.dataSource = DataSource(content:[1, 2])
-        self.collectionView!.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "test")
-        self.automaticallyAdjustsScrollViewInsets = false;
         
         animatedUpdates = true
     }
@@ -104,14 +104,19 @@ class EditViewController: CollectionFeedController {
         dataSourceMutable?.moveContentFromIndexPath(fromIndexPath, toIndexPath: toIndexPath)
     }
     
-    //    override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-    //        return self.dataSource.hasContent() ? CGSizeMake(self.collectionView!.bounds.size.width, 30) : CGSizeZero;
-    //    }
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        let size: CGSize = dataSource!.hasContent() == true ? CGSizeMake(0, 30) : CGSizeZero
+        return size
+    }
     
     override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-        let header: UICollectionReusableView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "test", forIndexPath: indexPath);
-        header.backgroundColor = UIColor.darkGrayColor();
-        return header;
+        if kind == UICollectionElementKindSectionHeader {
+            let header: UICollectionReusableView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "test", forIndexPath: indexPath);
+            header.backgroundColor = UIColor.darkGrayColor();
+            return header;
+        } else {
+            return super.collectionView(collectionView, viewForSupplementaryElementOfKind: kind, atIndexPath: indexPath)
+        }
     }
 }
 
