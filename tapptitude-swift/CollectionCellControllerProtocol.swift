@@ -22,7 +22,7 @@ public protocol TTCollectionCellControllerProtocol {
     
     var parentViewController: UIViewController? { get set }
     
-    var cellSize : CGSize! { get }
+    var cellSize : CGSize { get }
     var sectionInset : UIEdgeInsets { get }
     var minimumLineSpacing : CGFloat { get }
     var minimumInteritemSpacing : CGFloat { get }
@@ -87,11 +87,16 @@ extension TTCollectionCellController {
     }
     
     public func nibToInstantiateCellForContent(content: ObjectType) -> UINib? {
-        return UINib(nibName: String(CellType), bundle: nil)
+        let reuseIdentifier = reuseIdentifierForContent(content)
+        return UINib(nibName: reuseIdentifier, bundle: nil)
+    }
+    
+    public var reuseIdentifier: String {
+        return String(CellType)
     }
     
     public func reuseIdentifierForContent(content: ObjectType) -> String {
-        return String(CellType)
+        return reuseIdentifier
     }
     
     public func configureCell(cell: CellType, forContent content: ObjectType, indexPath: NSIndexPath) {

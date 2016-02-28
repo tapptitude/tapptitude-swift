@@ -26,11 +26,13 @@ public class CollectionCellController<ObjectClass, CellName> : TTCollectionCellC
     public var sectionInset = UIEdgeInsetsZero
     public var minimumLineSpacing: CGFloat = 0.0
     public var minimumInteritemSpacing: CGFloat = 0.0
-    public var cellSize : CGSize!
+    public var cellSize : CGSize
+    public var reuseIdentifier: String
     
     public var parentViewController : UIViewController?
     
-    public init(cellSize : CGSize) {
+    public init(cellSize : CGSize, reuseIdentifier:String? = nil) {
         self.cellSize = cellSize
+        self.reuseIdentifier = reuseIdentifier ?? String(CellType)
     }
 }

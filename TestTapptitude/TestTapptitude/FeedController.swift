@@ -99,7 +99,7 @@ class FeedController: CollectionFeedController {
         addPullToRefresh()
         forceTouchPreviewEnabled = true
 //        self.dataSource = DataSource(content: ["arra"])
-        let cellController = CollectionCellController<String, UICollectionViewCell>(cellSize: CGSize(width: 100, height: 100))
+        let cellController = CollectionCellController<String, UICollectionViewCell>(cellSize: CGSize(width: 100, height: 100), reuseIdentifier:"testing")
         cellController.configureCell = { cell, content, indexPath in
             cell.backgroundColor = UIColor.redColor()
             print(cell)
