@@ -48,7 +48,7 @@ class EditViewController: CollectionFeedController {
         }
         
         self.cellController = cellController
-        self.dataSource = DataSource(content:[1, 2])
+        self.dataSource = DataSource([1, 2])
         
         collectionView?.reloadData()
         

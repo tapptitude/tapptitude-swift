@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2322500C1C81B53B00AA9C25 /* CollectionFeedController.swift in Headers */ = {isa = PBXBuildFile; fileRef = 232E26321C78BBF50074467C /* CollectionFeedController.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		232C36601C74806500ADA5F5 /* CollectionCellControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232C365F1C74806500ADA5F5 /* CollectionCellControllerProtocol.swift */; };
 		232C36621C7481B300ADA5F5 /* CollectionCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232C36611C7481B300ADA5F5 /* CollectionCellController.swift */; };
 		232C36641C7482DC00ADA5F5 /* DataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232C36631C7482DC00ADA5F5 /* DataSourceProtocol.swift */; };
@@ -21,13 +20,6 @@
 		23A4F7231C78DE20006430BF /* DataFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A4F7221C78DE20006430BF /* DataFeed.swift */; };
 		23A4F7251C78E65B006430BF /* SimpleDataFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A4F7241C78E65B006430BF /* SimpleDataFeed.swift */; };
 		23A4F7271C78E8E6006430BF /* PaginatedDataFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A4F7261C78E8E6006430BF /* PaginatedDataFeed.swift */; };
-		23A550C31C78808600695BF3 /* CollectionCellControllerProtocol.swift in Headers */ = {isa = PBXBuildFile; fileRef = 232C365F1C74806500ADA5F5 /* CollectionCellControllerProtocol.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		23A550C41C78808600695BF3 /* CollectionCellController.swift in Headers */ = {isa = PBXBuildFile; fileRef = 232C36611C7481B300ADA5F5 /* CollectionCellController.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		23A550C51C78808600695BF3 /* DataSourceProtocol.swift in Headers */ = {isa = PBXBuildFile; fileRef = 232C36631C7482DC00ADA5F5 /* DataSourceProtocol.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		23A550C61C78808600695BF3 /* DataSource.swift in Headers */ = {isa = PBXBuildFile; fileRef = 232C36671C7483CB00ADA5F5 /* DataSource.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		23A550C71C78808600695BF3 /* DataFeedProtocol.swift in Headers */ = {isa = PBXBuildFile; fileRef = 232C36651C74838700ADA5F5 /* DataFeedProtocol.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		23A550C81C78808600695BF3 /* CollectionFeedViewController.swift in Headers */ = {isa = PBXBuildFile; fileRef = 232C36691C74A37800ADA5F5 /* CollectionFeedViewController.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		23A550C91C78808600695BF3 /* LoadMoreView.swift in Headers */ = {isa = PBXBuildFile; fileRef = 232C366B1C74A8F600ADA5F5 /* LoadMoreView.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		23A550CC1C7886EA00695BF3 /* CollectionFeedController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23A550CB1C7886EA00695BF3 /* CollectionFeedController.xib */; };
 		23CCFF5F1C81B8B2001D6D54 /* CollectionViewAnimatedUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CCFF5E1C81B8B2001D6D54 /* CollectionViewAnimatedUpdater.swift */; };
 /* End PBXBuildFile section */
@@ -110,14 +102,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				234ECBF31C747FE800135CF9 /* tapptitude-swift.h in Headers */,
-				23A550C31C78808600695BF3 /* CollectionCellControllerProtocol.swift in Headers */,
-				23A550C41C78808600695BF3 /* CollectionCellController.swift in Headers */,
-				23A550C51C78808600695BF3 /* DataSourceProtocol.swift in Headers */,
-				23A550C61C78808600695BF3 /* DataSource.swift in Headers */,
-				23A550C71C78808600695BF3 /* DataFeedProtocol.swift in Headers */,
-				23A550C81C78808600695BF3 /* CollectionFeedViewController.swift in Headers */,
-				2322500C1C81B53B00AA9C25 /* CollectionFeedController.swift in Headers */,
-				23A550C91C78808600695BF3 /* LoadMoreView.swift in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

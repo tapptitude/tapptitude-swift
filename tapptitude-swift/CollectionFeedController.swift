@@ -321,7 +321,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     
     
     //MARK: ForceTouch Preview -
-    weak var forceTouchPreviewContext: UIViewControllerPreviewing?
+    internal weak var forceTouchPreviewContext: UIViewControllerPreviewing?
     public var forceTouchPreviewEnabled: Bool = false {
         didSet {
             if !isViewLoaded() {

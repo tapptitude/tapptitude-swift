@@ -97,17 +97,21 @@ class FeedController: CollectionFeedController {
         collectionView!.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "test")
         
         addPullToRefresh()
+        forceTouchPreviewEnabled = true
 //        self.dataSource = DataSource(content: ["arra"])
         let cellController = CollectionCellController<String, UICollectionViewCell>(cellSize: CGSize(width: 100, height: 100))
         cellController.configureCell = { cell, content, indexPath in
             cell.backgroundColor = UIColor.redColor()
             print(cell)
         }
-        cellController.didSelectContent = { _, _, _ in
+        cellController.didSelectContent = { _, indexPath, collectionView in
             let controller = CollectionFeedController()
+            controller.view.backgroundColor = UIColor.blueColor()
             print(controller.view)
             print(controller.collectionView)
-            self.showViewController(controller, sender: nil)
+            let cell = collectionView.cellForItemAtIndexPath(indexPath)
+//            cell?.parentViewController?.navigationController?.pushViewController(controller, animated: true)
+            cell?.parentViewController?.showViewController(controller, sender: nil)
         }
         cellController.minimumInteritemSpacing = 20
         cellController.minimumLineSpacing = 10
