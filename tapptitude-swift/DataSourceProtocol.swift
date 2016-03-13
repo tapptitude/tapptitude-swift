@@ -39,4 +39,6 @@ public protocol TTDataSourceMutable {
     func moveContentFromIndexPath(fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath)
     func removeContentFromIndexPath(indexPath: NSIndexPath)
     func removeContent(content: AnyObject)
+    
+    func replaceContentAtIndexPath(indexPath: NSIndexPath, content: AnyObject)
 }

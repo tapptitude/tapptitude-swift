@@ -484,11 +484,11 @@ extension CollectionFeedController : UICollectionViewDataSource {
         }
         
         if registeredCellIdentifiers?.contains(reuseIdentifier) == false {
-            if let cellClass = cellController.classToInstantiateCellForContent(content) {
-                collectionView.registerClass(cellClass, forCellWithReuseIdentifier: reuseIdentifier)
-            } else {
-                let nib = cellController.nibToInstantiateCellForContent(content)
+            if let nib = cellController.nibToInstantiateCellForContent(content) {
                 collectionView.registerNib(nib, forCellWithReuseIdentifier: reuseIdentifier)
+            } else {
+                let cellClass: AnyClass? = cellController.classToInstantiateCellForContent(content)
+                collectionView.registerClass(cellClass, forCellWithReuseIdentifier: reuseIdentifier)
             }
             
             registeredCellIdentifiers?.append(reuseIdentifier)
@@ -501,12 +501,13 @@ extension CollectionFeedController : UICollectionViewDataSource {
         // pass parentViewController
         cell.parentViewController = cellController.parentViewController;
         
-        //        if cellController.respondsToSelector(Selector("configureCell:forContent:indexPath:dataSourceCount:")) {
-        //            let sectionCount = dataSource.numberOfRowsInSection(indexPath.section)
-        //            cellController.configureCell?(cell, forContent: content, indexPath: indexPath, dataSourceCount: sectionCount)
-        //        } else {
         cellController.configureCell(cell, forContent: content, indexPath: indexPath)
-        //        }
+        
+        // so
+        if let cellController = cellController as? TTCollectionCellControllerProtocolExtended {
+            let sectionCount = dataSource!.numberOfRowsInSection(indexPath.section)
+            cellController.configureCell(cell, forContent: content, indexPath: indexPath, dataSourceCount: sectionCount)
+        }
         
         
         if autoLoadMoreContent {
@@ -541,6 +542,8 @@ extension CollectionFeedController : UICollectionViewDataSource {
         
         return UICollectionReusableView() // just to ingore compilation error
     }
+    
+    // TODO: support for headerCellController
     
     public func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         cell.parentViewController = nil

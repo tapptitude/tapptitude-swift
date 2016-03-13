@@ -89,6 +89,34 @@ class APIPaginateOffsetdMock: TTCancellable {
     }
 }
 
+class TextCell : UICollectionViewCell {
+    var label: UILabel!
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        label = UILabel(frame: bounds)
+        label.textColor = UIColor.blackColor()
+        label.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+        label.textAlignment = .Center
+        contentView.addSubview(label)
+        
+        backgroundColor = UIColor(white: 0, alpha: 0.3)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override var bounds: CGRect {
+        get {
+            return super.bounds
+        }
+        set {
+            super.bounds = newValue
+        }
+    }
+}
+
 class FeedController: CollectionFeedController {
     
     override func viewDidLoad() {
@@ -98,20 +126,25 @@ class FeedController: CollectionFeedController {
         
         addPullToRefresh()
         forceTouchPreviewEnabled = true
+        animatedUpdates = true
+        
 //        self.dataSource = DataSource(content: ["arra"])
-        let cellController = CollectionCellController<String, UICollectionViewCell>(cellSize: CGSize(width: 100, height: 100), reuseIdentifier:"testing")
+        let cellController = CollectionCellController<String, TextCell>(cellSize: CGSize(width: 100, height: 100), reuseIdentifier:"testing")
         cellController.configureCell = { cell, content, indexPath in
             cell.backgroundColor = UIColor.redColor()
-            print(cell)
+            cell.label.text = content
+            print("content ", content)
         }
         cellController.didSelectContent = { _, indexPath, collectionView in
-            let controller = CollectionFeedController()
-            controller.view.backgroundColor = UIColor.blueColor()
-            print(controller.view)
-            print(controller.collectionView)
-            let cell = collectionView.cellForItemAtIndexPath(indexPath)
+//            let controller = CollectionFeedController()
+//            controller.view.backgroundColor = UIColor.blueColor()
+//            let cell = collectionView.cellForItemAtIndexPath(indexPath)
 //            cell?.parentViewController?.navigationController?.pushViewController(controller, animated: true)
-            cell?.parentViewController?.showViewController(controller, sender: nil)
+//            cell?.parentViewController?.showViewController(controller, sender: nil)
+            
+            let dataSource = self.dataSource as? TTDataSourceMutable
+            dataSource?.replaceContentAtIndexPath(indexPath, content: "maria")
+            
         }
         cellController.minimumInteritemSpacing = 20
         cellController.minimumLineSpacing = 10

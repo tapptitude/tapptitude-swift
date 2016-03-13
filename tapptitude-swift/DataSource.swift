@@ -239,4 +239,11 @@ extension DataSource : TTDataSourceMutable {
             print("Content not found \(content) in dataSource")
         }
     }
+    
+    public func replaceContentAtIndexPath(indexPath: NSIndexPath, content: AnyObject) {
+        editContentWithBlock { (_content, delegate) -> Void in
+            _content[indexPath.item] = content
+            delegate?.dataSource(self, didUpdateItemsAtIndexPaths: [indexPath])
+        }
+    }
 }

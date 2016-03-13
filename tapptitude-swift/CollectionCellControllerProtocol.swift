@@ -9,16 +9,16 @@
 import UIKit
 
 public protocol TTCollectionCellControllerProtocol {
-    func acceptsContent(content: AnyObject) -> Bool
+    func acceptsContent(content: Any) -> Bool
     
-    func classToInstantiateCellForContent(content: AnyObject) -> AnyClass?
-    func nibToInstantiateCellForContent(content: AnyObject) -> UINib?
+    func classToInstantiateCellForContent(content: Any) -> AnyClass?
+    func nibToInstantiateCellForContent(content: Any) -> UINib?
     
-    func reuseIdentifierForContent(content: AnyObject) -> String
+    func reuseIdentifierForContent(content: Any) -> String
     
-    func configureCell(cell: UICollectionViewCell, forContent content: AnyObject, indexPath: NSIndexPath)
+    func configureCell(cell: UICollectionViewCell, forContent content: Any, indexPath: NSIndexPath)
     
-    func didSelectContent(content: AnyObject, indexPath: NSIndexPath, collectionView: UICollectionView)
+    func didSelectContent(content: Any, indexPath: NSIndexPath, collectionView: UICollectionView)
     
     var parentViewController: UIViewController? { get set }
     
@@ -27,17 +27,16 @@ public protocol TTCollectionCellControllerProtocol {
     var minimumLineSpacing : CGFloat { get }
     var minimumInteritemSpacing : CGFloat { get }
     
-    func cellSizeForContent(content: AnyObject, collectionView: UICollectionView) -> CGSize
-    func sectionInsetForContent(content: AnyObject, collectionView: UICollectionView) -> UIEdgeInsets
-    func minimumLineSpacingForContent(content: AnyObject, collectionView: UICollectionView) -> CGFloat
-    func minimumInteritemSpacingForContent(content: AnyObject, collectionView: UICollectionView) -> CGFloat
-    
-    // TODO: implement as option protocolo
-    //    func cellSizeForContent(content: ObjectType, collectionView: UICollectionView) -> CGSize
-    //
-    //    func configureCell(cell: CellType, forContent content: ObjectType, indexPath: NSIndexPath, dataSourceCount count: Int)
-    //
-    //    func shouldHighlightContent(content: ObjectType, atIndexPath indexPath: NSIndexPath) -> Bool
+    func cellSizeForContent(content: Any, collectionView: UICollectionView) -> CGSize
+    func sectionInsetForContent(content: Any, collectionView: UICollectionView) -> UIEdgeInsets
+    func minimumLineSpacingForContent(content: Any, collectionView: UICollectionView) -> CGFloat
+    func minimumInteritemSpacingForContent(content: Any, collectionView: UICollectionView) -> CGFloat
+}
+
+// TODO: implement as option protocol
+public protocol TTCollectionCellControllerProtocolExtended {
+    func configureCell(cell: UICollectionViewCell, forContent content: Any, indexPath: NSIndexPath, dataSourceCount count: Int)
+    func shouldHighlightContent(content: Any, atIndexPath indexPath: NSIndexPath) -> Bool
 }
 
 public protocol TTCollectionCellController : TTCollectionCellControllerProtocol {
@@ -60,35 +59,35 @@ public protocol TTCollectionCellController : TTCollectionCellControllerProtocol 
 }
 
 protocol TTCollectionCellControllerSize : TTCollectionCellController {
-    func cellSizeForContent(content: ObjectType, collectionView: UICollectionView) -> CGSize
-    
     func sizeCalculationCell() -> CellType
     
+    // TODO: implement size calculation
     func cellSizeToFitText(text: String, forCellLabelKeyPath labelKeyPath: String, maxSize: CGSize) -> CGSize
-    //    func cellSizeToFitText(text: String, forCellLabelKeyPath labelKeyPath: String) -> CGSize // stretch height to max 1024 (label)
+    func cellSizeToFitText(text: String, forCellLabelKeyPath labelKeyPath: String) -> CGSize // stretch height to max 1024 (label)
+    
     func cellSizeToFitAttributedText(text: NSAttributedString, forCellLabelKeyPath labelKeyPath: String, maxSize: CGSize) -> CGSize
-    //    func cellSizeToFitAttributedText(text: NSAttributedString, forCellLabelKeyPath labelKeyPath: String) -> CGSize
+    func cellSizeToFitAttributedText(text: NSAttributedString, forCellLabelKeyPath labelKeyPath: String) -> CGSize
 }
 
 
 
 extension TTCollectionCellController {
-    public func acceptsContent(content: AnyObject) -> Bool {
+    public func acceptsContent(content: Any) -> Bool {
         return content is ObjectType
     }
     
-    // TODO: enable passing multiple cell xibs with same cell class but different reuse identifiers
     public func classToInstantiateCellForContent(content: ObjectType) -> AnyClass? {
-        if let classType = CellType.self as? AnyClass {
-            return classType
-        } else {
-            return nil
-        }
+        assert(CellType.self is UICollectionViewCell.Type)
+        return CellType.self as? AnyClass
     }
     
     public func nibToInstantiateCellForContent(content: ObjectType) -> UINib? {
         let reuseIdentifier = reuseIdentifierForContent(content)
-        return UINib(nibName: reuseIdentifier, bundle: nil)
+        if let _ = NSBundle.mainBundle().pathForResource(reuseIdentifier, ofType: "xib") {
+            return UINib(nibName: reuseIdentifier, bundle: nil)
+        } else {
+            return nil
+        }
     }
     
     public var reuseIdentifier: String {
@@ -107,19 +106,19 @@ extension TTCollectionCellController {
         
     }
     
-    public func classToInstantiateCellForContent(content: AnyObject) -> AnyClass? {
+    public func classToInstantiateCellForContent(content: Any) -> AnyClass? {
         return classToInstantiateCellForContent(content as! ObjectType)
     }
-    public func nibToInstantiateCellForContent(content: AnyObject) -> UINib? {
+    public func nibToInstantiateCellForContent(content: Any) -> UINib? {
         return nibToInstantiateCellForContent(content as! ObjectType)
     }
-    public func reuseIdentifierForContent(content: AnyObject) -> String {
+    public func reuseIdentifierForContent(content: Any) -> String {
         return reuseIdentifierForContent(content as! ObjectType)
     }
-    public func configureCell(cell: UICollectionViewCell, forContent content: AnyObject, indexPath: NSIndexPath) {
+    public func configureCell(cell: UICollectionViewCell, forContent content: Any, indexPath: NSIndexPath) {
         configureCell(cell as! CellType, forContent: content as! ObjectType, indexPath: indexPath)
     }
-    public func didSelectContent(content: AnyObject, indexPath: NSIndexPath, collectionView: UICollectionView) {
+    public func didSelectContent(content: Any, indexPath: NSIndexPath, collectionView: UICollectionView) {
         didSelectContent(content as! ObjectType, indexPath: indexPath, collectionView: collectionView)
     }
     
@@ -136,16 +135,16 @@ extension TTCollectionCellController {
         return minimumInteritemSpacing
     }
     
-    public func cellSizeForContent(content: AnyObject, collectionView: UICollectionView) -> CGSize {
+    public func cellSizeForContent(content: Any, collectionView: UICollectionView) -> CGSize {
         return cellSizeForContent(content as! ObjectType, collectionView: collectionView)
     }
-    public func sectionInsetForContent(content: AnyObject, collectionView: UICollectionView) -> UIEdgeInsets {
+    public func sectionInsetForContent(content: Any, collectionView: UICollectionView) -> UIEdgeInsets {
         return sectionInsetForContent(content as! ObjectType, collectionView: collectionView)
     }
-    public func minimumLineSpacingForContent(content: AnyObject, collectionView: UICollectionView) -> CGFloat {
+    public func minimumLineSpacingForContent(content: Any, collectionView: UICollectionView) -> CGFloat {
         return minimumLineSpacingForContent(content as! ObjectType, collectionView: collectionView)
     }
-    public func minimumInteritemSpacingForContent(content: AnyObject, collectionView: UICollectionView) -> CGFloat {
+    public func minimumInteritemSpacingForContent(content: Any, collectionView: UICollectionView) -> CGFloat {
         return minimumInteritemSpacingForContent(content as! ObjectType, collectionView: collectionView)
     }
 }
@@ -156,11 +155,7 @@ extension UICollectionViewCell {
     }
     
     public var parentViewController : UIViewController? {
-        get {
-            return objc_getAssociatedObject(self, &AssociatedKey.viewExtension) as? UIViewController ?? nil
-        }
-        set {
-            objc_setAssociatedObject(self, &AssociatedKey.viewExtension, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_ASSIGN)
-        }
+        get { return objc_getAssociatedObject(self, &AssociatedKey.viewExtension) as? UIViewController ?? nil }
+        set { objc_setAssociatedObject(self, &AssociatedKey.viewExtension, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_ASSIGN) }
     }
 }

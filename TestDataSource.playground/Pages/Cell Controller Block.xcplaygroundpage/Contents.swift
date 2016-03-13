@@ -3,7 +3,7 @@
 import UIKit
 import Tapptitude
 
-let dataSource = DataSource(content: ["test"])
+let dataSource = DataSource(["test"])
 let cellController = CollectionCellController<String, UICollectionViewCell>(cellSize: CGSize(width: 50, height: 50))
 cellController.acceptsContent("test")
 cellController.acceptsContent(1)

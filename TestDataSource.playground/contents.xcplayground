@@ -4,5 +4,6 @@
         <page name='Cell Controller Block'/>
         <page name='Mutable Data Source'/>
         <page name='Compile xibs'/>
+        <page name='Expand cell'/>
     </pages>
 </playground>

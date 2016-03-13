@@ -12,16 +12,9 @@ public class CollectionCellController<ObjectClass, CellName> : TTCollectionCellC
     public typealias ObjectType = ObjectClass
     public typealias CellType = CellName
     
-    public var didSelectContent : ((content: ObjectType, indexPath: NSIndexPath, collectionView: UICollectionView) -> Void)?
+    public var cellSizeForContent : ((content: ObjectType, collectionView: UICollectionView) -> CGSize)?
     public var configureCell : ((cell: CellType, content: ObjectType, indexPath: NSIndexPath) -> Void)?
-    
-    public func didSelectContent(content: ObjectType, indexPath: NSIndexPath, collectionView: UICollectionView) {
-        didSelectContent?(content: content, indexPath: indexPath, collectionView: collectionView)
-    }
-    
-    public func configureCell(cell: CellType, forContent content: ObjectType, indexPath: NSIndexPath) {
-        configureCell?(cell: cell, content: content, indexPath: indexPath)
-    }
+    public var didSelectContent : ((content: ObjectType, indexPath: NSIndexPath, collectionView: UICollectionView) -> Void)?
     
     public var sectionInset = UIEdgeInsetsZero
     public var minimumLineSpacing: CGFloat = 0.0
@@ -34,5 +27,18 @@ public class CollectionCellController<ObjectClass, CellName> : TTCollectionCellC
     public init(cellSize : CGSize, reuseIdentifier:String? = nil) {
         self.cellSize = cellSize
         self.reuseIdentifier = reuseIdentifier ?? String(CellType)
+    }
+    
+    public func cellSizeForContent(content: ObjectType, collectionView: UICollectionView) -> CGSize {
+        let blockCellSize = cellSizeForContent?(content: content, collectionView: collectionView)
+        return blockCellSize ?? cellSize
+    }
+    
+    public func configureCell(cell: CellType, forContent content: ObjectType, indexPath: NSIndexPath) {
+        configureCell?(cell: cell, content: content, indexPath: indexPath)
+    }
+    
+    public func didSelectContent(content: ObjectType, indexPath: NSIndexPath, collectionView: UICollectionView) {
+        didSelectContent?(content: content, indexPath: indexPath, collectionView: collectionView)
     }
 }
