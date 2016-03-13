@@ -14,9 +14,9 @@ class APIMock: TTCancellable {
     }
     
     var wasCancelled = false
-    var callback: (content: [String]?, error: NSError?)->Void
+    var callback: (content: [Any]?, error: NSError?)->Void
     
-    init(callback: (content: [String]?, error: NSError?)->Void) {
+    init(callback: (content: [Any]?, error: NSError?)->Void) {
         self.callback = callback
         
         let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(5 * Double(NSEC_PER_SEC)))
@@ -36,9 +36,9 @@ class APIPaginatedMock: TTCancellable {
     }
     
     var wasCancelled = false
-    var callback: (content: [AnyObject]?, error: NSError?)->Void
+    var callback: (content: [Any]?, error: NSError?)->Void
     
-    init(offset:Int, limit:Int, callback: (content: [AnyObject]?, error: NSError?)->Void) {
+    init(offset:Int, limit:Int, callback: (content: [Any]?, error: NSError?)->Void) {
         self.callback = callback
         
         let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(3 * Double(NSEC_PER_SEC)))
@@ -62,9 +62,9 @@ class APIPaginateOffsetdMock: TTCancellable {
     }
     
     var wasCancelled = false
-    var callback: (content: [AnyObject]?, nextOffset:AnyObject?, error: NSError?)->Void
+    var callback: (content: [Any]?, nextOffset:Any?, error: NSError?)->Void
     
-    init(offset:String?, limit:Int, callback: (content: [AnyObject]?, nextOffset:AnyObject?, error: NSError?)->Void) {
+    init(offset:String?, limit:Int, callback: (content: [Any]?, nextOffset:Any?, error: NSError?)->Void) {
         self.callback = callback
         
         let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC)))

@@ -10,9 +10,9 @@ import Foundation
 
 
 public class DataSource : TTDataSource {
-    lazy private var _content : [AnyObject] = [AnyObject]()
+    lazy private var _content : [Any] = [Any]()
     
-    public init(_ content : [AnyObject]) {
+    public init(_ content : [Any]) {
         _content = content
     }
     public init() {
@@ -33,7 +33,7 @@ public class DataSource : TTDataSource {
         feed?.delegate = nil
     }
     
-    public var content : [AnyObject] {
+    public var content : [Any] {
         get {
             return _content
         }
@@ -51,21 +51,24 @@ public class DataSource : TTDataSource {
         return _content.count
     }
     
-    public func objectAtIndexPath(indexPath: NSIndexPath) -> AnyObject {
+    public func objectAtIndexPath(indexPath: NSIndexPath) -> Any {
         return _content[indexPath.item]
     }
     
-    public func indexPathForObject(object: AnyObject) -> NSIndexPath? {
-        // TODO: find a better way
-        let index = _content.indexOf({ (arrayObject) -> Bool in
-            return arrayObject === object
-        })
+    public func indexPathForObject(object: Any) -> NSIndexPath? {
+        //TODO: implement
+        fatalError()
         
-        if index != nil {
-            return NSIndexPath(forItem: index!, inSection: 0)
-        } else {
-            return nil
-        }
+        // TODO: find a better way
+//        let index = _content.indexOf({ (searchedItem) -> Bool in
+//            return (searchedItem as Any) === object
+//        })
+//        
+//        if index != nil {
+//            return NSIndexPath(forItem: index!, inSection: 0)
+//        } else {
+//            return nil
+//        }
     }
     
     public var dataSourceID : String?
@@ -95,7 +98,7 @@ extension DataSource : TTDataFeedDelegate {
         }
     }
     
-    public func dataFeed(dataFeed: TTDataFeed?, didReloadContent content: [AnyObject]?) {
+    public func dataFeed(dataFeed: TTDataFeed?, didReloadContent content: [Any]?) {
         // pass delegate message
         if let delegate = delegate as? TTDataFeedDelegate {
             delegate.dataFeed(dataFeed, didReloadContent: content)
@@ -119,7 +122,7 @@ extension DataSource : TTDataFeedDelegate {
         }
     }
     
-    public func dataFeed(dataFeed: TTDataFeed?, didLoadMoreContent content: [AnyObject]?) {
+    public func dataFeed(dataFeed: TTDataFeed?, didLoadMoreContent content: [Any]?) {
         // pass delegate message
         if let delegate = delegate as? TTDataFeedDelegate {
             delegate.dataFeed(dataFeed, didLoadMoreContent: content)
@@ -169,7 +172,7 @@ extension DataSource : TTDataFeedDelegate {
 
 extension DataSource : TTDataSourceMutable {
     
-    private func editContentWithBlock(editBlock: ( inout content : [AnyObject], delegate: TTDataSourceIncrementalChangesDelegate?)->Void) {
+    private func editContentWithBlock(editBlock: ( inout content : [Any], delegate: TTDataSourceIncrementalChangesDelegate?)->Void) {
         let incrementalUpdates = delegate is TTDataSourceIncrementalChangesDelegate
         if (incrementalUpdates) {
             let delegate = self.delegate as! TTDataSourceIncrementalChangesDelegate
@@ -182,7 +185,7 @@ extension DataSource : TTDataSourceMutable {
         }
     }
     
-    public func addContent(content: AnyObject) {
+    public func addContent(content: Any) {
         editContentWithBlock { (_content, delegate) -> Void in
             _content.append(content)
             let indexPath = NSIndexPath(forItem: _content.count, inSection: 0)
@@ -190,7 +193,7 @@ extension DataSource : TTDataSourceMutable {
         }
     }
     
-    public func addContentFromArray(array: [AnyObject]) {
+    public func addContentFromArray(array: [Any]) {
         editContentWithBlock { (_content, delegate) -> Void in
             let startIndex = _content.count
             let indexPaths = array.enumerate().map({ (index, _) -> NSIndexPath in
@@ -202,7 +205,7 @@ extension DataSource : TTDataSourceMutable {
         }
     }
     
-    public func insertContent(content: AnyObject, atIndexPath indexPath: NSIndexPath) {
+    public func insertContent(content: Any, atIndexPath indexPath: NSIndexPath) {
         editContentWithBlock { (_content, delegate) -> Void in
             _content.insert(content, atIndex: indexPath.item)
             delegate?.dataSource(self, didInsertItemsAtIndexPaths: [indexPath])
@@ -232,7 +235,7 @@ extension DataSource : TTDataSourceMutable {
         }
     }
     
-    public func removeContent(content: AnyObject) {
+    public func removeContent(content: Any) {
         if let indexPath = self.indexPathForObject(content) {
             self.removeContentFromIndexPath(indexPath)
         } else {
@@ -240,7 +243,7 @@ extension DataSource : TTDataSourceMutable {
         }
     }
     
-    public func replaceContentAtIndexPath(indexPath: NSIndexPath, content: AnyObject) {
+    public func replaceContentAtIndexPath(indexPath: NSIndexPath, content: Any) {
         editContentWithBlock { (_content, delegate) -> Void in
             _content[indexPath.item] = content
             delegate?.dataSource(self, didUpdateItemsAtIndexPaths: [indexPath])

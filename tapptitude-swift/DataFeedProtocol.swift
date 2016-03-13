@@ -31,8 +31,8 @@ public protocol TTDataFeed {
 public protocol TTDataFeedDelegate {
     func dataFeed(dataFeed: TTDataFeed?, failedWithError error: NSError)
     
-    func dataFeed(dataFeed: TTDataFeed?, didReloadContent content: [AnyObject]?)
-    func dataFeed(dataFeed: TTDataFeed?, didLoadMoreContent content: [AnyObject]?)
+    func dataFeed(dataFeed: TTDataFeed?, didReloadContent content: [Any]?)
+    func dataFeed(dataFeed: TTDataFeed?, didLoadMoreContent content: [Any]?)
     
     func dataFeed(dataFeed: TTDataFeed?, isReloading: Bool)
     func dataFeed(dataFeed: TTDataFeed?, isLoadingMore: Bool)

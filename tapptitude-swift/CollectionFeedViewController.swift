@@ -35,7 +35,7 @@ protocol TTCollectionFeedController : class, UICollectionViewDelegateFlowLayout,
     func addPullToRefresh()
     
     // helpers
-    func scrollToContent(content: AnyObject!, animated: Bool)
+    func scrollToContent(content: Any!, animated: Bool)
 }
 
 

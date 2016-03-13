@@ -67,11 +67,11 @@ public class PaginatedOffsetDataFeed : DataFeed {
 //    public typealias OffsetType = NextOffsetType
     
     public var limit: Int = 1
-    public var offset: AnyObject? // dependends on backend API
+    public var offset: Any? // dependends on backend API
     
-    private var loadPageNextOffsetOperation: (offset:AnyObject?, limit:Int, callback:TTNextOffsetCallback) -> TTCancellable? // next page offset is given by backend
+    private var loadPageNextOffsetOperation: (offset:Any?, limit:Int, callback:TTNextOffsetCallback) -> TTCancellable? // next page offset is given by backend
     
-    init(loadPage: (offset:AnyObject?, limit:Int, callback:TTNextOffsetCallback) -> TTCancellable?) {
+    init(loadPage: (offset:Any?, limit:Int, callback:TTNextOffsetCallback) -> TTCancellable?) {
         self.loadPageNextOffsetOperation = loadPage
     }
     

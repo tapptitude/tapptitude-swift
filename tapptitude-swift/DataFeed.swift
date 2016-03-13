@@ -12,8 +12,8 @@ public protocol TTCancellable {
     func cancel()
 }
 
-public typealias TTCallback = (content: [AnyObject]?, error: NSError?)->Void
-public typealias TTNextOffsetCallback = (content: [AnyObject]?, nextOffset: AnyObject?, error: NSError?)->Void // next offset is given by backend
+public typealias TTCallback = (content: [Any]?, error: NSError?)->Void
+public typealias TTNextOffsetCallback = (content: [Any]?, nextOffset: Any?, error: NSError?)->Void // next offset is given by backend
 
 public class DataFeed: TTDataFeed {    
     public var delegate: TTDataFeedDelegate?

@@ -68,10 +68,10 @@ class EditViewController: CollectionFeedController {
     }
     
     @IBAction func plusMoreAction(sender: AnyObject) {
-        let content = NSMutableArray();
+        var content = [Int]()
         for _ in 1...5 {
             counter += 1
-            content.addObject(counter);
+            content.append(counter);
         }
         
         for _ in 1...5 {
@@ -86,13 +86,13 @@ class EditViewController: CollectionFeedController {
     }
     
     @IBAction func appendAction(sender: AnyObject) {
-        let content = NSMutableArray();
+        var content = [Int]()
         for _ in 1...5 {
             counter += 1
-            content.addObject(counter);
+            content.append(counter)
         }
         
-        dataSourceMutable?.addContentFromArray(content as [AnyObject])
+        dataSourceMutable?.addContentFromArray(content)
     }
     
     @IBAction func moveAction(sender: AnyObject) {

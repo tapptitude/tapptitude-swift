@@ -15,13 +15,13 @@ public protocol TTDataSourceDelegate {
 
 public protocol TTDataSource : TTDataFeedDelegate {
     
-    var content : [AnyObject] { get }
+    var content : [Any] { get }
     func hasContent() -> Bool
     func numberOfSections() -> Int
     func numberOfRowsInSection(section: Int) -> Int
-    func objectAtIndexPath(indexPath: NSIndexPath) -> AnyObject
+    func objectAtIndexPath(indexPath: NSIndexPath) -> Any
     
-    func indexPathForObject(object: AnyObject) -> NSIndexPath?
+    func indexPathForObject(object: Any) -> NSIndexPath?
     
     var delegate: TTDataSourceDelegate? { get set }
     var feed: TTDataFeed? { get set }
@@ -32,13 +32,13 @@ public protocol TTDataSource : TTDataFeedDelegate {
 
 
 public protocol TTDataSourceMutable {
-    func addContent(content: AnyObject)
-    func addContentFromArray(array: [AnyObject])
-    func insertContent(content: AnyObject, atIndexPath indexPath: NSIndexPath)
+    func addContent(content: Any)
+    func addContentFromArray(array: [Any])
+    func insertContent(content: Any, atIndexPath indexPath: NSIndexPath)
     
     func moveContentFromIndexPath(fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath)
     func removeContentFromIndexPath(indexPath: NSIndexPath)
-    func removeContent(content: AnyObject)
+    func removeContent(content: Any)
     
-    func replaceContentAtIndexPath(indexPath: NSIndexPath, content: AnyObject)
+    func replaceContentAtIndexPath(indexPath: NSIndexPath, content: Any)
 }

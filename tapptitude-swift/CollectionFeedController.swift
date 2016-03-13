@@ -228,7 +228,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     
     
     
-    public func scrollToContent(content: AnyObject!, animated: Bool) {
+    public func scrollToContent(content: Any!, animated: Bool) {
         guard let collectionView = self.collectionView, let dataSource = self.dataSource else {
             return
         }
@@ -375,11 +375,11 @@ extension CollectionFeedController : TTDataFeedDelegate {
         refreshControl?.endRefreshing()
     }
     
-    public func dataFeed(dataFeed: TTDataFeed?, didReloadContent content: [AnyObject]?) {
+    public func dataFeed(dataFeed: TTDataFeed?, didReloadContent content: [Any]?) {
         refreshControl?.endRefreshing()
     }
     
-    public func dataFeed(dataFeed: TTDataFeed?, didLoadMoreContent content: [AnyObject]?) {
+    public func dataFeed(dataFeed: TTDataFeed?, didLoadMoreContent content: [Any]?) {
         
     }
     
