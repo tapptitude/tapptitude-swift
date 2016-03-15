@@ -8,16 +8,16 @@
 
 import Foundation
 
-public class PaginatedDataFeed: DataFeed {
+public class PaginatedDataFeed<T>: DataFeed<T> {
     public var limit: Int = 1
     public var offset: Int = 0 // maybe a NSNumber or NSString, dependend on backend API
     
-    private var loadPageOperation: (offset:Int, limit:Int, callback:TTCallback) -> TTCancellable? // load page using integer offset
+    private var loadPageOperation: (offset:Int, limit:Int, callback:TTCallback<T>.Signature) -> TTCancellable? // load page using integer offset
 //    private var loadPageNextOffsetOperation: (TTCallback) -> TTCancellable? // next page offset is given by backend
     
     public var enableLoadMoreOnlyForCompletePage = true
     
-    init(loadPage: (offset:Int, limit:Int, callback:TTCallback) -> TTCancellable?) {
+    init(loadPage: (offset:Int, limit:Int, callback:TTCallback<T>.Signature) -> TTCancellable?) {
         self.loadPageOperation = loadPage
     }
     
@@ -25,7 +25,7 @@ public class PaginatedDataFeed: DataFeed {
         return hasMorePages && super.canLoadMore
     }
     
-    public override func reloadOperationWithCallback(callback: TTCallback) -> TTCancellable? {
+    public override func reloadOperationWithCallback(callback: TTCallback<T>.Signature) -> TTCancellable? {
         return loadPageOperation(offset: 0, limit: limit) {[unowned self] content, error in
             if error == nil {
                 self.offset = self.limit
@@ -36,7 +36,7 @@ public class PaginatedDataFeed: DataFeed {
         }
     }
     
-    public override func loadMoreOperationWithCallback(callback: TTCallback) -> TTCancellable? {
+    public override func loadMoreOperationWithCallback(callback: TTCallback<T>.Signature) -> TTCancellable? {
         return loadPageOperation(offset: offset, limit: limit) {[unowned self] content, error in
             if error == nil {
                 self.offset += self.limit
@@ -52,7 +52,7 @@ public class PaginatedDataFeed: DataFeed {
 }
 
 extension DataSource {
-    convenience init(pageSize:Int, loadPage: (offset:Int, limit:Int, callback:TTCallback) -> TTCancellable?) {
+    convenience init<T>(pageSize:Int, loadPage: (offset:Int, limit:Int, callback:TTCallback<T>.Signature) -> TTCancellable?) {
         self.init()
         let feed = PaginatedDataFeed(loadPage: loadPage)
         feed.limit = pageSize
@@ -62,16 +62,16 @@ extension DataSource {
 }
 
 
-public class PaginatedOffsetDataFeed : DataFeed {
+public class PaginatedOffsetDataFeed<T> : DataFeed<T> {
     //TODO: Fix offset type, it should match with callback signature used for API
 //    public typealias OffsetType = NextOffsetType
     
     public var limit: Int = 1
     public var offset: Any? // dependends on backend API
     
-    private var loadPageNextOffsetOperation: (offset:Any?, limit:Int, callback:TTNextOffsetCallback) -> TTCancellable? // next page offset is given by backend
+    private var loadPageNextOffsetOperation: (offset:Any?, limit:Int, callback:TTCallback<T>.NextOffset) -> TTCancellable? // next page offset is given by backend
     
-    init(loadPage: (offset:Any?, limit:Int, callback:TTNextOffsetCallback) -> TTCancellable?) {
+    init(loadPage: (offset:Any?, limit:Int, callback:TTCallback<T>.NextOffset) -> TTCancellable?) {
         self.loadPageNextOffsetOperation = loadPage
     }
     
@@ -79,7 +79,7 @@ public class PaginatedOffsetDataFeed : DataFeed {
         return hasMorePages && super.canLoadMore
     }
     
-    public override func reloadOperationWithCallback(callback: TTCallback) -> TTCancellable? {
+    public override func reloadOperationWithCallback(callback: TTCallback<T>.Signature) -> TTCancellable? {
         return loadPageNextOffsetOperation(offset: nil, limit: limit) {[unowned self] content, nextOffset, error in
             if error == nil {
                 self.offset = nextOffset
@@ -90,7 +90,7 @@ public class PaginatedOffsetDataFeed : DataFeed {
         }
     }
     
-    public override func loadMoreOperationWithCallback(callback: TTCallback) -> TTCancellable? {
+    public override func loadMoreOperationWithCallback(callback: TTCallback<T>.Signature) -> TTCancellable? {
         return loadPageNextOffsetOperation(offset: offset, limit: limit) {[unowned self] content, nextOffset, error in
             if error == nil {
                 self.offset = nextOffset

@@ -14,9 +14,9 @@ class APIMock: TTCancellable {
     }
     
     var wasCancelled = false
-    var callback: (content: [Any]?, error: NSError?)->Void
+    var callback: (content: [String]?, error: NSError?)->Void
     
-    init(callback: (content: [Any]?, error: NSError?)->Void) {
+    init(callback: (content: [String]?, error: NSError?)->Void) {
         self.callback = callback
         
         let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(5 * Double(NSEC_PER_SEC)))
@@ -36,9 +36,9 @@ class APIPaginatedMock: TTCancellable {
     }
     
     var wasCancelled = false
-    var callback: (content: [Any]?, error: NSError?)->Void
+    var callback: (content: [String]?, error: NSError?)->Void
     
-    init(offset:Int, limit:Int, callback: (content: [Any]?, error: NSError?)->Void) {
+    init(offset:Int, limit:Int, callback: (content: [String]?, error: NSError?)->Void) {
         self.callback = callback
         
         let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(3 * Double(NSEC_PER_SEC)))
@@ -62,9 +62,9 @@ class APIPaginateOffsetdMock: TTCancellable {
     }
     
     var wasCancelled = false
-    var callback: (content: [Any]?, nextOffset:Any?, error: NSError?)->Void
+    var callback: (content: [String]?, nextOffset:Any?, error: NSError?)->Void
     
-    init(offset:String?, limit:Int, callback: (content: [Any]?, nextOffset:Any?, error: NSError?)->Void) {
+    init(offset:String?, limit:Int, callback: (content: [String]?, nextOffset:Any?, error: NSError?)->Void) {
         self.callback = callback
         
         let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC)))
@@ -158,24 +158,24 @@ class FeedController: CollectionFeedController {
 //            })
 //        })
         
-        self.dataSource = DataSource(pageSize: 10) { (offset, limit, callback) -> TTCancellable? in
-            return APIMock(callback: { (content, error) in
-                var newContent = content
-                newContent?.append("2312")
-                callback(content: newContent, error: error)
-            })
-        }
+//        self.dataSource = DataSource(pageSize: 10) { (offset, limit, callback) -> TTCancellable? in
+//            return APIMock(callback: { (content, error) in
+//                var newContent = content
+//                newContent?.append("2312")
+//                callback(content: newContent, error: error)
+//            })
+//        }
         
-//        let dataSource = DataSource()
+        let dataSource = DataSource()
 //        dataSource.feed = PaginatedDataFeed(loadPage: { (offset, limit, callback) -> TTCancellable? in
 //            return APIPaginatedMock(offset: offset, limit: limit, callback: callback)
 //        })
         
-//        dataSource.feed = PaginatedOffsetDataFeed(loadPage: { (offset, limit, callback) -> TTCancellable? in
-//            let newOffset = offset as? String
-//            return APIPaginateOffsetdMock(offset: newOffset, limit: limit, callback: callback)
-//        })
-//        self.dataSource = dataSource
+        dataSource.feed = PaginatedOffsetDataFeed<String>(loadPage: { (offset, limit, callback) -> TTCancellable? in
+            let newOffset = offset as? String
+            return APIPaginateOffsetdMock(offset: newOffset, limit: limit, callback: callback)
+        })
+        self.dataSource = dataSource
         
         animatedUpdates = true
     }

@@ -12,17 +12,19 @@ public protocol TTCancellable {
     func cancel()
 }
 
-public typealias TTCallback = (content: [Any]?, error: NSError?)->Void
-public typealias TTNextOffsetCallback = (content: [Any]?, nextOffset: Any?, error: NSError?)->Void // next offset is given by backend
+public enum TTCallback <T> {
+    public typealias Signature = (content: [T]?, error: NSError?) -> Void
+    public typealias NextOffset = (content: [T]?, nextOffset: Any?, error: NSError?) -> Void // next offset is given by backend
+}
 
-public class DataFeed: TTDataFeed {    
+public class DataFeed<T>: TTDataFeed {
     public var delegate: TTDataFeedDelegate?
     
-    public func reloadOperationWithCallback(callback: TTCallback) -> TTCancellable? {
+    public func reloadOperationWithCallback(callback: TTCallback<T>.Signature) -> TTCancellable? {
         return nil
     }
     
-    public func loadMoreOperationWithCallback(callback: TTCallback) -> TTCancellable? {
+    public func loadMoreOperationWithCallback(callback: TTCallback<T>.Signature) -> TTCancellable? {
         return nil
     }
     
@@ -58,7 +60,8 @@ public class DataFeed: TTDataFeed {
                     self.delegate?.dataFeed(self, failedWithError: error)
                 } else {
                     self.lastReloadDate = NSDate()
-                    self.delegate?.dataFeed(self, didReloadContent: content)
+                    let castedContent = content?.map { $0 as Any }
+                    self.delegate?.dataFeed(self, didReloadContent: castedContent )
                 }
                 
                 self.isReloading = false
@@ -94,7 +97,8 @@ public class DataFeed: TTDataFeed {
                 if let error = error {
                     self.delegate?.dataFeed(self, failedWithError: error)
                 } else {
-                    self.delegate?.dataFeed(self, didLoadMoreContent: content)
+                    let castedContent = content?.map { $0 as Any }
+                    self.delegate?.dataFeed(self, didLoadMoreContent: castedContent)
                 }
                 
                 self.isLoadingMore = false
