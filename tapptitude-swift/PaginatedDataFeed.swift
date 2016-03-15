@@ -62,16 +62,14 @@ extension DataSource {
 }
 
 
-public class PaginatedOffsetDataFeed<T> : DataFeed<T> {
-    //TODO: Fix offset type, it should match with callback signature used for API
-//    public typealias OffsetType = NextOffsetType
+public class PaginatedOffsetDataFeed<T, OffsetType> : DataFeed<T> {
     
-    public var limit: Int = 1
-    public var offset: Any? // dependends on backend API
+    public var limit: Int = 10
+    public var offset: OffsetType? // dependends on backend API
     
-    private var loadPageNextOffsetOperation: (offset:Any?, limit:Int, callback:TTCallback<T>.NextOffset) -> TTCancellable? // next page offset is given by backend
+    private var loadPageNextOffsetOperation: (offset: OffsetType?, limit:Int, callback: TTCallbackNextOffset<T, OffsetType>.Signature) -> TTCancellable? // next page offset is given by backend
     
-    init(loadPage: (offset:Any?, limit:Int, callback:TTCallback<T>.NextOffset) -> TTCancellable?) {
+    init(loadPage: (offset:OffsetType?, limit:Int, callback:TTCallbackNextOffset<T, OffsetType>.Signature) -> TTCancellable?) {
         self.loadPageNextOffsetOperation = loadPage
     }
     
