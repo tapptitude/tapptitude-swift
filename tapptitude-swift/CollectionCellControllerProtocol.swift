@@ -20,7 +20,7 @@ public protocol TTCollectionCellControllerProtocol {
     
     func didSelectContent(content: Any, indexPath: NSIndexPath, collectionView: UICollectionView)
     
-    var parentViewController: UIViewController? { get set }
+    weak var parentViewController: UIViewController? { get set }
     
     var cellSize : CGSize { get }
     var sectionInset : UIEdgeInsets { get }

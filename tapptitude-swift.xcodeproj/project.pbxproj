@@ -22,6 +22,7 @@
 		23A4F7271C78E8E6006430BF /* PaginatedDataFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A4F7261C78E8E6006430BF /* PaginatedDataFeed.swift */; };
 		23A550CC1C7886EA00695BF3 /* CollectionFeedController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23A550CB1C7886EA00695BF3 /* CollectionFeedController.xib */; };
 		23CCFF5F1C81B8B2001D6D54 /* CollectionViewAnimatedUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CCFF5E1C81B8B2001D6D54 /* CollectionViewAnimatedUpdater.swift */; };
+		23D335981CA07C0B00A3EE63 /* MultiCollectionCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D335971CA07C0B00A3EE63 /* MultiCollectionCellController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		23A4F7261C78E8E6006430BF /* PaginatedDataFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaginatedDataFeed.swift; sourceTree = "<group>"; };
 		23A550CB1C7886EA00695BF3 /* CollectionFeedController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollectionFeedController.xib; sourceTree = "<group>"; };
 		23CCFF5E1C81B8B2001D6D54 /* CollectionViewAnimatedUpdater.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewAnimatedUpdater.swift; sourceTree = "<group>"; };
+		23D335971CA07C0B00A3EE63 /* MultiCollectionCellController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiCollectionCellController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +92,7 @@
 				232C366B1C74A8F600ADA5F5 /* LoadMoreView.swift */,
 				232C366D1C74A93600ADA5F5 /* LoadMoreView.xib */,
 				23CCFF5E1C81B8B2001D6D54 /* CollectionViewAnimatedUpdater.swift */,
+				23D335971CA07C0B00A3EE63 /* MultiCollectionCellController.swift */,
 			);
 			path = "tapptitude-swift";
 			sourceTree = "<group>";
@@ -178,6 +181,7 @@
 				232C36641C7482DC00ADA5F5 /* DataSourceProtocol.swift in Sources */,
 				232C36661C74838700ADA5F5 /* DataFeedProtocol.swift in Sources */,
 				232C36601C74806500ADA5F5 /* CollectionCellControllerProtocol.swift in Sources */,
+				23D335981CA07C0B00A3EE63 /* MultiCollectionCellController.swift in Sources */,
 				23A4F7231C78DE20006430BF /* DataFeed.swift in Sources */,
 				232C36681C7483CB00ADA5F5 /* DataSource.swift in Sources */,
 				232C36621C7481B300ADA5F5 /* CollectionCellController.swift in Sources */,

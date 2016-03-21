@@ -148,7 +148,14 @@ class FeedController: CollectionFeedController {
         }
         cellController.minimumInteritemSpacing = 20
         cellController.minimumLineSpacing = 10
-        self.cellController = cellController
+        
+        
+        let numberCellController = CollectionCellController<Int, UICollectionViewCell>(cellSize: CGSize(width: 100, height: 50))
+        numberCellController.configureCell = { cell, content, indexPath in
+            cell.backgroundColor = UIColor.blueColor()
+        }
+        
+        self.cellController = MultiCollectionCellController([cellController, numberCellController])
         
 //        let dataSource = DataSource (load: { (callback: TTCallback<String>.Signature) -> TTCancellable? in
 //            return APIMock(callback: { (content, error) in
@@ -168,20 +175,21 @@ class FeedController: CollectionFeedController {
 //            })
 //        }
         
-        let dataSource = DataSource()
+        let items = NSArray(arrayLiteral: "Maria", 123)
+        let dataSource = DataSource(items)
 //        dataSource.feed = PaginatedDataFeed(loadPage: { (offset, limit, callback) -> TTCancellable? in
 //            return APIPaginatedMock(offset: offset, limit: limit, callback: callback)
 //        })
         
-        dataSource.feed = PaginatedOffsetDataFeed<String, String>(loadPage: { (offset, limit, callback) -> TTCancellable? in
-            let alex = 3
-            return APIPaginateOffsetdMock(offset: offset, limit: limit, callback: callback)
-        })
+//        dataSource.feed = PaginatedOffsetDataFeed<String, String>(loadPage: { (offset, limit, callback) -> TTCancellable? in
+//            let alex = 3
+//            return APIPaginateOffsetdMock(offset: offset, limit: limit, callback: callback)
+//        })
         
 //        let dataSource = DataSource(pageSize: 10) { (offset:String?, limit:Int, callback: TTCallbackNextOffset<String, String>.Signature) -> TTCancellable? in
 //            return APIPaginateOffsetdMock(offset: offset, limit: limit, callback: callback)
 //        }
-//        self.dataSource = dataSource
+        self.dataSource = dataSource
         
         animatedUpdates = true
     }

@@ -27,6 +27,7 @@
 		23A5510F1C78A28900695BF3 /* LoadMoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23A551051C78A28900695BF3 /* LoadMoreView.xib */; };
 		23A551111C78A32300695BF3 /* FeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A551101C78A32300695BF3 /* FeedController.swift */; };
 		23CCFF611C8209E0001D6D54 /* CollectionViewAnimatedUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CCFF601C8209E0001D6D54 /* CollectionViewAnimatedUpdater.swift */; };
+		23D3359A1CA0888E00A3EE63 /* MultiCollectionCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D335991CA0888E00A3EE63 /* MultiCollectionCellController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +54,7 @@
 		23A551061C78A28900695BF3 /* tapptitude-swift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "tapptitude-swift.h"; path = "../../tapptitude-swift/tapptitude-swift.h"; sourceTree = "<group>"; };
 		23A551101C78A32300695BF3 /* FeedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedController.swift; sourceTree = "<group>"; };
 		23CCFF601C8209E0001D6D54 /* CollectionViewAnimatedUpdater.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionViewAnimatedUpdater.swift; path = "../../tapptitude-swift/CollectionViewAnimatedUpdater.swift"; sourceTree = "<group>"; };
+		23D335991CA0888E00A3EE63 /* MultiCollectionCellController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiCollectionCellController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +87,7 @@
 		23A550D81C78A1BB00695BF3 /* TestTapptitude */ = {
 			isa = PBXGroup;
 			children = (
+				23D335991CA0888E00A3EE63 /* MultiCollectionCellController.swift */,
 				23CCFF601C8209E0001D6D54 /* CollectionViewAnimatedUpdater.swift */,
 				23A4F7281C78EA1D006430BF /* SimpleDataFeed.swift */,
 				23A4F7291C78EA1D006430BF /* PaginatedDataFeed.swift */,
@@ -185,6 +188,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				23A5510E1C78A28900695BF3 /* LoadMoreView.swift in Sources */,
+				23D3359A1CA0888E00A3EE63 /* MultiCollectionCellController.swift in Sources */,
 				23A5510D1C78A28900695BF3 /* DataSourceProtocol.swift in Sources */,
 				23A5510C1C78A28900695BF3 /* DataSource.swift in Sources */,
 				23A551071C78A28900695BF3 /* CollectionCellController.swift in Sources */,

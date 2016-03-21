@@ -22,7 +22,7 @@ public class CollectionCellController<ObjectClass, CellName> : TTCollectionCellC
     public var cellSize : CGSize
     public var reuseIdentifier: String
     
-    public var parentViewController : UIViewController?
+    public weak var parentViewController : UIViewController?
     
     public init(cellSize : CGSize, reuseIdentifier:String? = nil) {
         self.cellSize = cellSize

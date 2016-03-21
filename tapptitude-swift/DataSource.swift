@@ -15,6 +15,11 @@ public class DataSource : TTDataSource {
     public init(_ content : [Any]) {
         _content = content
     }
+    
+    public init(_ content : NSArray) {
+        _content = content.map({$0 as Any})
+    }
+    
     public init() {
         _content = []
     }
