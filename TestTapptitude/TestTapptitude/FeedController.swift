@@ -177,7 +177,11 @@ class FeedController: CollectionFeedController {
             let alex = 3
             return APIPaginateOffsetdMock(offset: offset, limit: limit, callback: callback)
         })
-        self.dataSource = dataSource
+        
+//        let dataSource = DataSource(pageSize: 10) { (offset:String?, limit:Int, callback: TTCallbackNextOffset<String, String>.Signature) -> TTCancellable? in
+//            return APIPaginateOffsetdMock(offset: offset, limit: limit, callback: callback)
+//        }
+//        self.dataSource = dataSource
         
         animatedUpdates = true
     }

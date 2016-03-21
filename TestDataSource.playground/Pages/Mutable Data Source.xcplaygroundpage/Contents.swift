@@ -68,13 +68,8 @@ class EditViewController: CollectionFeedController {
     }
     
     @IBAction func plusMoreAction(sender: AnyObject) {
-        var content = [Int]()
         for _ in 1...5 {
             counter += 1
-            content.append(counter);
-        }
-        
-        for _ in 1...5 {
             self.plusAction(self);
         }
     }
