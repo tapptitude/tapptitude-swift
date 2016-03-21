@@ -1,0 +1,13 @@
+platform :ios, '8.0'
+use_frameworks!
+
+pod 'Alamofire'
+pod 'ObjectMapper'
+pod 'Kingfisher'
+pod 'AsyncSwift'
+pod 'SSKeychain'
+pod 'FBSDKLoginKit'
+#pod 'Tapptitude', :path => '.'
+pod 'JLRoutes'
+pod 'Fabric'
+pod 'Crashlytics'
