@@ -344,7 +344,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     public func addPullToRefresh() {
         let refreshControl = UIRefreshControl()
         refreshControl.backgroundColor = collectionView?.backgroundColor
-        refreshControl.addTarget(self, action: Selector("pullToRefreshAction:"), forControlEvents: .ValueChanged)
+        refreshControl.addTarget(self, action: #selector(CollectionFeedController.pullToRefreshAction(_:)), forControlEvents: .ValueChanged)
         self.refreshControl = refreshControl
         collectionView?.addSubview(refreshControl)
     }

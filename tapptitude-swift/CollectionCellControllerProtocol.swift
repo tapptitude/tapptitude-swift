@@ -40,8 +40,8 @@ public protocol TTCollectionCellControllerProtocolExtended {
 }
 
 public protocol TTCollectionCellController : TTCollectionCellControllerProtocol {
-    typealias ObjectType
-    typealias CellType
+    associatedtype ObjectType
+    associatedtype CellType
     
     func classToInstantiateCellForContent(content: ObjectType) -> AnyClass?
     func nibToInstantiateCellForContent(content: ObjectType) -> UINib?
