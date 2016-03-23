@@ -89,34 +89,6 @@ class APIPaginateOffsetdMock: TTCancellable {
     }
 }
 
-class TextCell : UICollectionViewCell {
-    var label: UILabel!
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        label = UILabel(frame: bounds)
-        label.textColor = UIColor.blackColor()
-        label.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-        label.textAlignment = .Center
-        contentView.addSubview(label)
-        
-        backgroundColor = UIColor(white: 0, alpha: 0.3)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override var bounds: CGRect {
-        get {
-            return super.bounds
-        }
-        set {
-            super.bounds = newValue
-        }
-    }
-}
-
 class FeedController: CollectionFeedController {
     
     override func viewDidLoad() {
