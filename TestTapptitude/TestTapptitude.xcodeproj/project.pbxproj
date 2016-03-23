@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2355FF9B1CA3350D00D7B393 /* TextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2355FF9A1CA3350D00D7B393 /* TextCell.xib */; };
 		2355FF9D1CA3355F00D7B393 /* TextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2355FF9C1CA3355F00D7B393 /* TextCell.swift */; };
+		2355FF9F1CA3367900D7B393 /* TextCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2355FF9E1CA3367900D7B393 /* TextCellController.swift */; };
 		23A4F7211C78C9DA006430BF /* CollectionFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A4F7201C78C9DA006430BF /* CollectionFeedController.swift */; };
 		23A4F72B1C78EA1D006430BF /* SimpleDataFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A4F7281C78EA1D006430BF /* SimpleDataFeed.swift */; };
 		23A4F72C1C78EA1D006430BF /* PaginatedDataFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A4F7291C78EA1D006430BF /* PaginatedDataFeed.swift */; };
@@ -35,6 +36,7 @@
 /* Begin PBXFileReference section */
 		2355FF9A1CA3350D00D7B393 /* TextCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextCell.xib; sourceTree = "<group>"; };
 		2355FF9C1CA3355F00D7B393 /* TextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextCell.swift; sourceTree = "<group>"; };
+		2355FF9E1CA3367900D7B393 /* TextCellController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextCellController.swift; sourceTree = "<group>"; };
 		23A4F7201C78C9DA006430BF /* CollectionFeedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionFeedController.swift; path = "../../tapptitude-swift/CollectionFeedController.swift"; sourceTree = "<group>"; };
 		23A4F7281C78EA1D006430BF /* SimpleDataFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SimpleDataFeed.swift; path = "../../tapptitude-swift/SimpleDataFeed.swift"; sourceTree = "<group>"; };
 		23A4F7291C78EA1D006430BF /* PaginatedDataFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaginatedDataFeed.swift; path = "../../tapptitude-swift/PaginatedDataFeed.swift"; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 				23A551101C78A32300695BF3 /* FeedController.swift */,
 				2355FF9A1CA3350D00D7B393 /* TextCell.xib */,
 				2355FF9C1CA3355F00D7B393 /* TextCell.swift */,
+				2355FF9E1CA3367900D7B393 /* TextCellController.swift */,
 			);
 			path = TestTapptitude;
 			sourceTree = "<group>";
@@ -208,6 +211,7 @@
 				23A4F7211C78C9DA006430BF /* CollectionFeedController.swift in Sources */,
 				23A550DA1C78A1BC00695BF3 /* AppDelegate.swift in Sources */,
 				23A551081C78A28900695BF3 /* CollectionCellControllerProtocol.swift in Sources */,
+				2355FF9F1CA3367900D7B393 /* TextCellController.swift in Sources */,
 				23CCFF611C8209E0001D6D54 /* CollectionViewAnimatedUpdater.swift in Sources */,
 				23A4F72C1C78EA1D006430BF /* PaginatedDataFeed.swift in Sources */,
 				23A4F72D1C78EA1D006430BF /* DataFeed.swift in Sources */,

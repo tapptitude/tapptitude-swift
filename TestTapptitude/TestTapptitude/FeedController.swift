@@ -101,25 +101,11 @@ class FeedController: CollectionFeedController {
         animatedUpdates = true
         
 //        self.dataSource = DataSource(content: ["arra"])
-        let cellController = CollectionCellController<String, TextCell>(cellSize: CGSize(width: 100, height: 100), reuseIdentifier:"testing")
-        cellController.configureCell = { cell, content, indexPath in
-            cell.backgroundColor = UIColor.redColor()
-            cell.label.text = content
-            print("content ", content)
-        }
+        let cellController = TextCellController()
         cellController.didSelectContent = { _, indexPath, collectionView in
-//            let controller = CollectionFeedController()
-//            controller.view.backgroundColor = UIColor.blueColor()
-//            let cell = collectionView.cellForItemAtIndexPath(indexPath)
-//            cell?.parentViewController?.navigationController?.pushViewController(controller, animated: true)
-//            cell?.parentViewController?.showViewController(controller, sender: nil)
-            
             let dataSource = self.dataSource as? TTDataSourceMutable
-            dataSource?.replaceContentAtIndexPath(indexPath, content: "maria")
-            
+            dataSource?.replaceContentAtIndexPath(indexPath, content: "Ghita")
         }
-        cellController.minimumInteritemSpacing = 20
-        cellController.minimumLineSpacing = 10
         
         
         let numberCellController = CollectionCellController<Int, UICollectionViewCell>(cellSize: CGSize(width: 100, height: 50))
