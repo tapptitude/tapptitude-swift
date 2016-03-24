@@ -7,43 +7,44 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		232C36601C74806500ADA5F5 /* CollectionCellControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232C365F1C74806500ADA5F5 /* CollectionCellControllerProtocol.swift */; };
-		232C36621C7481B300ADA5F5 /* CollectionCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232C36611C7481B300ADA5F5 /* CollectionCellController.swift */; };
-		232C36641C7482DC00ADA5F5 /* DataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232C36631C7482DC00ADA5F5 /* DataSourceProtocol.swift */; };
-		232C36661C74838700ADA5F5 /* DataFeedProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232C36651C74838700ADA5F5 /* DataFeedProtocol.swift */; };
-		232C36681C7483CB00ADA5F5 /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232C36671C7483CB00ADA5F5 /* DataSource.swift */; };
-		232C366A1C74A37800ADA5F5 /* CollectionFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232C36691C74A37800ADA5F5 /* CollectionFeedViewController.swift */; };
-		232C366C1C74A8F600ADA5F5 /* LoadMoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232C366B1C74A8F600ADA5F5 /* LoadMoreView.swift */; };
-		232C366E1C74A93600ADA5F5 /* LoadMoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 232C366D1C74A93600ADA5F5 /* LoadMoreView.xib */; };
-		232E26331C78BBF50074467C /* CollectionFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232E26321C78BBF50074467C /* CollectionFeedController.swift */; };
-		234ECBF31C747FE800135CF9 /* tapptitude-swift.h in Headers */ = {isa = PBXBuildFile; fileRef = 234ECBF21C747FE800135CF9 /* tapptitude-swift.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		23A4F7231C78DE20006430BF /* DataFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A4F7221C78DE20006430BF /* DataFeed.swift */; };
-		23A4F7251C78E65B006430BF /* SimpleDataFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A4F7241C78E65B006430BF /* SimpleDataFeed.swift */; };
-		23A4F7271C78E8E6006430BF /* PaginatedDataFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A4F7261C78E8E6006430BF /* PaginatedDataFeed.swift */; };
-		23A550CC1C7886EA00695BF3 /* CollectionFeedController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23A550CB1C7886EA00695BF3 /* CollectionFeedController.xib */; };
-		23CCFF5F1C81B8B2001D6D54 /* CollectionViewAnimatedUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CCFF5E1C81B8B2001D6D54 /* CollectionViewAnimatedUpdater.swift */; };
-		23D335981CA07C0B00A3EE63 /* MultiCollectionCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D335971CA07C0B00A3EE63 /* MultiCollectionCellController.swift */; };
+		235500AA1CA4569200D7B393 /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235500991CA4569200D7B393 /* DataSource.swift */; };
+		235500AB1CA4569200D7B393 /* CollectionCellControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2355009A1CA4569200D7B393 /* CollectionCellControllerProtocol.swift */; };
+		235500AC1CA4569200D7B393 /* CollectionFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2355009B1CA4569200D7B393 /* CollectionFeedController.swift */; };
+		235500AD1CA4569200D7B393 /* MultiCollectionCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2355009C1CA4569200D7B393 /* MultiCollectionCellController.swift */; };
+		235500AE1CA4569200D7B393 /* CollectionCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2355009D1CA4569200D7B393 /* CollectionCellController.swift */; };
+		235500AF1CA4569200D7B393 /* PaginatedDataFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2355009E1CA4569200D7B393 /* PaginatedDataFeed.swift */; };
+		235500B01CA4569200D7B393 /* DataFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2355009F1CA4569200D7B393 /* DataFeed.swift */; };
+		235500B11CA4569200D7B393 /* SimpleDataFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235500A01CA4569200D7B393 /* SimpleDataFeed.swift */; };
+		235500B21CA4569200D7B393 /* DataFeedProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235500A11CA4569200D7B393 /* DataFeedProtocol.swift */; };
+		235500B31CA4569200D7B393 /* CollectionFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235500A21CA4569200D7B393 /* CollectionFeedViewController.swift */; };
+		235500B41CA4569200D7B393 /* DataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235500A31CA4569200D7B393 /* DataSourceProtocol.swift */; };
+		235500B51CA4569200D7B393 /* CollectionViewAnimatedUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235500A41CA4569200D7B393 /* CollectionViewAnimatedUpdater.swift */; };
+		235500B61CA4569200D7B393 /* LoadMoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 235500A51CA4569200D7B393 /* LoadMoreView.xib */; };
+		235500B71CA4569200D7B393 /* LoadMoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235500A61CA4569200D7B393 /* LoadMoreView.swift */; };
+		235500B81CA4569200D7B393 /* CollectionFeedController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 235500A71CA4569200D7B393 /* CollectionFeedController.xib */; };
+		235500B91CA4569200D7B393 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 235500A81CA4569200D7B393 /* Info.plist */; };
+		235500BA1CA4569200D7B393 /* tapptitude-swift.h in Headers */ = {isa = PBXBuildFile; fileRef = 235500A91CA4569200D7B393 /* tapptitude-swift.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		232C365F1C74806500ADA5F5 /* CollectionCellControllerProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionCellControllerProtocol.swift; sourceTree = "<group>"; };
-		232C36611C7481B300ADA5F5 /* CollectionCellController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionCellController.swift; sourceTree = "<group>"; };
-		232C36631C7482DC00ADA5F5 /* DataSourceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceProtocol.swift; sourceTree = "<group>"; };
-		232C36651C74838700ADA5F5 /* DataFeedProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataFeedProtocol.swift; sourceTree = "<group>"; };
-		232C36671C7483CB00ADA5F5 /* DataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
-		232C36691C74A37800ADA5F5 /* CollectionFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionFeedViewController.swift; sourceTree = "<group>"; };
-		232C366B1C74A8F600ADA5F5 /* LoadMoreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadMoreView.swift; sourceTree = "<group>"; };
-		232C366D1C74A93600ADA5F5 /* LoadMoreView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadMoreView.xib; sourceTree = "<group>"; };
-		232E26321C78BBF50074467C /* CollectionFeedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionFeedController.swift; sourceTree = "<group>"; };
 		234ECBEF1C747FE800135CF9 /* Tapptitude.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Tapptitude.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		234ECBF21C747FE800135CF9 /* tapptitude-swift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "tapptitude-swift.h"; sourceTree = "<group>"; };
-		234ECBF41C747FE800135CF9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		23A4F7221C78DE20006430BF /* DataFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataFeed.swift; sourceTree = "<group>"; };
-		23A4F7241C78E65B006430BF /* SimpleDataFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleDataFeed.swift; sourceTree = "<group>"; };
-		23A4F7261C78E8E6006430BF /* PaginatedDataFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaginatedDataFeed.swift; sourceTree = "<group>"; };
-		23A550CB1C7886EA00695BF3 /* CollectionFeedController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollectionFeedController.xib; sourceTree = "<group>"; };
-		23CCFF5E1C81B8B2001D6D54 /* CollectionViewAnimatedUpdater.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewAnimatedUpdater.swift; sourceTree = "<group>"; };
-		23D335971CA07C0B00A3EE63 /* MultiCollectionCellController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiCollectionCellController.swift; sourceTree = "<group>"; };
+		235500991CA4569200D7B393 /* DataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataSource.swift; path = Tapptitude/DataSource.swift; sourceTree = SOURCE_ROOT; };
+		2355009A1CA4569200D7B393 /* CollectionCellControllerProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionCellControllerProtocol.swift; path = Tapptitude/CollectionCellControllerProtocol.swift; sourceTree = SOURCE_ROOT; };
+		2355009B1CA4569200D7B393 /* CollectionFeedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionFeedController.swift; path = Tapptitude/CollectionFeedController.swift; sourceTree = SOURCE_ROOT; };
+		2355009C1CA4569200D7B393 /* MultiCollectionCellController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MultiCollectionCellController.swift; path = Tapptitude/MultiCollectionCellController.swift; sourceTree = SOURCE_ROOT; };
+		2355009D1CA4569200D7B393 /* CollectionCellController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionCellController.swift; path = Tapptitude/CollectionCellController.swift; sourceTree = SOURCE_ROOT; };
+		2355009E1CA4569200D7B393 /* PaginatedDataFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaginatedDataFeed.swift; path = Tapptitude/PaginatedDataFeed.swift; sourceTree = SOURCE_ROOT; };
+		2355009F1CA4569200D7B393 /* DataFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataFeed.swift; path = Tapptitude/DataFeed.swift; sourceTree = SOURCE_ROOT; };
+		235500A01CA4569200D7B393 /* SimpleDataFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SimpleDataFeed.swift; path = Tapptitude/SimpleDataFeed.swift; sourceTree = SOURCE_ROOT; };
+		235500A11CA4569200D7B393 /* DataFeedProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataFeedProtocol.swift; path = Tapptitude/DataFeedProtocol.swift; sourceTree = SOURCE_ROOT; };
+		235500A21CA4569200D7B393 /* CollectionFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionFeedViewController.swift; path = Tapptitude/CollectionFeedViewController.swift; sourceTree = SOURCE_ROOT; };
+		235500A31CA4569200D7B393 /* DataSourceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataSourceProtocol.swift; path = Tapptitude/DataSourceProtocol.swift; sourceTree = SOURCE_ROOT; };
+		235500A41CA4569200D7B393 /* CollectionViewAnimatedUpdater.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionViewAnimatedUpdater.swift; path = Tapptitude/CollectionViewAnimatedUpdater.swift; sourceTree = SOURCE_ROOT; };
+		235500A51CA4569200D7B393 /* LoadMoreView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoadMoreView.xib; path = Tapptitude/LoadMoreView.xib; sourceTree = SOURCE_ROOT; };
+		235500A61CA4569200D7B393 /* LoadMoreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoadMoreView.swift; path = Tapptitude/LoadMoreView.swift; sourceTree = SOURCE_ROOT; };
+		235500A71CA4569200D7B393 /* CollectionFeedController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CollectionFeedController.xib; path = Tapptitude/CollectionFeedController.xib; sourceTree = SOURCE_ROOT; };
+		235500A81CA4569200D7B393 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Tapptitude/Info.plist; sourceTree = SOURCE_ROOT; };
+		235500A91CA4569200D7B393 /* tapptitude-swift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "tapptitude-swift.h"; path = "Tapptitude/tapptitude-swift.h"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,7 +61,7 @@
 		234ECBE51C747FE800135CF9 = {
 			isa = PBXGroup;
 			children = (
-				234ECBF11C747FE800135CF9 /* tapptitude-swift */,
+				234ECBF11C747FE800135CF9 /* Tapptitude */,
 				234ECBF01C747FE800135CF9 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -73,27 +74,28 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		234ECBF11C747FE800135CF9 /* tapptitude-swift */ = {
+		234ECBF11C747FE800135CF9 /* Tapptitude */ = {
 			isa = PBXGroup;
 			children = (
-				234ECBF21C747FE800135CF9 /* tapptitude-swift.h */,
-				234ECBF41C747FE800135CF9 /* Info.plist */,
-				232C365F1C74806500ADA5F5 /* CollectionCellControllerProtocol.swift */,
-				232C36611C7481B300ADA5F5 /* CollectionCellController.swift */,
-				232C36631C7482DC00ADA5F5 /* DataSourceProtocol.swift */,
-				232C36671C7483CB00ADA5F5 /* DataSource.swift */,
-				232C36651C74838700ADA5F5 /* DataFeedProtocol.swift */,
-				23A4F7221C78DE20006430BF /* DataFeed.swift */,
-				23A4F7241C78E65B006430BF /* SimpleDataFeed.swift */,
-				23A4F7261C78E8E6006430BF /* PaginatedDataFeed.swift */,
-				232C36691C74A37800ADA5F5 /* CollectionFeedViewController.swift */,
-				232E26321C78BBF50074467C /* CollectionFeedController.swift */,
-				23A550CB1C7886EA00695BF3 /* CollectionFeedController.xib */,
-				232C366B1C74A8F600ADA5F5 /* LoadMoreView.swift */,
-				232C366D1C74A93600ADA5F5 /* LoadMoreView.xib */,
-				23CCFF5E1C81B8B2001D6D54 /* CollectionViewAnimatedUpdater.swift */,
-				23D335971CA07C0B00A3EE63 /* MultiCollectionCellController.swift */,
+				235500991CA4569200D7B393 /* DataSource.swift */,
+				2355009A1CA4569200D7B393 /* CollectionCellControllerProtocol.swift */,
+				2355009B1CA4569200D7B393 /* CollectionFeedController.swift */,
+				2355009C1CA4569200D7B393 /* MultiCollectionCellController.swift */,
+				2355009D1CA4569200D7B393 /* CollectionCellController.swift */,
+				2355009E1CA4569200D7B393 /* PaginatedDataFeed.swift */,
+				2355009F1CA4569200D7B393 /* DataFeed.swift */,
+				235500A01CA4569200D7B393 /* SimpleDataFeed.swift */,
+				235500A11CA4569200D7B393 /* DataFeedProtocol.swift */,
+				235500A21CA4569200D7B393 /* CollectionFeedViewController.swift */,
+				235500A31CA4569200D7B393 /* DataSourceProtocol.swift */,
+				235500A41CA4569200D7B393 /* CollectionViewAnimatedUpdater.swift */,
+				235500A51CA4569200D7B393 /* LoadMoreView.xib */,
+				235500A61CA4569200D7B393 /* LoadMoreView.swift */,
+				235500A71CA4569200D7B393 /* CollectionFeedController.xib */,
+				235500A81CA4569200D7B393 /* Info.plist */,
+				235500A91CA4569200D7B393 /* tapptitude-swift.h */,
 			);
+			name = Tapptitude;
 			path = "tapptitude-swift";
 			sourceTree = "<group>";
 		};
@@ -104,7 +106,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				234ECBF31C747FE800135CF9 /* tapptitude-swift.h in Headers */,
+				235500BA1CA4569200D7B393 /* tapptitude-swift.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -166,8 +168,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				23A550CC1C7886EA00695BF3 /* CollectionFeedController.xib in Resources */,
-				232C366E1C74A93600ADA5F5 /* LoadMoreView.xib in Resources */,
+				235500B61CA4569200D7B393 /* LoadMoreView.xib in Resources */,
+				235500B81CA4569200D7B393 /* CollectionFeedController.xib in Resources */,
+				235500B91CA4569200D7B393 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -178,19 +181,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				232C36641C7482DC00ADA5F5 /* DataSourceProtocol.swift in Sources */,
-				232C36661C74838700ADA5F5 /* DataFeedProtocol.swift in Sources */,
-				232C36601C74806500ADA5F5 /* CollectionCellControllerProtocol.swift in Sources */,
-				23D335981CA07C0B00A3EE63 /* MultiCollectionCellController.swift in Sources */,
-				23A4F7231C78DE20006430BF /* DataFeed.swift in Sources */,
-				232C36681C7483CB00ADA5F5 /* DataSource.swift in Sources */,
-				232C36621C7481B300ADA5F5 /* CollectionCellController.swift in Sources */,
-				232E26331C78BBF50074467C /* CollectionFeedController.swift in Sources */,
-				232C366A1C74A37800ADA5F5 /* CollectionFeedViewController.swift in Sources */,
-				232C366C1C74A8F600ADA5F5 /* LoadMoreView.swift in Sources */,
-				23CCFF5F1C81B8B2001D6D54 /* CollectionViewAnimatedUpdater.swift in Sources */,
-				23A4F7251C78E65B006430BF /* SimpleDataFeed.swift in Sources */,
-				23A4F7271C78E8E6006430BF /* PaginatedDataFeed.swift in Sources */,
+				235500B41CA4569200D7B393 /* DataSourceProtocol.swift in Sources */,
+				235500AA1CA4569200D7B393 /* DataSource.swift in Sources */,
+				235500AD1CA4569200D7B393 /* MultiCollectionCellController.swift in Sources */,
+				235500AB1CA4569200D7B393 /* CollectionCellControllerProtocol.swift in Sources */,
+				235500B71CA4569200D7B393 /* LoadMoreView.swift in Sources */,
+				235500B21CA4569200D7B393 /* DataFeedProtocol.swift in Sources */,
+				235500AF1CA4569200D7B393 /* PaginatedDataFeed.swift in Sources */,
+				235500AE1CA4569200D7B393 /* CollectionCellController.swift in Sources */,
+				235500B31CA4569200D7B393 /* CollectionFeedViewController.swift in Sources */,
+				235500AC1CA4569200D7B393 /* CollectionFeedController.swift in Sources */,
+				235500B51CA4569200D7B393 /* CollectionViewAnimatedUpdater.swift in Sources */,
+				235500B01CA4569200D7B393 /* DataFeed.swift in Sources */,
+				235500B11CA4569200D7B393 /* SimpleDataFeed.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -294,7 +297,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "tapptitude-swift/Info.plist";
+				INFOPLIST_FILE = Tapptitude/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -313,7 +316,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "tapptitude-swift/Info.plist";
+				INFOPLIST_FILE = Tapptitude/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
