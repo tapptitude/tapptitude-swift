@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Tapptitude
 
 class TextCellController : CollectionCellController<String, TextCell> {
     
