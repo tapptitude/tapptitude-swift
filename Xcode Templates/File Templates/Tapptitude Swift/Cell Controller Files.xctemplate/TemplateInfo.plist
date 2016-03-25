@@ -2,18 +2,20 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>Identifier</key>
+	<string>ColectionCellController</string>
 	<key>AllowedTypes</key>
 	<array>
-		<string>public.objective-c-source</string>
+		<string>public.swift-source</string>
 	</array>
 	<key>DefaultCompletionName</key>
 	<string>MyClass</string>
 	<key>Description</key>
-	<string>A CoreData parser template.</string>
+	<string>A group of ColectionCellController and UICollectionViewCell subclasses, with swift &amp; XIB files.</string>
 	<key>Kind</key>
 	<string>Xcode.IDEKit.TextSubstitutionFileTemplateKind</string>
 	<key>MainTemplateFile</key>
-	<string>___FILEBASENAME___.m</string>
+	<string>___FILEBASENAME___.swift</string>
 	<key>Options</key>
 	<array>
 		<dict>
@@ -22,7 +24,7 @@
 			<key>Identifier</key>
 			<string>productName</string>
 			<key>Name</key>
-			<string>Class</string>
+			<string>Class Name (without *CellController)</string>
 			<key>NotPersisted</key>
 			<true/>
 			<key>Required</key>
@@ -31,42 +33,18 @@
 			<string>text</string>
 		</dict>
 		<dict>
-			<key>AllowedTypes</key>
-			<dict>
-				<key>Objective-C</key>
-				<array>
-					<string>public.objective-c-source</string>
-					<string>public.objective-c-plus-plus-source</string>
-				</array>
-				<key>Swift</key>
-				<array>
-					<string>public.swift-source</string>
-				</array>
-			</dict>
-			<key>Default</key>
-			<string>Objective-C</string>
 			<key>Description</key>
-			<string>The implementation language</string>
+			<string>Content type that is configured by cell controller</string>
 			<key>Identifier</key>
-			<string>languageChoice</string>
-			<key>MainTemplateFiles</key>
-			<dict>
-				<key>Objective-C</key>
-				<string>___FILEBASENAME___</string>
-				<key>Swift</key>
-				<string>___FILEBASENAME___.swift</string>
-			</dict>
+			<string>contentType</string>
 			<key>Name</key>
-			<string>Language:</string>
+			<string>Content type (configured by cell controller)</string>
+			<key>NotPersisted</key>
+			<true/>
 			<key>Required</key>
 			<true/>
 			<key>Type</key>
-			<string>popup</string>
-			<key>Values</key>
-			<array>
-				<string>Swift</string>
-				<string>Objective-C</string>
-			</array>
+			<string>text</string>
 		</dict>
 	</array>
 	<key>Platforms</key>
@@ -76,6 +54,6 @@
 	<key>SortOrder</key>
 	<string>1</string>
 	<key>Summary</key>
-	<string>A CoreData parser template. Use class name.</string>
+	<string>CollectionCellController and CollectionCell subclasses.</string>
 </dict>
 </plist>
