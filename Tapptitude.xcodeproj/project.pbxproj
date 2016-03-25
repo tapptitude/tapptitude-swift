@@ -146,7 +146,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 234ECBE91C747FE800135CF9 /* Build configuration list for PBXProject "tapptitude-swift" */;
+			buildConfigurationList = 234ECBE91C747FE800135CF9 /* Build configuration list for PBXProject "Tapptitude" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -329,7 +329,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		234ECBE91C747FE800135CF9 /* Build configuration list for PBXProject "tapptitude-swift" */ = {
+		234ECBE91C747FE800135CF9 /* Build configuration list for PBXProject "Tapptitude" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				234ECBF51C747FE800135CF9 /* Debug */,
