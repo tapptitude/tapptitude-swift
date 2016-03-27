@@ -21,7 +21,7 @@ public enum TTCallbackNextOffset <T, OffsetType> {
 }
 
 public class DataFeed<T>: TTDataFeed {
-    public var delegate: TTDataFeedDelegate?
+    public weak var delegate: TTDataFeedDelegate?
     
     public func reloadOperationWithCallback(callback: TTCallback<T>.Signature) -> TTCancellable? {
         return nil

@@ -24,7 +24,7 @@ public class DataSource : TTDataSource {
         _content = []
     }
     
-    public var delegate : TTDataSourceDelegate?
+    public weak var delegate : TTDataSourceDelegate?
     public var feed : TTDataFeed? {
         willSet {
             feed?.delegate = nil

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol TTDataSourceDelegate {
+public protocol TTDataSourceDelegate: class {
     func dataSourceDidReloadContent(dataSource: TTDataSource)
     func dataSourceDidLoadMoreContent(dataSource: TTDataSource)
 }
@@ -23,7 +23,7 @@ public protocol TTDataSource : TTDataFeedDelegate {
     
     func indexPathForObject(object: Any) -> NSIndexPath?
     
-    var delegate: TTDataSourceDelegate? { get set }
+    weak var delegate: TTDataSourceDelegate? { get set }
     var feed: TTDataFeed? { get set }
     
     var dataSourceID: String? { get set } //usefull information

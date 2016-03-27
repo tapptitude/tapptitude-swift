@@ -10,7 +10,7 @@ import Foundation
 
 public protocol TTDataFeed {
     
-    var delegate: TTDataFeedDelegate? { get set }
+    weak var delegate: TTDataFeedDelegate? { get set }
     
     func shouldReload() -> Bool
     
@@ -28,7 +28,7 @@ public protocol TTDataFeed {
     var lastReloadDate : NSDate? {get}
 }
 
-public protocol TTDataFeedDelegate {
+public protocol TTDataFeedDelegate: class {
     func dataFeed(dataFeed: TTDataFeed?, failedWithError error: NSError)
     
     func dataFeed(dataFeed: TTDataFeed?, didReloadContent content: [Any]?)
