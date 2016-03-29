@@ -24,6 +24,78 @@
 			<dict>
 				<key>iPhone</key>
 				<dict>
+					<key>Targets</key>
+					<array>
+						<dict>
+							<key>Configurations</key>
+							<dict>
+								<key>Debug</key>
+								<dict>
+									<key>OTHER_SWIFT_FLAGS</key>
+									<string>$(inherited) -DDEBUG</string>
+								</dict>
+								<key>Release</key>
+								<dict>
+									<key>OTHER_SWIFT_FLAGS</key>
+									<string>$(inherited) -DRELEASE</string>
+								</dict>
+							</dict>
+							<key>BuildPhases</key>
+							<array>
+								<dict>
+									<key>Name</key>
+									<string>Update Storyboards identifiers</string>
+									<key>Class</key>
+									<string>ShellScript</string>
+									<key>ShellPath</key>
+									<string>/bin/sh</string>
+									<key>ShellScript</key>
+									<string>echo &quot;Natalie Generator: Determining if generated Swift file is up-to-date.&quot;
+
+#If you put natalie.swift on the project folder
+NATALIE_PATH=&quot;$PROJECT_DIR/bin/natalie.swift&quot;
+
+echo $NATALIE_PATH
+
+if [ -f $NATALIE_PATH ]; then
+BASE_PATH=&quot;$PROJECT_DIR/$PROJECT_NAME&quot;
+//
+OUTPUT_PATH=&quot;$BASE_PATH/Helpers/Storyboards.swift&quot;
+
+if [ ! -e &quot;$OUTPUT_PATH&quot; ] || [ -n &quot;$(find &quot;$BASE_PATH&quot; -type f -name &quot;*.storyboard&quot; -newer &quot;$OUTPUT_PATH&quot; -print -quit)&quot; ]; then
+echo &quot;Natalie Generator: Generated Swift is out-of-date; re-generating...&quot;
+
+/usr/bin/chflags nouchg &quot;$OUTPUT_PATH&quot;
+&quot;$NATALIE_PATH&quot; &quot;$BASE_PATH&quot; &gt; &quot;$OUTPUT_PATH&quot;
+#        /usr/bin/chflags uchg &quot;$OUTPUT_PATH&quot;
+
+echo &quot;Natalie Generator: Done.&quot;
+else
+echo &quot;Natalie Generator: Generated Swift is up-to-date; skipping re-generation.&quot;
+fi
+fi</string>
+								</dict>
+								<dict>
+									<key>Name</key>
+									<string>Increment Build Number</string>
+									<key>Class</key>
+									<string>ShellScript</string>
+									<key>ShellPath</key>
+									<string>/bin/sh</string>
+									<key>ShellScript</key>
+									<string>if [[ &quot;${CONFIGURATION}&quot; =~ ^Release ]]; then
+buildNumber=$(/usr/libexec/PlistBuddy -c &quot;Print CFBundleVersion&quot; &quot;${TARGET_BUILD_DIR}/${INFOPLIST_PATH}&quot;)
+buildNumber=$(($buildNumber + 1))
+
+echo &quot;Increasing build number to $buildNumber&quot;
+
+/usr/libexec/PlistBuddy -c &quot;Set :CFBundleVersion $buildNumber&quot; &quot;$INFOPLIST_FILE&quot;
+/usr/libexec/PlistBuddy -c &quot;Set :CFBundleVersion $buildNumber&quot; &quot;${TARGET_BUILD_DIR}/${INFOPLIST_PATH}&quot;
+fi</string>
+								</dict>
+							</array>
+						</dict>
+					</array>
 					<key>Nodes</key>
 					<array>
 						<string>../fastlane/Fastfile</string>
@@ -49,6 +121,8 @@
 						<string>Helpers/SeparatorView.swift</string>
 						<string>Helpers/RoundedButton.swift</string>
 						<string>Helpers/PlaceholderTextField.swift</string>
+						<string>../bin/natalie.swift</string>
+						<string>Helpers/Storyboards.swift</string>
 					</array>
 					<key>Definitions</key>
 					<dict>
@@ -247,6 +321,24 @@
 							<string>Podfile</string>
 							<key>Group</key>
 							<string>To Remove from Xcode</string>
+						</dict>
+						<key>../bin/natalie.swift</key>
+						<dict>
+							<key>SortOrder</key>
+							<integer>100</integer>
+							<key>Path</key>
+							<string>bin/natalie.swift</string>
+							<key>Group</key>
+							<string>To Remove from Xcode</string>
+						</dict>
+						<key>Helpers/Storyboards.swift</key>
+						<dict>
+							<key>SortOrder</key>
+							<integer>100</integer>
+							<key>Path</key>
+							<string>Helpers/Storyboards.swift</string>
+							<key>Group</key>
+							<string>Helpers</string>
 						</dict>
 						<key>Screens</key>
 						<dict>
@@ -278,6 +370,78 @@
 				</dict>
 				<key>iPad</key>
 				<dict>
+					<key>Targets</key>
+					<array>
+						<dict>
+							<key>Configurations</key>
+							<dict>
+								<key>Debug</key>
+								<dict>
+									<key>OTHER_SWIFT_FLAGS</key>
+									<string>$(inherited) -DDEBUG</string>
+								</dict>
+								<key>Release</key>
+								<dict>
+									<key>OTHER_SWIFT_FLAGS</key>
+									<string>$(inherited) -DRELEASE</string>
+								</dict>
+							</dict>
+							<key>BuildPhases</key>
+							<array>
+								<dict>
+									<key>Name</key>
+									<string>Update Storyboards identifiers</string>
+									<key>Class</key>
+									<string>ShellScript</string>
+									<key>ShellPath</key>
+									<string>/bin/sh</string>
+									<key>ShellScript</key>
+									<string>echo &quot;Natalie Generator: Determining if generated Swift file is up-to-date.&quot;
+
+#If you put natalie.swift on the project folder
+NATALIE_PATH=&quot;$PROJECT_DIR/bin/natalie.swift&quot;
+
+echo $NATALIE_PATH
+
+if [ -f $NATALIE_PATH ]; then
+BASE_PATH=&quot;$PROJECT_DIR/$PROJECT_NAME&quot;
+//
+OUTPUT_PATH=&quot;$BASE_PATH/Helpers/Storyboards.swift&quot;
+
+if [ ! -e &quot;$OUTPUT_PATH&quot; ] || [ -n &quot;$(find &quot;$BASE_PATH&quot; -type f -name &quot;*.storyboard&quot; -newer &quot;$OUTPUT_PATH&quot; -print -quit)&quot; ]; then
+echo &quot;Natalie Generator: Generated Swift is out-of-date; re-generating...&quot;
+
+/usr/bin/chflags nouchg &quot;$OUTPUT_PATH&quot;
+&quot;$NATALIE_PATH&quot; &quot;$BASE_PATH&quot; &gt; &quot;$OUTPUT_PATH&quot;
+#        /usr/bin/chflags uchg &quot;$OUTPUT_PATH&quot;
+
+echo &quot;Natalie Generator: Done.&quot;
+else
+echo &quot;Natalie Generator: Generated Swift is up-to-date; skipping re-generation.&quot;
+fi
+fi</string>
+								</dict>
+								<dict>
+									<key>Name</key>
+									<string>Increment Build Number</string>
+									<key>Class</key>
+									<string>ShellScript</string>
+									<key>ShellPath</key>
+									<string>/bin/sh</string>
+									<key>ShellScript</key>
+									<string>if [[ &quot;${CONFIGURATION}&quot; =~ ^Release ]]; then
+buildNumber=$(/usr/libexec/PlistBuddy -c &quot;Print CFBundleVersion&quot; &quot;${TARGET_BUILD_DIR}/${INFOPLIST_PATH}&quot;)
+buildNumber=$(($buildNumber + 1))
+
+echo &quot;Increasing build number to $buildNumber&quot;
+
+/usr/libexec/PlistBuddy -c &quot;Set :CFBundleVersion $buildNumber&quot; &quot;$INFOPLIST_FILE&quot;
+/usr/libexec/PlistBuddy -c &quot;Set :CFBundleVersion $buildNumber&quot; &quot;${TARGET_BUILD_DIR}/${INFOPLIST_PATH}&quot;
+fi</string>
+								</dict>
+							</array>
+						</dict>
+					</array>
 					<key>Nodes</key>
 					<array>
 						<string>../fastlane/Fastfile</string>
@@ -303,6 +467,8 @@
 						<string>Helpers/SeparatorView.swift</string>
 						<string>Helpers/RoundedButton.swift</string>
 						<string>Helpers/PlaceholderTextField.swift</string>
+						<string>../bin/natalie.swift</string>
+						<string>Helpers/Storyboards.swift</string>
 					</array>
 					<key>Definitions</key>
 					<dict>
@@ -501,6 +667,24 @@
 							<string>Podfile</string>
 							<key>Group</key>
 							<string>To Remove from Xcode</string>
+						</dict>
+						<key>../bin/natalie.swift</key>
+						<dict>
+							<key>SortOrder</key>
+							<integer>100</integer>
+							<key>Path</key>
+							<string>bin/natalie.swift</string>
+							<key>Group</key>
+							<string>To Remove from Xcode</string>
+						</dict>
+						<key>Helpers/Storyboards.swift</key>
+						<dict>
+							<key>SortOrder</key>
+							<integer>100</integer>
+							<key>Path</key>
+							<string>Helpers/Storyboards.swift</string>
+							<key>Group</key>
+							<string>Helpers</string>
 						</dict>
 						<key>Screens</key>
 						<dict>
@@ -532,6 +716,78 @@
 				</dict>
 				<key>Universal</key>
 				<dict>
+					<key>Targets</key>
+					<array>
+						<dict>
+							<key>Configurations</key>
+							<dict>
+								<key>Debug</key>
+								<dict>
+									<key>OTHER_SWIFT_FLAGS</key>
+									<string>$(inherited) -DDEBUG</string>
+								</dict>
+								<key>Release</key>
+								<dict>
+									<key>OTHER_SWIFT_FLAGS</key>
+									<string>$(inherited) -DRELEASE</string>
+								</dict>
+							</dict>
+							<key>BuildPhases</key>
+							<array>
+								<dict>
+									<key>Name</key>
+									<string>Update Storyboards identifiers</string>
+									<key>Class</key>
+									<string>ShellScript</string>
+									<key>ShellPath</key>
+									<string>/bin/sh</string>
+									<key>ShellScript</key>
+									<string>echo &quot;Natalie Generator: Determining if generated Swift file is up-to-date.&quot;
+
+#If you put natalie.swift on the project folder
+NATALIE_PATH=&quot;$PROJECT_DIR/bin/natalie.swift&quot;
+
+echo $NATALIE_PATH
+
+if [ -f $NATALIE_PATH ]; then
+BASE_PATH=&quot;$PROJECT_DIR/$PROJECT_NAME&quot;
+//
+OUTPUT_PATH=&quot;$BASE_PATH/Helpers/Storyboards.swift&quot;
+
+if [ ! -e &quot;$OUTPUT_PATH&quot; ] || [ -n &quot;$(find &quot;$BASE_PATH&quot; -type f -name &quot;*.storyboard&quot; -newer &quot;$OUTPUT_PATH&quot; -print -quit)&quot; ]; then
+echo &quot;Natalie Generator: Generated Swift is out-of-date; re-generating...&quot;
+
+/usr/bin/chflags nouchg &quot;$OUTPUT_PATH&quot;
+&quot;$NATALIE_PATH&quot; &quot;$BASE_PATH&quot; &gt; &quot;$OUTPUT_PATH&quot;
+#        /usr/bin/chflags uchg &quot;$OUTPUT_PATH&quot;
+
+echo &quot;Natalie Generator: Done.&quot;
+else
+echo &quot;Natalie Generator: Generated Swift is up-to-date; skipping re-generation.&quot;
+fi
+fi</string>
+								</dict>
+								<dict>
+									<key>Name</key>
+									<string>Increment Build Number</string>
+									<key>Class</key>
+									<string>ShellScript</string>
+									<key>ShellPath</key>
+									<string>/bin/sh</string>
+									<key>ShellScript</key>
+									<string>if [[ &quot;${CONFIGURATION}&quot; =~ ^Release ]]; then
+buildNumber=$(/usr/libexec/PlistBuddy -c &quot;Print CFBundleVersion&quot; &quot;${TARGET_BUILD_DIR}/${INFOPLIST_PATH}&quot;)
+buildNumber=$(($buildNumber + 1))
+
+echo &quot;Increasing build number to $buildNumber&quot;
+
+/usr/libexec/PlistBuddy -c &quot;Set :CFBundleVersion $buildNumber&quot; &quot;$INFOPLIST_FILE&quot;
+/usr/libexec/PlistBuddy -c &quot;Set :CFBundleVersion $buildNumber&quot; &quot;${TARGET_BUILD_DIR}/${INFOPLIST_PATH}&quot;
+fi</string>
+								</dict>
+							</array>
+						</dict>
+					</array>
 					<key>Nodes</key>
 					<array>
 						<string>../fastlane/Fastfile</string>
@@ -557,6 +813,8 @@
 						<string>Helpers/SeparatorView.swift</string>
 						<string>Helpers/RoundedButton.swift</string>
 						<string>Helpers/PlaceholderTextField.swift</string>
+						<string>../bin/natalie.swift</string>
+						<string>Helpers/Storyboards.swift</string>
 					</array>
 					<key>Definitions</key>
 					<dict>
@@ -755,6 +1013,24 @@
 							<string>Podfile</string>
 							<key>Group</key>
 							<string>To Remove from Xcode</string>
+						</dict>
+						<key>../bin/natalie.swift</key>
+						<dict>
+							<key>SortOrder</key>
+							<integer>100</integer>
+							<key>Path</key>
+							<string>bin/natalie.swift</string>
+							<key>Group</key>
+							<string>To Remove from Xcode</string>
+						</dict>
+						<key>Helpers/Storyboards.swift</key>
+						<dict>
+							<key>SortOrder</key>
+							<integer>100</integer>
+							<key>Path</key>
+							<string>Helpers/Storyboards.swift</string>
+							<key>Group</key>
+							<string>Helpers</string>
 						</dict>
 						<key>Screens</key>
 						<dict>

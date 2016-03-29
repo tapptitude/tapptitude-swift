@@ -8,4 +8,12 @@
 
 import Foundation
 
-
+struct Constants {
+    #if RELEASE
+    static let API_URL = "your api url"
+    static let API_KEY = "your api key"
+    #elseif DEBUG
+    static let API_URL = "your api url"
+    static let API_KEY = "your api key"
+    #endif
+}

@@ -11,13 +11,14 @@ import Alamofire
 import ObjectMapper
 
 struct APISettings {
-    static let serverURL = "http://devv3.services.flycleaners.com/v2/"
+    static let serverURL = Constants.API_URL
     static let errorDomain = "API+___PROJECTNAME___"
     
     var httpHeaders: [String: String]? {
         var headers =  [String:String]()
         headers["Authorization"] = Session.accessToken() != nil ? ("Token " + Session.accessToken()!) : nil
         headers["Identity"] = Session.currentUserID() != nil ? ("Email " + Session.currentUserID()!) : nil
+        headers["API_KEY"] = Constants.API_KEY
         return headers
     }
 }

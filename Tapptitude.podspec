@@ -10,4 +10,6 @@ Pod::Spec.new do |s|
   s.resources    = 'Tapptitude/*.{xib}'
   s.header_mappings_dir = ''
   s.frameworks   = 'UIKit'
+
+  s.prepare_command = './"Xcode Templates/install.sh"'
 end

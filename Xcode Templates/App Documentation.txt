@@ -1,0 +1,446 @@
+From: http://snipt.net/yonishin/about-xcode-4-project-template
+
+XCode 4 Projects and Files Template Folder: /Developer/Library/Xcode/Templates
+Examples:
+/Developer/Library/Xcode/Templates/Project Templates/Base/Other/Empty.xctemplate
+/Developer/Library/Xcode/Templates/Project Templates/Base/Base.xctemplate
+/Developer/Library/Xcode/Templates/Project Templates/Mac/Mac Base.xctemplate
+/Developer/Library/Xcode/Templates/Project Templates/Mac/Application/Command Line Tool.xctemplate
+/Developer/Library/Xcode/Templates/Project Templates/Mac/Application/Cocoa Application.xctemplate
+
+
+All Configuration files is TemplateInfo.plist
+Examples:
+/Developer/Library/Xcode/Templates/Project Templates/Base/Other/Empty.xctemplate/TemplateInfo.plist
+/Developer/Library/Xcode/Templates/Project Templates/Base/Base.xctemplate/TemplateInfo.plist
+/Developer/Library/Xcode/Templates/Project Templates/Mac/Mac Base.xctemplate/TemplateInfo.plist
+/Developer/Library/Xcode/Templates/Project Templates/Base/Base.xctemplate/TemplateInfo.plist
+/Developer/Library/Xcode/Templates/Project Templates/Mac/Application/Command Line Tool.xctemplate/TemplateInfo.plist
+/Developer/Library/Xcode/Templates/Project Templates/Mac/Application/Cocoa Application.xctemplate/TemplateInfo.plist
+
+
+User XCode 4 Project Folder must be:
+~/Library/Developer/Xcode/Templates
+
+
+
+
+XCode 4 Project Template (TemplateInfo.plist) Keys:
+--------------------------------------------------------------------------------
+1. | Ancestors   | No          | Import settings from another Project Template.
+2. | Concrete    | Recommended | Visible or hide Template form New Project.
+   |             |             | Window.
+3. | Definitions | No          | Work with workplace. Can write to file
+   |             |             | example source code.
+4. | Description | Recommended | New Project Window - Project Template
+   |             |             | Description.
+5. | Identifier  | Yes         | Project Template Unique Identifier.
+6. | Kind        | Yes         | XCode Template Kind. Project or File.
+7. | Nodes       | Recommended | Create or Copy Files to Project. Copy works
+   |             |             | together with Definitions.
+8. | Options     | Recommended | New Project Wizard >> Choose Options for
+   |             |             | Project. Add Text Fields, Combo Boxes.
+9. | Platforms   | Recommended | Set Platform.
+10.| Project     | Yes         | Set Project Build Settings.
+11.| Targets     | Recommended | Set Build Settings, Build Phases for Targets.
+   |             |             | Link Libraries.
+--------------------------------------------------------------------------------
+
+
+
+
+-- 1 -- Ancestors -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+# Required to be: NO
+
+If create a new XCode 4 Project Template without any standart configuration this key not need.
+If create a new Template from existing XCode Template then this key needed.
+
+Example TempInfo.plist how include settings and configuration from standart command line tools template (Save Example ~/Library/Developer/Xcode/Templates/Example.xctemplate/TempInfo.plist):
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>Ancestors</key>
+            <array>
+                <string>com.apple.dt.unit.commandLineTool</string> <!-- Identifier can find in any TemplateInfo.plist -->
+            </array>
+        <key>Concrete</key> <!-- YES - Visible on New Project Wizard Window  -->
+            <true/>
+        <key>Description</key>
+            <string>This is an Command Line Tools from standart Command Line Tools Template.</string> <!-- Description about Template -->
+        <key>Identifier</key>
+            <string>com.apple.dt.unit.ycmd</string> <!-- Identifier unique template Identifier. Must be in all Templates -->
+        <key>Kind</key>
+            <string>Xcode.Xcode3.ProjectTemplateUnitKind</string> <!-- Kind Must be in all Templates. For Project Template: "Xcode.Xcode3.ProjectTemplateUnitKind", File Template: "Xcode.IDEKit.TextSubstitutionFileTemplateKind" -->
+    </dict>
+</plist>
+
+
+
+
+-- 2 -- Concrete -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+# Required to be: RECOMMENDED
+
+YES if Template don't have Ancestors, and have Configuration for Project Wizard.
+NO then Tempalate is only base configuration, then this template hidden from Project Wizard.
+
+<key>Concrete</key>
+    <true/>
+
+
+
+
+-- 3 -- Definitions -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+# Required to be: NO
+
+It's works with XCode Project Workspace and "Nodes" Key together. Explaine in examples:
+
+a) Write somebody to files. etc. to source file write comments, source code, or include directories. 
+b) Create Groups from files or folder in XCode Workplace.
+
+
+Example:
+
+<!-- Definitions Begin -->
+<key>Definitions</key>
+    <dict>
+
+        <key>*:comment</key>
+            <string># ___PACKAGENAME___.s</string> <!-- Write String to File from "Nodes" key there is ":comment" after any file name.  -->
+        <key>*:content</key> <!-- Write String to File from "Nodes" key there is ":content" after any file name.  -->
+            <string>...Example source code past here...</string>
+
+        <key>info.txt</key>
+            <dict>
+                <key>Group</key> <!-- Create Group "Supporting Files" for file "info.txt" in XCode Project Workspace. -->
+                    <string>Supporting Files</string> <!-- Group Name -->
+                <key>Path</key>
+                    <string>info.txt</string> <!-- Directory to file -->
+            </dict>
+
+    </dict>
+<!-- Definitions End -->
+
+
+<!-- Nodes Begin -->
+<key>Nodes</key>
+    <array>
+        <string>___PACKAGENAME___.s:comment</string> <!-- Copy File from Project Template or Create New File if not exist and after file name ":comment" means that need include string from "Definitions" key "*:comment" -->
+        <string>___PACKAGENAME___.s:content</string> <!-- Now include string from "Definitions" key "*:content" -->
+        <string>info.txt</string> <!-- Copy File, Folder, Subfolder or Create if not exist. -->
+    </array>
+<!-- Nodes End -->
+
+
+
+
+-- 4 -- Description -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+# Required to be: RECOMMENDED
+
+Need to Project Wizard, description about Template.
+
+
+Example:
+
+<key>Description</key>
+    <string>Description text.</string>
+
+
+
+
+-- 5 -- Identifier -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+# Required to be: YES
+
+Unique Template ID. "com.Example.assemblerCommandLineTools" or "com.Example.dt.unit.assemblerCommandLineTools"
+
+
+Examples:
+
+<key>Identifier</key>
+    <string>com.Example.dt.unit.assemblerCommandLineTools</string>
+
+
+
+
+-- 6 -- Kind -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+# Required to be: YES
+
+a) For Project Template Use: "Xcode.Xcode3.ProjectTemplateUnitKind"
+b) For File Template Use: "Xcode.IDEKit.TextSubstitutionFileTemplateKind"
+
+
+Example:
+
+<key>Kind</key>
+    <string>Xcode.Xcode3.ProjectTemplateUnitKind</string>
+
+
+
+
+-- 7 -- Nodes -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+# Required to be: RECOMMENDED
+
+Nodes Create or Copy Files (Copy files only works with "Definitions" key) to you Project.
+
+
+Examples:
+<!-- (Create File ___PACKAGENAME___.s Begin) -->
+<key>Nodes</key>
+    <array>
+        <string>___PACKAGENAME___.s</string>
+    </array>
+<!-- (Create File ___PACKAGENAME___.s End) -->
+
+
+
+Example2:
+<!-- (Copy File info.txt Begin) -->
+<key>Definitions</key>
+    <dict>
+        <key>info.txt</key>
+            <dict>
+                <key>Path</key>
+                    <string>info.txt</string>
+            </dict>
+    </dict>
+
+
+<key>Nodes</key>
+    <array>
+        <string>info.txt</string>
+    </array>
+<!-- (Copy File info.txt End) -->
+
+
+
+
+-- 8 -- Options -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+# Required to be: RECOMMENDED
+
+If Create project without Ancestors who have Options Key then Required.
+With Options key customize New Poject Wizard Window add Combo Box, Text Field...
+
+Can works together with Definitions key.
+
+
+Example:
+
+<key>Options</key>
+    <array>
+        
+        <!-- Text Field (For Project Name) Begin -->
+        <dict>
+            <key>Description</key>
+                <string>Your new product's name.</string>
+            <key>EmptyReplacement</key>
+                <string>ProductName</string>
+            <key>Identifier</key>
+                <string>productName</string>
+            <key>Name</key>
+                <string>Product Name</string>
+            <key>NotPersisted</key>
+                <true/>
+            <key>Required</key>
+                <true/>
+            <key>Type</key>
+                <string>text</string>
+        </dict>
+        <!-- Text Field End -->
+        
+        
+        <!-- Combo Box (Create Node Key for Add New File) -->
+        <dict>
+            <key>Description</key>
+                <string>Description</string>
+            <key>Identifier</key>
+                <string>ExampleNewFile</string>
+            <key>Name</key>
+                <string>Select File to Create</string>
+            <key>NotPersisted</key>
+                <true/>
+            <key>Placeholder</key>
+                <string>None</string>
+            <key>SpecialType</key>
+                <string></string>
+            <key>Type</key>
+                <string>popup</string>
+            <key>Units</key>
+            <dict>
+                <key>example.txt</key>
+                <array>
+                    <dict>
+                        <key>Nodes</key>
+                        <array>
+                            <string>example.txt</string>
+                        </array>
+                    </dict>
+                </array>
+            </dict>
+        </dict>
+        <!-- Combo Box End -->
+        
+    </array>
+
+
+
+
+-- 9 -- Platforms -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+# Required to be: RECOMMENDED
+
+
+Example:
+
+<key>Platforms</key>
+    <array>
+        <string>com.apple.platform.macosx</string>
+    </array>
+
+
+
+
+-- 10 -- Project -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+# Required to be: YES
+
+Set Build Settings for Project. All strings can find in Create Standart Template: --> Select Project Editor then Build Settings.
+
+
+Example1 (Minimum):
+
+<!-- Minimum Project Begin -->
+<key>Project</key>
+<dict>
+    <key>Configurations</key>
+    <dict>
+        <key>Debug</key>
+        <dict/>
+        <key>Release</key>
+        <dict/>
+    </dict>
+    <key>SDK</key>
+    <string>macosx</string>
+    <key>SharedSettings</key>
+    <dict/>
+</dict>
+<!-- Minimum Project End -->
+
+
+Example2 (With user Configurations):
+
+<!-- Project Configurations Begin -->
+<key>Project</key>
+<dict>
+    <key>Configurations</key>
+    <dict>
+        <key>Debug</key>
+        <dict>
+            <key>ONLY_ACTIVE_ARCH</key>
+            <string>YES</string>
+        </dict>
+        <key>Release</key>
+        <dict/>
+    </dict>
+    <key>SDK</key>
+    <string>macosx</string>
+    <key>SharedSettings</key> <!-- Set Build Settings for Project. All Strings can find in Standart Template: Select Project Editor then Build Settings. -->
+    <dict>
+        <key>GCC_VERSION</key> <!-- Set Compiler version to GCC 4.2 -->
+        <string>4.2</string>
+    </dict>
+</dict>
+<!-- Project Configurations End -->
+
+
+
+
+-- 11 -- Targets -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+# Required to be: RECOMMENDED
+
+a) Set Build Settings, Build Phases for Targets.
+b) Link With Libraries, Frameworks.
+
+
+Example:
+
+<key>Targets</key>
+<array>
+    <dict>
+        <key>BuildPhases</key> <!-- Create Standart Template:  Select Project Editor then Build Phases. -->
+        <array>
+            <dict>
+                <key>Class</key>
+                <string>Sources</string> <!-- Add Build Phase Compile Source -->
+            </dict>
+            <dict>
+                <key>Class</key>
+                <string>Frameworks</string> <!-- Add Build Phase Link Binary With Libraries -->
+            </dict>
+            <dict>
+                <key>Class</key>
+                <string>CopyFiles</string> <!-- Add Build Phase Copy File -->
+                <key>DstPath</key>
+                <string>/usr/share/man/man1/</string>
+                <key>DstSubfolderSpec</key>
+                <string>0</string>
+                <key>RunOnlyForDeploymentPostprocessing</key>
+                <string>YES</string>
+            </dict>
+        </array>
+        <key>Configurations</key> <!-- Target Configuration -->
+        <dict>
+            <key>Debug</key>
+            <dict>
+                <key>COPY_PHASE_STRIP</key>
+                <string>NO</string>
+                <key>GCC_DYNAMIC_NO_PIC</key>
+                <string>NO</string>
+            </dict>
+            <key>Release</key>
+            <dict>
+                <key>COPY_PHASE_STRIP</key>
+                <string>YES</string>
+                <key>DEBUG_INFORMATION_FORMAT</key>
+                <string>dwarf-with-dsym</string>
+            </dict>
+        </dict>
+        <key>Frameworks</key>
+        <array>
+            <string>Foundation</string> <!-- Add to Project Foundation Frameworks and Link With Binary -->
+        </array>
+        <key>Name</key>
+        <string>___PACKAGENAME___</string> <!-- Package Name. -->
+        <key>OtherFrameworks</key> <!-- Other Frameworks: Add to Project AppKit, CoreData, Cocoa Frameworks, but don't Link with Binary. -->
+        <array>
+            <string>AppKit</string>
+            <string>CoreData</string>
+            <string>Cocoa</string>
+        </array>
+        <key>ProductType</key>
+        <string>com.apple.product-type.tool</string> <!-- must be com.apple.product-type.tool -->
+        <key>SharedSettings</key> <!-- Set Settings for Target. -->
+        <dict>
+            <key>ALWAYS_SEARCH_USER_PATHS</key>
+            <string>YES</string>
+            <key>GCC_ENABLE_OBJC_EXCEPTIONS</key>
+            <string>YES</string>
+            <key>PRODUCT_NAME</key>
+            <string>$(TARGET_NAME)</string>
+        </dict>
+    </dict>
+</array>
+
+
+
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
