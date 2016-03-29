@@ -77,21 +77,21 @@
 		234ECBF11C747FE800135CF9 /* Tapptitude */ = {
 			isa = PBXGroup;
 			children = (
+				235500A31CA4569200D7B393 /* DataSourceProtocol.swift */,
 				235500991CA4569200D7B393 /* DataSource.swift */,
 				2355009A1CA4569200D7B393 /* CollectionCellControllerProtocol.swift */,
-				2355009B1CA4569200D7B393 /* CollectionFeedController.swift */,
-				2355009C1CA4569200D7B393 /* MultiCollectionCellController.swift */,
 				2355009D1CA4569200D7B393 /* CollectionCellController.swift */,
-				2355009E1CA4569200D7B393 /* PaginatedDataFeed.swift */,
+				2355009C1CA4569200D7B393 /* MultiCollectionCellController.swift */,
+				235500A11CA4569200D7B393 /* DataFeedProtocol.swift */,
 				2355009F1CA4569200D7B393 /* DataFeed.swift */,
 				235500A01CA4569200D7B393 /* SimpleDataFeed.swift */,
-				235500A11CA4569200D7B393 /* DataFeedProtocol.swift */,
+				2355009E1CA4569200D7B393 /* PaginatedDataFeed.swift */,
 				235500A21CA4569200D7B393 /* CollectionFeedViewController.swift */,
-				235500A31CA4569200D7B393 /* DataSourceProtocol.swift */,
+				2355009B1CA4569200D7B393 /* CollectionFeedController.swift */,
+				235500A71CA4569200D7B393 /* CollectionFeedController.xib */,
 				235500A41CA4569200D7B393 /* CollectionViewAnimatedUpdater.swift */,
 				235500A51CA4569200D7B393 /* LoadMoreView.xib */,
 				235500A61CA4569200D7B393 /* LoadMoreView.swift */,
-				235500A71CA4569200D7B393 /* CollectionFeedController.xib */,
 				235500A81CA4569200D7B393 /* Info.plist */,
 				235500A91CA4569200D7B393 /* tapptitude-swift.h */,
 			);
