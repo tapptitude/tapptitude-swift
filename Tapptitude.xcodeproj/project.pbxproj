@@ -22,7 +22,6 @@
 		235500B61CA4569200D7B393 /* LoadMoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 235500A51CA4569200D7B393 /* LoadMoreView.xib */; };
 		235500B71CA4569200D7B393 /* LoadMoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235500A61CA4569200D7B393 /* LoadMoreView.swift */; };
 		235500B81CA4569200D7B393 /* CollectionFeedController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 235500A71CA4569200D7B393 /* CollectionFeedController.xib */; };
-		235500B91CA4569200D7B393 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 235500A81CA4569200D7B393 /* Info.plist */; };
 		235500BA1CA4569200D7B393 /* tapptitude-swift.h in Headers */ = {isa = PBXBuildFile; fileRef = 235500A91CA4569200D7B393 /* tapptitude-swift.h */; };
 /* End PBXBuildFile section */
 
@@ -170,7 +169,6 @@
 			files = (
 				235500B61CA4569200D7B393 /* LoadMoreView.xib in Resources */,
 				235500B81CA4569200D7B393 /* CollectionFeedController.xib in Resources */,
-				235500B91CA4569200D7B393 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
