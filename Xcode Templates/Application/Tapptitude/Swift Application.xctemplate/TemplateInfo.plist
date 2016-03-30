@@ -32,12 +32,12 @@
 								<key>Debug</key>
 								<dict>
 									<key>OTHER_SWIFT_FLAGS</key>
-									<string>$(inherited) -DDEBUG</string>
+									<string>$(inherited) -DDEV</string>
 								</dict>
 								<key>Release</key>
 								<dict>
 									<key>OTHER_SWIFT_FLAGS</key>
-									<string>$(inherited) -DRELEASE</string>
+									<string>$(inherited) -DAPPSTORE</string>
 								</dict>
 							</dict>
 							<key>BuildPhases</key>

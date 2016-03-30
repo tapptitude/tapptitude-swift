@@ -9,10 +9,10 @@
 import Foundation
 
 struct Constants {
-    #if RELEASE
+    #if APPSTORE
     static let API_URL = "your api url"
     static let API_KEY = "your api key"
-    #elseif DEBUG
+    #elseif DEV
     static let API_URL = "your api url"
     static let API_KEY = "your api key"
     #endif
