@@ -124,6 +124,10 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         }
     }
     
+    public var dataSourceMutable: TTDataSourceMutable? {
+        return dataSource as? TTDataSourceMutable
+    }
+    
     public var cellController: TTCollectionCellControllerProtocol! {
         willSet {
             cellController?.parentViewController = nil

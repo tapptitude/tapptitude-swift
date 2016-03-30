@@ -45,7 +45,7 @@ protocol TTCollectionFeedControllerMutable : class {
 }
 
 extension TTCollectionFeedControllerMutable {
-    var dataSourceMutable: TTDataSourceMutable? {
+    public var dataSourceMutable: TTDataSourceMutable? {
         return dataSource as? TTDataSourceMutable
     }
 }
