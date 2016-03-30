@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class CollectionFeedController: UIViewController, TTCollectionFeedController, TTCollectionFeedControllerMutable {
+public class CollectionFeedController: UIViewController, TTCollectionFeedController, TTCollectionFeedControllerMutable, TTDataFeedDelegate, TTDataSourceDelegate, TTDataSourceIncrementalChangesDelegate, UIViewControllerPreviewingDelegate {
     public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
@@ -370,11 +370,11 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         }
     }
     private var animatedUpdater: CollectionViewAnimatedUpdater?
-}
-
-
-//MARK: Data Feed -
-extension CollectionFeedController : TTDataFeedDelegate {
+//}
+//
+//
+////MARK: Data Feed -
+//extension CollectionFeedController : TTDataFeedDelegate {
     public func dataFeed(dataFeed: TTDataFeed?, failedWithError error: NSError) {
         refreshControl?.endRefreshing()
     }
@@ -399,11 +399,11 @@ extension CollectionFeedController : TTDataFeedDelegate {
         updateCanShowLoadMoreViewAnimated(true)
         updateEmptyViewAppearenceAnimated(true)
     }
-}
-
-
-
-extension CollectionFeedController : TTDataSourceDelegate {
+//}
+//
+//
+//
+//extension CollectionFeedController : TTDataSourceDelegate {
     public func dataSourceDidReloadContent(dataSource: TTDataSource) {
         reloadDataOnCollectionView()
     }
@@ -411,10 +411,10 @@ extension CollectionFeedController : TTDataSourceDelegate {
     public func dataSourceDidLoadMoreContent(dataSource: TTDataSource) {
         reloadDataOnCollectionView()
     }
-}
-
+//}
+//
 // MARK: Incremental Changes on Data source
-extension CollectionFeedController : TTDataSourceIncrementalChangesDelegate {
+//extension CollectionFeedController : TTDataSourceIncrementalChangesDelegate {
     public func dataSourceWillChangeContent(dataSource: TTDataSource) {
         animatedUpdater?.collectionViewWillChangeContent(collectionView!)
     }
@@ -456,10 +456,10 @@ extension CollectionFeedController : TTDataSourceIncrementalChangesDelegate {
     public func dataSource(dataSource: TTDataSource, didUpdateSections updatedSections: NSIndexSet) {
         animatedUpdater?.collectionView(collectionView!, didUpdateSections: updatedSections)
     }
-}
-
+//}
+//
 // MARK: Data Source -
-extension CollectionFeedController : UICollectionViewDataSource {
+//extension CollectionFeedController : UICollectionViewDataSource {
     
     public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         guard let dataSource = self.dataSource else {
@@ -552,12 +552,12 @@ extension CollectionFeedController : UICollectionViewDataSource {
     public func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         cell.parentViewController = nil
     }
-}
-
-
-
+//}
+//
+//
+//
 // MARK: Did Select -
-extension CollectionFeedController {
+//extension CollectionFeedController {
     public func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let content = dataSource!.objectAtIndexPath(indexPath)
         cellController.didSelectContent(content, indexPath: indexPath, collectionView: collectionView)
@@ -572,10 +572,10 @@ extension CollectionFeedController {
 //
 //        return true
 //    }
-}
-
+//}
+//
 // MARK: Layout Size -
-extension CollectionFeedController {
+//extension CollectionFeedController {
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         let content = dataSource!.objectAtIndexPath(indexPath)
         let size = cellController.cellSizeForContent(content, collectionView: collectionView)
@@ -613,10 +613,10 @@ extension CollectionFeedController {
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
         return ((canShowLoadMoreView && shouldShowLoadMoreForSection(section)) ? CGSizeMake(30, 40) : CGSizeZero)
     }
-}
-
+//}
+//
 //MARK: ForceTouch Delegate
-extension CollectionFeedController : UIViewControllerPreviewingDelegate {
+//extension CollectionFeedController : UIViewControllerPreviewingDelegate {
     @available(iOS 9.0, *)
     public func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
         let point = collectionView!.convertPoint(location, fromView: self.view)

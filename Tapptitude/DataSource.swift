@@ -25,7 +25,7 @@ public protocol TTDataSourceIncrementalChangesDelegate {
 
 
 
-public class DataSource : TTDataSource, TTDataFeedDelegate {
+public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable {
     lazy private var _content : [Any] = [Any]()
     
     public init(_ content : [Any]) {
@@ -172,11 +172,11 @@ public class DataSource : TTDataSource, TTDataFeedDelegate {
             delegate.dataFeed(dataFeed, isLoadingMore: isLoadingMore)
         }
     }
-}
-
-
-
-extension DataSource : TTDataSourceMutable {
+//}
+//
+//
+//
+//extension DataSource : TTDataSourceMutable {
     
     private func editContentWithBlock(editBlock: ( inout content : [Any], delegate: TTDataSourceIncrementalChangesDelegate?)->Void) {
         let incrementalUpdates = delegate is TTDataSourceIncrementalChangesDelegate
