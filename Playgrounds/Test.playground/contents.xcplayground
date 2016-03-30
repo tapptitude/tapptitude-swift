@@ -3,8 +3,9 @@
     <pages>
         <page name='Cell Controller Block'/>
         <page name='Mutable Data Source'/>
-        <page name='Compile xibs'/>
         <page name='Expand cell'/>
         <page name='Multi Cell Controller'/>
+        <page name='Hybrid Controller &amp; DataSource'/>
+        <page name='Compile xibs - ToDo'/>
     </pages>
 </playground>

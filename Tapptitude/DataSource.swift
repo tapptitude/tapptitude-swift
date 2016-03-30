@@ -8,8 +8,24 @@
 
 import Foundation
 
+public protocol TTDataSourceIncrementalChangesDelegate {
+    func dataSourceWillChangeContent(dataSource: TTDataSource)
+    
+    func dataSource(dataSource: TTDataSource, didUpdateItemsAtIndexPaths indexPaths: [NSIndexPath])
+    func dataSource(dataSource: TTDataSource, didDeleteItemsAtIndexPaths indexPaths: [NSIndexPath])
+    func dataSource(dataSource: TTDataSource, didInsertItemsAtIndexPaths indexPaths: [NSIndexPath])
+    func dataSource(dataSource: TTDataSource, didMoveItemsAtIndexPaths fromIndexPaths: [NSIndexPath], toIndexPaths: [NSIndexPath])
+    
+    func dataSource(dataSource: TTDataSource, didInsertSections addedSections: NSIndexSet)
+    func dataSource(dataSource: TTDataSource, didDeleteSections deletedSections: NSIndexSet)
+    func dataSource(dataSource: TTDataSource, didUpdateSections updatedSections: NSIndexSet)
+    
+    func dataSourceDidChangeContent(dataSource: TTDataSource)
+}
 
-public class DataSource : TTDataSource {
+
+
+public class DataSource : TTDataSource, TTDataFeedDelegate {
     lazy private var _content : [Any] = [Any]()
     
     public init(_ content : [Any]) {
@@ -77,26 +93,11 @@ public class DataSource : TTDataSource {
     }
     
     public var dataSourceID : String?
-}
-
-
-public protocol TTDataSourceIncrementalChangesDelegate {
-    func dataSourceWillChangeContent(dataSource: TTDataSource)
     
-    func dataSource(dataSource: TTDataSource, didUpdateItemsAtIndexPaths indexPaths: [NSIndexPath])
-    func dataSource(dataSource: TTDataSource, didDeleteItemsAtIndexPaths indexPaths: [NSIndexPath])
-    func dataSource(dataSource: TTDataSource, didInsertItemsAtIndexPaths indexPaths: [NSIndexPath])
-    func dataSource(dataSource: TTDataSource, didMoveItemsAtIndexPaths fromIndexPaths: [NSIndexPath], toIndexPaths: [NSIndexPath])
+//}
+//
+//extension DataSource : TTDataFeedDelegate {
     
-    func dataSource(dataSource: TTDataSource, didInsertSections addedSections: NSIndexSet)
-    func dataSource(dataSource: TTDataSource, didDeleteSections deletedSections: NSIndexSet)
-    func dataSource(dataSource: TTDataSource, didUpdateSections updatedSections: NSIndexSet)
-    
-    func dataSourceDidChangeContent(dataSource: TTDataSource)
-}
-
-
-extension DataSource : TTDataFeedDelegate {
     public func dataFeed(dataFeed: TTDataFeed?, failedWithError error: NSError) {
         if let delegate = delegate as? TTDataFeedDelegate {
             delegate.dataFeed(dataFeed, failedWithError: error)

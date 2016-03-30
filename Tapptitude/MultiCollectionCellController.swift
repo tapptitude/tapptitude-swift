@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class MultiCollectionCellController {
+public class MultiCollectionCellController: TTCollectionCellControllerProtocol {
     public init (_ cellControllers: [TTCollectionCellControllerProtocol]) {
         self.cellControllers = cellControllers
     }
@@ -27,7 +27,7 @@ public class MultiCollectionCellController {
         }
     }
     
-    private var previousCellController: TTCollectionCellControllerProtocol?
+    private var previousCellController: TTCollectionCellControllerProtocol? // TODO: check if we should use weak
     
     
     public func controllerForContent(content: Any) -> TTCollectionCellControllerProtocol? {
@@ -67,9 +67,9 @@ public class MultiCollectionCellController {
     public var minimumInteritemSpacing : CGFloat {
         return 0.0
     }
-}
-
-extension MultiCollectionCellController: TTCollectionCellControllerProtocol {
+//}
+//
+//extension MultiCollectionCellController: TTCollectionCellControllerProtocol {
     public func acceptsContent(content: Any) -> Bool {
         return controllerForContent(content) != nil
     }
