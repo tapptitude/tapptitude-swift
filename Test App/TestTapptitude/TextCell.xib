@@ -14,9 +14,9 @@
                 <rect key="frame" x="0.0" y="0.0" width="184" height="50"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Y1Q-S4-15l">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Y1Q-S4-15l">
                         <rect key="frame" x="8" y="14" width="168" height="21"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
@@ -28,7 +28,7 @@
             <connections>
                 <outlet property="label" destination="Y1Q-S4-15l" id="H1G-ey-r1B"/>
             </connections>
-            <point key="canvasLocation" x="509" y="191"/>
+            <point key="canvasLocation" x="214" y="190"/>
         </collectionViewCell>
     </objects>
 </document>

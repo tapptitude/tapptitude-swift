@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class CollectionCellController<ObjectClass, CellName> : TTCollectionCellController {
+public class CollectionCellController<ObjectClass, CellName: UICollectionViewCell> : TTCollectionCellController, TTCollectionCellControllerSize {
     public typealias ObjectType = ObjectClass
     public typealias CellType = CellName
     
@@ -40,5 +40,28 @@ public class CollectionCellController<ObjectClass, CellName> : TTCollectionCellC
     
     public func didSelectContent(content: ObjectType, indexPath: NSIndexPath, collectionView: UICollectionView) {
         didSelectContent?(content: content, indexPath: indexPath, collectionView: collectionView)
+    }
+    
+    
+    var _sizeCalculationCell: CellType!
+    
+    public var sizeCalculationCell: CellType! {
+        if _sizeCalculationCell == nil {
+            let sizeCalculationCell = NSBundle.mainBundle().loadNibNamed(self.reuseIdentifier, owner: nil, options: nil).last as! CellType
+            
+            let deviceWidth = UIScreen.mainScreen().bounds.size.width
+            let cellWidth = sizeCalculationCell.frame.size.width
+            if (cellWidth == 320.0 && deviceWidth != cellWidth) {
+                var frame = sizeCalculationCell.frame
+                frame.size.width = deviceWidth
+                sizeCalculationCell.frame = frame
+                sizeCalculationCell.contentView.frame = frame
+                sizeCalculationCell.layoutIfNeeded()
+            }
+            
+            _sizeCalculationCell = sizeCalculationCell
+        }
+        
+        return _sizeCalculationCell!
     }
 }

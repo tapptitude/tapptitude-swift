@@ -12,7 +12,7 @@ import Tapptitude
 class TextCellController : CollectionCellController<String, TextCell> {
     
     init() {
-        super.init(cellSize: CGSize(width: 100, height: 100))
+        super.init(cellSize: CGSize(width: 200, height: 100))
         minimumInteritemSpacing = 20
         minimumLineSpacing = 10
     }
@@ -20,5 +20,9 @@ class TextCellController : CollectionCellController<String, TextCell> {
     override func configureCell(cell: CellType, forContent content: ObjectType, indexPath: NSIndexPath) {
         cell.label.text = content
         cell.backgroundColor = UIColor.redColor()
+    }
+    
+    override func cellSizeForContent(content: ObjectType, collectionView: UICollectionView) -> CGSize {
+        return self.cellSizeToFitText(content, forCellLabelKeyPath: "label")
     }
 }

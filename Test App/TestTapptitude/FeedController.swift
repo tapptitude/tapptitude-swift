@@ -54,7 +54,7 @@ class FeedController: CollectionFeedController {
 //            })
 //        }
         
-        let items = NSArray(arrayLiteral: "Maria", 123)
+        let items = NSArray(arrayLiteral: "Why Algorithms as Microservices are Changing Software Development\n We recently wrote about how the Algorithm Economy and containers have created a fundamental shift in software development. Today, we want to look at the 10 ways algorithms as microservices change the way we build and deploy software.", 123)
         let dataSource = DataSource(items)
 //        dataSource.feed = PaginatedDataFeed(loadPage: { (offset, limit, callback) -> TTCancellable? in
 //            return APIPaginatedMock(offset: offset, limit: limit, callback: callback)

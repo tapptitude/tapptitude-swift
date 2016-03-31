@@ -41,7 +41,7 @@ public protocol TTCollectionCellControllerProtocolExtended {
 
 public protocol TTCollectionCellController : TTCollectionCellControllerProtocol {
     associatedtype ObjectType
-    associatedtype CellType
+    associatedtype CellType: UICollectionViewCell
     
     func classToInstantiateCellForContent(content: ObjectType) -> AnyClass?
     func nibToInstantiateCellForContent(content: ObjectType) -> UINib?
@@ -58,15 +58,81 @@ public protocol TTCollectionCellController : TTCollectionCellControllerProtocol 
     func minimumInteritemSpacingForContent(content: ObjectType, collectionView: UICollectionView) -> CGFloat
 }
 
-protocol TTCollectionCellControllerSize : TTCollectionCellController {
-    func sizeCalculationCell() -> CellType
+public protocol TTCollectionCellControllerSize: TTCollectionCellController {
+    var sizeCalculationCell: CellType! {get}
     
-    // TODO: implement size calculation
     func cellSizeToFitText(text: String, forCellLabelKeyPath labelKeyPath: String, maxSize: CGSize) -> CGSize
-    func cellSizeToFitText(text: String, forCellLabelKeyPath labelKeyPath: String) -> CGSize // stretch height to max 1024 (label)
+    func cellSizeToFitText(text: String, forCellLabelKeyPath labelKeyPath: String) -> CGSize // stretch height to max 2040 (label)
     
     func cellSizeToFitAttributedText(text: NSAttributedString, forCellLabelKeyPath labelKeyPath: String, maxSize: CGSize) -> CGSize
     func cellSizeToFitAttributedText(text: NSAttributedString, forCellLabelKeyPath labelKeyPath: String) -> CGSize
+}
+
+extension TTCollectionCellControllerSize {
+    public func cellSizeToFitText(text: String, forCellLabelKeyPath labelKeyPath: String, maxSize: CGSize) -> CGSize {
+        var size = sizeCalculationCell.bounds.size
+        let label: UILabel = sizeCalculationCell.valueForKeyPath(labelKeyPath) as! UILabel
+        var maxSize = maxSize
+        
+        label.text = text;
+        
+        if (maxSize.width < 0) {
+            assert(label.lineBreakMode == .ByWordWrapping, "Label line break mode should be NSLineBreakByWordWrapping")
+            assert(label.numberOfLines != 1, "Label number of lines should be set to 0")
+            maxSize.width = label.bounds.size.width
+            let  newLabelSize = label.sizeThatFits(maxSize)
+            size.height += newLabelSize.height - label.bounds.size.height
+            size.width = cellSize.width
+        } else if (maxSize.height < 0) {
+            maxSize.height = label.bounds.size.height
+            let newLabelSize = label.sizeThatFits(maxSize)
+            size.width += newLabelSize.width - label.bounds.size.width
+            size.height = cellSize.height;
+        }
+        
+        return size;
+    }
+    
+    public func cellSizeToFitText(text: String, forCellLabelKeyPath labelKeyPath: String) -> CGSize { // stretch height to max 2040 (label)
+        return cellSizeToFitText(text, forCellLabelKeyPath: labelKeyPath, maxSize: CGSizeMake(-1, 2040))
+    }
+    
+    public func cellSizeToFitAttributedText(text: NSAttributedString, forCellLabelKeyPath labelKeyPath: String, maxSize: CGSize) -> CGSize {
+        var size = sizeCalculationCell.bounds.size
+        let label: UILabel = sizeCalculationCell.valueForKeyPath(labelKeyPath) as! UILabel
+        var maxSize = maxSize
+        
+        label.attributedText = text;
+        
+        if (maxSize.width < 0) {
+            assert(label.lineBreakMode == .ByWordWrapping, "Label line break mode should be NSLineBreakByWordWrapping")
+            maxSize.width = label.bounds.size.width
+            let newLabelSize = label.sizeThatFits(maxSize)
+            size.height += newLabelSize.height - label.bounds.size.height
+            size.width = cellSize.width
+        } else if (maxSize.height < 0) {
+            maxSize.height = label.bounds.size.height
+            let newLabelSize = label.sizeThatFits(maxSize)
+            size.width += newLabelSize.width - label.bounds.size.width
+            size.height = cellSize.height;
+        } else {
+            assert(label.lineBreakMode == .ByWordWrapping, "Label line break mode should be NSLineBreakByWordWrapping")
+            var frame = sizeCalculationCell.frame
+            frame.size.width = maxSize.width
+            sizeCalculationCell.frame = frame
+            self.sizeCalculationCell.layoutSubviews()
+            maxSize.width = label.bounds.size.width
+            let newLabelSize = label.sizeThatFits(maxSize)
+            size.height += newLabelSize.height - label.bounds.size.height
+            size.width = cellSize.width
+        }
+        
+        return size;
+    }
+    
+    public func cellSizeToFitAttributedText(text: NSAttributedString, forCellLabelKeyPath labelKeyPath: String) -> CGSize {
+        return cellSizeToFitAttributedText(text, forCellLabelKeyPath: labelKeyPath, maxSize: CGSizeMake(-1, 2040))
+    }
 }
 
 
