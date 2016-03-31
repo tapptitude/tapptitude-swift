@@ -26,9 +26,6 @@ class TextCell : UICollectionViewCell {
 var counter = 3;
 
 class EditViewController: CollectionFeedController {
-    var dataSourceMutable: TTDataSourceMutable? {
-        return dataSource as? TTDataSourceMutable
-    }
     
     convenience init() {
         self.init(nibName: "EditViewController", bundle: nil);
