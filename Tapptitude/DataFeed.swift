@@ -34,6 +34,11 @@ public class DataFeed<T>: TTDataFeed {
     internal var executingReloadOperation: TTCancellable?;
     internal var executingLoadMoreOperation: TTCancellable?;
     
+    deinit {
+        executingReloadOperation?.cancel()
+        executingLoadMoreOperation?.cancel()
+    }
+    
     //Mark: re-update content
     public var enableReloadAfterXSeconds = 5 * 60.0
     public var lastReloadDate : NSDate?

@@ -17,7 +17,7 @@ public class PaginatedDataFeed<T>: DataFeed<T> {
     
     public var enableLoadMoreOnlyForCompletePage = true
     
-    init(loadPage: (offset:Int, limit:Int, callback:TTCallback<T>.Signature) -> TTCancellable?) {
+    public init(loadPage: (offset:Int, limit:Int, callback:TTCallback<T>.Signature) -> TTCancellable?) {
         self.loadPageOperation = loadPage
     }
     
@@ -52,7 +52,7 @@ public class PaginatedDataFeed<T>: DataFeed<T> {
 }
 
 extension DataSource {
-    convenience init<T>(pageSize:Int, loadPage: (offset:Int, limit:Int, callback:TTCallback<T>.Signature) -> TTCancellable?) {
+    public convenience init<T>(pageSize:Int, loadPage: (offset:Int, limit:Int, callback:TTCallback<T>.Signature) -> TTCancellable?) {
         self.init()
         let feed = PaginatedDataFeed(loadPage: loadPage)
         feed.limit = pageSize
@@ -69,7 +69,7 @@ public class PaginatedOffsetDataFeed<T, OffsetType> : DataFeed<T> {
     
     private var loadPageNextOffsetOperation: (offset: OffsetType?, limit:Int, callback: TTCallbackNextOffset<T, OffsetType>.Signature) -> TTCancellable? // next page offset is given by backend
     
-    init(loadPage: (offset:OffsetType?, limit:Int, callback:TTCallbackNextOffset<T, OffsetType>.Signature) -> TTCancellable?) {
+    public init(loadPage: (offset:OffsetType?, limit:Int, callback:TTCallbackNextOffset<T, OffsetType>.Signature) -> TTCancellable?) {
         self.loadPageNextOffsetOperation = loadPage
     }
     

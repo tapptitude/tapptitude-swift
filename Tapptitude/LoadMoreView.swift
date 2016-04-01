@@ -12,10 +12,10 @@ public class LoadMoreView : UICollectionReusableView {
     
     @IBOutlet weak public var loadingView: UIActivityIndicatorView?
     
-    func startAnimating() {
+    public func startAnimating() {
         loadingView?.startAnimating()
     }
-    func stopAnimating() {
+    public func stopAnimating() {
         loadingView?.stopAnimating()
     }
     
