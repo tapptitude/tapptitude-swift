@@ -462,6 +462,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
 //extension CollectionFeedController : UICollectionViewDataSource {
     
     public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        assert(cellController != nil, "cellController is nil, please do self.cellController = ...")
         guard let dataSource = self.dataSource else {
             return 0
         }
