@@ -13,6 +13,10 @@ struct HybridItem {
     var cellController: TTCollectionCellControllerProtocol
 }
 
+public protocol HybridCollectionCellController: TTCollectionCellControllerProtocol {
+    func mapItem(item: Any) -> [Any]
+}
+
 public class HybridDataSource : DataSource {
     let multiCellController : HybridCellController!
     
@@ -50,6 +54,11 @@ public class HybridDataSource : DataSource {
                 if cellController.acceptsContent(item) {
                     let hybridItem = HybridItem(element: item, cellController: cellController)
                     items.append(hybridItem)
+                } else if let hybridMapCellController = cellController as? HybridCollectionCellController {
+                    for newItem in hybridMapCellController.mapItem(item) {
+                        let hybridItem = HybridItem(element: newItem, cellController: cellController)
+                        items.append(hybridItem)
+                    }
                 }
             }
         }

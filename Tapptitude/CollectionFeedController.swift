@@ -77,6 +77,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     @IBOutlet public var emptyView: UIView? { //set from XIB or overwrite
         set {
             _emptyView = newValue
+            _emptyView?.removeFromSuperview()
         }
         get {
             if collectionView == nil || dataSource == nil {

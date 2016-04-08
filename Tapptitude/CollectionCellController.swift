@@ -64,4 +64,16 @@ public class CollectionCellController<ObjectClass, CellName: UICollectionViewCel
         
         return _sizeCalculationCell!
     }
+    
+    public func acceptsContent(content: Any) -> Bool {
+        if let content = content as? ObjectType {
+            return acceptsContent(content)
+        } else {
+            return false
+        }
+    }
+    
+    public func acceptsContent(content: ObjectType) -> Bool {
+        return true
+    }
 }

@@ -29,7 +29,11 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
     lazy private var _content : [Any] = [Any]()
     
     public init(_ content : [Any]) {
-        _content = content
+        _content = content.map({$0 as Any})
+    }
+    
+    public init(_ content : [AnyObject]) {
+        _content = content.map({$0 as Any})
     }
     
     public init(_ content : NSArray) {
