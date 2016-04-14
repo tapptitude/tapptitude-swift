@@ -39,7 +39,7 @@ protocol TTCollectionFeedController : class, UICollectionViewDelegateFlowLayout,
 }
 
 
-protocol TTCollectionFeedControllerMutable : class {
+public protocol TTCollectionFeedControllerMutable : class {
     var dataSource: TTDataSource? {get set}
     var dataSourceMutable: TTDataSourceMutable? {get}
 }

@@ -143,8 +143,7 @@ extension TTCollectionCellController {
     }
     
     public func classToInstantiateCellForContent(content: ObjectType) -> AnyClass? {
-        assert(CellType.self is UICollectionViewCell.Type)
-        return CellType.self as? AnyClass
+        return CellType.self
     }
     
     public func nibToInstantiateCellForContent(content: ObjectType) -> UINib? {
@@ -215,7 +214,7 @@ extension TTCollectionCellController {
     }
 }
 
-extension UICollectionViewCell {
+extension UICollectionReusableView {
     private struct AssociatedKey {
         static var viewExtension = "viewExtension"
     }

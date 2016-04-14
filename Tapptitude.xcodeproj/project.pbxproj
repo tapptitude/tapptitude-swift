@@ -26,6 +26,7 @@
 		235500BA1CA4569200D7B393 /* tapptitude-swift.h in Headers */ = {isa = PBXBuildFile; fileRef = 235500A91CA4569200D7B393 /* tapptitude-swift.h */; };
 		23C5A6F01CB82B6E00FE5152 /* FilteredDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C5A6EF1CB82B6E00FE5152 /* FilteredDataSource.swift */; };
 		23C8ADEE1CAC1D0600BC47E3 /* HybridDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C8ADED1CAC1D0600BC47E3 /* HybridDataSource.swift */; };
+		23D6608C1CBF901C0005470F /* CollectionHeaderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D6608B1CBF901C0005470F /* CollectionHeaderController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		235500A91CA4569200D7B393 /* tapptitude-swift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "tapptitude-swift.h"; path = "Tapptitude/tapptitude-swift.h"; sourceTree = SOURCE_ROOT; };
 		23C5A6EF1CB82B6E00FE5152 /* FilteredDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilteredDataSource.swift; path = Tapptitude/FilteredDataSource.swift; sourceTree = SOURCE_ROOT; };
 		23C8ADED1CAC1D0600BC47E3 /* HybridDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HybridDataSource.swift; path = Tapptitude/HybridDataSource.swift; sourceTree = SOURCE_ROOT; };
+		23D6608B1CBF901C0005470F /* CollectionHeaderController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionHeaderController.swift; path = Tapptitude/CollectionHeaderController.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +92,7 @@
 				2355009A1CA4569200D7B393 /* CollectionCellControllerProtocol.swift */,
 				2355009D1CA4569200D7B393 /* CollectionCellController.swift */,
 				2355009C1CA4569200D7B393 /* MultiCollectionCellController.swift */,
+				23D6608B1CBF901C0005470F /* CollectionHeaderController.swift */,
 				235500A11CA4569200D7B393 /* DataFeedProtocol.swift */,
 				2355009F1CA4569200D7B393 /* DataFeed.swift */,
 				235500A01CA4569200D7B393 /* SimpleDataFeed.swift */,
@@ -200,6 +203,7 @@
 				235500AC1CA4569200D7B393 /* CollectionFeedController.swift in Sources */,
 				23C8ADEE1CAC1D0600BC47E3 /* HybridDataSource.swift in Sources */,
 				235500B51CA4569200D7B393 /* CollectionViewAnimatedUpdater.swift in Sources */,
+				23D6608C1CBF901C0005470F /* CollectionHeaderController.swift in Sources */,
 				235500B01CA4569200D7B393 /* DataFeed.swift in Sources */,
 				23014FF41CBBC41B001F9DC6 /* SectionedDataSource.swift in Sources */,
 				235500B11CA4569200D7B393 /* SimpleDataFeed.swift in Sources */,

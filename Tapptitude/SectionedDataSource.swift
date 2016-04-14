@@ -69,16 +69,16 @@ public class SectionedDataSource : TTDataSource, TTDataFeedDelegate {
         //TODO: implement
         fatalError()
         
-// TODO: find a better way
-//        let index = _content.indexOf({ (searchedItem) -> Bool in
-//            return (searchedItem as Any) === object
-//        })
-//
-//        if index != nil {
-//            return NSIndexPath(forItem: index!, inSection: 0)
-//        } else {
-//            return nil
-//        }
+        // TODO: find a better way
+        //        let index = _content.indexOf({ (searchedItem) -> Bool in
+        //            return (searchedItem as Any) === object
+        //        })
+        //
+        //        if index != nil {
+        //            return NSIndexPath(forItem: index!, inSection: 0)
+        //        } else {
+        //            return nil
+        //        }
     }
     
     public var dataSourceID : String?
@@ -99,7 +99,12 @@ public class SectionedDataSource : TTDataSource, TTDataFeedDelegate {
             delegate.dataFeed(dataFeed, didReloadContent: content)
         }
         
-        _content = content != nil ? content!.map({$0 as! [Any]}) : []
+        _content.removeAll()
+        if let content = content {
+            _content = content.map({ let item = $0 as! NSArray
+                return item.map({ $0 as Any })
+            })
+        }
         
         delegate?.dataSourceDidReloadContent(self)
     }
@@ -108,6 +113,10 @@ public class SectionedDataSource : TTDataSource, TTDataFeedDelegate {
         // pass delegate message
         if let delegate = delegate as? TTDataFeedDelegate {
             delegate.dataFeed(dataFeed, didLoadMoreContent: content)
+        }
+        
+        if let content = content {
+            _content.append(content)
         }
         
         delegate?.dataSourceDidLoadMoreContent(self)

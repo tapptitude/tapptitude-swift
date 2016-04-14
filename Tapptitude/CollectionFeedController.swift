@@ -139,6 +139,23 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         }
     }
     
+    public var headerController: TTCollectionHeaderControllerProtocol? {
+        willSet {
+            headerController?.parentViewController = nil
+        }
+        didSet {
+            headerController?.parentViewController = self
+        }
+    }
+    
+    public var headerIsSticky = false {
+        didSet {
+            if #available(iOS 9.0, *) {
+                (self.collectionView?.collectionViewLayout as! UICollectionViewFlowLayout).sectionHeadersPinToVisibleBounds = headerIsSticky
+            }
+        }
+    }
+    
     public var scrollDirection: UICollectionViewScrollDirection = .Vertical {
         didSet {
             isScrollDirectionConfigured = true
@@ -531,6 +548,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
             return UICollectionReusableView()
         }
         
+        // load more
         let showLoadMore = kind == UICollectionElementKindSectionFooter && canShowLoadMoreView
         if showLoadMore {
             let reusableView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: loadMoreViewXIBName, forIndexPath: indexPath)
@@ -542,6 +560,33 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
             }
             
             return reusableView
+        }
+        
+        // header view
+        let showHeader = kind == UICollectionElementKindSectionHeader && headerController != nil
+        if showHeader {
+            let reuseIdentifier = headerController!.reuseIdentifier
+            if registeredCellIdentifiers == nil {
+                registeredCellIdentifiers = [String]()
+            }
+            
+            if registeredCellIdentifiers?.contains(reuseIdentifier) == false {
+                if let nib = headerController!.nibToInstantiate() {
+                    collectionView.registerNib(nib, forSupplementaryViewOfKind: kind, withReuseIdentifier: reuseIdentifier)
+                } else {
+                    let headerClass: AnyClass? = headerController!.classToInstantiate()
+                    collectionView.registerClass(headerClass, forSupplementaryViewOfKind: kind, withReuseIdentifier: reuseIdentifier)
+                }
+                
+                registeredCellIdentifiers?.append(reuseIdentifier)
+            }
+            
+            let headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: reuseIdentifier, forIndexPath: indexPath)
+            headerView.parentViewController = self
+            let content = dataSource.objectAtIndexPath(indexPath)
+            headerController!.configureHeader(headerView, forContent: content, indexPath: indexPath)
+            
+            return headerView
         }
         
         assert(true, "Could not show load more view -> there is some bug in dataSource implementation as we should not get here")
@@ -614,6 +659,11 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
         return ((canShowLoadMoreView && shouldShowLoadMoreForSection(section)) ? CGSizeMake(30, 40) : CGSizeZero)
+    }
+    
+    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection  section: Int) -> CGSize {
+        let showHeader = headerController != nil && self.dataSource?.numberOfRowsInSection(section) > 0
+        return (showHeader ? headerController!.headerSize : CGSizeZero)
     }
 //}
 //
