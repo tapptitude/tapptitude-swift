@@ -42,3 +42,19 @@ public protocol TTDataSourceMutable {
     
     func replaceContentAtIndexPath(indexPath: NSIndexPath, content: Any)
 }
+
+
+public protocol TTDataSourceIncrementalChangesDelegate {
+    func dataSourceWillChangeContent(dataSource: TTDataSource)
+    
+    func dataSource(dataSource: TTDataSource, didUpdateItemsAtIndexPaths indexPaths: [NSIndexPath])
+    func dataSource(dataSource: TTDataSource, didDeleteItemsAtIndexPaths indexPaths: [NSIndexPath])
+    func dataSource(dataSource: TTDataSource, didInsertItemsAtIndexPaths indexPaths: [NSIndexPath])
+    func dataSource(dataSource: TTDataSource, didMoveItemsAtIndexPaths fromIndexPaths: [NSIndexPath], toIndexPaths: [NSIndexPath])
+    
+    func dataSource(dataSource: TTDataSource, didInsertSections addedSections: NSIndexSet)
+    func dataSource(dataSource: TTDataSource, didDeleteSections deletedSections: NSIndexSet)
+    func dataSource(dataSource: TTDataSource, didUpdateSections updatedSections: NSIndexSet)
+    
+    func dataSourceDidChangeContent(dataSource: TTDataSource)
+}

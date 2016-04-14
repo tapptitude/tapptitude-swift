@@ -7,5 +7,8 @@
         <page name='Multi Cell Controller'/>
         <page name='Hybrid Controller &amp; DataSource'/>
         <page name='Compile xibs - ToDo'/>
+        <page name='JSON DataSource'/>
+        <page name='Filtered DataSource'/>
+        <page name='Sectioned DataSource'/>
     </pages>
 </playground>
