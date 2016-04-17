@@ -8,20 +8,12 @@
 
 import Foundation
 
-public enum SectionGroupBy<T, U: Hashable> {
-    public typealias Signature = T -> U
-}
-
-public enum SectionFilterBy<T> {
-    public typealias Signature = T -> Bool
-}
-
 public class GroupedByDataSource<T, U: Hashable> : SectionedDataSource<T> {
     lazy private var _ungroupedContent : [T] = [T]()
     
-    public var groupBy: SectionGroupBy<T, U>.Signature?
+    public var groupBy: (T -> U)?
     
-    public init(content: [T] = [],  groupBy: SectionGroupBy<T, U>.Signature ) {
+    public init(content: [T] = [],  groupBy: (T -> U) ) {
         let groupedContent = content.groupBy(groupBy)
         
         super.init(groupedContent)
@@ -94,19 +86,18 @@ public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         _unfilteredContent = _content
     }
     
-    var filterBy: SectionFilterBy<T>.Signature?
-    public func filterBy(filterBy: SectionFilterBy<T>.Signature?) {
-        print(filterBy)
-        self.filterBy = filterBy
+    var filter: (T -> Bool)?
+    public func filterBy(filter: (T -> Bool)?) {
+        self.filter = filter
         filterContent()
         self.delegate?.dataSourceDidReloadContent(self)
     }
     public var isFiltered: Bool {
-        return filterBy != nil
+        return filter != nil
     }
     
     func filterContent() {
-        if let filterBy = filterBy {
+        if let filterBy = filter {
             let toFilterContent = _unfilteredContent
             _content.removeAll()
             for item in toFilterContent {
