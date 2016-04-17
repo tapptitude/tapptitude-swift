@@ -8,46 +8,46 @@
 
 import Foundation
 
-public class FilteredDataSource: DataSource {
-    // setting the predicate will cause the datasource to reload
-    public var filter: ((item: Any) -> Bool)? { //pass nil to reset filter
+public class FilteredDataSource<T> : DataSource {
+
+    public init(_ content : [T]) {
+        super.init(content.convertTo())
+    }
+    
+    public var filterBy: (T -> Bool)? { //pass nil to reset filter
         didSet {
-//            if (! predicate) {
-//                if (self.originalContent) {
-//                    [super dataFeed:nil didReloadContent:self.originalContent];
-//                    self.originalContent = nil;
-//                }
-//            } else {
-//                self.originalContent = self.originalContent ? self.originalContent : [self.content mutableCopy];
-//                
-//                NSArray *filteredArray = [self.originalContent filteredArrayUsingPredicate:predicate];
-//                [super dataFeed:nil didReloadContent:filteredArray];
-//            }
+            if filterBy == nil {
+                if originalContent != nil {
+                    super.dataFeed(nil, didReloadContent: originalContent!.convertTo())
+                    originalContent = nil
+                }
+            } else {
+                originalContent = originalContent ?? content.convertTo()
+                
+                let filteredContent: [Any]? = originalContent!.filter(filterBy!).convertTo()
+                super.dataFeed(nil, didReloadContent: filteredContent)
+            }
         }
     }
     
     public var isFiltered: Bool {
-        return originalContent != nil
+        return filterBy != nil
     }
     
-    public var unfilteredContent: [Any] {
-        return originalContent ?? content
+    public var unfilteredContent: [T] {
+        return originalContent ?? content.convertTo()
     }
     
-    var originalContent: [Any]?
+    var originalContent: [T]?
 //}
 //
 //extension FilteredDataSource {
     override public func dataFeed(dataFeed: TTDataFeed?, didReloadContent content: [Any]?) {
         var content = content
+        
         if isFiltered {
-            originalContent = content
-            for item in content! {
-                if filter?(item: item) == true {
-                    
-                }
-            }
-//            content = [content filteredArrayUsingPredicate:self.predicate];
+            originalContent = content?.convertTo()
+            content = originalContent?.filter(filterBy!).convertTo()
         }
         super.dataFeed(dataFeed, didReloadContent: content)
     }
@@ -56,7 +56,7 @@ public class FilteredDataSource: DataSource {
         var content = content
         if isFiltered {
             originalContent?.appendContentsOf(content ?? [])
-//            content = [content filteredArrayUsingPredicate:self.predicate];
+            content = content?.convertTo().filter(filterBy!).convertTo()
         }
         super.dataFeed(dataFeed, didLoadMoreContent: content)
     }

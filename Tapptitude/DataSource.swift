@@ -244,3 +244,9 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
         }
     }
 }
+
+public extension SequenceType {
+    public func convertTo<NewType>() -> [NewType] {
+        return self.map {$0 as! NewType }
+    }
+}

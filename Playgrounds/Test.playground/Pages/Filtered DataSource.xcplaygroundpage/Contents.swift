@@ -1,7 +1,36 @@
 //: [Previous](@previous)
 
-import Foundation
+import UIKit
+import Tapptitude
 
-var str = "Hello, playground"
+let items = ["Test", "Ghita", "Maria", "Collection", "Cell", "Controller"]
+
+let dataSource = FilteredDataSource(items)
+dataSource.filterBy = { $0.characters.count > 4 }
+
+let cellController = CollectionCellController<String, TextCell>(cellSize: CGSize(width: 50, height: 50))
+cellController.sectionInset = UIEdgeInsetsMake(0, 0, 10, 0)
+cellController.minimumInteritemSpacing = 10
+cellController.minimumLineSpacing = 10
+cellController.configureCell = { cell, content, indexPath in
+    cell.backgroundColor = UIColor.redColor()
+    cell.label.text = content
+}
+cellController.cellSizeForContent = { (content, _) in
+    return cellController.cellSizeToFitText(content, labelName: "label", maxSize: CGSize(width: 300, height: -1))
+}
+
+let feedController = CollectionFeedController()
+feedController.dataSource = dataSource
+feedController.cellController = cellController
+
+dataSource.dataFeed(nil, didLoadMoreContent: ["Nenea"])
+dataSource.filterBy = nil
+
+print(dataSource.content)
+
+import XCPlayground
+XCPlaygroundPage.currentPage.liveView = feedController.view
+
 
 //: [Next](@next)
