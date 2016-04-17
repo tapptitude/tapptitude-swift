@@ -4,26 +4,6 @@ import UIKit
 import Tapptitude
 
 
-class TextCell : UICollectionViewCell {
-    var label: UILabel!
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        label = UILabel(frame: bounds)
-        label.textColor = UIColor.blackColor()
-        label.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-        label.textAlignment = .Center
-        label.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(label)
-        
-        backgroundColor = UIColor(white: 0, alpha: 0.3)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
 // 1 cell controller --------
 let stringCellController = CollectionCellController<String, TextCell>(cellSize: CGSize(width: 50, height: 50))
 stringCellController.minimumInteritemSpacing = 20

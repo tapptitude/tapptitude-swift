@@ -8,26 +8,118 @@
 
 import Foundation
 
-public class SectionedDataSource : TTDataSource, TTDataFeedDelegate {
-    lazy private var _content : [[Any]] = [[Any]]()
+public enum SectionGroupBy<T, U: Hashable> {
+    public typealias Signature = T -> U
+}
+
+public enum SectionFilterBy<T> {
+    public typealias Signature = T -> Bool
+}
+
+public class GroupedByDataSource<T, U: Hashable> : SectionedDataSource<T> {
+    lazy private var _ungroupedContent : [T] = [T]()
     
-    public init(_ content : [[Any]]) {
-        _content = content.map({$0 as [Any]})
+    public var groupBy: SectionGroupBy<T, U>.Signature?
+    
+    public init(content: [T] = [],  groupBy: SectionGroupBy<T, U>.Signature ) {
+        let groupedContent = content.groupBy(groupBy)
+        
+        super.init(groupedContent)
+        _ungroupedContent = content
+        self.groupBy = groupBy
     }
     
-    public init(_ content : [[AnyObject]]) {
-        _content = content.map({$0 as [Any]})
+    override public func dataFeed(dataFeed: TTDataFeed?, didReloadContent content: [Any]?) {
+        // pass delegate message
+        if let delegate = delegate as? TTDataFeedDelegate {
+            delegate.dataFeed(dataFeed, didReloadContent: content)
+        }
+        
+        _unfilteredContent.removeAll()
+        _ungroupedContent.removeAll()
+        if let content = content {
+            if let groupBy = groupBy {
+                _ungroupedContent.appendContentsOf(content.map({$0 as! T}))
+                _unfilteredContent = _ungroupedContent.groupBy(groupBy)
+            } else {
+                _unfilteredContent.appendContentsOf(content.map({$0 as! [T]}))
+            }
+        }
+        
+        filterContent()
+        
+        delegate?.dataSourceDidReloadContent(self)
+    }
+    
+    override public func dataFeed(dataFeed: TTDataFeed?, didLoadMoreContent content: [Any]?) {
+        // pass delegate message
+        if let delegate = delegate as? TTDataFeedDelegate {
+            delegate.dataFeed(dataFeed, didLoadMoreContent: content)
+        }
+        
+        if let content = content {
+            if let groupBy = groupBy {
+                _ungroupedContent.appendContentsOf(content.map({$0 as! T}))
+                _unfilteredContent = _ungroupedContent.groupBy(groupBy)
+            } else {
+                _unfilteredContent.appendContentsOf(content.map({$0 as! [T]}))
+            }
+        }
+        
+        filterContent()
+        
+        delegate?.dataSourceDidLoadMoreContent(self)
+    }
+}
+
+public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
+    
+    private var _unfilteredContent : [[T]] = [[T]]()
+    lazy private var _content : [[T]] = [[T]]()
+    
+    public init(_ content : [[T]]) {
+        _content = content
+        _unfilteredContent = content
     }
     
     public init(_ content : NSArray) {
-        _content = content.map({ let item = $0 as! Array<AnyObject>
-            return item.map({ $0 as Any })
+        _content = content.map({ let item = $0 as! Array<T>
+            return item.map({ $0 as T })
         })
+        _unfilteredContent = _content
     }
     
     public init() {
         _content = []
+        _unfilteredContent = _content
     }
+    
+    var filterBy: SectionFilterBy<T>.Signature?
+    public func filterBy(filterBy: SectionFilterBy<T>.Signature?) {
+        print(filterBy)
+        self.filterBy = filterBy
+        filterContent()
+        self.delegate?.dataSourceDidReloadContent(self)
+    }
+    public var isFiltered: Bool {
+        return filterBy != nil
+    }
+    
+    func filterContent() {
+        if let filterBy = filterBy {
+            let toFilterContent = _unfilteredContent
+            _content.removeAll()
+            for item in toFilterContent {
+                let subItems = item.filter(filterBy)
+                if subItems.count > 0 {
+                    _content.append(subItems)
+                }
+            }
+        } else {
+            _content = _unfilteredContent
+        }
+    }
+    
     
     public weak var delegate : TTDataSourceDelegate?
     public var feed : TTDataFeed? {
@@ -69,16 +161,16 @@ public class SectionedDataSource : TTDataSource, TTDataFeedDelegate {
         //TODO: implement
         fatalError()
         
-        // TODO: find a better way
-        //        let index = _content.indexOf({ (searchedItem) -> Bool in
-        //            return (searchedItem as Any) === object
-        //        })
-        //
-        //        if index != nil {
-        //            return NSIndexPath(forItem: index!, inSection: 0)
-        //        } else {
-        //            return nil
-        //        }
+    // TODO: find a better way
+    //        let index = _content.indexOf({ (searchedItem) -> Bool in
+    //            return (searchedItem as Any) === object
+    //        })
+    //
+    //        if index != nil {
+    //            return NSIndexPath(forItem: index!, inSection: 0)
+    //        } else {
+    //            return nil
+    //        }
     }
     
     public var dataSourceID : String?
@@ -99,13 +191,13 @@ public class SectionedDataSource : TTDataSource, TTDataFeedDelegate {
             delegate.dataFeed(dataFeed, didReloadContent: content)
         }
         
-        _content.removeAll()
+        _unfilteredContent.removeAll()
         if let content = content {
-            _content = content.map({ let item = $0 as! NSArray
-                return item.map({ $0 as Any })
-            })
+            _unfilteredContent.appendContentsOf(content.map({$0 as! [T]}))
         }
         
+        filterContent()
+
         delegate?.dataSourceDidReloadContent(self)
     }
     
@@ -116,8 +208,10 @@ public class SectionedDataSource : TTDataSource, TTDataFeedDelegate {
         }
         
         if let content = content {
-            _content.append(content)
+            _unfilteredContent.appendContentsOf(content.map({$0 as! [T]}))
         }
+        
+        filterContent()
         
         delegate?.dataSourceDidLoadMoreContent(self)
     }
@@ -156,4 +250,3 @@ public extension SequenceType {
         return groupedItems
     }
 }
-

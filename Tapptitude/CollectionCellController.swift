@@ -47,7 +47,12 @@ public class CollectionCellController<ObjectClass, CellName: UICollectionViewCel
     
     public var sizeCalculationCell: CellType! {
         if _sizeCalculationCell == nil {
-            let sizeCalculationCell = NSBundle.mainBundle().loadNibNamed(self.reuseIdentifier, owner: nil, options: nil).last as! CellType
+            var sizeCalculationCell: CellType! = nil
+            if let nib = nibToInstantiateCell() {
+                sizeCalculationCell = nib.instantiateWithOwner(nil, options: nil).last as! CellType
+            } else {
+                sizeCalculationCell = CellType(frame: CGRect(origin: CGPointZero, size: self.cellSize))
+            }
             
             let deviceWidth = UIScreen.mainScreen().bounds.size.width
             let cellWidth = sizeCalculationCell.frame.size.width
@@ -75,5 +80,13 @@ public class CollectionCellController<ObjectClass, CellName: UICollectionViewCel
     
     public func acceptsContent(content: ObjectType) -> Bool {
         return true
+    }
+    
+    func nibToInstantiateCell() -> UINib? {
+        if let _ = NSBundle.mainBundle().pathForResource(reuseIdentifier, ofType: "nib") {
+            return UINib(nibName: reuseIdentifier, bundle: nil)
+        } else {
+            return nil
+        }
     }
 }

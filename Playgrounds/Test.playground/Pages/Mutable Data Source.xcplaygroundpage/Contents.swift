@@ -4,25 +4,6 @@ import UIKit
 import Tapptitude
 import XCPlayground
 
-class TextCell : UICollectionViewCell {
-    var label: UILabel!
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        label = UILabel(frame: bounds)
-        label.textColor = UIColor.blackColor()
-        label.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-        label.textAlignment = .Center
-        addSubview(label)
-        
-        backgroundColor = UIColor(white: 0, alpha: 0.3)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
 var counter = 3;
 
 class EditViewController: CollectionFeedController {

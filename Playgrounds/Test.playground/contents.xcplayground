@@ -10,5 +10,6 @@
         <page name='JSON DataSource'/>
         <page name='Filtered DataSource'/>
         <page name='Sectioned DataSource'/>
+        <page name='Grouped By DataSource'/>
     </pages>
 </playground>
