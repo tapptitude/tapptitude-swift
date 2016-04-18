@@ -10,12 +10,6 @@ class EditViewController: CollectionFeedController {
     
     convenience init() {
         self.init(nibName: "EditViewController", bundle: nil);
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        collectionView!.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "test")
         
         let cellController = CollectionCellController<Int, TextCell>(cellSize: CGSize(width:60, height:60))
         cellController.minimumLineSpacing = 20
@@ -27,8 +21,12 @@ class EditViewController: CollectionFeedController {
         
         self.cellController = cellController
         self.dataSource = DataSource([1, 2])
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
-        collectionView?.reloadData()
+        collectionView!.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "test")
         
         animatedUpdates = true
     }
@@ -65,7 +63,7 @@ class EditViewController: CollectionFeedController {
             content.append(counter)
         }
         
-        dataSourceMutable?.addContentFromArray(content)
+        dataSourceMutable?.addContentFromArray(content.convertTo())
     }
     
     @IBAction func moveAction(sender: AnyObject) {
