@@ -14,21 +14,23 @@ public class FilteredDataSource<T> : DataSource {
         super.init(content.convertTo())
     }
     
-    public var filterBy: (T -> Bool)? { //pass nil to reset filter
-        didSet {
-            if filterBy == nil {
-                if originalContent != nil {
-                    super.dataFeed(nil, didReloadContent: originalContent!.convertTo())
-                    originalContent = nil
-                }
-            } else {
-                originalContent = originalContent ?? content.convertTo()
-                
-                let filteredContent: [Any]? = originalContent!.filter(filterBy!).convertTo()
-                super.dataFeed(nil, didReloadContent: filteredContent)
+    public func filter(filter: (T -> Bool)?) { //pass nil to reset filter
+        self.filterBy = filter
+        
+        if filterBy == nil {
+            if originalContent != nil {
+                super.dataFeed(nil, didReloadContent: originalContent!.convertTo())
+                originalContent = nil
             }
+        } else {
+            originalContent = originalContent ?? content.convertTo()
+            
+            let filteredContent: [Any]? = originalContent!.filter(filterBy!).convertTo()
+            super.dataFeed(nil, didReloadContent: filteredContent)
         }
     }
+    
+    var filterBy: (T -> Bool)?
     
     public var isFiltered: Bool {
         return filterBy != nil
