@@ -6,7 +6,7 @@ import Tapptitude
 let items = ["Test", "Ghita", "Maria", "Collection", "Cell", "Controller"]
 
 let dataSource = FilteredDataSource(items)
-dataSource.filterBy = { $0.characters.count > 4 }
+dataSource.filter({ $0.characters.count > 4 })
 
 let cellController = CollectionCellController<String, TextCell>(cellSize: CGSize(width: 50, height: 50))
 cellController.sectionInset = UIEdgeInsetsMake(0, 0, 10, 0)
@@ -25,7 +25,7 @@ feedController.dataSource = dataSource
 feedController.cellController = cellController
 
 dataSource.dataFeed(nil, didLoadMoreContent: ["Nenea"])
-dataSource.filterBy = nil
+dataSource.filter(nil)
 
 print(dataSource.content)
 
