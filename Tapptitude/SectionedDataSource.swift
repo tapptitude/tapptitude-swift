@@ -164,6 +164,16 @@ public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
     //        }
     }
     
+    public subscript(indexPath: NSIndexPath) -> Any {
+        get { return _content[indexPath.section][indexPath.item] }
+//        set {  _content[indexPath.section][indexPath.item] = newValue }
+    }
+    
+    public subscript(section: Int, index: Int) -> Any {
+        get { return _content[section][index] }
+//        set { _content[section][index] = newValue }
+    }
+    
     public var dataSourceID : String?
     
     //}

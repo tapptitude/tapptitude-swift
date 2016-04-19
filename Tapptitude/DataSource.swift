@@ -80,6 +80,20 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
 //        }
     }
     
+    public subscript(indexPath: NSIndexPath) -> Any {
+        get { return _content[indexPath.item] }
+        set { editContentWithBlock { (_content, delegate) in
+            _content[indexPath.item] = newValue
+            }}
+    }
+    
+    public subscript(index: Int) -> Any {
+        get { return _content[index] }
+        set { editContentWithBlock { (_content, delegate) in
+                _content[index] = newValue
+            }}
+    }
+    
     public var dataSourceID : String?
     
 //}

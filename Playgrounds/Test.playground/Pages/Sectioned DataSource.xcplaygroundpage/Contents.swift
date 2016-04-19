@@ -9,7 +9,7 @@ print(items)
 print(items.groupBy({ $0.characters.first!.debugDescription }))
 
 let dataSource = SectionedDataSource([["Test", "Ghita"], ["Maria"], ["Collection", "Cell", "Controller"]])
-dataSource.filterBy { $0.characters.count > 4 }
+dataSource.filter { $0.characters.count > 4 }
 
 let cellController = CollectionCellController<String, TextCell>(cellSize: CGSize(width: 50, height: 50))
 cellController.sectionInset = UIEdgeInsetsMake(0, 0, 10, 0)
@@ -27,6 +27,7 @@ feedController.dataSource = dataSource
 feedController.cellController = cellController
 
 dataSource.dataFeed(nil, didLoadMoreContent: [["Nenea"]])
+dataSource[0, 0] = "Ion"
 
 print(dataSource.content)
 let testDataSource = SectionedDataSource<String>(NSArray(array: [["Test"]]))
