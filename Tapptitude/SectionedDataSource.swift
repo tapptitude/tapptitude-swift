@@ -87,7 +87,7 @@ public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
     }
     
     var filter: (T -> Bool)?
-    public func filterBy(filter: (T -> Bool)?) {
+    public func filter(filter: (T -> Bool)?) {
         self.filter = filter
         filterContent()
         self.delegate?.dataSourceDidReloadContent(self)

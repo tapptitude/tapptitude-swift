@@ -9,7 +9,7 @@ print(items.groupBy({ $0.characters.first!.debugDescription }))
 
 //[["Test", "Ghita"], ["Maria"], ["Collection", "Cell", "Controller"]]
 let dataSource = GroupedByDataSource(content: items, groupBy: { $0.characters.first!.debugDescription })
-dataSource.filterBy { $0.characters.count > 4 }
+dataSource.filter { $0.characters.count > 4 }
 
 let cellController = CollectionCellController<String, TextCell>(cellSize: CGSize(width: 50, height: 50))
 cellController.minimumInteritemSpacing = 10
@@ -27,7 +27,7 @@ feedController.dataSource = dataSource
 feedController.cellController = cellController
 
 dataSource.dataFeed(nil, didLoadMoreContent: ["Ion"])
-dataSource.filterBy(nil)
+dataSource.filter(nil)
 
 import XCPlayground
 XCPlaygroundPage.currentPage.liveView = feedController.view
