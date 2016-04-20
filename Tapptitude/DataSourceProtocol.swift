@@ -32,15 +32,16 @@ public protocol TTDataSource : TTDataFeedDelegate, CustomStringConvertible {
 
 
 public protocol TTDataSourceMutable {
-    func addContent(content: Any)
-    func addContentFromArray(array: [Any])
-    func insertContent(content: Any, atIndexPath indexPath: NSIndexPath)
+    func append<S>(newElement: S)
+    func appendContentsOf<S>(newElements: [S])
     
-    func moveContentFromIndexPath(fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath)
-    func removeContentFromIndexPath(indexPath: NSIndexPath)
-    func removeContent(content: Any)
+    func insert<S>(newElement: S, atIndexPath indexPath: NSIndexPath)
     
-    func replaceContentAtIndexPath(indexPath: NSIndexPath, content: Any)
+    func moveElementFromIndexPath(fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath)
+    func removeElementAtIndexPath(indexPath: NSIndexPath)
+    func removeElement<S>(element: S)
+    
+    func replaceElementAtIndexPath<S>(indexPath: NSIndexPath, newElement: S)
 }
 
 

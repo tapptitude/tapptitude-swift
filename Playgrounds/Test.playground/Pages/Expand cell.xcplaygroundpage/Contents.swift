@@ -59,7 +59,7 @@ cellController.didSelectContent = { content, indexPath, collectionView in
     let datasource = dataSource as? TTDataSourceMutable
     collectionView .performBatchUpdates({
         let newContent = content < 150 ? content + 30 : content - 30
-        dataSource.replaceContentAtIndexPath(indexPath, content: newContent)
+        dataSource[indexPath] = newContent
         }, completion: nil)
     
 }

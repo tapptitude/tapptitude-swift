@@ -28,6 +28,8 @@ feedController.cellController = cellController
 
 dataSource.dataFeed(nil, didLoadMoreContent: [["Nenea"]])
 dataSource[0, 0] = "Ion"
+let indexPath = NSIndexPath(forItem: 0, inSection: 0)
+dataSource[indexPath] = "New Ion"
 
 print(dataSource.content)
 let testDataSource = SectionedDataSource<String>(NSArray(array: [["Test"]]))
