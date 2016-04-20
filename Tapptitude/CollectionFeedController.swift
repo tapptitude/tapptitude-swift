@@ -58,7 +58,8 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
                 collectionView.delegate = self
                 collectionView.dataSource = self
                 
-                collectionView.registerNib(UINib(nibName: loadMoreViewXIBName, bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: loadMoreViewXIBName)
+                let nib = UINib(nibName: loadMoreViewXIBName, bundle: NSBundle(forClass: CollectionFeedController.self))
+                collectionView.registerNib(nib, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: loadMoreViewXIBName)
                 
                 if !self.isScrollDirectionConfigured {
                     // fetch scrollDirection value from collectionView layout
@@ -300,30 +301,29 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     }
     
     public func checkIfShouldLoadMoreContent() {
-        let feed = self.dataSource?.feed
-        if autoLoadMoreContent && supportsLoadMore && feed?.canLoadMore == true {
-            if let indexPath = collectionView?.indexPathsForVisibleItems().last {
+        guard let collectionView = collectionView, feed = dataSource?.feed else {
+            return
+        }
+        
+        if autoLoadMoreContent && supportsLoadMore && feed.canLoadMore == true {
+            if let indexPath = collectionView.indexPathsForVisibleItems().last {
                 self.checkIfShouldLoadMoreContentForIndexPath(indexPath)
-            } else {
-                dataSource?.feed?.loadMore()
+            } else if dataSource?.hasContent() == false {
+                feed.loadMore()
             }
         }
     }
     
-    internal func checkIfShouldLoadMoreContentForIndexPath(indexPath:NSIndexPath?) {  //Future - indexPath used for identifying section
-        guard let feed = self.dataSource?.feed else {
+    internal func checkIfShouldLoadMoreContentForIndexPath(indexPath: NSIndexPath?) {  //Future - indexPath used for identifying section
+        guard let feed = self.dataSource?.feed, indexPath = indexPath, collectionView = collectionView else {
             return
         }
         
-        guard indexPath != nil && supportsLoadMore && feed.canLoadMore == true else {
+        guard supportsLoadMore && feed.canLoadMore == true else {
             return
         }
         
-        guard let collectionView = self.collectionView else {
-            return
-        }
-        
-        if shouldShowLoadMoreForSection(indexPath!.section) {
+        if shouldShowLoadMoreForSection(indexPath.section) {
             var preloadMoreContent = false
             let bounds = collectionView.bounds
             let contentSize = collectionView.contentSize

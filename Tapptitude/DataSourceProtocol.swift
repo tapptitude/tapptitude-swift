@@ -13,7 +13,7 @@ public protocol TTDataSourceDelegate: class {
     func dataSourceDidLoadMoreContent(dataSource: TTDataSource)
 }
 
-public protocol TTDataSource : TTDataFeedDelegate {
+public protocol TTDataSource : TTDataFeedDelegate, CustomStringConvertible {
     
     var content : [Any] { get }
     func hasContent() -> Bool
@@ -57,4 +57,11 @@ public protocol TTDataSourceIncrementalChangesDelegate {
     func dataSource(dataSource: TTDataSource, didUpdateSections updatedSections: NSIndexSet)
     
     func dataSourceDidChangeContent(dataSource: TTDataSource)
+}
+
+
+extension TTDataSource {
+    public var description: String {
+        return String(self.dynamicType) + ": " + content.description
+    }
 }

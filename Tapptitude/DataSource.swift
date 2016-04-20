@@ -264,3 +264,11 @@ public extension SequenceType {
         return self.map {$0 as! NewType }
     }
 }
+
+public func += (inout left: DataSource, right: DataSource) {
+    left.addContentFromArray(right.content)
+}
+
+public func += <T>(inout left: DataSource, right: [T]) {
+    left.addContentFromArray(right.map{ $0 as Any})
+}

@@ -28,7 +28,6 @@ class FeedController: CollectionFeedController {
             dataSource?.replaceContentAtIndexPath(indexPath, content: "Ghita")
         }
         
-        
         let numberCellController = CollectionCellController<Int, UICollectionViewCell>(cellSize: CGSize(width: 100, height: 50))
         numberCellController.configureCell = { cell, content, indexPath in
             cell.backgroundColor = UIColor.blueColor()

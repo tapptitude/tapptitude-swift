@@ -2,6 +2,7 @@
 <playground version='6.0' target-platform='ios'>
     <pages>
         <page name='Cell Controller Block'/>
+        <page name='DataSource'/>
         <page name='Mutable Data Source'/>
         <page name='Expand cell'/>
         <page name='Multi Cell Controller'/>
