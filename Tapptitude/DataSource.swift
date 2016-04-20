@@ -52,12 +52,8 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
         return 1
     }
     
-    public func numberOfRowsInSection(section: Int) -> Int {
+    public func numberOfItemsInSection(section: Int) -> Int {
         return _content.count
-    }
-    
-    public func elementAtIndexPath(indexPath: NSIndexPath) -> Any {
-        return _content[indexPath.item]
     }
     
     public func indexPathOf(element: Any) -> NSIndexPath? {
@@ -80,6 +76,13 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
         get { return _content[indexPath.item] }
         set { editContentWithBlock { (_content, delegate) in
             _content[indexPath.item] = newValue
+            }}
+    }
+    
+    public subscript(section: Int, index: Int) -> Any {
+        get { return _content[index] }
+        set { editContentWithBlock { (_content, delegate) in
+            _content[index] = newValue
             }}
     }
     

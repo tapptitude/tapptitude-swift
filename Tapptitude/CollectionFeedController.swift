@@ -495,11 +495,11 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     }
     
     public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dataSource!.numberOfRowsInSection(section)
+        return dataSource!.numberOfItemsInSection(section)
     }
     
     public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let content = dataSource!.elementAtIndexPath(indexPath)
+        let content = dataSource![indexPath]
         let reuseIdentifier = cellController.reuseIdentifierForContent(content)
         
         if registeredCellIdentifiers == nil {
@@ -528,7 +528,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         
         // so
         if let cellController = cellController as? TTCollectionCellControllerProtocolExtended {
-            let sectionCount = dataSource!.numberOfRowsInSection(indexPath.section)
+            let sectionCount = dataSource!.numberOfItemsInSection(indexPath.section)
             cellController.configureCell(cell, forContent: content, indexPath: indexPath, dataSourceCount: sectionCount)
         }
         
@@ -583,7 +583,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
             
             let headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: reuseIdentifier, forIndexPath: indexPath)
             headerView.parentViewController = self
-            let content = dataSource.elementAtIndexPath(indexPath)
+            let content = dataSource[indexPath]
             headerController!.configureHeader(headerView, forContent: content, indexPath: indexPath)
             
             return headerView
@@ -606,7 +606,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
 // MARK: Did Select -
 //extension CollectionFeedController {
     public func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let content = dataSource!.elementAtIndexPath(indexPath)
+        let content = dataSource![indexPath]
         cellController.didSelectContent(content, indexPath: indexPath, collectionView: collectionView)
     }
 
@@ -624,15 +624,15 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
 // MARK: Layout Size -
 //extension CollectionFeedController {
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let content = dataSource!.elementAtIndexPath(indexPath)
+        let content = dataSource![indexPath]
         let size = cellController.cellSizeForContent(content, collectionView: collectionView)
         let boundsSize = collectionView.bounds.size
         return CGSizeMake(size.width < 0.0 ? boundsSize.width : size.width, size.height < 0.0 ? boundsSize.height : size.height)
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        if dataSource?.numberOfRowsInSection(section) > 0 {
-            let content = dataSource!.elementAtIndexPath(NSIndexPath(forItem: 0, inSection: section))
+        if dataSource?.numberOfItemsInSection(section) > 0 {
+            let content = dataSource![section, 0]
             return cellController.sectionInsetForContent(content, collectionView: collectionView)
         } else {
             return UIEdgeInsetsZero
@@ -640,8 +640,8 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
-        if dataSource?.numberOfRowsInSection(section) > 0 {
-            let content = dataSource!.elementAtIndexPath(NSIndexPath(forItem: 0, inSection: section))
+        if dataSource?.numberOfItemsInSection(section) > 0 {
+            let content = dataSource![section, 0]
             return cellController.minimumInteritemSpacingForContent(content, collectionView: collectionView)
         } else {
             return 0.0
@@ -649,8 +649,8 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
-        if dataSource?.numberOfRowsInSection(section) > 0 {
-            let content = dataSource!.elementAtIndexPath(NSIndexPath(forItem: 0, inSection: section))
+        if dataSource?.numberOfItemsInSection(section) > 0 {
+            let content = dataSource![section, 0]
             return cellController.minimumLineSpacingForContent(content, collectionView: collectionView)
         } else {
             return 0.0
@@ -662,7 +662,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection  section: Int) -> CGSize {
-        let showHeader = headerController != nil && self.dataSource?.numberOfRowsInSection(section) > 0
+        let showHeader = headerController != nil && self.dataSource?.numberOfItemsInSection(section) > 0
         return (showHeader ? headerController!.headerSize : CGSizeZero)
     }
 //}
@@ -676,7 +676,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
             return nil
         }
         
-        let content = dataSource!.elementAtIndexPath(indexPath)
+        let content = dataSource![indexPath]
         let previousParentController = cellController.parentViewController
         let parentController = UIViewController()
         var dummyNavigationController: DummyNavigationController? = DummyNavigationController(rootViewController: parentController)

@@ -18,8 +18,10 @@ public protocol TTDataSource : TTDataFeedDelegate, CustomStringConvertible {
     var content : [Any] { get }
     func hasContent() -> Bool
     func numberOfSections() -> Int
-    func numberOfRowsInSection(section: Int) -> Int
-    func elementAtIndexPath(indexPath: NSIndexPath) -> Any
+    func numberOfItemsInSection(section: Int) -> Int
+    
+    subscript(indexPath: NSIndexPath) -> Any { get }
+    subscript(section: Int, index: Int) -> Any { get }
     
     func indexPathOf(element: Any) -> NSIndexPath?
     

@@ -135,12 +135,8 @@ public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         return _content.count
     }
     
-    public func numberOfRowsInSection(section: Int) -> Int {
+    public func numberOfItemsInSection(section: Int) -> Int {
         return _content[section].count
-    }
-    
-    public func elementAtIndexPath(indexPath: NSIndexPath) -> Any {
-        return _content[indexPath.section][indexPath.item]
     }
     
     public func indexPathOf(element: Any) -> NSIndexPath? {
@@ -167,10 +163,26 @@ public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         }
     }
     
+    public subscript(indexPath: NSIndexPath) -> Any {
+        get { return _content[indexPath.section][indexPath.item] }
+        set {
+            _content[indexPath.section][indexPath.item] = (newValue as! T)
+            delegate?.dataSourceDidReloadContent(self) // TODO: support incremental changes
+        }
+    }
+    
     public subscript(section: Int, index: Int) -> T {
         get { return _content[section][index] }
         set {
             _content[section][index] = newValue
+            delegate?.dataSourceDidReloadContent(self)
+        }
+    }
+    
+    public subscript(section: Int, index: Int) -> Any {
+        get { return _content[section][index] }
+        set {
+            _content[section][index] = (newValue as! T)
             delegate?.dataSourceDidReloadContent(self)
         }
     }
