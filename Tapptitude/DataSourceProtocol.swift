@@ -19,9 +19,9 @@ public protocol TTDataSource : TTDataFeedDelegate, CustomStringConvertible {
     func hasContent() -> Bool
     func numberOfSections() -> Int
     func numberOfRowsInSection(section: Int) -> Int
-    func objectAtIndexPath(indexPath: NSIndexPath) -> Any
+    func elementAtIndexPath(indexPath: NSIndexPath) -> Any
     
-    func indexPathForObject(object: Any) -> NSIndexPath?
+    func indexPathForElement(element: Any) -> NSIndexPath?
     
     weak var delegate: TTDataSourceDelegate? { get set }
     var feed: TTDataFeed? { get set }
@@ -39,7 +39,7 @@ public protocol TTDataSourceMutable {
     
     func moveElementFromIndexPath(fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath)
     func removeElementAtIndexPath(indexPath: NSIndexPath)
-    func removeElement<S>(element: S)
+    func removeElement<S>(item: S)
     
     func replaceElementAtIndexPath<S>(indexPath: NSIndexPath, newElement: S)
 }
