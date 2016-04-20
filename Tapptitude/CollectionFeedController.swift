@@ -256,7 +256,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
             return
         }
         
-        if let indexPath = dataSource.indexPathForElement(element) {
+        if let indexPath = dataSource.indexPathOf(element) {
             let layout = collectionView.collectionViewLayout
             var attribute = layout.layoutAttributesForItemAtIndexPath(indexPath)
             if attribute?.frame.size.width < 1.0 {

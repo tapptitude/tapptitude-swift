@@ -60,7 +60,7 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
         return _content[indexPath.item]
     }
     
-    public func indexPathForElement(Element: Any) -> NSIndexPath? {
+    public func indexPathOf(element: Any) -> NSIndexPath? {
         //TODO: implement
         fatalError()
         
@@ -240,7 +240,7 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
     }
     
     public func remove<S>(element: S) {
-        if let indexPath = self.indexPathForElement(element) {
+        if let indexPath = self.indexPathOf(element) {
             self.removeAtIndexPath(indexPath)
         } else {
             print("Element not found \(element) in dataSource")

@@ -21,7 +21,7 @@ public protocol TTDataSource : TTDataFeedDelegate, CustomStringConvertible {
     func numberOfRowsInSection(section: Int) -> Int
     func elementAtIndexPath(indexPath: NSIndexPath) -> Any
     
-    func indexPathForElement(element: Any) -> NSIndexPath?
+    func indexPathOf(element: Any) -> NSIndexPath?
     
     weak var delegate: TTDataSourceDelegate? { get set }
     var feed: TTDataFeed? { get set }
