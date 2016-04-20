@@ -39,7 +39,7 @@ class EditViewController: CollectionFeedController {
     
     @IBAction func minusAction(sender: AnyObject) {
         if dataSource!.numberOfRowsInSection(0) > 0 {
-            dataSourceMutable?.removeElementAtIndexPath(NSIndexPath(forItem: 0, inSection: 0))
+            dataSourceMutable?.removeAtIndexPath(NSIndexPath(forItem: 0, inSection: 0))
         }
     }
     

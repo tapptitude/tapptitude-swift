@@ -38,10 +38,10 @@ public protocol TTDataSourceMutable {
     func insert<S>(newElement: S, atIndexPath indexPath: NSIndexPath)
     
     func moveElementFromIndexPath(fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath)
-    func removeElementAtIndexPath(indexPath: NSIndexPath)
-    func removeElement<S>(item: S)
+    func removeAtIndexPath(indexPath: NSIndexPath)
+    func remove<S>(item: S)
     
-    func replaceElementAtIndexPath<S>(indexPath: NSIndexPath, newElement: S)
+    func replaceAtIndexPath<S>(indexPath: NSIndexPath, newElement: S)
 }
 
 

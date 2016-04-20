@@ -232,22 +232,22 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
         }
     }
     
-    public func removeElementAtIndexPath(indexPath: NSIndexPath) {
+    public func removeAtIndexPath(indexPath: NSIndexPath) {
         editContentWithBlock { (_content, delegate) -> Void in
             _content.removeAtIndex(indexPath.item)
             delegate?.dataSource(self, didDeleteItemsAtIndexPaths: [indexPath])
         }
     }
     
-    public func removeElement<S>(element: S) {
+    public func remove<S>(element: S) {
         if let indexPath = self.indexPathForElement(element) {
-            self.removeElementAtIndexPath(indexPath)
+            self.removeAtIndexPath(indexPath)
         } else {
-            print("Content not found \(content) in dataSource")
+            print("Element not found \(element) in dataSource")
         }
     }
     
-    public func replaceElementAtIndexPath<S>(indexPath: NSIndexPath, newElement: S) {
+    public func replaceAtIndexPath<S>(indexPath: NSIndexPath, newElement: S) {
         editContentWithBlock { (_content, delegate) -> Void in
             _content[indexPath.item] = newElement
             delegate?.dataSource(self, didUpdateItemsAtIndexPaths: [indexPath])
