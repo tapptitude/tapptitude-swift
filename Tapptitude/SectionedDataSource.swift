@@ -69,7 +69,7 @@ public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
     private var _unfilteredContent : [[T]] = [[T]]()
     lazy private var _content : [[T]] = [[T]]()
     
-    public init(_ content : [[T]]) {
+    public init(_ content : [[T]] = []) {
         _content = content
         _unfilteredContent = content
     }
@@ -78,11 +78,6 @@ public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         _content = content.map({ let item = $0 as! Array<T>
             return item.map({ $0 as T })
         })
-        _unfilteredContent = _content
-    }
-    
-    public init() {
-        _content = []
         _unfilteredContent = _content
     }
     

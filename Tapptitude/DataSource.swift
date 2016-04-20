@@ -12,11 +12,7 @@ import Foundation
 public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable {
     lazy private var _content : [Any] = [Any]()
     
-    public init(_ content : [Any]) {
-        _content = content.map({$0 as Any})
-    }
-    
-    public init(_ content : [AnyObject]) {
+    public init<T>(_ content : [T]) {
         _content = content.map({$0 as Any})
     }
     

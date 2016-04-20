@@ -9,9 +9,9 @@
 import Foundation
 
 public class FilteredDataSource<T> : DataSource {
-
-    public init(_ content : [T]) {
-        super.init(content.convertTo())
+    
+    override public init(_ content: [T]) {
+        super.init(content)
     }
     
     public func filter(filter: (T -> Bool)?) { //pass nil to reset filter
