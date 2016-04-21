@@ -420,8 +420,12 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
 // MARK: Incremental Changes on Data source
 //extension CollectionFeedController : TTDataSourceDelegate {
     public func dataSourceWillChangeContent(dataSource: TTDataSource) {
-        animatedUpdater = animatedUpdates ? CollectionViewAnimatedUpdater() : nil
-        animatedUpdater?.collectionViewWillChangeContent(collectionView!)
+        if let collectionView = collectionView {
+            animatedUpdater = animatedUpdates ? CollectionViewAnimatedUpdater() : nil
+            animatedUpdater?.collectionViewWillChangeContent(collectionView)
+        } else {
+            animatedUpdater = nil
+        }
     }
 
     public func dataSourceDidChangeContent(dataSource: TTDataSource) {
