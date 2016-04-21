@@ -13,11 +13,11 @@ public protocol TTCancellable {
 }
 
 public enum TTCallback <T> {
-    public typealias Signature = (content: [T]?, error: NSError?) -> Void
+    public typealias Signature = (content: [T]?, error: NSError?) -> ()
 }
 
 public enum TTCallbackNextOffset <T, OffsetType> {
-    public typealias Signature = (content: [T]?, nextOffset: OffsetType?, error: NSError?) -> Void // next offset is given by backend
+    public typealias Signature = (content: [T]?, nextOffset: OffsetType?, error: NSError?) -> () // next offset is given by backend
 }
 
 public class DataFeed<T>: TTDataFeed {

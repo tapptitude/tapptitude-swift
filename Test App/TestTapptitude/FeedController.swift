@@ -9,6 +9,10 @@
 import UIKit
 import Tapptitude
 
+extension NSURLSessionTask: TTCancellable {
+    
+}
+
 
 class FeedController: CollectionFeedController {
     
@@ -25,7 +29,7 @@ class FeedController: CollectionFeedController {
         let cellController = TextCellController()
         cellController.didSelectContent = { _, indexPath, collectionView in
             let dataSource = self.dataSource as? TTDataSourceMutable
-            dataSource?.replaceContentAtIndexPath(indexPath, content: "Ghita")
+            dataSource?.replaceAtIndexPath(indexPath, newElement: "Ghita")
         }
         
         let numberCellController = CollectionCellController<Int, UICollectionViewCell>(cellSize: CGSize(width: 100, height: 50))
@@ -59,13 +63,31 @@ class FeedController: CollectionFeedController {
 //            return APIPaginatedMock(offset: offset, limit: limit, callback: callback)
 //        })
         
-//        dataSource.feed = PaginatedOffsetDataFeed<String, String>(loadPage: { (offset, limit, callback) -> TTCancellable? in
+        let url = NSURL(string: "https://httpbin.org/get")
+        var url_request = NSMutableURLRequest(URL: url!)
+        
+        dataSource.feed = SimpleDataFeed<String> { (callback) -> TTCancellable? in
+            let task = NSURLSession.sharedSession().dataTaskWithRequest(url_request) { data , response , error  in
+                let stringResponse = data != nil ? String(data: data!, encoding: NSUTF8StringEncoding) : nil
+                let items: [String]? = stringResponse != nil ? [stringResponse!] : nil
+                print(error)
+                
+                dispatch_async(dispatch_get_main_queue()) {
+                    callback(content: items, error: error)
+                }
+            }
+            task.resume()
+            
+            return task
+        }
+        
+//        dataSource.feed = PaginatedOffsetDataFeed<String, String>(loadPage: { (offset, callback) -> TTCancellable? in
 //            let alex = 3
-//            return APIPaginateOffsetdMock(offset: offset, limit: limit, callback: callback)
+//            return APIPaginateOffsetdMock(offset: offset, limit: 10, callback: callback)
 //        })
         
-//        let dataSource = DataSource(pageSize: 10) { (offset:String?, limit:Int, callback: TTCallbackNextOffset<String, String>.Signature) -> TTCancellable? in
-//            return APIPaginateOffsetdMock(offset: offset, limit: limit, callback: callback)
+//        let dataSource = DataSource { (offset:String?, callback: TTCallbackNextOffset<String, String>.Signature) -> TTCancellable? in
+//            return APIPaginateOffsetdMock(offset: offset, limit: 10, callback: callback)
 //        }
         self.dataSource = dataSource
         

@@ -64,12 +64,11 @@ extension DataSource {
 
 public class PaginatedOffsetDataFeed<T, OffsetType> : DataFeed<T> {
     
-    public var limit: Int = 10
     public var offset: OffsetType? // dependends on backend API
     
-    private var loadPageNextOffsetOperation: (offset: OffsetType?, limit:Int, callback: TTCallbackNextOffset<T, OffsetType>.Signature) -> TTCancellable? // next page offset is given by backend
+    private var loadPageNextOffsetOperation: (offset: OffsetType?, callback: TTCallbackNextOffset<T, OffsetType>.Signature) -> TTCancellable? // next page offset is given by backend
     
-    public init(loadPage: (offset:OffsetType?, limit:Int, callback:TTCallbackNextOffset<T, OffsetType>.Signature) -> TTCancellable?) {
+    public init(loadPage: (offset:OffsetType?, callback:TTCallbackNextOffset<T, OffsetType>.Signature) -> TTCancellable?) {
         self.loadPageNextOffsetOperation = loadPage
     }
     
@@ -78,7 +77,7 @@ public class PaginatedOffsetDataFeed<T, OffsetType> : DataFeed<T> {
     }
     
     public override func reloadOperationWithCallback(callback: TTCallback<T>.Signature) -> TTCancellable? {
-        return loadPageNextOffsetOperation(offset: nil, limit: limit) {[unowned self] content, nextOffset, error in
+        return loadPageNextOffsetOperation(offset: nil) {[unowned self] content, nextOffset, error in
             if error == nil {
                 self.offset = nextOffset
                 self.hasMorePages = (nextOffset != nil)
@@ -89,7 +88,7 @@ public class PaginatedOffsetDataFeed<T, OffsetType> : DataFeed<T> {
     }
     
     public override func loadMoreOperationWithCallback(callback: TTCallback<T>.Signature) -> TTCancellable? {
-        return loadPageNextOffsetOperation(offset: offset, limit: limit) {[unowned self] content, nextOffset, error in
+        return loadPageNextOffsetOperation(offset: offset) {[unowned self] content, nextOffset, error in
             if error == nil {
                 self.offset = nextOffset
                 self.hasMorePages = (nextOffset != nil)
@@ -101,4 +100,13 @@ public class PaginatedOffsetDataFeed<T, OffsetType> : DataFeed<T> {
     
     
     public var hasMorePages: Bool = false
+}
+
+extension DataSource {
+    public convenience init<T, OffsetType>(loadPage: (offset: OffsetType?, callback:TTCallbackNextOffset<T, OffsetType>.Signature) -> TTCancellable?) {
+        self.init()
+        let feed = PaginatedOffsetDataFeed(loadPage: loadPage)
+        feed.delegate = self
+        self.feed = feed
+    }
 }

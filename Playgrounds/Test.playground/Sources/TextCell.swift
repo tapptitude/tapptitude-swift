@@ -9,6 +9,8 @@ public class TextCell : UICollectionViewCell {
         label.textColor = UIColor.blackColor()
         label.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
         label.textAlignment = .Center
+        label.numberOfLines = 0
+        label.lineBreakMode = .ByWordWrapping
         addSubview(label)
         
         backgroundColor = UIColor(white: 0, alpha: 0.3)

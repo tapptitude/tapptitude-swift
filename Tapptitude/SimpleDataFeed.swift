@@ -32,4 +32,10 @@ extension DataSource {
         feed = SimpleDataFeed(load: load)
         feed?.delegate = self
     }
+    
+    public convenience init<T: TTDataFeed>(feed: T) {
+        self.init()
+        self.feed = feed
+        self.feed?.delegate = self
+    }
 }
