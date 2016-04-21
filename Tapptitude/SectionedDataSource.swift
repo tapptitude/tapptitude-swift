@@ -40,7 +40,7 @@ public class GroupedByDataSource<T, U: Hashable> : SectionedDataSource<T> {
         
         filterContent()
         
-        delegate?.dataSourceDidReloadContent(self)
+        delegate?.dataSourceDidChangeContent(self)
     }
     
     override public func dataFeed(dataFeed: TTDataFeed?, didLoadMoreContent content: [Any]?) {
@@ -60,7 +60,7 @@ public class GroupedByDataSource<T, U: Hashable> : SectionedDataSource<T> {
         
         filterContent()
         
-        delegate?.dataSourceDidLoadMoreContent(self)
+        delegate?.dataSourceDidChangeContent(self)
     }
 }
 
@@ -85,7 +85,7 @@ public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
     public func filter(filter: (T -> Bool)?) {
         self.filter = filter
         filterContent()
-        self.delegate?.dataSourceDidReloadContent(self)
+        self.delegate?.dataSourceDidChangeContent(self)
     }
     public var isFiltered: Bool {
         return filter != nil
@@ -159,7 +159,7 @@ public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         get { return _content[indexPath.section][indexPath.item] }
         set {
             _content[indexPath.section][indexPath.item] = newValue
-            delegate?.dataSourceDidReloadContent(self) // TODO: support incremental changes
+            delegate?.dataSourceDidChangeContent(self) // TODO: support incremental changes
         }
     }
     
@@ -167,7 +167,7 @@ public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         get { return _content[indexPath.section][indexPath.item] }
         set {
             _content[indexPath.section][indexPath.item] = (newValue as! T)
-            delegate?.dataSourceDidReloadContent(self) // TODO: support incremental changes
+            delegate?.dataSourceDidChangeContent(self) // TODO: support incremental changes
         }
     }
     
@@ -175,7 +175,7 @@ public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         get { return _content[section][index] }
         set {
             _content[section][index] = newValue
-            delegate?.dataSourceDidReloadContent(self)
+            delegate?.dataSourceDidChangeContent(self)
         }
     }
     
@@ -183,7 +183,7 @@ public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         get { return _content[section][index] }
         set {
             _content[section][index] = (newValue as! T)
-            delegate?.dataSourceDidReloadContent(self)
+            delegate?.dataSourceDidChangeContent(self)
         }
     }
     
@@ -212,7 +212,7 @@ public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         
         filterContent()
 
-        delegate?.dataSourceDidReloadContent(self)
+        delegate?.dataSourceDidChangeContent(self)
     }
     
     public func dataFeed(dataFeed: TTDataFeed?, didLoadMoreContent content: [Any]?) {
@@ -227,7 +227,7 @@ public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         
         filterContent()
         
-        delegate?.dataSourceDidLoadMoreContent(self)
+        delegate?.dataSourceDidChangeContent(self)
     }
     
     public func dataFeed(dataFeed: TTDataFeed?, isReloading: Bool) {

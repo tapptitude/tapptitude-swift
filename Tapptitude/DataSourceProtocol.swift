@@ -8,11 +8,6 @@
 
 import Foundation
 
-public protocol TTDataSourceDelegate: class {
-    func dataSourceDidReloadContent(dataSource: TTDataSource)
-    func dataSourceDidLoadMoreContent(dataSource: TTDataSource)
-}
-
 public protocol TTDataSource : TTDataFeedDelegate, CustomStringConvertible {
     
     var content : [Any] { get }
@@ -50,7 +45,7 @@ public protocol TTDataSourceMutable {
 }
 
 
-public protocol TTDataSourceIncrementalChangesDelegate {
+public protocol TTDataSourceDelegate: class {
     func dataSourceWillChangeContent(dataSource: TTDataSource)
     
     func dataSource(dataSource: TTDataSource, didUpdateItemsAtIndexPaths indexPaths: [NSIndexPath])

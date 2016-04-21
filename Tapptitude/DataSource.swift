@@ -115,17 +115,11 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
         _content = content ?? []
         let isEmpty = _content.isEmpty
         
-        let incrementalInserts = delegate is TTDataSourceIncrementalChangesDelegate
-        if incrementalInserts {
-            let ignore = wasEmpty && isEmpty
-            if !ignore {
-                let delegate = self.delegate as! TTDataSourceIncrementalChangesDelegate
-                delegate.dataSourceWillChangeContent(self)
-                delegate.dataSource(self, didUpdateSections: NSIndexSet(index: 0))
-                delegate.dataSourceDidChangeContent(self)
-            }
-        } else {
-            delegate?.dataSourceDidReloadContent(self)
+        let ignore = wasEmpty && isEmpty
+        if !ignore {
+            delegate?.dataSourceWillChangeContent(self)
+            delegate?.dataSource(self, didUpdateSections: NSIndexSet(index: 0))
+            delegate?.dataSourceDidChangeContent(self)
         }
     }
     
@@ -135,30 +129,20 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
             delegate.dataFeed(dataFeed, didLoadMoreContent: content)
         }
         
-        let incrementalInserts = delegate is TTDataSourceIncrementalChangesDelegate
         var indexPaths = [NSIndexPath]();
         
         if let content = content {
             _content.appendContentsOf(content)
             
-            if incrementalInserts {
-                indexPaths = content.enumerate().map({ (index, _) -> NSIndexPath in
-                    return NSIndexPath(forItem: index, inSection: 0)
-                })
-            }
+            indexPaths = content.enumerate().map({ (index, _) -> NSIndexPath in
+                return NSIndexPath(forItem: index, inSection: 0)
+            })
         }
         
-        if incrementalInserts {
-            if !indexPaths.isEmpty {
-                let delegate = self.delegate as! TTDataSourceIncrementalChangesDelegate
-                delegate.dataSourceWillChangeContent(self)
-                delegate.dataSource(self, didInsertItemsAtIndexPaths: indexPaths)
-                delegate.dataSourceDidChangeContent(self)
-            }
-        } else if (content?.isEmpty == false){
-            delegate?.dataSourceDidLoadMoreContent(self)
-        } else {
-            // no content loaded
+        if !indexPaths.isEmpty {
+            delegate?.dataSourceWillChangeContent(self)
+            delegate?.dataSource(self, didInsertItemsAtIndexPaths: indexPaths)
+            delegate?.dataSourceDidChangeContent(self)
         }
     }
     
@@ -179,17 +163,10 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
 //
 //extension DataSource : TTDataSourceMutable {
     
-    private func editContentWithBlock(editBlock: ( inout content : [Any], delegate: TTDataSourceIncrementalChangesDelegate?)->Void) {
-        let incrementalUpdates = delegate is TTDataSourceIncrementalChangesDelegate
-        if (incrementalUpdates) {
-            let delegate = self.delegate as! TTDataSourceIncrementalChangesDelegate
-            delegate.dataSourceWillChangeContent(self)
-            editBlock(content: &_content, delegate: delegate);
-            delegate.dataSourceDidChangeContent(self)
-        } else {
-            editBlock(content: &_content, delegate: nil);
-            delegate?.dataSourceDidReloadContent(self)
-        }
+    private func editContentWithBlock(editBlock: ( inout content: [Any], delegate: TTDataSourceDelegate?) -> Void) {
+        delegate?.dataSourceWillChangeContent(self)
+        editBlock(content: &_content, delegate: delegate);
+        delegate?.dataSourceDidChangeContent(self)
     }
     
     public func append<S>(newElement: S) {

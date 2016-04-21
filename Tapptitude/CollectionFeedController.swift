@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class CollectionFeedController: UIViewController, TTCollectionFeedController, TTCollectionFeedControllerMutable, TTDataFeedDelegate, TTDataSourceDelegate, TTDataSourceIncrementalChangesDelegate, UIViewControllerPreviewingDelegate {
+public class CollectionFeedController: UIViewController, TTCollectionFeedController, TTCollectionFeedControllerMutable, TTDataFeedDelegate, TTDataSourceDelegate, UIViewControllerPreviewingDelegate {
     public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
@@ -382,11 +382,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     }
     
     
-    public var animatedUpdates = false {
-        didSet {
-            animatedUpdater = animatedUpdates ? CollectionViewAnimatedUpdater() : nil
-        }
-    }
+    public var animatedUpdates = false
     private var animatedUpdater: CollectionViewAnimatedUpdater?
 //}
 //
@@ -421,19 +417,10 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
 //
 //
 //
-//extension CollectionFeedController : TTDataSourceDelegate {
-    public func dataSourceDidReloadContent(dataSource: TTDataSource) {
-        reloadDataOnCollectionView()
-    }
-    
-    public func dataSourceDidLoadMoreContent(dataSource: TTDataSource) {
-        reloadDataOnCollectionView()
-    }
-//}
-//
 // MARK: Incremental Changes on Data source
-//extension CollectionFeedController : TTDataSourceIncrementalChangesDelegate {
+//extension CollectionFeedController : TTDataSourceDelegate {
     public func dataSourceWillChangeContent(dataSource: TTDataSource) {
+        animatedUpdater = animatedUpdates ? CollectionViewAnimatedUpdater() : nil
         animatedUpdater?.collectionViewWillChangeContent(collectionView!)
     }
 
@@ -447,6 +434,8 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         if dataSource.feed == nil || dataSource.feed!.isReloading == false { // check for the empty view
             updateEmptyViewAppearenceAnimated(true)
         }
+        
+        animatedUpdater = nil
     }
     
     public func dataSource(dataSource: TTDataSource, didUpdateItemsAtIndexPaths indexPaths: [NSIndexPath]) {
