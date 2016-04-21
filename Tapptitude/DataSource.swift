@@ -57,19 +57,30 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
     }
     
     public func indexPathOf(element: Any) -> NSIndexPath? {
-        //TODO: implement
-        fatalError()
+        return nil
+    }
+    
+    public func indexPathOf<T: Equatable>(element: T) -> NSIndexPath? {
         
-        // TODO: find a better way
-//        let index = _content.indexOf({ (searchedItem) -> Bool in
-//            return (searchedItem as Any) === object
-//        })
-//        
-//        if index != nil {
-//            return NSIndexPath(forItem: index!, inSection: 0)
-//        } else {
-//            return nil
-//        }
+        let index = _content.indexOf({ (searchedItem) -> Bool in
+            if let item = searchedItem as? T {
+                return item == element
+            }
+            return false
+        })
+        
+        return index != nil ? NSIndexPath(forItem: index!, inSection: 0) : nil
+    }
+    
+    public func indexPathOf<T: AnyObject>(element: T) -> NSIndexPath? {
+        let index = _content.indexOf({ (searchedItem) -> Bool in
+            if let item = searchedItem as? T {
+                return item === element
+            }
+            return false
+        })
+        
+        return index != nil ? NSIndexPath(forItem: index!, inSection: 0) : nil
     }
     
     public subscript(indexPath: NSIndexPath) -> Any {
