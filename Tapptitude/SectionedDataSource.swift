@@ -8,62 +8,6 @@
 
 import Foundation
 
-public class GroupedByDataSource<T, U: Hashable> : SectionedDataSource<T> {
-    lazy private var _ungroupedContent : [T] = [T]()
-    
-    public var groupBy: (T -> U)?
-    
-    public init(content: [T] = [],  groupBy: (T -> U) ) {
-        let groupedContent = content.groupBy(groupBy)
-        
-        super.init(groupedContent)
-        _ungroupedContent = content
-        self.groupBy = groupBy
-    }
-    
-    override public func dataFeed(dataFeed: TTDataFeed?, didReloadContent content: [Any]?) {
-        // pass delegate message
-        if let delegate = delegate as? TTDataFeedDelegate {
-            delegate.dataFeed(dataFeed, didReloadContent: content)
-        }
-        
-        _unfilteredContent.removeAll()
-        _ungroupedContent.removeAll()
-        if let content = content {
-            if let groupBy = groupBy {
-                _ungroupedContent.appendContentsOf(content.map({$0 as! T}))
-                _unfilteredContent = _ungroupedContent.groupBy(groupBy)
-            } else {
-                _unfilteredContent.appendContentsOf(content.map({$0 as! [T]}))
-            }
-        }
-        
-        filterContent()
-        
-        delegate?.dataSourceDidChangeContent(self)
-    }
-    
-    override public func dataFeed(dataFeed: TTDataFeed?, didLoadMoreContent content: [Any]?) {
-        // pass delegate message
-        if let delegate = delegate as? TTDataFeedDelegate {
-            delegate.dataFeed(dataFeed, didLoadMoreContent: content)
-        }
-        
-        if let content = content {
-            if let groupBy = groupBy {
-                _ungroupedContent.appendContentsOf(content.map({$0 as! T}))
-                _unfilteredContent = _ungroupedContent.groupBy(groupBy)
-            } else {
-                _unfilteredContent.appendContentsOf(content.map({$0 as! [T]}))
-            }
-        }
-        
-        filterContent()
-        
-        delegate?.dataSourceDidChangeContent(self)
-    }
-}
-
 public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
     
     private var _unfilteredContent : [[T]] = [[T]]()
@@ -158,7 +102,9 @@ public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
     public subscript(indexPath: NSIndexPath) -> T {
         get { return _content[indexPath.section][indexPath.item] }
         set {
+            delegate?.dataSourceWillChangeContent(self)
             _content[indexPath.section][indexPath.item] = newValue
+            delegate?.dataSource(self, didUpdateItemsAtIndexPaths: [indexPath])
             delegate?.dataSourceDidChangeContent(self) // TODO: support incremental changes
         }
     }
@@ -166,7 +112,9 @@ public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
     public subscript(indexPath: NSIndexPath) -> Any {
         get { return _content[indexPath.section][indexPath.item] }
         set {
+            delegate?.dataSourceWillChangeContent(self)
             _content[indexPath.section][indexPath.item] = (newValue as! T)
+            delegate?.dataSource(self, didUpdateItemsAtIndexPaths: [indexPath])
             delegate?.dataSourceDidChangeContent(self) // TODO: support incremental changes
         }
     }
@@ -174,7 +122,10 @@ public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
     public subscript(section: Int, index: Int) -> T {
         get { return _content[section][index] }
         set {
+            delegate?.dataSourceWillChangeContent(self)
             _content[section][index] = newValue
+            let indexPath = NSIndexPath(forItem: index, inSection: section)
+            delegate?.dataSource(self, didUpdateItemsAtIndexPaths: [indexPath])
             delegate?.dataSourceDidChangeContent(self)
         }
     }
@@ -182,7 +133,10 @@ public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
     public subscript(section: Int, index: Int) -> Any {
         get { return _content[section][index] }
         set {
+            delegate?.dataSourceWillChangeContent(self)
             _content[section][index] = (newValue as! T)
+            let indexPath = NSIndexPath(forItem: index, inSection: section)
+            delegate?.dataSource(self, didUpdateItemsAtIndexPaths: [indexPath])
             delegate?.dataSourceDidChangeContent(self)
         }
     }
@@ -240,6 +194,63 @@ public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         if let delegate = delegate as? TTDataFeedDelegate {
             delegate.dataFeed(dataFeed, isLoadingMore: isLoadingMore)
         }
+    }
+}
+
+
+public class GroupedByDataSource<T, U: Hashable> : SectionedDataSource<T> {
+    lazy private var _ungroupedContent : [T] = [T]()
+    
+    public var groupBy: (T -> U)?
+    
+    public init(content: [T] = [],  groupBy: (T -> U) ) {
+        let groupedContent = content.groupBy(groupBy)
+        
+        super.init(groupedContent)
+        _ungroupedContent = content
+        self.groupBy = groupBy
+    }
+    
+    override public func dataFeed(dataFeed: TTDataFeed?, didReloadContent content: [Any]?) {
+        // pass delegate message
+        if let delegate = delegate as? TTDataFeedDelegate {
+            delegate.dataFeed(dataFeed, didReloadContent: content)
+        }
+        
+        _unfilteredContent.removeAll()
+        _ungroupedContent.removeAll()
+        if let content = content {
+            if let groupBy = groupBy {
+                _ungroupedContent.appendContentsOf(content.map({$0 as! T}))
+                _unfilteredContent = _ungroupedContent.groupBy(groupBy)
+            } else {
+                _unfilteredContent.appendContentsOf(content.map({$0 as! [T]}))
+            }
+        }
+        
+        filterContent()
+        
+        delegate?.dataSourceDidChangeContent(self)
+    }
+    
+    override public func dataFeed(dataFeed: TTDataFeed?, didLoadMoreContent content: [Any]?) {
+        // pass delegate message
+        if let delegate = delegate as? TTDataFeedDelegate {
+            delegate.dataFeed(dataFeed, didLoadMoreContent: content)
+        }
+        
+        if let content = content {
+            if let groupBy = groupBy {
+                _ungroupedContent.appendContentsOf(content.map({$0 as! T}))
+                _unfilteredContent = _ungroupedContent.groupBy(groupBy)
+            } else {
+                _unfilteredContent.appendContentsOf(content.map({$0 as! [T]}))
+            }
+        }
+        
+        filterContent()
+        
+        delegate?.dataSourceDidChangeContent(self)
     }
 }
 
