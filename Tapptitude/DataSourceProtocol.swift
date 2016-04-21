@@ -44,6 +44,9 @@ public protocol TTDataSourceMutable {
     func remove<S>(item: S)
     
     func replaceAtIndexPath<S>(indexPath: NSIndexPath, newElement: S)
+    
+    subscript(indexPath: NSIndexPath) -> Any { get set }
+    subscript(section: Int, index: Int) -> Any { get set }
 }
 
 

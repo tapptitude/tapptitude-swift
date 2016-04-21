@@ -7,6 +7,7 @@ var dataSource = DataSource([2, 4, 6])
 print(dataSource.content)
 dataSource[0]
 dataSource[2] = 8
+dataSource[1, 1]
 print(dataSource)
 
 dataSource += [12]
