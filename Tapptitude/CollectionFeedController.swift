@@ -185,7 +185,9 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
             layout.sectionInset = cellController.sectionInset
             layout.minimumLineSpacing = cellController.minimumLineSpacing
             layout.minimumInteritemSpacing = cellController.minimumInteritemSpacing
-            layout.itemSize = cellController.cellSize
+            if cellController.cellSize.width >= 0.0 && cellController.cellSize.height >= 0.0 {
+                layout.itemSize = cellController.cellSize
+            }
         }
     }
     
