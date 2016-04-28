@@ -141,6 +141,13 @@ public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         }
     }
     
+    public func removeAtIndexPath(indexPath: NSIndexPath) {
+        delegate?.dataSourceWillChangeContent(self)
+        _content[indexPath.section].removeAtIndex(indexPath.item)
+        delegate?.dataSource(self, didDeleteItemsAtIndexPaths: [indexPath])
+        delegate?.dataSourceDidChangeContent(self)
+    }
+    
     public var dataSourceID : String?
     
     //}
