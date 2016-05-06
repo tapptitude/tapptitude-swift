@@ -24,9 +24,9 @@ public class CollectionCellController<ObjectClass, CellName: UICollectionViewCel
     
     public weak var parentViewController : UIViewController?
     
-    public init(cellSize : CGSize, reuseIdentifier:String? = nil) {
+    public init(cellSize : CGSize, reuseIdentifier: String = String(CellType)) {
         self.cellSize = cellSize
-        self.reuseIdentifier = reuseIdentifier ?? String(CellType)
+        self.reuseIdentifier = reuseIdentifier
     }
     
     public func cellSizeForContent(content: ObjectType, collectionView: UICollectionView) -> CGSize {
@@ -88,5 +88,9 @@ public class CollectionCellController<ObjectClass, CellName: UICollectionViewCel
         } else {
             return nil
         }
+    }
+    
+    public func reuseIdentifierForContent(content: ObjectType) -> String {
+        return reuseIdentifier
     }
 }
