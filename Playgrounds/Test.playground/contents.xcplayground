@@ -14,5 +14,7 @@
         <page name='GroupedBy DataSource'/>
         <page name='Simple DataFeed'/>
         <page name='Paginated DataFeed'/>
+        <page name='Swipe to Delete'/>
+        <page name='Keyboard Controller'/>
     </pages>
 </playground>

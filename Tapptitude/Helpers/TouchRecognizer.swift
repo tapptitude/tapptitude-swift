@@ -9,13 +9,13 @@
 import UIKit
 import UIKit.UIGestureRecognizerSubclass
 
-class TouchRecognizer: UIGestureRecognizer {
-    var callback: () -> Void
-    var ignoreViews: [UIView]?
-    var canPreventOtherGestureRecognizers: Bool = true
-    var ignoreFirstResponder: Bool = false // enable touches on view with keboard
+public class TouchRecognizer: UIGestureRecognizer {
+    public var callback: () -> Void
+    public var ignoreViews: [UIView]?
+    public var canPreventOtherGestureRecognizers: Bool = true
+    public var ignoreFirstResponder: Bool = false // enable touches on view with keboard
     
-    init(callback: () -> Void, ignoreViews views: [UIView]?) {
+    public init(callback: () -> Void, ignoreViews views: [UIView]?) {
         self.callback = callback
         self.ignoreViews = views
         
@@ -32,7 +32,7 @@ class TouchRecognizer: UIGestureRecognizer {
         callback()
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent) {
+    override public func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent) {
         super.touchesBegan(touches, withEvent: event)
         
         let touch = touches.first!
@@ -50,7 +50,7 @@ class TouchRecognizer: UIGestureRecognizer {
         self.state = .Recognized
     }
     
-    override func canPreventGestureRecognizer(preventedGestureRecognizer: UIGestureRecognizer) -> Bool {
+    public override func canPreventGestureRecognizer(preventedGestureRecognizer: UIGestureRecognizer) -> Bool {
         return canPreventOtherGestureRecognizers
     }
 }

@@ -9,20 +9,20 @@
 import Foundation
 import UIKit
 
-class KeyboardVisibilityController: NSObject {
+public class KeyboardVisibilityController: NSObject {
 
-    weak var view: UIView? // this view will be translated up, will make firstResponder visible
-    weak var toBeVisibleView: UIView? //when keyboard is visible move this view up
+    public weak var view: UIView? // this view will be translated up, will make firstResponder visible
+    public weak var toBeVisibleView: UIView? //when keyboard is visible move this view up
     
-    var dismissKeyboardTouchRecognizer: TouchRecognizer? = nil //nil by default
-    var moveViewUpByValue: Float? // move by a exact value, when 0 view is moved up by keyboard height
-    var makeFirstRespondeSuperviewVisible: Bool? //instead of firstResponder view
+    public var dismissKeyboardTouchRecognizer: TouchRecognizer? = nil //nil by default
+    public var moveViewUpByValue: Float? // move by a exact value, when 0 view is moved up by keyboard height
+    public var makeFirstRespondeSuperviewVisible: Bool? //instead of firstResponder view
     
-    var additionallAnimatioBlock: ((moveUp: Bool) -> Void)? //view properties to be animated
-    var disableKeyboardMoveUpAnimation: Bool = false
-    var keyboardVisible: Bool = false
+    public var additionallAnimatioBlock: ((moveUp: Bool) -> Void)? //view properties to be animated
+    public var disableKeyboardMoveUpAnimation: Bool = false
+    public var keyboardVisible: Bool = false
     
-    override init() {
+    public override init() {
         super.init()
         
         NSNotificationCenter.defaultCenter().addObserver(self,
@@ -46,7 +46,7 @@ class KeyboardVisibilityController: NSObject {
                                                          object: nil)
     }
 
-    init(viewToMove moveView: UIView) {
+    public init(viewToMove moveView: UIView) {
         self.view = moveView
     }
     
@@ -191,13 +191,13 @@ class KeyboardVisibilityController: NSObject {
 }
 
 import ObjectiveC
-extension UIView {
+public extension UIView {
     
     private struct KeyboardAssociatedKey {
         static var viewExtension = "viewExtensionKeyboardVisibilityController"
     }
     
-    var keyboardVisibilityController: KeyboardVisibilityController? {
+    public var keyboardVisibilityController: KeyboardVisibilityController? {
         get {
             return objc_getAssociatedObject(self, &KeyboardAssociatedKey.viewExtension) as? KeyboardVisibilityController ?? nil
         }
@@ -206,7 +206,7 @@ extension UIView {
         }
     }
 
-    func addKeyboardVisibilityController() -> KeyboardVisibilityController? {
+    public func addKeyboardVisibilityController() -> KeyboardVisibilityController {
         var keyboardController = self.keyboardVisibilityController
         
         if keyboardController == nil {
@@ -222,15 +222,15 @@ extension UIView {
             self.keyboardVisibilityController = keyboardController
         }
         
-        return keyboardController
+        return keyboardVisibilityController!
     }
     
-    func removeKeyboardVisibilityController() {
+    public func removeKeyboardVisibilityController() {
         keyboardVisibilityController = nil
     }
 }
 
-extension UIView {
+public extension UIView {
     
     public func findFirstResponder() -> UIView? {
         if isFirstResponder() {
