@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		23014FF41CBBC41B001F9DC6 /* SectionedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23014FF31CBBC41B001F9DC6 /* SectionedDataSource.swift */; };
+		234BC72D1CDCF9A6004057D4 /* KeyboardVisibilityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234BC7291CDCF9A6004057D4 /* KeyboardVisibilityController.swift */; };
+		234BC72E1CDCF9A6004057D4 /* PanViewGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234BC72A1CDCF9A6004057D4 /* PanViewGestureRecognizer.swift */; };
+		234BC72F1CDCF9A6004057D4 /* SwipeToEditOnCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234BC72B1CDCF9A6004057D4 /* SwipeToEditOnCollection.swift */; };
+		234BC7301CDCF9A6004057D4 /* TouchRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234BC72C1CDCF9A6004057D4 /* TouchRecognizer.swift */; };
 		235500AA1CA4569200D7B393 /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235500991CA4569200D7B393 /* DataSource.swift */; };
 		235500AB1CA4569200D7B393 /* CollectionCellControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2355009A1CA4569200D7B393 /* CollectionCellControllerProtocol.swift */; };
 		235500AC1CA4569200D7B393 /* CollectionFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2355009B1CA4569200D7B393 /* CollectionFeedController.swift */; };
@@ -31,6 +35,10 @@
 
 /* Begin PBXFileReference section */
 		23014FF31CBBC41B001F9DC6 /* SectionedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SectionedDataSource.swift; path = Tapptitude/SectionedDataSource.swift; sourceTree = SOURCE_ROOT; };
+		234BC7291CDCF9A6004057D4 /* KeyboardVisibilityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardVisibilityController.swift; sourceTree = "<group>"; };
+		234BC72A1CDCF9A6004057D4 /* PanViewGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanViewGestureRecognizer.swift; sourceTree = "<group>"; };
+		234BC72B1CDCF9A6004057D4 /* SwipeToEditOnCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeToEditOnCollection.swift; sourceTree = "<group>"; };
+		234BC72C1CDCF9A6004057D4 /* TouchRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchRecognizer.swift; sourceTree = "<group>"; };
 		234ECBEF1C747FE800135CF9 /* Tapptitude.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Tapptitude.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		235500991CA4569200D7B393 /* DataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataSource.swift; path = Tapptitude/DataSource.swift; sourceTree = SOURCE_ROOT; };
 		2355009A1CA4569200D7B393 /* CollectionCellControllerProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionCellControllerProtocol.swift; path = Tapptitude/CollectionCellControllerProtocol.swift; sourceTree = SOURCE_ROOT; };
@@ -65,6 +73,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		234BC7281CDCF9A6004057D4 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				234BC7291CDCF9A6004057D4 /* KeyboardVisibilityController.swift */,
+				234BC72A1CDCF9A6004057D4 /* PanViewGestureRecognizer.swift */,
+				234BC72B1CDCF9A6004057D4 /* SwipeToEditOnCollection.swift */,
+				234BC72C1CDCF9A6004057D4 /* TouchRecognizer.swift */,
+			);
+			name = Helpers;
+			path = Tapptitude/Helpers;
+			sourceTree = SOURCE_ROOT;
+		};
 		234ECBE51C747FE800135CF9 = {
 			isa = PBXGroup;
 			children = (
@@ -84,6 +104,7 @@
 		234ECBF11C747FE800135CF9 /* Tapptitude */ = {
 			isa = PBXGroup;
 			children = (
+				234BC7281CDCF9A6004057D4 /* Helpers */,
 				235500A31CA4569200D7B393 /* DataSourceProtocol.swift */,
 				235500991CA4569200D7B393 /* DataSource.swift */,
 				23014FF31CBBC41B001F9DC6 /* SectionedDataSource.swift */,
@@ -200,13 +221,17 @@
 				235500AF1CA4569200D7B393 /* PaginatedDataFeed.swift in Sources */,
 				235500AE1CA4569200D7B393 /* CollectionCellController.swift in Sources */,
 				235500B31CA4569200D7B393 /* CollectionFeedViewController.swift in Sources */,
+				234BC72E1CDCF9A6004057D4 /* PanViewGestureRecognizer.swift in Sources */,
 				235500AC1CA4569200D7B393 /* CollectionFeedController.swift in Sources */,
 				23C8ADEE1CAC1D0600BC47E3 /* HybridDataSource.swift in Sources */,
 				235500B51CA4569200D7B393 /* CollectionViewAnimatedUpdater.swift in Sources */,
 				23D6608C1CBF901C0005470F /* CollectionHeaderController.swift in Sources */,
+				234BC72F1CDCF9A6004057D4 /* SwipeToEditOnCollection.swift in Sources */,
 				235500B01CA4569200D7B393 /* DataFeed.swift in Sources */,
 				23014FF41CBBC41B001F9DC6 /* SectionedDataSource.swift in Sources */,
+				234BC7301CDCF9A6004057D4 /* TouchRecognizer.swift in Sources */,
 				235500B11CA4569200D7B393 /* SimpleDataFeed.swift in Sources */,
+				234BC72D1CDCF9A6004057D4 /* KeyboardVisibilityController.swift in Sources */,
 				23C5A6F01CB82B6E00FE5152 /* FilteredDataSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
