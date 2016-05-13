@@ -7,6 +7,8 @@ class SwipeCell : TextCell, SwipeToEditCell {
     var containerView : UIView!
     var rightView : UIView!
     
+    var item: String!
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -14,17 +16,31 @@ class SwipeCell : TextCell, SwipeToEditCell {
         containerView.addSubview(label)
         containerView.backgroundColor = .lightGrayColor()
         
-        let rightFrame = CGRect(x: frame.width - 50, y: 0, width: 50, height: frame.height)
-        rightView = UIView(frame: rightFrame)
-        rightView.autoresizingMask = [.FlexibleLeftMargin]
-        rightView.backgroundColor = .redColor()
+        let rightFrame = CGRect(x: frame.width - 70, y: 0, width: 70, height: frame.height)
+        let button = UIButton(frame: rightFrame)
+        button.setTitle("Delete", forState: .Normal)
+        button.addTarget(self, action: #selector(SwipeCell.deleteAction(_:)), forControlEvents: .TouchUpInside)
+        button.autoresizingMask = [.FlexibleLeftMargin]
+        button.backgroundColor = .redColor()
         
+        rightView = button
         contentView.addSubview(rightView)
         contentView.addSubview(containerView)
     }
     
     required internal init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    @IBAction func deleteAction(sender: AnyObject) {
+        guard let parentViewController = parentViewController else {
+            return
+        }
+        
+        let controller = parentViewController as! CollectionFeedController
+        let indexPath = controller.collectionView!.indexPathForCell(self)
+        let dataSource = controller.dataSource as! DataSource
+        dataSource.removeAtIndexPath(indexPath!)
     }
     
     func didTranslate(transform: CGAffineTransform, translationPercentInsets: UIEdgeInsets) {
@@ -51,7 +67,7 @@ class SwipeController: CollectionFeedController, SwipeToEditOnCollection {
 }
 
 
-let items = NSArray(arrayLiteral: "Maria", "232")
+let items = NSArray(arrayLiteral: "Maria", "232", "Ghita", "Ion")
 let dataSource = DataSource(items)
 
 class TextCellController: CollectionCellController<String, SwipeCell> {
@@ -63,6 +79,7 @@ class TextCellController: CollectionCellController<String, SwipeCell> {
     
     override func configureCell(cell: SwipeCell, forContent content: String, indexPath: NSIndexPath) {
         cell.label.text = content
+        cell.item = content
     }
     
     override func didSelectContent(content: String, indexPath: NSIndexPath, collectionView: UICollectionView) {
