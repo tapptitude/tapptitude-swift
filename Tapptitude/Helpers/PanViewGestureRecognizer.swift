@@ -40,11 +40,11 @@ import UIKit
 //    self.panGestureRecognizer.tippingPercentageEdgeInsets = UIEdgeInsetsMake(0.5f, 0, 0.5f, 0);
 //    self.panGestureRecognizer.targetTranslation = CGPointMake(0, -(self.view.frame.size.height - self.cameraButton.frame.size.height));
 
-class PanViewGestureRecognizer: UIPanGestureRecognizer, UIGestureRecognizerDelegate {
-    var animationDuration: NSTimeInterval = 0.55
+public class PanViewGestureRecognizer: UIPanGestureRecognizer, UIGestureRecognizerDelegate {
+    public var animationDuration: NSTimeInterval = 0.55
     
-    var targetTranslation: CGPoint!
-    var allowedTranslationEdgeInsets: UIEdgeInsets! { // relative from identity transform
+    public var targetTranslation: CGPoint!
+    public var allowedTranslationEdgeInsets: UIEdgeInsets! { // relative from identity transform
         didSet {
             //    assert(allowedTranslationEdgeInsets.left <= 0.0, "left inset should <= 0.0");
             //    assert(allowedTranslationEdgeInsets.right >= 0.0, "right inset should >= 0.0");
@@ -52,7 +52,7 @@ class PanViewGestureRecognizer: UIPanGestureRecognizer, UIGestureRecognizerDeleg
             //    assert(allowedTranslationEdgeInsets.bottom >= 0.0, "bottom inset should >= 0.0");
         }
     }
-    var tippingPercentageEdgeInsets: UIEdgeInsets = UIEdgeInsetsMake(0.5, 0.5, 0.5, 0.5) { // the percentage point (from allowedTranslationEdgeInsets) when it should switch to next state
+    public var tippingPercentageEdgeInsets: UIEdgeInsets = UIEdgeInsetsMake(0.5, 0.5, 0.5, 0.5) { // the percentage point (from allowedTranslationEdgeInsets) when it should switch to next state
         didSet {
             assert(tippingPercentageEdgeInsets.top >= 0.0 || tippingPercentageEdgeInsets.top <= 1.0, "0.0 >= top inset <= 1.0");
             assert(tippingPercentageEdgeInsets.left >= 0.0 || tippingPercentageEdgeInsets.left <= 1.0, "0.0 >= left inset <= 1.0");
@@ -61,22 +61,22 @@ class PanViewGestureRecognizer: UIPanGestureRecognizer, UIGestureRecognizerDeleg
         }
     }
     
-    var translateAnimation: (() -> ())? // will run inside an animation block, view will be translated with targetTranslation
-    var resetTranslationAnimation: (() -> ())? //                                    view will be translated to 0
-    var moveView: ((transform: CGAffineTransform, translationPercentInsets: UIEdgeInsets) -> ())?
+    public var translateAnimation: (() -> ())? // will run inside an animation block, view will be translated with targetTranslation
+    public var resetTranslationAnimation: (() -> ())? //                                    view will be translated to 0
+    public var moveView: ((transform: CGAffineTransform, translationPercentInsets: UIEdgeInsets) -> ())?
     
-    var translateCompletion: ((canceled: Bool) -> ())?
-    var resetTranslationCompletion: ((canceled: Bool) -> ())?
+    public var translateCompletion: ((canceled: Bool) -> ())?
+    public var resetTranslationCompletion: ((canceled: Bool) -> ())?
     
-    var willEndPaning: ((canceled: Bool) -> ())? // was cancelled or not, you can change the targetTranslation
+    public var willEndPaning: ((canceled: Bool) -> ())? // was cancelled or not, you can change the targetTranslation
     
-    init () {
+    public init () {
         super.init(target: nil, action: nil)
         addTarget(self, action: #selector(PanViewGestureRecognizer.moveView(_:)))
         self.delegate = self
     }
     
-    weak var targetPanView: UIView?
+    public weak var targetPanView: UIView?
     
     var _targetPanView: UIView? {
         return self.targetPanView ?? self.view
@@ -255,7 +255,7 @@ class PanViewGestureRecognizer: UIPanGestureRecognizer, UIGestureRecognizerDeleg
         panRecognizer.setTranslation(CGPointZero, inView:self.view)
     }
     
-    func gestureRecognizerShouldBegin(recognizer: UIGestureRecognizer) -> Bool {
+    public func gestureRecognizerShouldBegin(recognizer: UIGestureRecognizer) -> Bool {
         let panRecognizer = recognizer as! UIPanGestureRecognizer
         let velocity = panRecognizer.velocityInView(self.targetPanView)
         if ((self.tippingPercentageEdgeInsets.left != 0.0 || self.tippingPercentageEdgeInsets.right != 0.0)

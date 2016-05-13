@@ -8,14 +8,14 @@
 
 import UIKit
 
-protocol SwipeToEditOnCollection : class {
+public protocol SwipeToEditOnCollection : class {
     var panGestureRecognizer : SwipeToEditGesture? {get set}
     var tapGestureRecognizer : TouchRecognizer? {get set}
     
     var collectionView : UICollectionView? {get}
 }
 
-@objc protocol SwipeToEditCell : class {
+@objc public protocol SwipeToEditCell : class {
     var containerView : UIView! {get}
     var rightView : UIView! {get}
     
@@ -27,7 +27,7 @@ protocol SwipeToEditOnCollection : class {
 }
 
 
-extension SwipeToEditCell where Self: UICollectionViewCell {
+public extension SwipeToEditCell where Self: UICollectionViewCell {
     func shouldStartSwipe() -> Bool {
         return true
     }
@@ -38,7 +38,7 @@ extension SwipeToEditCell where Self: UICollectionViewCell {
 }
 
 
-extension SwipeToEditOnCollection {
+public extension SwipeToEditOnCollection {
     
     func addSwipeToEdit() {
         self.addPanGestureRecognizer()
@@ -120,10 +120,10 @@ extension SwipeToEditOnCollection {
 
 
 
-class SwipeToEditGesture: PanViewGestureRecognizer {
-    var shouldBeginBlock : ((gesture: SwipeToEditGesture) -> Bool)?
+public class SwipeToEditGesture: PanViewGestureRecognizer {
+    public var shouldBeginBlock : ((gesture: SwipeToEditGesture) -> Bool)?
     
-    override func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+    public override func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
         let shouldBegin = self.shouldBeginBlock!(gesture: self)
         if (shouldBegin) {
             return super.gestureRecognizerShouldBegin(gestureRecognizer)
