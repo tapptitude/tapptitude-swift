@@ -16,5 +16,7 @@
         <page name='Paginated DataFeed'/>
         <page name='Swipe to Delete'/>
         <page name='Keyboard Controller'/>
+        <page name='Chat Controller'/>
+        <page name='Auto Expanded TextView'/>
     </pages>
 </playground>
