@@ -26,20 +26,17 @@ public class PaginatedDataFeed<T>: DataFeed<T> {
     }
     
     public override func reloadOperationWithCallback(callback: TTCallback<T>.Signature) -> TTCancellable? {
-        return loadPageOperation(offset: 0, limit: limit) {[unowned self] content, error in
-            if error == nil {
-                self.offset = self.limit
-                self.hasMorePages = self.enableLoadMoreOnlyForCompletePage ? (content?.count == self.limit) : (content?.count > 0)
-            }
-            
-            callback(content:content, error:error)
-        }
+        return loadNextPage(0, callback: callback)
     }
     
     public override func loadMoreOperationWithCallback(callback: TTCallback<T>.Signature) -> TTCancellable? {
+        return loadNextPage(offset, callback: callback)
+    }
+    
+    internal func loadNextPage(offset: Int, callback: TTCallback<T>.Signature) -> TTCancellable? {
         return loadPageOperation(offset: offset, limit: limit) {[unowned self] content, error in
             if error == nil {
-                self.offset += self.limit
+                self.offset = offset + self.limit
                 self.hasMorePages = self.enableLoadMoreOnlyForCompletePage ? (content?.count == self.limit) : (content?.count > 0)
             }
             
@@ -68,7 +65,7 @@ public class PaginatedOffsetDataFeed<T, OffsetType> : DataFeed<T> {
     
     private var loadPageNextOffsetOperation: (offset: OffsetType?, callback: TTCallbackNextOffset<T, OffsetType>.Signature) -> TTCancellable? // next page offset is given by backend
     
-    public init(loadPage: (offset:OffsetType?, callback:TTCallbackNextOffset<T, OffsetType>.Signature) -> TTCancellable?) {
+    public init(loadPage: (offset: OffsetType?, callback: TTCallbackNextOffset<T, OffsetType>.Signature) -> TTCancellable?) {
         self.loadPageNextOffsetOperation = loadPage
     }
     
@@ -77,17 +74,14 @@ public class PaginatedOffsetDataFeed<T, OffsetType> : DataFeed<T> {
     }
     
     public override func reloadOperationWithCallback(callback: TTCallback<T>.Signature) -> TTCancellable? {
-        return loadPageNextOffsetOperation(offset: nil) {[unowned self] content, nextOffset, error in
-            if error == nil {
-                self.offset = nextOffset
-                self.hasMorePages = (nextOffset != nil)
-            }
-            
-            callback(content:content, error:error)
-        }
+        return loadNextPage(nil, callback: callback)
     }
     
     public override func loadMoreOperationWithCallback(callback: TTCallback<T>.Signature) -> TTCancellable? {
+        return loadNextPage(offset, callback: callback)
+    }
+    
+    internal func loadNextPage(offset: OffsetType?, callback: TTCallback<T>.Signature) -> TTCancellable? {
         return loadPageNextOffsetOperation(offset: offset) {[unowned self] content, nextOffset, error in
             if error == nil {
                 self.offset = nextOffset
@@ -97,7 +91,6 @@ public class PaginatedOffsetDataFeed<T, OffsetType> : DataFeed<T> {
             callback(content:content, error:error)
         }
     }
-    
     
     public var hasMorePages: Bool = false
 }
