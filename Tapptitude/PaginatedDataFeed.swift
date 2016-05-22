@@ -9,11 +9,10 @@
 import Foundation
 
 public class PaginatedDataFeed<T>: DataFeed<T> {
-    public var limit: Int = 1
-    public var offset: Int = 0 // maybe a NSNumber or NSString, dependend on backend API
+    public var limit: Int!
+    public var offset: Int = 0 // next offset is calculated with limit
     
     private var loadPageOperation: (offset:Int, limit:Int, callback:TTCallback<T>.Signature) -> TTCancellable? // load page using integer offset
-//    private var loadPageNextOffsetOperation: (TTCallback) -> TTCancellable? // next page offset is given by backend
     
     public var enableLoadMoreOnlyForCompletePage = true
     
@@ -48,19 +47,7 @@ public class PaginatedDataFeed<T>: DataFeed<T> {
     public var hasMorePages: Bool = false
 }
 
-extension DataSource {
-    public convenience init<T>(pageSize:Int, loadPage: (offset:Int, limit:Int, callback:TTCallback<T>.Signature) -> TTCancellable?) {
-        self.init()
-        let feed = PaginatedDataFeed(loadPage: loadPage)
-        feed.limit = pageSize
-        feed.delegate = self
-        self.feed = feed
-    }
-}
-
-
 public class PaginatedOffsetDataFeed<T, OffsetType> : DataFeed<T> {
-    
     public var offset: OffsetType? // dependends on backend API
     
     private var loadPageNextOffsetOperation: (offset: OffsetType?, callback: TTCallbackNextOffset<T, OffsetType>.Signature) -> TTCancellable? // next page offset is given by backend
@@ -96,10 +83,17 @@ public class PaginatedOffsetDataFeed<T, OffsetType> : DataFeed<T> {
 }
 
 extension DataSource {
+    public convenience init<T>(pageSize:Int, loadPage: (offset:Int, limit:Int, callback:TTCallback<T>.Signature) -> TTCancellable?) {
+        self.init()
+        let feed = PaginatedDataFeed(loadPage: loadPage)
+        feed.limit = pageSize
+        self.feed = feed
+    }
+}
+
+extension DataSource {
     public convenience init<T, OffsetType>(loadPage: (offset: OffsetType?, callback:TTCallbackNextOffset<T, OffsetType>.Signature) -> TTCancellable?) {
         self.init()
-        let feed = PaginatedOffsetDataFeed(loadPage: loadPage)
-        feed.delegate = self
-        self.feed = feed
+        self.feed = PaginatedOffsetDataFeed(loadPage: loadPage)
     }
 }

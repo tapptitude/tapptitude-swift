@@ -49,13 +49,9 @@ class FeedController: CollectionFeedController {
         
 //        let dataSource = DataSource { APIMock(callback: $0) }
         
-//        let dataSource = DataSource(pageSize: 10) { (offset, limit, callback) -> TTCancellable? in
-//            return APIMock(callback: { (content, error) in
-//                var newContent = content
-//                newContent?.append("2312")
-//                callback(content: newContent, error: error)
-//            })
-//        }
+        let dataSource = DataSource(pageSize: 10, loadPage: { (offset, limit, callback) -> TTCancellable? in
+            return APIMock(callback: callback)
+        })
         
 //        let items = NSArray(arrayLiteral: "Why Algorithms as Microservices are Changing Software Development\n We recently wrote about how the Algorithm Economy and containers have created a fundamental shift in software development. Today, we want to look at the 10 ways algorithms as microservices change the way we build and deploy software.", 123)
 //        let dataSource = DataSource(items)
