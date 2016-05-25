@@ -75,9 +75,13 @@ extension Request {
         return ResponseSerializer { request, response, data, error in
             
             guard error == nil else {
-                let accessDenied = response?.statusCode == 403
+                print("! Request failed:", request?.URLString ?? "")
+                
+                let accessDenied = response?.statusCode == 403 || response?.statusCode == 401
                 if accessDenied {
-                    Session.closeWithError(error)
+                    dispatch_sync(dispatch_get_main_queue(), {
+                        Session.closeWithError(error)
+                    })
                 }
                 
                 return .Failure(error!)
@@ -107,7 +111,7 @@ extension Request {
     }
     
     public func responseAPI(completionHandler: Response<AnyObject, NSError> -> Void) -> Self {
-        return response(responseSerializer: Request.APIErrorResponseSerializer(), completionHandler: { (response) -> Void in
+        return validate().response(responseSerializer: Request.APIErrorResponseSerializer(), completionHandler: { (response) -> Void in
             var canceled = false
             if let error = response.result.error {
                 canceled = error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled
