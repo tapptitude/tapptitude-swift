@@ -719,4 +719,12 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
             }
         }
     }
+    
+    public override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        if forceTouchPreviewContext == nil && forceTouchPreviewEnabled {
+            registerForceTouchPreview()
+        }
+    }
 }
