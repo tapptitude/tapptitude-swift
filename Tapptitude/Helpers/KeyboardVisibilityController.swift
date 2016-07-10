@@ -10,13 +10,20 @@ import Foundation
 import UIKit
 
 public class KeyboardVisibilityController: NSObject {
-
+    
     public weak var view: UIView? // this view will be translated up, will make firstResponder visible
     public weak var toBeVisibleView: UIView? //when keyboard is visible move this view up
     
-    public var dismissKeyboardTouchRecognizer: TouchRecognizer? = nil //nil by default
-    public var moveViewUpByValue: Float? // move by a exact value, when 0 view is moved up by keyboard height
-    public var makeFirstRespondeSuperviewVisible: Bool? //instead of firstResponder view
+    public var dismissKeyboardTouchRecognizer: TouchRecognizer? { //nil by default
+        willSet {
+            if let touchRecognizer = self.dismissKeyboardTouchRecognizer {
+                touchRecognizer.view?.removeGestureRecognizer(touchRecognizer)
+            }
+        }
+    }
+    public var moveViewUpByValue: CGFloat = 0 // move by a exact value, when 0 view is moved up by keyboard height
+    public var addMoveUpValue: CGFloat = 0 // you can add extra height
+    public var makeFirstRespondeSuperviewVisible: Bool = false //instead of firstResponder view
     
     public var additionallAnimatioBlock: ((moveUp: Bool) -> Void)? //view properties to be animated
     public var disableKeyboardMoveUpAnimation: Bool = false
@@ -45,14 +52,15 @@ public class KeyboardVisibilityController: NSObject {
                                                          name: UIKeyboardWillChangeFrameNotification,
                                                          object: nil)
     }
-
-    public init(viewToMove moveView: UIView) {
+    
+    convenience public init(viewToMove moveView: UIView) {
+        self.init()
         self.view = moveView
     }
     
     deinit {
-        if self.dismissKeyboardTouchRecognizer != nil {
-            self.dismissKeyboardTouchRecognizer!.view?.removeGestureRecognizer(self.dismissKeyboardTouchRecognizer!)
+        if let touchRecognizer = self.dismissKeyboardTouchRecognizer {
+            touchRecognizer.view?.removeGestureRecognizer(touchRecognizer)
         }
         
         NSNotificationCenter.defaultCenter().removeObserver(self)
@@ -61,11 +69,11 @@ public class KeyboardVisibilityController: NSObject {
     //MARK: - keyboard events
     
     func keyboardWillAppear(notification: NSNotification) {
-        self.dismissKeyboardTouchRecognizer?.enabled = true
         self.keyboardVisible = true
-        self.moveViewUp(false, usingKeyboardNotification: notification)
+        self.dismissKeyboardTouchRecognizer?.enabled = true
+        self.moveViewUp(true, usingKeyboardNotification: notification)
     }
-
+    
     func keyboardWillDisappear(notification: NSNotification) {
         self.keyboardVisible = false
         self.dismissKeyboardTouchRecognizer?.enabled = false
@@ -77,75 +85,63 @@ public class KeyboardVisibilityController: NSObject {
     }
     
     func keyboardWillChangeFrame(notification: NSNotification) {
-//        var userInfo: [NSObject : AnyObject] = notification.userInfo!
-//        let keyboardEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue()
-////        let goingUp = keyboardEndFrame.size.height == 0; //COMMENTED
+        //        var userInfo: [NSObject : AnyObject] = notification.userInfo!
+        //        let keyboardEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue()
+        ////        let goingUp = keyboardEndFrame.size.height == 0; //COMMENTED
         self.moveViewUp(true, usingKeyboardNotification: notification)
     }
     
     func moveViewUp(up: Bool, usingKeyboardNotification notification: NSNotification) {
-        if self.view == nil {
-            return
+        if self.view == nil || self.view?.window == nil {
+            return //ingore
         }
         
         let userInfo = notification.userInfo!
-//        var animationDuration = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue
-//        var animationCurve = (userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber)?.integerValue
-        let keyboardEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue()
+        let keyboardEndFrame = userInfo[UIKeyboardFrameEndUserInfoKey]?.CGRectValue()
         
         var toBeVisibleView = self.toBeVisibleView
         
         if toBeVisibleView == nil {
             toBeVisibleView = self.view?.findFirstResponder()
-            
-            if let makeVisible = self.makeFirstRespondeSuperviewVisible {
-                if makeVisible {
-                    toBeVisibleView = toBeVisibleView?.superview
-                }
+            if self.makeFirstRespondeSuperviewVisible {
+                toBeVisibleView = toBeVisibleView?.superview
             }
         }
         
         // the old way of animation will match the keyboard animation timing and curve
         if !self.disableKeyboardMoveUpAnimation {
             UIView.beginAnimations(nil, context: nil)
-            
-            if let duration = (notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue {
+            if let duration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double {
                 UIView.setAnimationDuration(duration)
             }
-            
-            if let animationValue = (notification.userInfo![UIKeyboardAnimationCurveUserInfoKey] as? NSNumber)?.integerValue {
+            if let animationValue = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? Int {
                 if let animationCurve = UIViewAnimationCurve(rawValue: animationValue) {
                     UIView.setAnimationCurve(animationCurve)
                 }
             }
-            
             UIView.setAnimationBeginsFromCurrentState(true)
         }
-    
-        var moveUpValue: CGFloat = 0
-        if let value = self.moveViewUpByValue {
-            moveUpValue = CGFloat(value)
-        }
         
+        var moveUpValue: CGFloat = self.moveViewUpByValue
         if let visibleView = toBeVisibleView {
             let frame = visibleView.convertRect(visibleView.bounds, toView: visibleView.window)
             
             if let endFrame = keyboardEndFrame {
-                let deltaY = CGRectGetMaxY(frame) - endFrame.origin.y
+                let deltaY = frame.maxY - endFrame.origin.y
                 let shouldMove = (deltaY - self.view!.transform.ty) > 0
                 if shouldMove {
                     moveUpValue = deltaY - self.view!.transform.ty
                 }
             }
         }
+        moveUpValue += addMoveUpValue
         
         if let scrollView = self.view as? UIScrollView{
             let frame = scrollView.convertRect(scrollView.bounds, toView: scrollView.window)
-            let diff = scrollView.window!.bounds.size.height - CGRectGetMaxY(frame)
+            let diff = scrollView.window!.bounds.size.height - frame.maxY
             
             let key = "previousInsetBottom"
-            var inset = scrollView.alignmentRectInsets()
-            
+            var inset = scrollView.contentInset
             if up {
                 if scrollView.layer.valueForKey(key) == nil {
                     scrollView.layer.setValue(inset.bottom, forKey: key)
@@ -165,12 +161,10 @@ public class KeyboardVisibilityController: NSObject {
                 scrollView.contentOffset = CGPointMake(0, newY)
             }
         } else {
-            self.view?.transform = up ? CGAffineTransformMakeTranslation(0, -moveUpValue):CGAffineTransformIdentity
+            self.view?.transform = up ? CGAffineTransformMakeTranslation(0, -moveUpValue) : CGAffineTransformIdentity
         }
         
-        if let additionalBlock = self.additionallAnimatioBlock {
-            additionalBlock(moveUp: up)
-        }
+        additionallAnimatioBlock?(moveUp: up)
         
         if !self.disableKeyboardMoveUpAnimation {
             UIView.commitAnimations()
@@ -179,14 +173,6 @@ public class KeyboardVisibilityController: NSObject {
     
     func dismissFirstResponder(sender: AnyObject) {
         self.view?.findFirstResponder()?.resignFirstResponder()
-    }
-    
-    func setDismissTTKeyboardTouchRecognizer(dismissKeyboardTouchRecognizer: TouchRecognizer?) {
-        if (self.dismissKeyboardTouchRecognizer != nil) && (dismissKeyboardTouchRecognizer == nil) {
-            self.dismissKeyboardTouchRecognizer?.view?.removeGestureRecognizer(self.dismissKeyboardTouchRecognizer!)
-            
-            self.dismissKeyboardTouchRecognizer = dismissKeyboardTouchRecognizer
-        }
     }
 }
 
@@ -205,13 +191,13 @@ public extension UIView {
             objc_setAssociatedObject(self, &KeyboardAssociatedKey.viewExtension, newValue, .OBJC_ASSOCIATION_RETAIN)
         }
     }
-
+    
     public func addKeyboardVisibilityController() -> KeyboardVisibilityController {
         var keyboardController = self.keyboardVisibilityController
         
         if keyboardController == nil {
             keyboardController = KeyboardVisibilityController(viewToMove: self)
-            keyboardController?.dismissKeyboardTouchRecognizer = UIGestureRecognizer.init(target: keyboardController, action: #selector(KeyboardVisibilityController.dismissFirstResponder)) as? TouchRecognizer
+            keyboardController?.dismissKeyboardTouchRecognizer = TouchRecognizer(target: keyboardController, action: #selector(KeyboardVisibilityController.dismissFirstResponder))
             keyboardController?.dismissKeyboardTouchRecognizer?.ignoreFirstResponder = true
             keyboardController?.dismissKeyboardTouchRecognizer?.enabled = false
             

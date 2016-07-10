@@ -7,6 +7,7 @@
         <page name='Expand cell'/>
         <page name='Multi Cell Controller'/>
         <page name='Hybrid Controller &amp; DataSource'/>
+        <page name='HybridCollectionCellController'/>
         <page name='Compile xibs - ToDo'/>
         <page name='JSON DataSource'/>
         <page name='Filtered DataSource'/>
