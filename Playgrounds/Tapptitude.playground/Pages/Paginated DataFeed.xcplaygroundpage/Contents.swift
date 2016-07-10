@@ -117,7 +117,7 @@ feedController.cellController = TextCellController()
 
 let items = NSArray(arrayLiteral: "Why Algorithms as Microservices are Changing Software Development\n We recently wrote about how the Algorithm Economy and containers have created a fundamental shift in software development. Today, we want to look at the 10 ways algorithms as microservices change the way we build and deploy software.")
 let dataSource = DataSource(items)
-dataSource.feed = PaginatedOffsetDataFeed<String, String>(loadPage: { (offset, callback) -> TTCancellable? in
+dataSource.feed = PaginatedDataFeed<String, String>(loadPage: { (offset, callback) -> TTCancellable? in
     return APIPaginateOffsetdMock(offset: offset, limit: 10, callback: callback)
 })
 
