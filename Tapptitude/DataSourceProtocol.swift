@@ -18,6 +18,8 @@ public protocol TTDataSource : TTDataFeedDelegate, CustomStringConvertible {
     subscript(indexPath: NSIndexPath) -> Any { get }
     subscript(section: Int, index: Int) -> Any { get }
     
+    func sectionItem(at section: Int) -> Any?
+    
     func indexPathOf(element: Any) -> NSIndexPath?
     
     weak var delegate: TTDataSourceDelegate? { get set }
@@ -26,15 +28,21 @@ public protocol TTDataSource : TTDataFeedDelegate, CustomStringConvertible {
     var dataSourceID: String? { get set } //usefull information
 }
 
-
+public extension TTDataSource {
+    public func sectionItem(at section: Int) -> Any? {
+        return nil
+    }
+}
 
 public protocol TTDataSourceMutable {
     func append<S>(newElement: S)
     func appendContentsOf<S>(newElements: [S])
     
     func insert<S>(newElement: S, atIndexPath indexPath: NSIndexPath)
+    func insert<S>(newElements: [S], atIndexPath indexPath: NSIndexPath)
     
     func moveElementFromIndexPath(fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath)
+    func removeAt(indexPaths: [NSIndexPath])
     func removeAtIndexPath(indexPath: NSIndexPath)
     func remove<S>(item: S)
     

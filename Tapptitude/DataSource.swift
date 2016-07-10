@@ -207,6 +207,20 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
         }
     }
     
+    public func insert<S>(newElements: [S], atIndexPath indexPath: NSIndexPath) {
+        var insertedIndexPaths:[NSIndexPath] = []
+        editContentWithBlock { (_content, delegate) -> Void in
+            var counter = 0
+            for element in newElements {
+                _content.insert(element, atIndex: indexPath.item + counter)
+                insertedIndexPaths.append(NSIndexPath(forItem: indexPath.item + counter, inSection: 0))
+                counter += 1
+            }
+            delegate?.dataSource(self, didInsertItemsAtIndexPaths: insertedIndexPaths)
+        }
+    }
+
+    
     public func moveElementFromIndexPath(fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
         editContentWithBlock { (_content, delegate) -> Void in
             let item = _content[fromIndexPath.item]
@@ -228,6 +242,43 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
             _content.removeAtIndex(indexPath.item)
             delegate?.dataSource(self, didDeleteItemsAtIndexPaths: [indexPath])
         }
+    }
+    
+    public func removeAt(indexPaths: [NSIndexPath]) {
+        if !indexPaths.isEmpty
+        {
+            var indexPathsToRemove:[Int] = indexPaths.map { return $0.item }
+            editContentWithBlock { (_content, delegate) -> Void in
+                for j in 0..<indexPathsToRemove.count   {
+                    _content.removeAtIndex(indexPathsToRemove[j])
+                    for i in 0..<indexPathsToRemove.count{
+                        if indexPathsToRemove[i] > indexPathsToRemove[j] {
+                            indexPathsToRemove[i] -= 1
+                        }
+                    }
+                }
+                delegate?.dataSource(self, didDeleteItemsAtIndexPaths: indexPaths)
+            }
+        }
+    }
+    
+    // TODO:
+    public func removeAt(filter: (item: Any) -> Bool) {
+//        if !indexPaths.isEmpty
+//        {
+//            var indexPathsToRemove:[Int] = indexPaths.map { return $0.item }
+//            editContentWithBlock { (_content, delegate) -> Void in
+//                for j in 0..<indexPathsToRemove.count   {
+//                    _content.removeAtIndex(indexPathsToRemove[j])
+//                    for i in 0..<indexPathsToRemove.count{
+//                        if indexPathsToRemove[i] > indexPathsToRemove[j] {
+//                            indexPathsToRemove[i] -= 1
+//                        }
+//                    }
+//                }
+//                delegate?.dataSource(self, didDeleteItemsAtIndexPaths: indexPaths)
+//            }
+//        }
     }
     
     public func remove<S>(element: S) {
