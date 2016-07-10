@@ -17,6 +17,8 @@ public protocol TTCollectionHeaderControllerProtocol {
     
     weak var parentViewController : UIViewController? {get set}
     
+    func acceptsContent(content: Any) -> Bool
+    
     func headerSizeForContent(content: Any, collectionView: UICollectionView) -> CGSize
     
     func configureHeader(cell: UICollectionReusableView, forContent content: Any, indexPath: NSIndexPath)
@@ -33,7 +35,6 @@ public protocol TTCollectionHeaderController: TTCollectionHeaderControllerProtoc
     var headerSize: CGSize {get}
     
     func headerSizeForContent(content: ObjectType, collectionView: UICollectionView) -> CGSize
-    
     func configureHeader(cell: HeaderType, forContent content: ObjectType, indexPath: NSIndexPath)
 }
 
@@ -56,6 +57,10 @@ extension TTCollectionHeaderController {
     
     public func configureHeader(cell: UICollectionReusableView, forContent content: Any, indexPath: NSIndexPath) {
         configureHeader(cell as! HeaderType, forContent: content as! ObjectType, indexPath: indexPath)
+    }
+    
+    public func acceptsContent(content: Any) -> Bool {
+        return content is ObjectType
     }
 }
 
