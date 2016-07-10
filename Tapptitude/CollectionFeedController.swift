@@ -9,6 +9,14 @@
 import UIKit
 
 public class CollectionFeedController: UIViewController, TTCollectionFeedController, TTCollectionFeedControllerMutable, TTDataFeedDelegate, TTDataSourceDelegate, UIViewControllerPreviewingDelegate {
+    
+    public struct Options {
+        public var emptyMessage = NSLocalizedString("No content", comment: "No content")
+        public var loadMoreIndicatorViewColor = UIColor.grayColor()
+    }
+    
+    public var options = Options()
+    
     public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
@@ -91,7 +99,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
             
             let noContent = UILabel()
             noContent.backgroundColor = UIColor.clearColor()
-            noContent.text = NSLocalizedString("No content", comment: "No content")
+            noContent.text = options.emptyMessage
             noContent.frame = CGRectIntegral(collectionView!.frame)
             noContent.textAlignment = .Center
             noContent.numberOfLines = 0
@@ -287,7 +295,9 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         let feed = self.dataSource?.feed
         let showLoadMore = supportsLoadMore && (feed?.canLoadMore == true || feed?.isLoadingMore == true)
         
-        print("showLoadMore = \(showLoadMore)")
+        if feed != nil {
+            print("showLoadMore = \(showLoadMore)")
+        }
         if canShowLoadMoreView != showLoadMore {
             if animated && collectionView?.indexPathsForVisibleItems().count > 0 {
                 collectionView?.performBatchUpdates({ () -> Void in
@@ -549,6 +559,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
             let reusableView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: loadMoreViewXIBName, forIndexPath: indexPath)
             if let loadMoreView = reusableView as? LoadMoreView {
                 loadMoreView.loadingView?.hidden = false
+                loadMoreView.loadingView?.color = options.loadMoreIndicatorViewColor
                 loadMoreView.startAnimating()
                 
                 dataSource.feed?.loadMore()
@@ -658,7 +669,11 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection  section: Int) -> CGSize {
         let showHeader = headerController != nil && self.dataSource?.numberOfItemsInSection(section) > 0
-        return (showHeader ? headerController!.headerSize : CGSizeZero)
+        if showHeader && headerController!.acceptsContent(dataSource![section, 0]) {
+            return headerController!.headerSize
+        } else {
+            return CGSizeZero
+        }
     }
 //}
 //
