@@ -8,7 +8,11 @@
 
 import UIKit
 
-struct HybridItem {
+public protocol RequireNewSection {
+    
+}
+
+public struct HybridItem {
     var element: Any
     var cellController: TTCollectionCellControllerProtocol
 }
@@ -17,14 +21,22 @@ public protocol HybridCollectionCellController: TTCollectionCellControllerProtoc
     func mapItem(item: Any) -> [Any]
 }
 
-public class HybridDataSource : DataSource {
+extension HybridCollectionCellController {
+    
+}
+
+public class HybridDataSource : SectionedDataSource<Any> {
     let multiCellController : HybridCellController!
     
     public init(content: [Any], multiCellController: HybridCellController) {
         self.multiCellController = multiCellController
         let controllers = multiCellController.cellControllers
         let translatedContent = HybridDataSource.transformContent(content, cellControllers: controllers)
-        let items = translatedContent.map({$0 as Any})
+        
+        var items = [[Any]]()
+        for subItem in translatedContent {
+            items.append(subItem.map({$0 as Any}))
+        }
         
         super.init(items)
     }
@@ -46,29 +58,106 @@ public class HybridDataSource : DataSource {
         }
     }
     
-    static func transformContent(content: [Any], cellControllers: [TTCollectionCellControllerProtocol]) -> [HybridItem] {
+    static func transformContent(content: [Any], cellControllers: [TTCollectionCellControllerProtocol]) -> [[HybridItem]] {
+        var allItems = [[HybridItem]]()
         var items = [HybridItem]()
+        
+        let addNewSectionIfRequired = {(cellController: TTCollectionCellControllerProtocol) in
+            if cellController is RequireNewSection {
+                allItems.append(items)
+                
+                items = [HybridItem]()
+                allItems.append(items)
+            }
+        }
         
         for item in content {
             for cellController in cellControllers  {
-                if cellController.acceptsContent(item) {
+                if let hybridMapCellController = cellController as? HybridCollectionCellController {
+                    let mappedItems = hybridMapCellController.mapItem(item)
+                    if !mappedItems.isEmpty {
+                        addNewSectionIfRequired(cellController)
+                    }
+                    
+                    for newItem in  mappedItems {
+                        if let hybridItem = newItem as? HybridItem {
+                            items.append(hybridItem)
+                        } else {
+                            let hybridItem = HybridItem(element: newItem, cellController: cellController)
+                            items.append(hybridItem)
+                        }
+                    }
+                } else if cellController.acceptsContent(item) {
+                    addNewSectionIfRequired(cellController)
                     let hybridItem = HybridItem(element: item, cellController: cellController)
                     items.append(hybridItem)
-                } else if let hybridMapCellController = cellController as? HybridCollectionCellController {
-                    for newItem in hybridMapCellController.mapItem(item) {
-                        let hybridItem = HybridItem(element: newItem, cellController: cellController)
-                        items.append(hybridItem)
-                    }
                 }
             }
         }
         
-        return items
+        if !items.isEmpty {
+            allItems.append(items)
+        }
+        
+        return allItems
     }
     
     func transformContent(content:[Any]) -> [Any] {
         let items = HybridDataSource.transformContent(content, cellControllers: multiCellController.cellControllers)
         return items.map({$0 as Any})
+    }
+}
+
+public class GroupCellController<ItemType>: MultiCollectionCellController, HybridCollectionCellController {
+    public override init (_ cellControllers: [TTCollectionCellControllerProtocol]) {
+        super.init(cellControllers)
+    }
+    
+    public init (_ cellControllers: [TTCollectionCellControllerProtocol], acceptsContent: ((content: ItemType) -> Bool)) {
+        super.init(cellControllers)
+        self.acceptsContent = acceptsContent
+    }
+    
+    public override func acceptsContent(content: Any) -> Bool {
+        if let item = content as? ItemType {
+            return acceptsContent(item)
+        } else {
+            return false
+        }
+    }
+    
+    public func acceptsContent(content: ItemType) -> Bool {
+        if let acccepts = acceptsContent {
+            return acccepts(content: content)
+        } else {
+            return true
+        }
+    }
+    
+    public var acceptsContent: ((content: ItemType) -> Bool)?
+    
+    public func mapItem(item: Any) -> [Any] {
+        if acceptsContent(item) {
+            var items = [Any]()
+            
+            for cellController in cellControllers {
+                if let hybridMapCellController = cellController as? HybridCollectionCellController {
+                    let mappedItems = hybridMapCellController.mapItem(item)
+                    
+                    for newItem in  mappedItems {
+                        let hybridItem = HybridItem(element: newItem, cellController: cellController)
+                        items.append(hybridItem)
+                    }
+                } else if cellController.acceptsContent(item) {
+                    let hybridItem = HybridItem(element: item, cellController: cellController)
+                    items.append(hybridItem)
+                }
+            }
+            
+            return items
+        } else {
+            return []
+        }
     }
 }
 
