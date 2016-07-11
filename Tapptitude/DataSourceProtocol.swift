@@ -45,6 +45,7 @@ public protocol TTDataSourceMutable {
     func removeAt(indexPaths: [NSIndexPath])
     func removeAtIndexPath(indexPath: NSIndexPath)
     func remove<S>(item: S)
+    func removeWith(filter: (item: Any) -> Bool)
     
     func replaceAtIndexPath<S>(indexPath: NSIndexPath, newElement: S)
     

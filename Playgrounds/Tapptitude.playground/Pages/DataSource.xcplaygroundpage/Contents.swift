@@ -16,8 +16,10 @@ let secondDataSource = DataSource([1, 2, 3])
 dataSource += secondDataSource
 print(dataSource.content)
 
-var items = [23, 23]
-items.append(23)
-print(items)
+dataSource.removeWith { (item) -> Bool in
+    return (item as? Int) == 2
+}
+print(dataSource.content)
+
 
 //: [Next](@next)

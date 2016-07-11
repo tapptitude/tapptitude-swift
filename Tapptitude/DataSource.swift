@@ -262,23 +262,17 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
         }
     }
     
-    // TODO:
-    public func removeAt(filter: (item: Any) -> Bool) {
-//        if !indexPaths.isEmpty
-//        {
-//            var indexPathsToRemove:[Int] = indexPaths.map { return $0.item }
-//            editContentWithBlock { (_content, delegate) -> Void in
-//                for j in 0..<indexPathsToRemove.count   {
-//                    _content.removeAtIndex(indexPathsToRemove[j])
-//                    for i in 0..<indexPathsToRemove.count{
-//                        if indexPathsToRemove[i] > indexPathsToRemove[j] {
-//                            indexPathsToRemove[i] -= 1
-//                        }
-//                    }
-//                }
-//                delegate?.dataSource(self, didDeleteItemsAtIndexPaths: indexPaths)
-//            }
-//        }
+    public func removeWith(filter: (item: Any) -> Bool) {
+        editContentWithBlock { (_content, delegate) -> Void in
+            var indexPaths: [NSIndexPath] = []
+            for (index, item) in _content.enumerate() {
+                if filter(item: item) {
+                    _content.removeAtIndex(index)
+                    indexPaths.append(NSIndexPath(forItem: index, inSection: 0))
+                }
+            }
+            delegate?.dataSource(self, didDeleteItemsAtIndexPaths: indexPaths)
+        }
     }
     
     public func remove<S>(element: S) {
