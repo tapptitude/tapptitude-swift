@@ -13,14 +13,14 @@ public protocol TTDataSource : TTDataFeedDelegate, CustomStringConvertible {
     var content : [Any] { get }
     func hasContent() -> Bool
     func numberOfSections() -> Int
-    func numberOfItemsInSection(section: Int) -> Int
+    func numberOfItems(inSection section: Int) -> Int
     
     subscript(indexPath: NSIndexPath) -> Any { get }
     subscript(section: Int, index: Int) -> Any { get }
     
     func sectionItem(at section: Int) -> Any?
     
-    func indexPathOf(element: Any) -> NSIndexPath?
+    func indexPath(of element: Any) -> NSIndexPath?
     
     weak var delegate: TTDataSourceDelegate? { get set }
     var feed: TTDataFeed? { get set }

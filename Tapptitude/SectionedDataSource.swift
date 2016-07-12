@@ -79,11 +79,11 @@ public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         return _content.count
     }
     
-    public func numberOfItemsInSection(section: Int) -> Int {
+    public func numberOfItems(inSection section: Int) -> Int {
         return _content[section].count
     }
     
-    public func indexPathOf(element: Any) -> NSIndexPath? {
+    public func indexPath(of element: Any) -> NSIndexPath? {
         //TODO: implement
         fatalError()
         

@@ -52,15 +52,15 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
         return 1
     }
     
-    public func numberOfItemsInSection(section: Int) -> Int {
+    public func numberOfItems(inSection section: Int) -> Int {
         return _content.count
     }
     
-    public func indexPathOf(element: Any) -> NSIndexPath? {
+    public func indexPath(of element: Any) -> NSIndexPath? {
         return nil
     }
     
-    public func indexPathOf<T: Equatable>(element: T) -> NSIndexPath? {
+    public func indexPath<T: Equatable>(of element: T) -> NSIndexPath? {
         
         let index = _content.indexOf({ (searchedItem) -> Bool in
             if let item = searchedItem as? T {
@@ -72,7 +72,7 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
         return index != nil ? NSIndexPath(forItem: index!, inSection: 0) : nil
     }
     
-    public func indexPathOf<T: AnyObject>(element: T) -> NSIndexPath? {
+    public func indexPath<T: AnyObject>(of element: T) -> NSIndexPath? {
         let index = _content.indexOf({ (searchedItem) -> Bool in
             if let item = searchedItem as? T {
                 return item === element
@@ -276,7 +276,7 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
     }
     
     public func remove<S>(element: S) {
-        if let indexPath = self.indexPathOf(element) {
+        if let indexPath = self.indexPath(of: element) {
             self.removeAtIndexPath(indexPath)
         } else {
             print("Element not found \(element) in dataSource")

@@ -266,7 +266,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
             return
         }
         
-        if let indexPath = dataSource.indexPathOf(element) {
+        if let indexPath = dataSource.indexPath(of: element) {
             let layout = collectionView.collectionViewLayout
             var attribute = layout.layoutAttributesForItemAtIndexPath(indexPath)
             if attribute?.frame.size.width < 1.0 {
@@ -500,7 +500,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     }
     
     public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dataSource!.numberOfItemsInSection(section)
+        return dataSource!.numberOfItems(inSection: section)
     }
     
     public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -533,7 +533,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         
         // so
         if let cellController = cellController as? TTCollectionCellControllerProtocolExtended {
-            let sectionCount = dataSource!.numberOfItemsInSection(indexPath.section)
+            let sectionCount = dataSource!.numberOfItems(inSection: indexPath.section)
             cellController.configureCell(cell, forContent: content, indexPath: indexPath, dataSourceCount: sectionCount)
         }
         
@@ -637,7 +637,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        if dataSource?.numberOfItemsInSection(section) > 0 {
+        if dataSource?.numberOfItems(inSection: section) > 0 {
             let content = dataSource![section, 0]
             return cellController.sectionInsetForContent(content, collectionView: collectionView)
         } else {
@@ -646,7 +646,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
-        if dataSource?.numberOfItemsInSection(section) > 0 {
+        if dataSource?.numberOfItems(inSection: section) > 0 {
             let content = dataSource![section, 0]
             return cellController.minimumInteritemSpacingForContent(content, collectionView: collectionView)
         } else {
@@ -655,7 +655,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
-        if dataSource?.numberOfItemsInSection(section) > 0 {
+        if dataSource?.numberOfItems(inSection: section) > 0 {
             let content = dataSource![section, 0]
             return cellController.minimumLineSpacingForContent(content, collectionView: collectionView)
         } else {
@@ -668,7 +668,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection  section: Int) -> CGSize {
-        let showHeader = headerController != nil && self.dataSource?.numberOfItemsInSection(section) > 0
+        let showHeader = headerController != nil && self.dataSource?.numberOfItems(inSection: section) > 0
         if showHeader && headerController!.acceptsContent(dataSource![section, 0]) {
             return headerController!.headerSize
         } else {

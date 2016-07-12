@@ -32,13 +32,13 @@ class EditViewController: CollectionFeedController {
     }
     
     @IBAction func plusAction(sender: AnyObject) {
-        let pos = min(1, dataSource!.numberOfItemsInSection(0))
+        let pos = min(1, dataSource!.numberOfItems(inSection: 0))
         dataSourceMutable?.insert(counter, atIndexPath: NSIndexPath(forItem: pos, inSection: 0))
         counter += 1
     }
     
     @IBAction func minusAction(sender: AnyObject) {
-        if dataSource!.numberOfItemsInSection(0) > 0 {
+        if dataSource!.numberOfItems(inSection: 0) > 0 {
             dataSourceMutable?.removeAtIndexPath(NSIndexPath(forItem: 0, inSection: 0))
         }
     }
@@ -67,7 +67,7 @@ class EditViewController: CollectionFeedController {
     }
     
     @IBAction func moveAction(sender: AnyObject) {
-        if dataSource!.numberOfItemsInSection(0) < 2 {
+        if dataSource!.numberOfItems(inSection: 0) < 2 {
             return
         }
         
