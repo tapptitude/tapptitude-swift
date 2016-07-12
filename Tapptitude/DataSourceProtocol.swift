@@ -35,19 +35,19 @@ public extension TTDataSource {
 }
 
 public protocol TTDataSourceMutable {
-    func append<S>(newElement: S)
-    func appendContentsOf<S>(newElements: [S])
+    func append<S>(_ newElement: S)
+    func append<S>(contentsOf newElements: [S])
     
-    func insert<S>(newElement: S, atIndexPath indexPath: NSIndexPath)
-    func insert<S>(newElements: [S], atIndexPath indexPath: NSIndexPath)
+    func insert<S>(newElement: S, at indexPath: NSIndexPath)
+    func insert<S>(contentsOf newElements: [S], at indexPath: NSIndexPath)
     
-    func moveElementFromIndexPath(fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath)
-    func removeAt(indexPaths: [NSIndexPath])
-    func removeAtIndexPath(indexPath: NSIndexPath)
-    func remove<S>(item: S)
+    func moveElement(from fromIndexPath: NSIndexPath, to toIndexPath: NSIndexPath)
+    func remove(at indexPaths: [NSIndexPath])
+    func remove(at indexPath: NSIndexPath)
+    func remove<S>(_ item: S)
     func removeWith(filter: (item: Any) -> Bool)
     
-    func replaceAtIndexPath<S>(indexPath: NSIndexPath, newElement: S)
+    func replace<S>(at indexPath: NSIndexPath, newElement: S)
     
     subscript(indexPath: NSIndexPath) -> Any { get set }
     subscript(section: Int, index: Int) -> Any { get set }

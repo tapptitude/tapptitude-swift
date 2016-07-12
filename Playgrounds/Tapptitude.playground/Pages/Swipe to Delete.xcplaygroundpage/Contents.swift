@@ -40,7 +40,7 @@ class SwipeCell : TextCell, SwipeToEditCell {
         let controller = parentViewController as! CollectionFeedController
         let indexPath = controller.collectionView!.indexPathForCell(self)
         let dataSource = controller.dataSource as! DataSource
-        dataSource.removeAtIndexPath(indexPath!)
+        dataSource.remove(at: indexPath!)
     }
     
     func didTranslate(transform: CGAffineTransform, translationPercentInsets: UIEdgeInsets) {

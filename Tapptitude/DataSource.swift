@@ -180,7 +180,7 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
         delegate?.dataSourceDidChangeContent(self)
     }
     
-    public func append<S>(newElement: S) {
+    public func append<S>(_ newElement: S) {
         editContentWithBlock { (_content, delegate) -> Void in
             _content.append(newElement)
             let indexPath = NSIndexPath(forItem: _content.count, inSection: 0)
@@ -188,7 +188,7 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
         }
     }
     
-    public func appendContentsOf<S>(newElements: [S]) {
+    public func append<S>(contentsOf newElements: [S]) {
         editContentWithBlock { (_content, delegate) -> Void in
             let startIndex = _content.count
             let indexPaths = newElements.enumerate().map({ (index, _) -> NSIndexPath in
@@ -200,14 +200,14 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
         }
     }
     
-    public func insert<S>(newElement: S, atIndexPath indexPath: NSIndexPath) {
+    public func insert<S>(newElement: S, at indexPath: NSIndexPath) {
         editContentWithBlock { (_content, delegate) -> Void in
             _content.insert(newElement, atIndex: indexPath.item)
             delegate?.dataSource(self, didInsertItemsAtIndexPaths: [indexPath])
         }
     }
     
-    public func insert<S>(newElements: [S], atIndexPath indexPath: NSIndexPath) {
+    public func insert<S>(contentsOf newElements: [S], at indexPath: NSIndexPath) {
         var insertedIndexPaths:[NSIndexPath] = []
         editContentWithBlock { (_content, delegate) -> Void in
             var counter = 0
@@ -221,7 +221,7 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
     }
 
     
-    public func moveElementFromIndexPath(fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
+    public func moveElement(from fromIndexPath: NSIndexPath, to toIndexPath: NSIndexPath) {
         editContentWithBlock { (_content, delegate) -> Void in
             let item = _content[fromIndexPath.item]
             _content.removeAtIndex(fromIndexPath.item)
@@ -237,14 +237,14 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
         }
     }
     
-    public func removeAtIndexPath(indexPath: NSIndexPath) {
+    public func remove(at indexPath: NSIndexPath) {
         editContentWithBlock { (_content, delegate) -> Void in
             _content.removeAtIndex(indexPath.item)
             delegate?.dataSource(self, didDeleteItemsAtIndexPaths: [indexPath])
         }
     }
     
-    public func removeAt(indexPaths: [NSIndexPath]) {
+    public func remove(at indexPaths: [NSIndexPath]) {
         if !indexPaths.isEmpty
         {
             var indexPathsToRemove:[Int] = indexPaths.map { return $0.item }
@@ -275,15 +275,15 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
         }
     }
     
-    public func remove<S>(element: S) {
+    public func remove<S>(_ element: S) {
         if let indexPath = self.indexPath(of: element) {
-            self.removeAtIndexPath(indexPath)
+            self.remove(at: indexPath)
         } else {
             print("Element not found \(element) in dataSource")
         }
     }
     
-    public func replaceAtIndexPath<S>(indexPath: NSIndexPath, newElement: S) {
+    public func replace<S>(at indexPath: NSIndexPath, newElement: S) {
         editContentWithBlock { (_content, delegate) -> Void in
             _content[indexPath.item] = newElement
             delegate?.dataSource(self, didUpdateItemsAtIndexPaths: [indexPath])
@@ -302,5 +302,5 @@ public func += (inout left: DataSource, right: DataSource) {
 }
 
 public func += <T>(inout left: DataSource, right: [T]) {
-    left.appendContentsOf(right)
+    left.append(contentsOf: right)
 }

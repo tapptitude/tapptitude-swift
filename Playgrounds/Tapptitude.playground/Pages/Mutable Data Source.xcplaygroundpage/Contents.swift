@@ -33,13 +33,13 @@ class EditViewController: CollectionFeedController {
     
     @IBAction func plusAction(sender: AnyObject) {
         let pos = min(1, dataSource!.numberOfItems(inSection: 0))
-        dataSourceMutable?.insert(counter, atIndexPath: NSIndexPath(forItem: pos, inSection: 0))
+        dataSourceMutable?.insert(counter, at: NSIndexPath(forItem: pos, inSection: 0))
         counter += 1
     }
     
     @IBAction func minusAction(sender: AnyObject) {
         if dataSource!.numberOfItems(inSection: 0) > 0 {
-            dataSourceMutable?.removeAtIndexPath(NSIndexPath(forItem: 0, inSection: 0))
+            dataSourceMutable?.remove(at: NSIndexPath(forItem: 0, inSection: 0))
         }
     }
     
@@ -63,7 +63,7 @@ class EditViewController: CollectionFeedController {
             content.append(counter)
         }
         
-        dataSourceMutable?.appendContentsOf(content)
+        dataSourceMutable?.append(contentsOf: content)
     }
     
     @IBAction func moveAction(sender: AnyObject) {
@@ -74,7 +74,7 @@ class EditViewController: CollectionFeedController {
         let fromIndexPath = NSIndexPath(forItem: collectionView!.numberOfItemsInSection(0) - 1, inSection: 0)
         let toIndexPath = NSIndexPath(forItem:0, inSection:0)
         print("from \(fromIndexPath.row) to \(toIndexPath.row)")
-        dataSourceMutable?.moveElementFromIndexPath(fromIndexPath, toIndexPath: toIndexPath)
+        dataSourceMutable?.moveElement(from: fromIndexPath, to: toIndexPath)
     }
     
     override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
