@@ -152,7 +152,7 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
         
         if !indexPaths.isEmpty {
             delegate?.dataSourceWillChangeContent(self)
-            delegate?.dataSource(self, didInsertItemsAtIndexPaths: indexPaths)
+            delegate?.dataSource(self, didInsertItemsAt: indexPaths)
             delegate?.dataSourceDidChangeContent(self)
         }
     }
@@ -184,7 +184,7 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
         editContentWithBlock { (_content, delegate) -> Void in
             _content.append(newElement)
             let indexPath = NSIndexPath(forItem: _content.count, inSection: 0)
-            delegate?.dataSource(self, didInsertItemsAtIndexPaths: [indexPath])
+            delegate?.dataSource(self, didInsertItemsAt: [indexPath])
         }
     }
     
@@ -196,14 +196,14 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
             })
             
             _content.appendContentsOf(newElements.map{$0 as Any})
-            delegate?.dataSource(self, didInsertItemsAtIndexPaths: indexPaths)
+            delegate?.dataSource(self, didInsertItemsAt: indexPaths)
         }
     }
     
     public func insert<S>(newElement: S, at indexPath: NSIndexPath) {
         editContentWithBlock { (_content, delegate) -> Void in
             _content.insert(newElement, atIndex: indexPath.item)
-            delegate?.dataSource(self, didInsertItemsAtIndexPaths: [indexPath])
+            delegate?.dataSource(self, didInsertItemsAt: [indexPath])
         }
     }
     
@@ -216,7 +216,7 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
                 insertedIndexPaths.append(NSIndexPath(forItem: indexPath.item + counter, inSection: 0))
                 counter += 1
             }
-            delegate?.dataSource(self, didInsertItemsAtIndexPaths: insertedIndexPaths)
+            delegate?.dataSource(self, didInsertItemsAt: insertedIndexPaths)
         }
     }
 
@@ -233,14 +233,14 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
             
             _content.insert(item, atIndex: toIndex)
             
-            delegate?.dataSource(self, didMoveItemsAtIndexPaths: [fromIndexPath], toIndexPaths: [toIndexPath])
+            delegate?.dataSource(self, didMoveItemsFrom: [fromIndexPath], to: [toIndexPath])
         }
     }
     
     public func remove(at indexPath: NSIndexPath) {
         editContentWithBlock { (_content, delegate) -> Void in
             _content.removeAtIndex(indexPath.item)
-            delegate?.dataSource(self, didDeleteItemsAtIndexPaths: [indexPath])
+            delegate?.dataSource(self, didDeleteItemsAt: [indexPath])
         }
     }
     
@@ -257,7 +257,7 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
                         }
                     }
                 }
-                delegate?.dataSource(self, didDeleteItemsAtIndexPaths: indexPaths)
+                delegate?.dataSource(self, didDeleteItemsAt: indexPaths)
             }
         }
     }
@@ -271,7 +271,7 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
                     indexPaths.append(NSIndexPath(forItem: index, inSection: 0))
                 }
             }
-            delegate?.dataSource(self, didDeleteItemsAtIndexPaths: indexPaths)
+            delegate?.dataSource(self, didDeleteItemsAt: indexPaths)
         }
     }
     
@@ -286,7 +286,7 @@ public class DataSource : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable 
     public func replace<S>(at indexPath: NSIndexPath, newElement: S) {
         editContentWithBlock { (_content, delegate) -> Void in
             _content[indexPath.item] = newElement
-            delegate?.dataSource(self, didUpdateItemsAtIndexPaths: [indexPath])
+            delegate?.dataSource(self, didUpdateItemsAt: [indexPath])
         }
     }
 }

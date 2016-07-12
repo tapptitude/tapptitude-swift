@@ -104,7 +104,7 @@ public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         set {
             delegate?.dataSourceWillChangeContent(self)
             _content[indexPath.section][indexPath.item] = newValue
-            delegate?.dataSource(self, didUpdateItemsAtIndexPaths: [indexPath])
+            delegate?.dataSource(self, didUpdateItemsAt: [indexPath])
             delegate?.dataSourceDidChangeContent(self) // TODO: support incremental changes
         }
     }
@@ -114,7 +114,7 @@ public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         set {
             delegate?.dataSourceWillChangeContent(self)
             _content[indexPath.section][indexPath.item] = (newValue as! T)
-            delegate?.dataSource(self, didUpdateItemsAtIndexPaths: [indexPath])
+            delegate?.dataSource(self, didUpdateItemsAt: [indexPath])
             delegate?.dataSourceDidChangeContent(self) // TODO: support incremental changes
         }
     }
@@ -125,7 +125,7 @@ public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
             delegate?.dataSourceWillChangeContent(self)
             _content[section][index] = newValue
             let indexPath = NSIndexPath(forItem: index, inSection: section)
-            delegate?.dataSource(self, didUpdateItemsAtIndexPaths: [indexPath])
+            delegate?.dataSource(self, didUpdateItemsAt: [indexPath])
             delegate?.dataSourceDidChangeContent(self)
         }
     }
@@ -136,7 +136,7 @@ public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
             delegate?.dataSourceWillChangeContent(self)
             _content[section][index] = (newValue as! T)
             let indexPath = NSIndexPath(forItem: index, inSection: section)
-            delegate?.dataSource(self, didUpdateItemsAtIndexPaths: [indexPath])
+            delegate?.dataSource(self, didUpdateItemsAt: [indexPath])
             delegate?.dataSourceDidChangeContent(self)
         }
     }
@@ -144,7 +144,7 @@ public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
     public func removeAtIndexPath(indexPath: NSIndexPath) {
         delegate?.dataSourceWillChangeContent(self)
         _content[indexPath.section].removeAtIndex(indexPath.item)
-        delegate?.dataSource(self, didDeleteItemsAtIndexPaths: [indexPath])
+        delegate?.dataSource(self, didDeleteItemsAt: [indexPath])
         delegate?.dataSourceDidChangeContent(self)
     }
     

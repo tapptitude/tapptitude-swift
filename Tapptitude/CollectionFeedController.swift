@@ -454,20 +454,20 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         animatedUpdater = nil
     }
     
-    public func dataSource(dataSource: TTDataSource, didUpdateItemsAtIndexPaths indexPaths: [NSIndexPath]) {
-        animatedUpdater?.collectionView(collectionView!, didUpdateItems: indexPaths)
+    public func dataSource(dataSource: TTDataSource, didUpdateItemsAt indexPaths: [NSIndexPath]) {
+        animatedUpdater?.collectionView(collectionView!, didUpdateItemsAt: indexPaths)
     }
     
-    public func dataSource(dataSource: TTDataSource, didDeleteItemsAtIndexPaths indexPaths: [NSIndexPath]) {
-        animatedUpdater?.collectionView(collectionView!, didDeleteItems: indexPaths)
+    public func dataSource(dataSource: TTDataSource, didDeleteItemsAt indexPaths: [NSIndexPath]) {
+        animatedUpdater?.collectionView(collectionView!, didDeleteItemsAt: indexPaths)
     }
     
-    public func dataSource(dataSource: TTDataSource, didInsertItemsAtIndexPaths indexPaths: [NSIndexPath]) {
-        animatedUpdater?.collectionView(collectionView!, didInsertItems: indexPaths)
+    public func dataSource(dataSource: TTDataSource, didInsertItemsAt indexPaths: [NSIndexPath]) {
+        animatedUpdater?.collectionView(collectionView!, didInsertItemsAt: indexPaths)
     }
     
-    public func dataSource(dataSource: TTDataSource, didMoveItemsAtIndexPaths fromIndexPaths: [NSIndexPath], toIndexPaths: [NSIndexPath]) {
-        animatedUpdater?.collectionView(collectionView!, didMoveItemsAtIndexPaths: fromIndexPaths, toIndexPaths: toIndexPaths)
+    public func dataSource(dataSource: TTDataSource, didMoveItemsFrom fromIndexPaths: [NSIndexPath], to toIndexPaths: [NSIndexPath]) {
+        animatedUpdater?.collectionView(collectionView!, didMoveItemsFrom: fromIndexPaths, to: toIndexPaths)
     }
     
     public func dataSource(dataSource: TTDataSource, didInsertSections addedSections: NSIndexSet) {

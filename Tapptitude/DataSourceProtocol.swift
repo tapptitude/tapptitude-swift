@@ -57,10 +57,10 @@ public protocol TTDataSourceMutable {
 public protocol TTDataSourceDelegate: class {
     func dataSourceWillChangeContent(dataSource: TTDataSource)
     
-    func dataSource(dataSource: TTDataSource, didUpdateItemsAtIndexPaths indexPaths: [NSIndexPath])
-    func dataSource(dataSource: TTDataSource, didDeleteItemsAtIndexPaths indexPaths: [NSIndexPath])
-    func dataSource(dataSource: TTDataSource, didInsertItemsAtIndexPaths indexPaths: [NSIndexPath])
-    func dataSource(dataSource: TTDataSource, didMoveItemsAtIndexPaths fromIndexPaths: [NSIndexPath], toIndexPaths: [NSIndexPath])
+    func dataSource(dataSource: TTDataSource, didUpdateItemsAt indexPaths: [NSIndexPath])
+    func dataSource(dataSource: TTDataSource, didDeleteItemsAt indexPaths: [NSIndexPath])
+    func dataSource(dataSource: TTDataSource, didInsertItemsAt indexPaths: [NSIndexPath])
+    func dataSource(dataSource: TTDataSource, didMoveItemsFrom fromIndexPaths: [NSIndexPath], to toIndexPaths: [NSIndexPath])
     
     func dataSource(dataSource: TTDataSource, didInsertSections addedSections: NSIndexSet)
     func dataSource(dataSource: TTDataSource, didDeleteSections deletedSections: NSIndexSet)

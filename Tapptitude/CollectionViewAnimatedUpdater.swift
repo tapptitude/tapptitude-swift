@@ -13,11 +13,11 @@ protocol TTCollectionViewAnimatedUpdater {
     func collectionViewDidChangeContent(collectionView: UICollectionView)
     
     
-    func collectionView(collectionView: UICollectionView, didUpdateItems indexPaths: [NSIndexPath])
-    func collectionView(collectionView: UICollectionView, didDeleteItems indexPaths: [NSIndexPath])
-    func collectionView(collectionView: UICollectionView, didInsertItems indexPaths: [NSIndexPath])
+    func collectionView(collectionView: UICollectionView, didUpdateItemsAt indexPaths: [NSIndexPath])
+    func collectionView(collectionView: UICollectionView, didDeleteItemsAt indexPaths: [NSIndexPath])
+    func collectionView(collectionView: UICollectionView, didInsertItemsAt indexPaths: [NSIndexPath])
     
-    func collectionView(collectionView: UICollectionView, didMoveItemsAtIndexPaths fromIndexPaths: [NSIndexPath], toIndexPaths: [NSIndexPath])
+    func collectionView(collectionView: UICollectionView, didMoveItemsFrom fromIndexPaths: [NSIndexPath], to toIndexPaths: [NSIndexPath])
 
     func collectionView(collectionView: UICollectionView, didInsertSections sections: NSIndexSet)
     func collectionView(collectionView: UICollectionView, didDeleteSections sections: NSIndexSet)
@@ -51,13 +51,13 @@ class CollectionViewAnimatedUpdater: TTCollectionViewAnimatedUpdater {
     
     
     // MARK: - items operation
-    func collectionView(collectionView: UICollectionView, didUpdateItems indexPaths: [NSIndexPath]) {
+    func collectionView(collectionView: UICollectionView, didUpdateItemsAt indexPaths: [NSIndexPath]) {
         batchOperation?.append({
             collectionView.reloadItemsAtIndexPaths(indexPaths)
         })
     }
     
-    func collectionView(collectionView: UICollectionView, didDeleteItems indexPaths: [NSIndexPath]) {
+    func collectionView(collectionView: UICollectionView, didDeleteItemsAt indexPaths: [NSIndexPath]) {
         let indexPath = indexPaths.last!
         
         if collectionView.numberOfItemsInSection(indexPath.section) == 1 {
@@ -69,7 +69,7 @@ class CollectionViewAnimatedUpdater: TTCollectionViewAnimatedUpdater {
         }
     }
     
-    func collectionView(collectionView: UICollectionView, didInsertItems indexPaths: [NSIndexPath]) {
+    func collectionView(collectionView: UICollectionView, didInsertItemsAt indexPaths: [NSIndexPath]) {
         if collectionView.numberOfSections() > 0 {
             batchOperation?.append({
                 collectionView.insertItemsAtIndexPaths(indexPaths)
@@ -79,7 +79,7 @@ class CollectionViewAnimatedUpdater: TTCollectionViewAnimatedUpdater {
         }
     }
     
-    func collectionView(collectionView: UICollectionView, didMoveItemsAtIndexPaths fromIndexPaths: [NSIndexPath], toIndexPaths: [NSIndexPath]) {
+    func collectionView(collectionView: UICollectionView, didMoveItemsFrom fromIndexPaths: [NSIndexPath], to toIndexPaths: [NSIndexPath]) {
         batchOperation?.append({
             fromIndexPaths.enumerate().forEach({ (index, indexPath) in
                 let toIndexPath = toIndexPaths[index]
