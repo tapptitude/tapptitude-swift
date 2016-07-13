@@ -505,17 +505,17 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     
     public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let content = dataSource![indexPath]
-        let reuseIdentifier = cellController.reuseIdentifierForContent(content)
+        let reuseIdentifier = cellController.reuseIdentifier(for: content)
         
         if registeredCellIdentifiers == nil {
             registeredCellIdentifiers = [String]()
         }
         
         if registeredCellIdentifiers?.contains(reuseIdentifier) == false {
-            if let nib = cellController.nibToInstantiateCellForContent(content) {
+            if let nib = cellController.nibToInstantiateCell(for: content) {
                 collectionView.registerNib(nib, forCellWithReuseIdentifier: reuseIdentifier)
             } else {
-                let cellClass: AnyClass? = cellController.classToInstantiateCellForContent(content)
+                let cellClass: AnyClass? = cellController.classToInstantiateCell(for: content)
                 collectionView.registerClass(cellClass, forCellWithReuseIdentifier: reuseIdentifier)
             }
             
@@ -631,7 +631,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
 //extension CollectionFeedController {
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         let content = dataSource![indexPath]
-        let size = cellController.cellSizeForContent(content, collectionView: collectionView)
+        let size = cellController.cellSize(for: content, collectionView: collectionView)
         let boundsSize = collectionView.bounds.size
         return CGSizeMake(size.width < 0.0 ? boundsSize.width : size.width, size.height < 0.0 ? boundsSize.height : size.height)
     }
@@ -639,7 +639,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         if dataSource?.numberOfItems(inSection: section) > 0 {
             let content = dataSource![section, 0]
-            return cellController.sectionInsetForContent(content, collectionView: collectionView)
+            return cellController.sectionInset(for: content, collectionView: collectionView)
         } else {
             return UIEdgeInsetsZero
         }
@@ -648,7 +648,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
         if dataSource?.numberOfItems(inSection: section) > 0 {
             let content = dataSource![section, 0]
-            return cellController.minimumInteritemSpacingForContent(content, collectionView: collectionView)
+            return cellController.minimumInteritemSpacing(for: content, collectionView: collectionView)
         } else {
             return 0.0
         }
@@ -657,7 +657,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
         if dataSource?.numberOfItems(inSection: section) > 0 {
             let content = dataSource![section, 0]
-            return cellController.minimumLineSpacingForContent(content, collectionView: collectionView)
+            return cellController.minimumLineSpacing(for: content, collectionView: collectionView)
         } else {
             return 0.0
         }

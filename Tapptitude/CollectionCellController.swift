@@ -29,7 +29,7 @@ public class CollectionCellController<ObjectClass, CellName: UICollectionViewCel
         self.reuseIdentifier = reuseIdentifier
     }
     
-    public func cellSizeForContent(content: ObjectType, collectionView: UICollectionView) -> CGSize {
+    public func cellSize(for content: ObjectType, collectionView: UICollectionView) -> CGSize {
         let blockCellSize = cellSizeForContent?(content: content, collectionView: collectionView)
         return blockCellSize ?? cellSize
     }
@@ -90,7 +90,7 @@ public class CollectionCellController<ObjectClass, CellName: UICollectionViewCel
         }
     }
     
-    public func reuseIdentifierForContent(content: ObjectType) -> String {
+    public func reuseIdentifier(for content: ObjectType) -> String {
         return reuseIdentifier
     }
 }

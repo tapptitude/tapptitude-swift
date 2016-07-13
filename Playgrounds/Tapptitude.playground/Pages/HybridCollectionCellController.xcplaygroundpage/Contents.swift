@@ -34,8 +34,12 @@ numberCellController.configureCell = { cell, content, indexPath in
 
 
 extension CollectionCellController: HybridCollectionCellController {
-    public func mapItem(item: TestModel) -> [Any] {
+    public func mapItem(item: Any) -> [Any] {
+        if let item = item as? TestModel {
         return [item.name]
+        } else {
+            return []
+        }
     }
 }
 

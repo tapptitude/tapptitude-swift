@@ -14,7 +14,7 @@ class TextCellController: CollectionCellController<String, TextCell> {
         cell.label.text = content
     }
     
-    override func cellSizeForContent(content: String, collectionView: UICollectionView) -> CGSize {
+    override func cellSize(for content: String, collectionView: UICollectionView) -> CGSize {
         var size = cellSizeToFitText(content, labelName: "label" , maxSize: CGSizeMake(-1, 300))
         size.height = min(size.width, 200)
         return size

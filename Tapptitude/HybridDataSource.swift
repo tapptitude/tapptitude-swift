@@ -171,27 +171,27 @@ public class HybridCellController : MultiCollectionCellController {
         return controllerForContent(content) != nil
     }
     
-    override public func classToInstantiateCellForContent(content: Any) -> AnyClass? {
+    override public func classToInstantiateCell(for content: Any) -> AnyClass? {
         if let content = content as? HybridItem {
-            return content.cellController.classToInstantiateCellForContent(content.element)
+            return content.cellController.classToInstantiateCell(for: content.element)
         } else {
-            return super.classToInstantiateCellForContent(content)
+            return super.classToInstantiateCell(for: content)
         }
     }
     
-    override public func nibToInstantiateCellForContent(content: Any) -> UINib? {
+    override public func nibToInstantiateCell(for content: Any) -> UINib? {
         if let content = content as? HybridItem {
-            return content.cellController.nibToInstantiateCellForContent(content.element)
+            return content.cellController.nibToInstantiateCell(for: content.element)
         } else {
-            return super.nibToInstantiateCellForContent(content)
+            return super.nibToInstantiateCell(for: content)
         }
     }
     
-    override public func reuseIdentifierForContent(content: Any) -> String {
+    override public func reuseIdentifier(for content: Any) -> String {
         if let content = content as? HybridItem {
-            return content.cellController.reuseIdentifierForContent(content.element)
+            return content.cellController.reuseIdentifier(for: content.element)
         } else {
-            return super.reuseIdentifierForContent(content)
+            return super.reuseIdentifier(for: content)
         }
     }
     
@@ -211,35 +211,35 @@ public class HybridCellController : MultiCollectionCellController {
         }
     }
     
-    override public func cellSizeForContent(content: Any, collectionView: UICollectionView) -> CGSize {
+    override public func cellSize(for content: Any, collectionView: UICollectionView) -> CGSize {
         if let content = content as? HybridItem {
-            return content.cellController.cellSizeForContent(content.element, collectionView: collectionView)
+            return content.cellController.cellSize(for: content.element, collectionView: collectionView)
         } else {
-            return super.cellSizeForContent(content, collectionView: collectionView)
+            return super.cellSize(for: content, collectionView: collectionView)
         }
     }
     
-    override public func sectionInsetForContent(content: Any, collectionView: UICollectionView) -> UIEdgeInsets {
+    override public func sectionInset(for content: Any, collectionView: UICollectionView) -> UIEdgeInsets {
         if let content = content as? HybridItem {
-            return content.cellController.sectionInsetForContent(content.element, collectionView: collectionView)
+            return content.cellController.sectionInset(for: content.element, collectionView: collectionView)
         } else {
-            return super.sectionInsetForContent(content, collectionView: collectionView)
+            return super.sectionInset(for: content, collectionView: collectionView)
         }
     }
     
-    override public func minimumLineSpacingForContent(content: Any, collectionView: UICollectionView) -> CGFloat {
+    override public func minimumLineSpacing(for content: Any, collectionView: UICollectionView) -> CGFloat {
         if let content = content as? HybridItem {
-            return content.cellController.minimumLineSpacingForContent(content.element, collectionView: collectionView)
+            return content.cellController.minimumLineSpacing(for: content.element, collectionView: collectionView)
         } else {
-            return super.minimumLineSpacingForContent(content, collectionView: collectionView)
+            return super.minimumLineSpacing(for: content, collectionView: collectionView)
         }
     }
     
-    override public func minimumInteritemSpacingForContent(content: Any, collectionView: UICollectionView) -> CGFloat {
+    override public func minimumInteritemSpacing(for content: Any, collectionView: UICollectionView) -> CGFloat {
         if let content = content as? HybridItem {
-            return content.cellController.minimumInteritemSpacingForContent(content.element, collectionView: collectionView)
+            return content.cellController.minimumInteritemSpacing(for: content.element, collectionView: collectionView)
         } else {
-            return super.minimumInteritemSpacingForContent(content, collectionView: collectionView)
+            return super.minimumInteritemSpacing(for: content, collectionView: collectionView)
         }
     }
 }

@@ -74,16 +74,16 @@ public class MultiCollectionCellController: TTCollectionCellControllerProtocol {
         return controllerForContent(content) != nil
     }
     
-    public func classToInstantiateCellForContent(content: Any) -> AnyClass? {
-        return controllerForContent(content)?.classToInstantiateCellForContent(content)
+    public func classToInstantiateCell(for content: Any) -> AnyClass? {
+        return controllerForContent(content)?.classToInstantiateCell(for: content)
     }
     
-    public func nibToInstantiateCellForContent(content: Any) -> UINib? {
-        return controllerForContent(content)?.nibToInstantiateCellForContent(content)
+    public func nibToInstantiateCell(for content: Any) -> UINib? {
+        return controllerForContent(content)?.nibToInstantiateCell(for: content)
     }
     
-    public func reuseIdentifierForContent(content: Any) -> String {
-        return controllerForContent(content)!.reuseIdentifierForContent(content)
+    public func reuseIdentifier(for content: Any) -> String {
+        return controllerForContent(content)!.reuseIdentifier(for: content)
     }
     
     public func configureCell(cell: UICollectionViewCell, forContent content: Any, indexPath: NSIndexPath) {
@@ -94,17 +94,17 @@ public class MultiCollectionCellController: TTCollectionCellControllerProtocol {
         controllerForContent(content)!.didSelectContent(content, indexPath: indexPath, collectionView: collectionView)
     }
     
-    public func cellSizeForContent(content: Any, collectionView: UICollectionView) -> CGSize {
-        return controllerForContent(content)!.cellSizeForContent(content, collectionView: collectionView)
+    public func cellSize(for content: Any, collectionView: UICollectionView) -> CGSize {
+        return controllerForContent(content)!.cellSize(for: content, collectionView: collectionView)
     }
     
-    public func sectionInsetForContent(content: Any, collectionView: UICollectionView) -> UIEdgeInsets {
-        return controllerForContent(content)!.sectionInsetForContent(content, collectionView: collectionView)
+    public func sectionInset(for content: Any, collectionView: UICollectionView) -> UIEdgeInsets {
+        return controllerForContent(content)!.sectionInset(for: content, collectionView: collectionView)
     }
-    public func minimumLineSpacingForContent(content: Any, collectionView: UICollectionView) -> CGFloat {
-        return controllerForContent(content)!.minimumLineSpacingForContent(content, collectionView: collectionView)
+    public func minimumLineSpacing(for content: Any, collectionView: UICollectionView) -> CGFloat {
+        return controllerForContent(content)!.minimumLineSpacing(for: content, collectionView: collectionView)
     }
-    public func minimumInteritemSpacingForContent(content: Any, collectionView: UICollectionView) -> CGFloat {
-        return controllerForContent(content)!.minimumInteritemSpacingForContent(content, collectionView: collectionView)
+    public func minimumInteritemSpacing(for content: Any, collectionView: UICollectionView) -> CGFloat {
+        return controllerForContent(content)!.minimumInteritemSpacing(for: content, collectionView: collectionView)
     }
 }
