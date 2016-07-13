@@ -19,9 +19,9 @@ public protocol TTCollectionHeaderControllerProtocol {
     
     func acceptsContent(content: Any) -> Bool
     
-    func headerSizeForContent(content: Any, collectionView: UICollectionView) -> CGSize
+    func headerSize(for content: Any, in collectionView: UICollectionView) -> CGSize
     
-    func configureHeader(cell: UICollectionReusableView, forContent content: Any, indexPath: NSIndexPath)
+    func configureHeader(header: UICollectionReusableView, for content: Any, at indexPath: NSIndexPath)
 }
 
 public protocol TTCollectionHeaderController: TTCollectionHeaderControllerProtocol {
@@ -34,8 +34,8 @@ public protocol TTCollectionHeaderController: TTCollectionHeaderControllerProtoc
     var reuseIdentifier: String {get}
     var headerSize: CGSize {get}
     
-    func headerSizeForContent(content: ObjectType, collectionView: UICollectionView) -> CGSize
-    func configureHeader(cell: HeaderType, forContent content: ObjectType, indexPath: NSIndexPath)
+    func headerSize(for content: ObjectType, in collectionView: UICollectionView) -> CGSize
+    func configureHeader(cell: HeaderType, for content: ObjectType, at indexPath: NSIndexPath)
 }
 
 extension TTCollectionHeaderController {
@@ -51,12 +51,12 @@ extension TTCollectionHeaderController {
         }
     }
     
-    public func headerSizeForContent(content: Any, collectionView: UICollectionView) -> CGSize {
-        return headerSizeForContent(content as! ObjectType, collectionView: collectionView)
+    public func headerSize(for content: Any, in collectionView: UICollectionView) -> CGSize {
+        return headerSize(for: content as! ObjectType, in: collectionView)
     }
     
-    public func configureHeader(cell: UICollectionReusableView, forContent content: Any, indexPath: NSIndexPath) {
-        configureHeader(cell as! HeaderType, forContent: content as! ObjectType, indexPath: indexPath)
+    public func configureHeader(header: UICollectionReusableView, for content: Any, at indexPath: NSIndexPath) {
+        configureHeader(header as! HeaderType, for: content as! ObjectType, at: indexPath)
     }
     
     public func acceptsContent(content: Any) -> Bool {
@@ -82,12 +82,12 @@ public class CollectionHeaderController<ItemType, HeaderName: UICollectionReusab
         self.reuseIdentifier = reuseIdentifier ?? String(HeaderType)
     }
     
-    public func headerSizeForContent(content: ObjectType, collectionView: UICollectionView) -> CGSize {
+    public func headerSize(for content: ObjectType, in collectionView: UICollectionView) -> CGSize {
         let blockCellSize = headerSizeForContent?(content: content, collectionView: collectionView)
         return blockCellSize ?? headerSize
     }
     
-    public func configureHeader(header: HeaderType, forContent content: ObjectType, indexPath: NSIndexPath) {
-        configureHeader?(header: header, content: content, indexPath: indexPath)
+    public func configureHeader(header: HeaderType, for content: ObjectType, at indexPath: NSIndexPath) {
+        self.configureHeader?(header: header, content: content, indexPath: indexPath)
     }
 }

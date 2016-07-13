@@ -590,7 +590,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
             let headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: reuseIdentifier, forIndexPath: indexPath)
             headerView.parentViewController = self
             let content = dataSource[indexPath]
-            headerController!.configureHeader(headerView, forContent: content, indexPath: indexPath)
+            headerController!.configureHeader(headerView, for: content, at: indexPath)
             
             return headerView
         }
