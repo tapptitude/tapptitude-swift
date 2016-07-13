@@ -61,15 +61,15 @@ public protocol TTCollectionCellController : TTCollectionCellControllerProtocol 
 public protocol TTCollectionCellControllerSize: TTCollectionCellController {
     var sizeCalculationCell: CellType! {get}
     
-    func cellSizeToFitText(text: String, labelName: String, maxSize: CGSize) -> CGSize
-    func cellSizeToFitText(text: String, labelName: String) -> CGSize // stretch height to max 2040 (label)
+    func cellSizeToFit(text text: String, labelName: String, maxSize: CGSize) -> CGSize
+    func cellSizeToFit(text text: String, labelName: String) -> CGSize // stretch height to max 2040 (label)
     
-    func cellSizeToFitAttributedText(text: NSAttributedString, labelName: String, maxSize: CGSize) -> CGSize
-    func cellSizeToFitAttributedText(text: NSAttributedString, labelName: String) -> CGSize
+    func cellSizeToFit(attributedText attributedText: NSAttributedString, labelName: String, maxSize: CGSize) -> CGSize
+    func cellSizeToFit(attributedText attributedText: NSAttributedString, labelName: String) -> CGSize
 }
 
 extension TTCollectionCellControllerSize {
-    public func cellSizeToFitText(text: String, labelName: String, maxSize: CGSize) -> CGSize {
+    public func cellSizeToFit(text text: String, labelName: String, maxSize: CGSize) -> CGSize {
         var size = sizeCalculationCell.bounds.size
         let label: UILabel = sizeCalculationCell.valueForKey(labelName) as! UILabel
         var maxSize = maxSize
@@ -93,16 +93,16 @@ extension TTCollectionCellControllerSize {
         return size;
     }
     
-    public func cellSizeToFitText(text: String, labelName: String) -> CGSize { // stretch height to max 2040 (label)
-        return cellSizeToFitText(text, labelName: labelName, maxSize: CGSizeMake(-1, 2040))
+    public func cellSizeToFit(text text: String, labelName: String) -> CGSize { // stretch height to max 2040 (label)
+        return cellSizeToFit(text: text, labelName: labelName, maxSize: CGSizeMake(-1, 2040))
     }
     
-    public func cellSizeToFitAttributedText(text: NSAttributedString, labelName: String, maxSize: CGSize) -> CGSize {
+    public func cellSizeToFit(attributedText attributedText: NSAttributedString, labelName: String, maxSize: CGSize) -> CGSize {
         var size = sizeCalculationCell.bounds.size
         let label: UILabel = sizeCalculationCell.valueForKey(labelName) as! UILabel
         var maxSize = maxSize
         
-        label.attributedText = text;
+        label.attributedText = attributedText;
         
         if (maxSize.width < 0) {
             assert(label.lineBreakMode == .ByWordWrapping, "Label line break mode should be NSLineBreakByWordWrapping")
@@ -130,8 +130,8 @@ extension TTCollectionCellControllerSize {
         return size;
     }
     
-    public func cellSizeToFitAttributedText(text: NSAttributedString, labelName: String) -> CGSize {
-        return cellSizeToFitAttributedText(text, labelName: labelName, maxSize: CGSizeMake(-1, 2040))
+    public func cellSizeToFit(attributedText attributedText: NSAttributedString, labelName: String) -> CGSize {
+        return cellSizeToFit(attributedText: attributedText, labelName: labelName, maxSize: CGSizeMake(-1, 2040))
     }
 }
 

@@ -17,7 +17,7 @@ cellController.configureCell = { cell, content, indexPath in
     cell.label.text = content
 }
 cellController.cellSizeForContent = { (content, _) in
-    return cellController.cellSizeToFitText(content, labelName: "label", maxSize: CGSize(width: 300, height: -1))
+    return cellController.cellSizeToFit(text:content, labelName: "label", maxSize: CGSize(width: 300, height: -1))
 }
 
 let feedController = CollectionFeedController()
