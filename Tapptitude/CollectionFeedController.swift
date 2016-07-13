@@ -529,7 +529,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         // pass parentViewController
         cell.parentViewController = cellController.parentViewController;
         
-        cellController.configureCell(cell, forContent: content, indexPath: indexPath)
+        cellController.configureCell(cell, for: content, at: indexPath)
         
         // so
         if let cellController = cellController as? TTCollectionCellControllerProtocolExtended {
@@ -613,7 +613,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
 //extension CollectionFeedController {
     public func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let content = dataSource![indexPath]
-        cellController.didSelectContent(content, indexPath: indexPath, collectionView: collectionView)
+        cellController.didSelectContent(content, at: indexPath, in: collectionView)
     }
 
 //    TODO: Fix should highlight
@@ -631,7 +631,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
 //extension CollectionFeedController {
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         let content = dataSource![indexPath]
-        let size = cellController.cellSize(for: content, collectionView: collectionView)
+        let size = cellController.cellSize(for: content, in: collectionView)
         let boundsSize = collectionView.bounds.size
         return CGSizeMake(size.width < 0.0 ? boundsSize.width : size.width, size.height < 0.0 ? boundsSize.height : size.height)
     }
@@ -639,7 +639,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         if dataSource?.numberOfItems(inSection: section) > 0 {
             let content = dataSource![section, 0]
-            return cellController.sectionInset(for: content, collectionView: collectionView)
+            return cellController.sectionInset(for: content, in: collectionView)
         } else {
             return UIEdgeInsetsZero
         }
@@ -648,7 +648,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
         if dataSource?.numberOfItems(inSection: section) > 0 {
             let content = dataSource![section, 0]
-            return cellController.minimumInteritemSpacing(for: content, collectionView: collectionView)
+            return cellController.minimumInteritemSpacing(for: content, in: collectionView)
         } else {
             return 0.0
         }
@@ -657,7 +657,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
         if dataSource?.numberOfItems(inSection: section) > 0 {
             let content = dataSource![section, 0]
-            return cellController.minimumLineSpacing(for: content, collectionView: collectionView)
+            return cellController.minimumLineSpacing(for: content, in: collectionView)
         } else {
             return 0.0
         }
@@ -691,7 +691,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         let parentController = UIViewController()
         var dummyNavigationController: DummyNavigationController? = DummyNavigationController(rootViewController: parentController)
         cellController.parentViewController = parentController
-        cellController.didSelectContent(content, indexPath: indexPath, collectionView: collectionView!)
+        cellController.didSelectContent(content, at: indexPath, in: collectionView!)
         cellController.parentViewController = previousParentController
         
         let controller = dummyNavigationController!.capturedViewController

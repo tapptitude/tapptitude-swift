@@ -10,7 +10,7 @@ cellController.acceptsContent(1)
 cellController.acceptsContent("Maria" as AnyObject)
 let indexPath = NSIndexPath(forItem: 0, inSection: 0)
 let object = dataSource[indexPath]
-cellController.configureCell(UICollectionViewCell(), forContent: object, indexPath: indexPath)
+cellController.configureCell(UICollectionViewCell(), for: object, at: indexPath)
 cellController.parentViewController = nil
 cellController.parentViewController = UIViewController()
 

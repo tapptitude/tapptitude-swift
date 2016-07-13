@@ -11,11 +11,11 @@ class TextCellController: CollectionCellController<String, TextCell> {
         sectionInset = UIEdgeInsetsMake(0, 0, 10, 0)
     }
     
-    override func configureCell(cell: TextCell, forContent content: String, indexPath: NSIndexPath) {
+    override func configureCell(cell: TextCell, for content: String, at indexPath: NSIndexPath) {
         cell.label.text = content
     }
     
-    override func cellSize(for content: String, collectionView: UICollectionView) -> CGSize {
+    override func cellSize(for content: String, in collectionView: UICollectionView) -> CGSize {
         var size = cellSizeToFitText(content, labelName: "label" , maxSize: CGSizeMake(-1, 300))
         size.height = min(size.height, 200)
         return size

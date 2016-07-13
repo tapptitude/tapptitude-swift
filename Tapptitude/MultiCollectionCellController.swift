@@ -86,25 +86,25 @@ public class MultiCollectionCellController: TTCollectionCellControllerProtocol {
         return controllerForContent(content)!.reuseIdentifier(for: content)
     }
     
-    public func configureCell(cell: UICollectionViewCell, forContent content: Any, indexPath: NSIndexPath) {
-        controllerForContent(content)!.configureCell(cell, forContent: content, indexPath: indexPath)
+    public func configureCell(cell: UICollectionViewCell, for content: Any, at indexPath: NSIndexPath) {
+        controllerForContent(content)!.configureCell(cell, for: content, at: indexPath)
     }
     
-    public func didSelectContent(content: Any, indexPath: NSIndexPath, collectionView: UICollectionView) {
-        controllerForContent(content)!.didSelectContent(content, indexPath: indexPath, collectionView: collectionView)
+    public func didSelectContent(content: Any, at indexPath: NSIndexPath, in collectionView: UICollectionView) {
+        controllerForContent(content)!.didSelectContent(content, at: indexPath, in: collectionView)
     }
     
-    public func cellSize(for content: Any, collectionView: UICollectionView) -> CGSize {
-        return controllerForContent(content)!.cellSize(for: content, collectionView: collectionView)
+    public func cellSize(for content: Any, in collectionView: UICollectionView) -> CGSize {
+        return controllerForContent(content)!.cellSize(for: content, in: collectionView)
     }
     
-    public func sectionInset(for content: Any, collectionView: UICollectionView) -> UIEdgeInsets {
-        return controllerForContent(content)!.sectionInset(for: content, collectionView: collectionView)
+    public func sectionInset(for content: Any, in collectionView: UICollectionView) -> UIEdgeInsets {
+        return controllerForContent(content)!.sectionInset(for: content, in: collectionView)
     }
-    public func minimumLineSpacing(for content: Any, collectionView: UICollectionView) -> CGFloat {
-        return controllerForContent(content)!.minimumLineSpacing(for: content, collectionView: collectionView)
+    public func minimumLineSpacing(for content: Any, in collectionView: UICollectionView) -> CGFloat {
+        return controllerForContent(content)!.minimumLineSpacing(for: content, in: collectionView)
     }
-    public func minimumInteritemSpacing(for content: Any, collectionView: UICollectionView) -> CGFloat {
-        return controllerForContent(content)!.minimumInteritemSpacing(for: content, collectionView: collectionView)
+    public func minimumInteritemSpacing(for content: Any, in collectionView: UICollectionView) -> CGFloat {
+        return controllerForContent(content)!.minimumInteritemSpacing(for: content, in: collectionView)
     }
 }

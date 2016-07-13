@@ -77,12 +77,12 @@ class TextCellController: CollectionCellController<String, SwipeCell> {
         minimumLineSpacing = 5
     }
     
-    override func configureCell(cell: SwipeCell, forContent content: String, indexPath: NSIndexPath) {
+    override func configureCell(cell: SwipeCell, for content: String, at indexPath: NSIndexPath) {
         cell.label.text = content
         cell.item = content
     }
     
-    override func didSelectContent(content: String, indexPath: NSIndexPath, collectionView: UICollectionView) {
+    override func didSelectContent(content: String, at indexPath: NSIndexPath, in collectionView: UICollectionView) {
         print("did select", content)
     }
 }

@@ -195,51 +195,51 @@ public class HybridCellController : MultiCollectionCellController {
         }
     }
     
-    override public func configureCell(cell: UICollectionViewCell, forContent content: Any, indexPath: NSIndexPath) {
+    override public func configureCell(cell: UICollectionViewCell, for content: Any, at indexPath: NSIndexPath) {
         if let content = content as? HybridItem {
-            return content.cellController.configureCell(cell, forContent: content.element, indexPath: indexPath)
+            return content.cellController.configureCell(cell, for: content.element, at: indexPath)
         } else {
-            return super.configureCell(cell, forContent: content, indexPath: indexPath)
+            return super.configureCell(cell, for: content, at: indexPath)
         }
     }
     
-    override public func didSelectContent(content: Any, indexPath: NSIndexPath, collectionView: UICollectionView) {
+    override public func didSelectContent(content: Any, at indexPath: NSIndexPath, in collectionView: UICollectionView) {
         if let content = content as? HybridItem {
-            return content.cellController.didSelectContent(content.element, indexPath: indexPath, collectionView: collectionView)
+            return content.cellController.didSelectContent(content.element, at: indexPath, in: collectionView)
         } else {
-            return super.didSelectContent(content, indexPath: indexPath, collectionView: collectionView)
+            return super.didSelectContent(content, at: indexPath, in: collectionView)
         }
     }
     
-    override public func cellSize(for content: Any, collectionView: UICollectionView) -> CGSize {
+    override public func cellSize(for content: Any, in collectionView: UICollectionView) -> CGSize {
         if let content = content as? HybridItem {
-            return content.cellController.cellSize(for: content.element, collectionView: collectionView)
+            return content.cellController.cellSize(for: content.element, in: collectionView)
         } else {
-            return super.cellSize(for: content, collectionView: collectionView)
+            return super.cellSize(for: content, in: collectionView)
         }
     }
     
-    override public func sectionInset(for content: Any, collectionView: UICollectionView) -> UIEdgeInsets {
+    override public func sectionInset(for content: Any, in collectionView: UICollectionView) -> UIEdgeInsets {
         if let content = content as? HybridItem {
-            return content.cellController.sectionInset(for: content.element, collectionView: collectionView)
+            return content.cellController.sectionInset(for: content.element, in: collectionView)
         } else {
-            return super.sectionInset(for: content, collectionView: collectionView)
+            return super.sectionInset(for: content, in: collectionView)
         }
     }
     
-    override public func minimumLineSpacing(for content: Any, collectionView: UICollectionView) -> CGFloat {
+    override public func minimumLineSpacing(for content: Any, in collectionView: UICollectionView) -> CGFloat {
         if let content = content as? HybridItem {
-            return content.cellController.minimumLineSpacing(for: content.element, collectionView: collectionView)
+            return content.cellController.minimumLineSpacing(for: content.element, in: collectionView)
         } else {
-            return super.minimumLineSpacing(for: content, collectionView: collectionView)
+            return super.minimumLineSpacing(for: content, in: collectionView)
         }
     }
     
-    override public func minimumInteritemSpacing(for content: Any, collectionView: UICollectionView) -> CGFloat {
+    override public func minimumInteritemSpacing(for content: Any, in collectionView: UICollectionView) -> CGFloat {
         if let content = content as? HybridItem {
-            return content.cellController.minimumInteritemSpacing(for: content.element, collectionView: collectionView)
+            return content.cellController.minimumInteritemSpacing(for: content.element, in: collectionView)
         } else {
-            return super.minimumInteritemSpacing(for: content, collectionView: collectionView)
+            return super.minimumInteritemSpacing(for: content, in: collectionView)
         }
     }
 }

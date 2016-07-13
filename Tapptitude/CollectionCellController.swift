@@ -29,16 +29,16 @@ public class CollectionCellController<ObjectClass, CellName: UICollectionViewCel
         self.reuseIdentifier = reuseIdentifier
     }
     
-    public func cellSize(for content: ObjectType, collectionView: UICollectionView) -> CGSize {
+    public func cellSize(for content: ObjectType, in collectionView: UICollectionView) -> CGSize {
         let blockCellSize = cellSizeForContent?(content: content, collectionView: collectionView)
         return blockCellSize ?? cellSize
     }
     
-    public func configureCell(cell: CellType, forContent content: ObjectType, indexPath: NSIndexPath) {
+    public func configureCell(cell: CellType, for content: ObjectType, at indexPath: NSIndexPath) {
         configureCell?(cell: cell, content: content, indexPath: indexPath)
     }
     
-    public func didSelectContent(content: ObjectType, indexPath: NSIndexPath, collectionView: UICollectionView) {
+    public func didSelectContent(content: ObjectType, at indexPath: NSIndexPath, in collectionView: UICollectionView) {
         didSelectContent?(content: content, indexPath: indexPath, collectionView: collectionView)
     }
     
