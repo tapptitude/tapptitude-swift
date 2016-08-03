@@ -25,7 +25,7 @@ public protocol TTCollectionHeaderControllerProtocol {
 }
 
 public protocol TTCollectionHeaderController: TTCollectionHeaderControllerProtocol {
-    associatedtype ObjectType
+    associatedtype ContentType
     associatedtype HeaderType: UICollectionReusableView
     
     func classToInstantiate() -> AnyClass?
@@ -34,8 +34,8 @@ public protocol TTCollectionHeaderController: TTCollectionHeaderControllerProtoc
     var reuseIdentifier: String {get}
     var headerSize: CGSize {get}
     
-    func headerSize(for content: ObjectType, in collectionView: UICollectionView) -> CGSize
-    func configureHeader(cell: HeaderType, for content: ObjectType, at indexPath: NSIndexPath)
+    func headerSize(for content: ContentType, in collectionView: UICollectionView) -> CGSize
+    func configureHeader(cell: HeaderType, for content: ContentType, at indexPath: NSIndexPath)
 }
 
 extension TTCollectionHeaderController {
@@ -52,24 +52,24 @@ extension TTCollectionHeaderController {
     }
     
     public func headerSize(for content: Any, in collectionView: UICollectionView) -> CGSize {
-        return headerSize(for: content as! ObjectType, in: collectionView)
+        return headerSize(for: content as! ContentType, in: collectionView)
     }
     
     public func configureHeader(header: UICollectionReusableView, for content: Any, at indexPath: NSIndexPath) {
-        configureHeader(header as! HeaderType, for: content as! ObjectType, at: indexPath)
+        configureHeader(header as! HeaderType, for: content as! ContentType, at: indexPath)
     }
     
     public func acceptsContent(content: Any) -> Bool {
-        return content is ObjectType
+        return content is ContentType
     }
 }
 
 public class CollectionHeaderController<ItemType, HeaderName: UICollectionReusableView> : TTCollectionHeaderController {
-    public typealias ObjectType = ItemType
+    public typealias ContentType = ItemType
     public typealias HeaderType = HeaderName
     
-    public var headerSizeForContent : ((content: ObjectType, collectionView: UICollectionView) -> CGSize)?
-    public var configureHeader : ((header: HeaderType, content: ObjectType, indexPath: NSIndexPath) -> Void)?
+    public var headerSizeForContent : ((content: ContentType, collectionView: UICollectionView) -> CGSize)?
+    public var configureHeader : ((header: HeaderType, content: ContentType, indexPath: NSIndexPath) -> Void)?
     
     
     public var headerSize : CGSize
@@ -82,12 +82,12 @@ public class CollectionHeaderController<ItemType, HeaderName: UICollectionReusab
         self.reuseIdentifier = reuseIdentifier ?? String(HeaderType)
     }
     
-    public func headerSize(for content: ObjectType, in collectionView: UICollectionView) -> CGSize {
+    public func headerSize(for content: ContentType, in collectionView: UICollectionView) -> CGSize {
         let blockCellSize = headerSizeForContent?(content: content, collectionView: collectionView)
         return blockCellSize ?? headerSize
     }
     
-    public func configureHeader(header: HeaderType, for content: ObjectType, at indexPath: NSIndexPath) {
+    public func configureHeader(header: HeaderType, for content: ContentType, at indexPath: NSIndexPath) {
         self.configureHeader?(header: header, content: content, indexPath: indexPath)
     }
 }

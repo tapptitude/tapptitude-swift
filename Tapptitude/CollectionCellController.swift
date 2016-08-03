@@ -9,12 +9,12 @@
 import UIKit
 
 public class CollectionCellController<ObjectClass, CellName: UICollectionViewCell> : TTCollectionCellController, TTCollectionCellControllerSize {
-    public typealias ObjectType = ObjectClass
+    public typealias ContentType = ObjectClass
     public typealias CellType = CellName
     
-    public var cellSizeForContent : ((content: ObjectType, collectionView: UICollectionView) -> CGSize)?
-    public var configureCell : ((cell: CellType, content: ObjectType, indexPath: NSIndexPath) -> Void)?
-    public var didSelectContent : ((content: ObjectType, indexPath: NSIndexPath, collectionView: UICollectionView) -> Void)?
+    public var cellSizeForContent : ((content: ContentType, collectionView: UICollectionView) -> CGSize)?
+    public var configureCell : ((cell: CellType, content: ContentType, indexPath: NSIndexPath) -> Void)?
+    public var didSelectContent : ((content: ContentType, indexPath: NSIndexPath, collectionView: UICollectionView) -> Void)?
     
     public var sectionInset = UIEdgeInsetsZero
     public var minimumLineSpacing: CGFloat = 0.0
@@ -29,16 +29,16 @@ public class CollectionCellController<ObjectClass, CellName: UICollectionViewCel
         self.reuseIdentifier = reuseIdentifier
     }
     
-    public func cellSize(for content: ObjectType, in collectionView: UICollectionView) -> CGSize {
+    public func cellSize(for content: ContentType, in collectionView: UICollectionView) -> CGSize {
         let blockCellSize = cellSizeForContent?(content: content, collectionView: collectionView)
         return blockCellSize ?? cellSize
     }
     
-    public func configureCell(cell: CellType, for content: ObjectType, at indexPath: NSIndexPath) {
+    public func configureCell(cell: CellType, for content: ContentType, at indexPath: NSIndexPath) {
         configureCell?(cell: cell, content: content, indexPath: indexPath)
     }
     
-    public func didSelectContent(content: ObjectType, at indexPath: NSIndexPath, in collectionView: UICollectionView) {
+    public func didSelectContent(content: ContentType, at indexPath: NSIndexPath, in collectionView: UICollectionView) {
         didSelectContent?(content: content, indexPath: indexPath, collectionView: collectionView)
     }
     
@@ -71,14 +71,14 @@ public class CollectionCellController<ObjectClass, CellName: UICollectionViewCel
     }
     
     public func acceptsContent(content: Any) -> Bool {
-        if let content = content as? ObjectType {
+        if let content = content as? ContentType {
             return acceptsContent(content)
         } else {
             return false
         }
     }
     
-    public func acceptsContent(content: ObjectType) -> Bool {
+    public func acceptsContent(content: ContentType) -> Bool {
         return true
     }
     
@@ -90,7 +90,7 @@ public class CollectionCellController<ObjectClass, CellName: UICollectionViewCel
         }
     }
     
-    public func reuseIdentifier(for content: ObjectType) -> String {
+    public func reuseIdentifier(for content: ContentType) -> String {
         return reuseIdentifier
     }
 }

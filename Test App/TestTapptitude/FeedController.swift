@@ -29,7 +29,7 @@ class FeedController: CollectionFeedController {
         let cellController = TextCellController()
         cellController.didSelectContent = { _, indexPath, collectionView in
             let dataSource = self.dataSource as? TTDataSourceMutable
-            dataSource?.replaceAtIndexPath(indexPath, newElement: "Ghita")
+            dataSource?.replace(at: indexPath, newElement: "Ghita")
         }
         
         let numberCellController = CollectionCellController<Int, UICollectionViewCell>(cellSize: CGSize(width: 100, height: 50))
