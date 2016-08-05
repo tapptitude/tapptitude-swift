@@ -10,40 +10,77 @@ struct TestModel {
 }
 
 // 1 cell controller --------
-let stringCellController = CollectionCellController<String, TextCell>(cellSize: CGSize(width: 50, height: 50))
-stringCellController.minimumInteritemSpacing = 20
-stringCellController.configureCell = { cell, content, indexPath in
-    cell.backgroundColor = UIColor.redColor()
-    cell.label.text = content
+class NameCellController: CollectionCellController<String, TextCell> {
+    init() {
+        super.init(cellSize: CGSize(width: 50, height: 50))
+        minimumInteritemSpacing = 20
+    }
+    
+    override func configureCell(cell: TextCell, for content: String, at indexPath: NSIndexPath) {
+        cell.backgroundColor = UIColor.redColor()
+        cell.label.text = content
+    }
 }
 
-// 2 cell controller --------
-let grayCellController = CollectionCellController<String, TextCell>(cellSize: CGSize(width: 50, height: 70))
-grayCellController.minimumInteritemSpacing = 20
-grayCellController.configureCell = { cell, content, indexPath in
-    cell.backgroundColor = UIColor.grayColor()
-    cell.label.textColor = UIColor.whiteColor()
-    cell.label.text = content
-}
-
-// 3 cell controller --------
-let numberCellController = CollectionCellController<Int, UICollectionViewCell>(cellSize: CGSize(width: 100, height: 50))
-numberCellController.configureCell = { cell, content, indexPath in
-    cell.backgroundColor = UIColor.blueColor()
-}
-
-
-extension CollectionCellController: HybridCollectionCellController {
-    public func mapItem(item: Any) -> [Any] {
+extension NameCellController: HybridCollectionCellController {
+    internal func mapItem(item: Any) -> [Any] {
         if let item = item as? TestModel {
-        return [item.name]
+            return [item.name]
         } else {
             return []
         }
     }
 }
 
-let multiCellController = HybridCellController([stringCellController, numberCellController, grayCellController])
+// 2 cell controller --------
+class CountCellController: CollectionCellController<String, TextCell> {
+    init() {
+        super.init(cellSize: CGSize(width: 50, height: 70))
+        minimumInteritemSpacing = 20
+    }
+    
+    override func configureCell(cell: TextCell, for content: String, at indexPath: NSIndexPath) {
+        cell.backgroundColor = UIColor.grayColor()
+        cell.label.textColor = UIColor.whiteColor()
+        cell.label.text = content
+    }
+}
+
+extension CountCellController: HybridCollectionCellController {
+    internal func mapItem(item: Any) -> [Any] {
+        if let item = item as? TestModel {
+            return [item.displayedCount]
+        } else {
+            return []
+        }
+    }
+}
+
+
+
+// 3 cell controller --------
+class NumberCellController: CollectionCellController<Int, TextCell> {
+    init() {
+        super.init(cellSize: CGSize(width: 100, height: 50))
+    }
+    
+    override func configureCell(cell: TextCell, for content: Int, at indexPath: NSIndexPath) {
+        cell.backgroundColor = UIColor.blueColor()
+    }
+}
+
+
+extension NumberCellController: HybridCollectionCellController {
+    internal func mapItem(item: Any) -> [Any] {
+        if let item = item as? TestModel {
+            return [item.count]
+        } else {
+            return []
+        }
+    }
+}
+
+let multiCellController = HybridCellController([NameCellController(), CountCellController(), NumberCellController()])
 
 let feedController = CollectionFeedController()
 feedController.dataSource = HybridDataSource(content: [TestModel()], multiCellController: multiCellController)

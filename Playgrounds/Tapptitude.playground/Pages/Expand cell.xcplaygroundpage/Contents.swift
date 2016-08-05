@@ -56,7 +56,6 @@ cellController.configureCell = { cell, content, indexPath in
 }
 cellController.didSelectContent = { content, indexPath, collectionView in
     print("did select", content)
-    let datasource = dataSource as? TTDataSourceMutable
     collectionView .performBatchUpdates({
         let newContent = content < 150 ? content + 30 : content - 30
         dataSource[indexPath] = newContent

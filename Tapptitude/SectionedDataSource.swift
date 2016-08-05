@@ -83,22 +83,6 @@ public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         return _content[section].count
     }
     
-    public func indexPath(of element: Any) -> NSIndexPath? {
-        //TODO: implement
-        fatalError()
-        
-    // TODO: find a better way
-    //        let index = _content.indexOf({ (searchedItem) -> Bool in
-    //            return (searchedItem as Any) === object
-    //        })
-    //
-    //        if index != nil {
-    //            return NSIndexPath(forItem: index!, inSection: 0)
-    //        } else {
-    //            return nil
-    //        }
-    }
-    
     public subscript(indexPath: NSIndexPath) -> T {
         get { return _content[indexPath.section][indexPath.item] }
         set {
@@ -149,6 +133,67 @@ public class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
     }
     
     public var dataSourceID : String?
+    
+    public func indexPath<S>(ofFirst filter: (item: S) -> Bool) -> NSIndexPath? {
+        var i = 0
+        for subArray in _content {
+            let index = subArray.indexOf({ (searchedItem) -> Bool in
+                if let item = searchedItem as? S {
+                    return filter(item: item)
+                } else {
+                    return false
+                }
+            })
+            
+            if let index = index {
+                return NSIndexPath(forItem: index, inSection: 0)
+            }
+            
+            i += 1
+        }
+        
+        return nil
+    }
+    
+//    public func indexPath<T: Equatable>(of element: T) -> NSIndexPath? {
+//        var i = 0
+//        for subArray in _content {
+//            let index = subArray.indexOf({ (searchedItem) -> Bool in
+//                if let item = searchedItem as? T {
+//                    return item == element
+//                }
+//                return false
+//            })
+//            
+//            if let index = index {
+//                return NSIndexPath(forItem: index, inSection: 0)
+//            }
+//            
+//            i += 1
+//        }
+//        
+//        return nil
+//    }
+//
+//    public func indexPath<T: AnyObject>(of element: T) -> NSIndexPath? {
+//        var i = 0
+//        for subArray in _content {
+//            let index = subArray.indexOf({ (searchedItem) -> Bool in
+//                if let item = searchedItem as? T {
+//                    return item === element
+//                }
+//                return false
+//            })
+//            
+//            if let index = index {
+//                return NSIndexPath(forItem: index, inSection: 0)
+//            }
+//            
+//            i += 1
+//        }
+//        
+//        return nil
+//    }
     
     //}
     //

@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class CollectionFeedController: UIViewController, TTCollectionFeedController, TTCollectionFeedControllerMutable, TTDataFeedDelegate, TTDataSourceDelegate, UIViewControllerPreviewingDelegate {
+public class CollectionFeedController: UIViewController, TTCollectionFeedController, TTDataFeedDelegate, TTDataSourceDelegate, UIViewControllerPreviewingDelegate {
     
     public struct Options {
         public var emptyMessage = NSLocalizedString("No content", comment: "No content")
@@ -134,10 +134,6 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         }
     }
     
-    public var dataSourceMutable: TTDataSourceMutable? {
-        return dataSource as? TTDataSourceMutable
-    }
-    
     public var cellController: TTCollectionCellControllerProtocol! {
         willSet {
             cellController?.parentViewController = nil
@@ -261,12 +257,12 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     
     
     
-    public func scrollToElement(element: Any!, animated: Bool) {
+    public func scrollToElement<T>(ofFirst filter: (item: T) -> Bool, animated: Bool) {
         guard let collectionView = self.collectionView, let dataSource = self.dataSource else {
             return
         }
         
-        if let indexPath = dataSource.indexPath(of: element) {
+        if let indexPath = dataSource.indexPath(ofFirst: filter) {
             let layout = collectionView.collectionViewLayout
             var attribute = layout.layoutAttributesForItemAtIndexPath(indexPath)
             if attribute?.frame.size.width < 1.0 {

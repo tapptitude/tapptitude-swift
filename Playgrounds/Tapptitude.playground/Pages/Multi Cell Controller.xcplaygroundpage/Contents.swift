@@ -4,7 +4,7 @@ import UIKit
 import Tapptitude
 
 let items = NSArray(arrayLiteral: "Maria", "232", 23)
-let dataSource = DataSource(items)
+let dataSource = DataSource<Any>(items)
 let stringCellController = CollectionCellController<String, UICollectionViewCell>(cellSize: CGSize(width: 50, height: 50))
 stringCellController.minimumInteritemSpacing = 20
 stringCellController.configureCell = { cell, content, indexPath in

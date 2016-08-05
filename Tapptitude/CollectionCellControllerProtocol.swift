@@ -218,10 +218,6 @@ extension TTCollectionCellController {
     var dataSource: TTDataSource? {
         return (self.parentViewController as? CollectionFeedController)?.dataSource
     }
-    
-    var dataSourceMutable: TTDataSourceMutable? {
-        return dataSource as? TTDataSourceMutable
-    }
 }
 
 extension UICollectionReusableView {

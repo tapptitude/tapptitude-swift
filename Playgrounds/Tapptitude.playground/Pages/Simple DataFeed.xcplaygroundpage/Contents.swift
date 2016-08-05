@@ -44,7 +44,7 @@ let feed = SimpleDataFeed<String> { (callback) -> TTCancellable? in
 }
 
 let feedController = CollectionFeedController()
-feedController.dataSource = DataSource(feed: feed)
+feedController.dataSource = DataSource<String>(feed: feed)
 feedController.cellController = TextCellController()
 
 

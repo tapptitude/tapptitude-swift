@@ -16,7 +16,7 @@ class TextCellController: CollectionCellController<String, TextCell> {
     }
     
     override func cellSize(for content: String, in collectionView: UICollectionView) -> CGSize {
-        var size = cellSizeToFitText(content, labelName: "label" , maxSize: CGSizeMake(-1, 300))
+        var size = cellSizeToFit(text: content, labelName: "label" , maxSize: CGSizeMake(-1, 300))
         size.height = min(size.height, 200)
         return size
     }
@@ -109,14 +109,14 @@ class APIPaginateOffsetdMock: TTCancellable {
 
 //----------- Your code ------
 let feedController = CollectionFeedController()
-feedController.dataSource = DataSource(pageSize: 10, loadPage: { (offset, limit, callback) -> TTCancellable? in
+feedController.dataSource = DataSource<String>(pageSize: 10, loadPage: { (offset, limit, callback) -> TTCancellable? in
     return APIMock(callback: callback)
 })
-DataSource(pageSize: 10, loadPage: { APIMock(callback: $2) })
+DataSource<String>(pageSize: 10, loadPage: { APIMock(callback: $2) })
 feedController.cellController = TextCellController()
 
 let items = NSArray(arrayLiteral: "Why Algorithms as Microservices are Changing Software Development\n We recently wrote about how the Algorithm Economy and containers have created a fundamental shift in software development. Today, we want to look at the 10 ways algorithms as microservices change the way we build and deploy software.")
-let dataSource = DataSource(items)
+let dataSource = DataSource<String>(items)
 dataSource.feed = PaginatedDataFeed<String, String>(loadPage: { (offset, callback) -> TTCancellable? in
     return APIPaginateOffsetdMock(offset: offset, limit: 10, callback: callback)
 })

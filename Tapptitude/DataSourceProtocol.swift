@@ -20,12 +20,12 @@ public protocol TTDataSource : TTDataFeedDelegate, CustomStringConvertible {
     
     func sectionItem(at section: Int) -> Any?
     
-    func indexPath(of element: Any) -> NSIndexPath?
-    
     weak var delegate: TTDataSourceDelegate? { get set }
     var feed: TTDataFeed? { get set }
     
     var dataSourceID: String? { get set } //usefull information
+    
+    func indexPath<S>(ofFirst filter: (item: S) -> Bool) -> NSIndexPath?
 }
 
 public extension TTDataSource {
@@ -35,22 +35,35 @@ public extension TTDataSource {
 }
 
 public protocol TTDataSourceMutable {
-    func append<S>(_ newElement: S)
-    func append<S>(contentsOf newElements: [S])
+    associatedtype Element
     
-    func insert<S>(newElement: S, at indexPath: NSIndexPath)
-    func insert<S>(contentsOf newElements: [S], at indexPath: NSIndexPath)
+    func append(_ newElement: Element)
+    func append(contentsOf newElements: [Element])
+
+    func insert(newElement: Element, at indexPath: NSIndexPath)
+    func insert(contentsOf newElements: [Element], at indexPath: NSIndexPath)
     
     func moveElement(from fromIndexPath: NSIndexPath, to toIndexPath: NSIndexPath)
     func remove(at indexPaths: [NSIndexPath])
     func remove(at indexPath: NSIndexPath)
-    func remove<S>(_ item: S)
-    func removeWith(filter: (item: Any) -> Bool)
+    func remove(filter: (item: Element) -> Bool)
     
-    func replace<S>(at indexPath: NSIndexPath, newElement: S)
+    func replace(at indexPath: NSIndexPath, newElement: Element)
     
-    subscript(indexPath: NSIndexPath) -> Any { get set }
-    subscript(section: Int, index: Int) -> Any { get set }
+    subscript(indexPath: NSIndexPath) -> Element { get set }
+    subscript(section: Int, index: Int) -> Element { get set }
+}
+
+extension TTDataSourceMutable where Element == Any {
+    public func append<S>(contentsOf newElements: [S]) {
+        let items: [Any] = newElements.map{$0 as Any}
+        print(items)
+        append(contentsOf: items)
+    }
+    
+    public func insert<S>(contentsOf newElements: [S], at indexPath: NSIndexPath) {
+        self.insert(contentsOf: newElements.map({$0 as Any}), at: indexPath)
+    }
 }
 
 

@@ -35,17 +35,5 @@ protocol TTCollectionFeedController : class, UICollectionViewDelegateFlowLayout,
     func addPullToRefresh()
     
     // helpers
-    func scrollToElement(element: Any!, animated: Bool)
-}
-
-
-public protocol TTCollectionFeedControllerMutable : class {
-    var dataSource: TTDataSource? {get set}
-    var dataSourceMutable: TTDataSourceMutable? {get}
-}
-
-extension TTCollectionFeedControllerMutable {
-    public var dataSourceMutable: TTDataSourceMutable? {
-        return dataSource as? TTDataSourceMutable
-    }
+    func scrollToElement<T>(ofFirst filter: (item: T) -> Bool, animated: Bool)
 }

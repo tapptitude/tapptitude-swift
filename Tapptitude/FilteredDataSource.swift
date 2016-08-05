@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class FilteredDataSource<T> : DataSource {
+public class FilteredDataSource<T> : DataSource<T> {
     
     override public init(_ content: [T]) {
         super.init(content)

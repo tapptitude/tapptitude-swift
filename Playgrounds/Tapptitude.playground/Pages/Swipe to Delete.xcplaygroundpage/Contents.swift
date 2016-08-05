@@ -39,7 +39,7 @@ class SwipeCell : TextCell, SwipeToEditCell {
         
         let controller = parentViewController as! CollectionFeedController
         let indexPath = controller.collectionView!.indexPathForCell(self)
-        let dataSource = controller.dataSource as! DataSource
+        let dataSource = controller.dataSource as! DataSource<String>
         dataSource.remove(at: indexPath!)
     }
     
@@ -68,7 +68,7 @@ class SwipeController: CollectionFeedController, SwipeToEditOnCollection {
 
 
 let items = NSArray(arrayLiteral: "Maria", "232", "Ghita", "Ion")
-let dataSource = DataSource(items)
+let dataSource = DataSource<String>(items)
 
 class TextCellController: CollectionCellController<String, SwipeCell> {
     init() {
