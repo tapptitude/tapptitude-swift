@@ -26,13 +26,18 @@ let secondDataSource = DataSource([1, 2, 3])
 dataSource += secondDataSource
 print(dataSource.content)
 
+let content:[String] = dataSource.map({ "-" + String($0) })
+print(content)
+dataSource.contains(12)
+dataSource.count
+dataSource.first
+dataSource.last
+
 dataSource.remove { $0 == 2 }
 print(dataSource.content)
 
 dataSource.remove({ _ in return true })
 print(dataSource.content)
-
-
 
 
 import UIKit

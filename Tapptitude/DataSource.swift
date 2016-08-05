@@ -300,3 +300,32 @@ public func += <T>(inout left: DataSource<T>, right: DataSource<T>) {
 public func += <T>(inout left: DataSource<T>, right: [T]) {
     left.append(contentsOf: right)
 }
+
+
+extension DataSource: SequenceType {
+    public typealias Generator = AnyGenerator<T>
+    
+    public func generate() -> Generator {
+        var index = 0
+        return AnyGenerator {
+            if index < self._content.count {
+                defer {index += 1}
+                return self._content[index]
+            }
+            return nil
+        }
+    }
+}
+
+
+extension DataSource : CollectionType {
+    public typealias Index = Int
+    
+    public var startIndex: Int {
+        return _content.startIndex
+    }
+    
+    public var endIndex: Int {
+        return _content.endIndex
+    }
+}
