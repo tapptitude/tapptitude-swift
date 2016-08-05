@@ -181,7 +181,7 @@ public class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutab
     public func append(_ newElement: T) {
         editContentWithBlock { (_content, delegate) -> Void in
             _content.append(newElement)
-            let indexPath = NSIndexPath(forItem: _content.count, inSection: 0)
+            let indexPath = NSIndexPath(forItem: max(0, _content.count - 1), inSection: 0)
             delegate?.dataSource(self, didInsertItemsAt: [indexPath])
         }
     }
@@ -263,11 +263,17 @@ public class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutab
     public func remove(filter: (item: T) -> Bool) {
         editContentWithBlock { (_content, delegate) -> Void in
             var indexPaths: [NSIndexPath] = []
-            for (index, item) in _content.enumerate() {
+            let content = _content
+            var index = 0
+            var collectionIndex = 0
+            for item in content {
                 if filter(item: item) {
                     _content.removeAtIndex(index)
-                    indexPaths.append(NSIndexPath(forItem: index, inSection: 0))
+                    indexPaths.append(NSIndexPath(forItem: collectionIndex, inSection: 0))
+                } else {
+                    index += 1
                 }
+                collectionIndex += 1
             }
             delegate?.dataSource(self, didDeleteItemsAt: indexPaths)
         }

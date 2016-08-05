@@ -29,5 +29,29 @@ print(dataSource.content)
 dataSource.remove { $0 == 2 }
 print(dataSource.content)
 
+dataSource.remove({ _ in return true })
+print(dataSource.content)
+
+
+
+
+import UIKit
+import XCPlayground
+let cellController = CollectionCellController<Int, UICollectionViewCell>(cellSize: CGSize(width: 50, height: 50))
+cellController.configureCell = { cell, content, indexPath in
+    cell.backgroundColor = UIColor.redColor()
+}
+let feedController = CollectionFeedController()
+feedController.dataSource = dataSource
+feedController.cellController = cellController
+feedController.animatedUpdates = true
+
+XCPlaygroundPage.currentPage.liveView = feedController.view
+feedController.collectionView?.backgroundColor = UIColor.blackColor()
+
+dataSource.append(2)
+dataSource.append(3)
+
+dataSource.remove{ _ in return true }
 
 //: [Next](@next)
