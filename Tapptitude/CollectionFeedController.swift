@@ -435,19 +435,23 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
             animatedUpdater = nil
         }
     }
-
-    public func dataSourceDidChangeContent(dataSource: TTDataSource) {
+    
+    public func dataSourceDidChangeContent(dataSource: TTDataSource, animationCompletion: (() -> Void)?) {
         if animatedUpdater == nil {
             reloadDataOnCollectionView()
         } else {
-            animatedUpdater?.collectionViewDidChangeContent(collectionView!)
+            animatedUpdater?.collectionViewDidChangeContent(collectionView!, animationCompletion: animationCompletion)
         }
-
+        
         if dataSource.feed == nil || dataSource.feed!.isReloading == false { // check for the empty view
             updateEmptyViewAppearenceAnimated(true)
         }
         
         animatedUpdater = nil
+    }
+
+    public func dataSourceDidChangeContent(dataSource: TTDataSource) {
+        dataSourceDidChangeContent(dataSource, animationCompletion: nil)
     }
     
     public func dataSource(dataSource: TTDataSource, didUpdateItemsAt indexPaths: [NSIndexPath]) {

@@ -75,7 +75,7 @@ public class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutab
     
     public subscript(indexPath: NSIndexPath) -> T {
         get { return _content[indexPath.item] }
-        set { editContentWithBlock { (_content, delegate) in
+        set { editContent { (_content, delegate) in
             _content[indexPath.item] = newValue
             }}
     }
@@ -86,7 +86,7 @@ public class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutab
     
     public subscript(section: Int, index: Int) -> T {
         get { return _content[index] }
-        set { editContentWithBlock { (_content, delegate) in
+        set { editContent { (_content, delegate) in
             _content[index] = newValue
             }}
     }
@@ -97,7 +97,7 @@ public class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutab
     
     public subscript(index: Int) -> T {
         get { return _content[index] }
-        set { editContentWithBlock { (_content, delegate) in
+        set { editContent { (_content, delegate) in
             _content[index] = newValue
             }}
     }
@@ -171,15 +171,28 @@ public class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutab
 //
 //
 //extension DataSource : TTDataSourceMutable {
-    
-    private func editContentWithBlock(editBlock: ( inout content: [T], delegate: TTDataSourceDelegate?) -> Void) {
+    public func perfomBatchUpdates(@noescape updates: (() -> Void), animationCompletion:(()->Void)?) {
+        assert(allowWillDidChangeContent, "perform batche updates called multiple times")
+        allowWillDidChangeContent = false
         delegate?.dataSourceWillChangeContent(self)
+        updates()
+        delegate?.dataSourceDidChangeContent(self, animationCompletion: animationCompletion)
+        allowWillDidChangeContent = true
+    }
+    
+    private var allowWillDidChangeContent = true
+    private func editContent(@noescape editBlock: ( inout content: [T], delegate: TTDataSourceDelegate?) -> Void) {
+        if allowWillDidChangeContent {
+            delegate?.dataSourceWillChangeContent(self)
+        }
         editBlock(content: &_content, delegate: delegate);
-        delegate?.dataSourceDidChangeContent(self)
+        if allowWillDidChangeContent {
+            delegate?.dataSourceDidChangeContent(self, animationCompletion: nil)
+        }
     }
     
     public func append(_ newElement: T) {
-        editContentWithBlock { (_content, delegate) -> Void in
+        editContent { (_content, delegate) -> Void in
             _content.append(newElement)
             let indexPath = NSIndexPath(forItem: max(0, _content.count - 1), inSection: 0)
             delegate?.dataSource(self, didInsertItemsAt: [indexPath])
@@ -187,7 +200,7 @@ public class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutab
     }
     
     public func append(contentsOf newElements: [T]) {
-        editContentWithBlock { (_content, delegate) -> Void in
+        editContent { (_content, delegate) -> Void in
             let startIndex = _content.count
             let indexPaths = newElements.enumerate().map({ (index, _) -> NSIndexPath in
                 return NSIndexPath(forItem: startIndex + index, inSection: 0)
@@ -199,7 +212,7 @@ public class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutab
     }
     
     public func insert(newElement: T, at indexPath: NSIndexPath) {
-        editContentWithBlock { (_content, delegate) -> Void in
+        editContent { (_content, delegate) -> Void in
             _content.insert(newElement, atIndex: indexPath.item)
             delegate?.dataSource(self, didInsertItemsAt: [indexPath])
         }
@@ -207,7 +220,7 @@ public class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutab
     
     public func insert(contentsOf newElements: [T], at indexPath: NSIndexPath) {
         var insertedIndexPaths:[NSIndexPath] = []
-        editContentWithBlock { (_content, delegate) -> Void in
+        editContent { (_content, delegate) -> Void in
             var counter = 0
             for element in newElements {
                 _content.insert(element, atIndex: indexPath.item + counter)
@@ -220,7 +233,7 @@ public class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutab
 
     
     public func moveElement(from fromIndexPath: NSIndexPath, to toIndexPath: NSIndexPath) {
-        editContentWithBlock { (_content, delegate) -> Void in
+        editContent { (_content, delegate) -> Void in
             let item = _content[fromIndexPath.item]
             _content.removeAtIndex(fromIndexPath.item)
             
@@ -236,17 +249,16 @@ public class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutab
     }
     
     public func remove(at indexPath: NSIndexPath) {
-        editContentWithBlock { (_content, delegate) -> Void in
+        editContent { (_content, delegate) -> Void in
             _content.removeAtIndex(indexPath.item)
             delegate?.dataSource(self, didDeleteItemsAt: [indexPath])
         }
     }
     
     public func remove(at indexPaths: [NSIndexPath]) {
-        if !indexPaths.isEmpty
-        {
+        if !indexPaths.isEmpty {
             var indexPathsToRemove:[Int] = indexPaths.map { return $0.item }
-            editContentWithBlock { (_content, delegate) -> Void in
+            editContent { (_content, delegate) -> Void in
                 for j in 0..<indexPathsToRemove.count   {
                     _content.removeAtIndex(indexPathsToRemove[j])
                     for i in 0..<indexPathsToRemove.count{
@@ -260,8 +272,8 @@ public class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutab
         }
     }
     
-    public func remove(filter: (item: T) -> Bool) {
-        editContentWithBlock { (_content, delegate) -> Void in
+    public func remove(@noescape filter: (item: T) -> Bool) {
+        editContent { (_content, delegate) -> Void in
             var indexPaths: [NSIndexPath] = []
             let content = _content
             var index = 0
@@ -280,7 +292,7 @@ public class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutab
     }
     
     public func replace(at indexPath: NSIndexPath, newElement: T) {
-        editContentWithBlock { (_content, delegate) -> Void in
+        editContent { (_content, delegate) -> Void in
             _content[indexPath.item] = newElement
             delegate?.dataSource(self, didUpdateItemsAt: [indexPath])
         }

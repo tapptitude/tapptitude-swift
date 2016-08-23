@@ -37,6 +37,8 @@ public extension TTDataSource {
 public protocol TTDataSourceMutable {
     associatedtype Element
     
+    func perfomBatchUpdates(@noescape updates: (() -> Void), animationCompletion:(()->Void)?);
+    
     func append(_ newElement: Element)
     func append(contentsOf newElements: [Element])
 
@@ -46,7 +48,7 @@ public protocol TTDataSourceMutable {
     func moveElement(from fromIndexPath: NSIndexPath, to toIndexPath: NSIndexPath)
     func remove(at indexPaths: [NSIndexPath])
     func remove(at indexPath: NSIndexPath)
-    func remove(filter: (item: Element) -> Bool)
+    func remove(@noescape filter: (item: Element) -> Bool)
     
     func replace(at indexPath: NSIndexPath, newElement: Element)
     
@@ -57,7 +59,6 @@ public protocol TTDataSourceMutable {
 extension TTDataSourceMutable where Element == Any {
     public func append<S>(contentsOf newElements: [S]) {
         let items: [Any] = newElements.map{$0 as Any}
-        print(items)
         append(contentsOf: items)
     }
     
@@ -79,7 +80,13 @@ public protocol TTDataSourceDelegate: class {
     func dataSource(dataSource: TTDataSource, didDeleteSections deletedSections: NSIndexSet)
     func dataSource(dataSource: TTDataSource, didUpdateSections updatedSections: NSIndexSet)
     
-    func dataSourceDidChangeContent(dataSource: TTDataSource)
+    func dataSourceDidChangeContent(dataSource: TTDataSource, animationCompletion:(() -> Void)?)
+}
+
+extension TTDataSourceDelegate {
+    func dataSourceDidChangeContent(dataSource: TTDataSource) {
+        dataSourceDidChangeContent(dataSource, animationCompletion: nil)
+    }
 }
 
 

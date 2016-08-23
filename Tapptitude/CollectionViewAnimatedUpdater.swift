@@ -10,7 +10,7 @@ import UIKit
 
 protocol TTCollectionViewAnimatedUpdater {
     func collectionViewWillChangeContent(collectionView: UICollectionView)
-    func collectionViewDidChangeContent(collectionView: UICollectionView)
+    func collectionViewDidChangeContent(collectionView: UICollectionView, animationCompletion: (() -> Void)?)
     
     
     func collectionView(collectionView: UICollectionView, didUpdateItemsAt indexPaths: [NSIndexPath])
@@ -34,10 +34,11 @@ class CollectionViewAnimatedUpdater: TTCollectionViewAnimatedUpdater {
         batchOperation = []
     }
     
-    func collectionViewDidChangeContent(collectionView: UICollectionView) {
+    func collectionViewDidChangeContent(collectionView: UICollectionView, animationCompletion: (() -> Void)?) {
         // Checks if we should reload the collection view to fix a bug @ http://openradar.appspot.com/12954582
         if (shouldReloadCollectionView) {
             collectionView.reloadData()
+            animationCompletion?()
             self.batchOperation = nil
         } else {
             collectionView.performBatchUpdates({
@@ -45,7 +46,9 @@ class CollectionViewAnimatedUpdater: TTCollectionViewAnimatedUpdater {
                     block()
                 }
                 self.batchOperation = nil
-                }, completion: nil)
+            }, completion: { finished in
+                animationCompletion?()
+            })
         }
     }
     
