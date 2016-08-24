@@ -120,7 +120,7 @@ public class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutab
             delegate.dataFeed(dataFeed, didReloadContent: content)
         }
         
-        let wasEmpty = content?.isEmpty == true
+        let wasEmpty = _content.isEmpty == true
         _content = content?.convertTo() ?? []
         let isEmpty = _content.isEmpty
         
