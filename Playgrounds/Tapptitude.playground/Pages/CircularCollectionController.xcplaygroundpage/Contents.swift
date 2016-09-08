@@ -248,6 +248,9 @@ feedController.collectionView = collectionView
 feedController.view.addSubview(collectionView)
 feedController.collectionView!.backgroundColor = UIColor.whiteColor()
 
+let pageControl = UIPageControl(frame: CGRect(origin: CGPointMake(125, 270), size: CGSizeMake(50, 10)))
+feedController.pageControl = pageControl
+feedController.view.addSubview(pageControl)
 feedController.content = [
         UIColor(red: 131/255, green: 198/255, blue: 204/255, alpha:1.0),
         UIColor(red: 120/255, green: 194/255, blue: 177/255, alpha: 1.0),
