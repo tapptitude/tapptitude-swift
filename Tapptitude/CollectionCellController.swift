@@ -15,6 +15,7 @@ public class CollectionCellController<ObjectClass, CellName: UICollectionViewCel
     public var cellSizeForContent : ((content: ContentType, collectionView: UICollectionView) -> CGSize)?
     public var configureCell : ((cell: CellType, content: ContentType, indexPath: NSIndexPath) -> Void)?
     public var didSelectContent : ((content: ContentType, indexPath: NSIndexPath, collectionView: UICollectionView) -> Void)?
+    public var setPreferredSizeOfLabels: ((cell: CellType, laidOutCell: CellType) -> Void)?
     
     public var sectionInset = UIEdgeInsetsZero
     public var minimumLineSpacing: CGFloat = 0.0
@@ -35,6 +36,14 @@ public class CollectionCellController<ObjectClass, CellName: UICollectionViewCel
     }
     
     public func configureCell(cell: CellType, for content: ContentType, at indexPath: NSIndexPath) {
+        if let parent = self.parentViewController as? CollectionFeedController {
+            if let layout = parent.collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
+                if layout.estimatedItemSize != CGSizeZero {
+                    assert(setPreferredSizeOfLabels != nil, "Implementation for setPrefferedSizeOfLabels is missing")
+                    self.setPreferredSizeOfLabels?(cell:cell,laidOutCell: self.sizeCalculationCell)
+                }
+            }
+        }
         configureCell?(cell: cell, content: content, indexPath: indexPath)
     }
     
@@ -54,19 +63,20 @@ public class CollectionCellController<ObjectClass, CellName: UICollectionViewCel
                 sizeCalculationCell = CellType(frame: CGRect(origin: CGPointZero, size: self.cellSize))
             }
             
-            let deviceWidth = UIScreen.mainScreen().bounds.size.width
-            let cellWidth = sizeCalculationCell.frame.size.width
-            if (cellWidth == 320.0 && deviceWidth != cellWidth) {
-                var frame = sizeCalculationCell.frame
-                frame.size.width = deviceWidth
-                sizeCalculationCell.frame = frame
-                sizeCalculationCell.contentView.frame = frame
-                sizeCalculationCell.layoutIfNeeded()
+            var size: CGSize! = nil
+            if let parent = self.parentViewController as? CollectionFeedController {
+                size = parent.collectionView?.bounds.size
             }
+            
+            var frame = sizeCalculationCell.frame
+            frame.size.width = cellSize.width < 0 ? size.width : cellSize.width
+            frame.size.height = cellSize.height < 0 ? size.height : cellSize.height
+            sizeCalculationCell.frame = frame
+            sizeCalculationCell.setNeedsLayout()
+            sizeCalculationCell.layoutIfNeeded()
             
             _sizeCalculationCell = sizeCalculationCell
         }
-        
         return _sizeCalculationCell!
     }
     
