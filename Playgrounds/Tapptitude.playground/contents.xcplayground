@@ -12,6 +12,7 @@
         <page name='Compile xibs - ToDo'/>
         <page name='JSON DataSource'/>
         <page name='Filtered DataSource'/>
+        <page name='CircularCollectionController'/>
         <page name='Sectioned DataSource'/>
         <page name='GroupedBy DataSource'/>
         <page name='Simple DataFeed'/>
