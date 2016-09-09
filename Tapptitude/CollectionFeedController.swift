@@ -534,7 +534,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         // so
         if let cellController = cellController as? TTCollectionCellControllerProtocolExtended {
             let sectionCount = dataSource!.numberOfItems(inSection: indexPath.section)
-            cellController.configureCell(cell, forContent: content, indexPath: indexPath, dataSourceCount: sectionCount)
+            cellController.configureCell(cell, for: content, at: indexPath, dataSourceCount: sectionCount)
         }
         
         

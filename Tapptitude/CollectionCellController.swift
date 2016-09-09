@@ -63,17 +63,16 @@ public class CollectionCellController<ObjectClass, CellName: UICollectionViewCel
                 sizeCalculationCell = CellType(frame: CGRect(origin: CGPointZero, size: self.cellSize))
             }
             
-            var size: CGSize! = nil
-            if let parent = self.parentViewController as? CollectionFeedController {
-                size = parent.collectionView?.bounds.size
+            if cellSize.width < 0 || cellSize.height < 0 {
+                if let parent = self.parentViewController as? CollectionFeedController, let size = parent.collectionView?.bounds.size {
+                    var frame = sizeCalculationCell.frame
+                    frame.size.width = cellSize.width < 0 ? size.width : cellSize.width
+                    frame.size.height = cellSize.height < 0 ? size.height : cellSize.height
+                    sizeCalculationCell.frame = frame
+                    sizeCalculationCell.setNeedsLayout()
+                    sizeCalculationCell.layoutIfNeeded()
+                }
             }
-            
-            var frame = sizeCalculationCell.frame
-            frame.size.width = cellSize.width < 0 ? size.width : cellSize.width
-            frame.size.height = cellSize.height < 0 ? size.height : cellSize.height
-            sizeCalculationCell.frame = frame
-            sizeCalculationCell.setNeedsLayout()
-            sizeCalculationCell.layoutIfNeeded()
             
             _sizeCalculationCell = sizeCalculationCell
         }

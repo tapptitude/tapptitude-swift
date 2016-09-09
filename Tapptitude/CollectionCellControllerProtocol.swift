@@ -35,7 +35,7 @@ public protocol TTCollectionCellControllerProtocol {
 
 // TODO: implement as option protocol
 public protocol TTCollectionCellControllerProtocolExtended {
-    func configureCell(cell: UICollectionViewCell, forContent content: Any, indexPath: NSIndexPath, dataSourceCount count: Int)
+    func configureCell(cell: UICollectionViewCell, for content: Any, at indexPath: NSIndexPath, dataSourceCount count: Int)
     func shouldHighlightContent(content: Any, atIndexPath indexPath: NSIndexPath) -> Bool
 }
 
