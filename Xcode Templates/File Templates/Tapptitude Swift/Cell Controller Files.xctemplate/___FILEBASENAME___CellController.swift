@@ -16,14 +16,14 @@ class ___FILEBASENAME___CellController: CollectionCellController<___VARIABLE_con
     }
     
 //    custom cell size
-//    override func cellSizeForContent(content: ___VARIABLE_contentType___, collectionView: UICollectionView) -> CGSize {
+//    override func cellSize(for content: ___VARIABLE_contentType___, in collectionView: UICollectionView) -> CGSize {
 //        return <#code#>
 //    }
     
-    override func configureCell(cell: ___FILEBASENAME___Cell, forContent content: ___VARIABLE_contentType___, indexPath: NSIndexPath!) {
+    override func configureCell(cell: ___FILEBASENAME___Cell, for content: ___VARIABLE_contentType___, at indexPath: NSIndexPath!) {
     }
     
-    override func didSelectContent(content: ___VARIABLE_contentType___, indexPath: NSIndexPath, collectionView: UICollectionView) {
+    override func didSelectContent(content: ___VARIABLE_contentType___, at indexPath: NSIndexPath, in collectionView: UICollectionView) {
         
     }
 }
