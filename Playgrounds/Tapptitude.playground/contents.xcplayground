@@ -12,13 +12,13 @@
         <page name='Compile xibs - ToDo'/>
         <page name='JSON DataSource'/>
         <page name='Filtered DataSource'/>
-        <page name='CircularCollectionController'/>
         <page name='Sectioned DataSource'/>
         <page name='GroupedBy DataSource'/>
         <page name='Simple DataFeed'/>
         <page name='Paginated DataFeed'/>
         <page name='Swipe to Delete'/>
         <page name='Keyboard Controller'/>
+        <page name='CircularCollectionController'/>
         <page name='Chat Controller'/>
         <page name='Auto Expanded TextView'/>
     </pages>

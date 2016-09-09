@@ -228,9 +228,8 @@ class TextCell : UICollectionViewCell {
 }
 
 
-let cellController = CollectionCellController<UIColor, TextCell>(cellSize: CGSize(width: 300, height: 300))
+let cellController = CollectionCellController<UIColor, TextCell>(cellSize: CGSize(width: -1, height: -1))
 
-cellController.parentViewController = UIViewController()
 cellController.configureCell = { cell, content, indexPath in
     cell.backgroundColor = content
     cell.label.text = "Test \(indexPath.item)"
