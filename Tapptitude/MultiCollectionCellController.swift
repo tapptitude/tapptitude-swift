@@ -18,6 +18,7 @@ public class MultiCollectionCellController: TTCollectionCellControllerProtocol {
             for var cellController in cellControllers {
                 cellController.parentViewController = nil
             }
+            previousCellController = nil
         }
         
         didSet {

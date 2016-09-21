@@ -37,6 +37,11 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         
         updateReloadingIndicatorView()
         updateEmptyViewAppearenceAnimated(false)
+    }
+    
+    public override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
         if forceTouchPreviewEnabled {
             registerForceTouchPreview()
         }
@@ -687,6 +692,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         }
         
         let content = dataSource![indexPath]
+        var cellController = self.cellController
         let previousParentController = cellController.parentViewController
         let parentController = UIViewController()
         var dummyNavigationController: DummyNavigationController? = DummyNavigationController(rootViewController: parentController)
@@ -713,13 +719,17 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     internal class DummyNavigationController : UINavigationController {
         var capturedViewController: UIViewController?
         override func pushViewController(viewController: UIViewController, animated: Bool) {
-            capturedViewController = viewController
+            if !viewControllers.isEmpty {
+                capturedViewController = viewController
+            } else {
+                super.pushViewController(viewController, animated: animated)
+            }
         }
     }
     
     internal func registerForceTouchPreview() {
         if #available(iOS 9, *) {
-            if traitCollection.forceTouchCapability == .Available {
+            if traitCollection.forceTouchCapability == .Available  && forceTouchPreviewContext == nil {
                 forceTouchPreviewContext = registerForPreviewingWithDelegate(self, sourceView: self.view!)
             }
         }
