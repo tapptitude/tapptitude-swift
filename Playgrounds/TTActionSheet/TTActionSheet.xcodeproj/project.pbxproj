@@ -16,7 +16,18 @@
 		8149094C1D92D22400613BD6 /* TTActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814909441D92D22400613BD6 /* TTActionSheet.swift */; };
 		8149094D1D92D22400613BD6 /* TTActionSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 814909451D92D22400613BD6 /* TTActionSheet.xib */; };
 		8149094E1D92D22400613BD6 /* TTActionSheetAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814909461D92D22400613BD6 /* TTActionSheetAction.swift */; };
+		814909651D92D30200613BD6 /* Tapptitude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 814909641D92D2FB00613BD6 /* Tapptitude.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		814909631D92D2FB00613BD6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8149095F1D92D2FB00613BD6 /* Tapptitude.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 234ECBEF1C747FE800135CF9;
+			remoteInfo = Tapptitude;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		814909341D92D1D600613BD6 /* TTActionSheet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TTActionSheet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -30,6 +41,7 @@
 		814909441D92D22400613BD6 /* TTActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TTActionSheet.swift; sourceTree = "<group>"; };
 		814909451D92D22400613BD6 /* TTActionSheet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TTActionSheet.xib; sourceTree = "<group>"; };
 		814909461D92D22400613BD6 /* TTActionSheetAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TTActionSheetAction.swift; sourceTree = "<group>"; };
+		8149095F1D92D2FB00613BD6 /* Tapptitude.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Tapptitude.xcodeproj; path = ../../Tapptitude.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				814909651D92D30200613BD6 /* Tapptitude.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -46,6 +59,7 @@
 		8149092A1D92D1D600613BD6 = {
 			isa = PBXGroup;
 			children = (
+				8149095F1D92D2FB00613BD6 /* Tapptitude.xcodeproj */,
 				814909361D92D1D600613BD6 /* TTActionSheet */,
 				814909351D92D1D600613BD6 /* Products */,
 			);
@@ -74,6 +88,14 @@
 				814909391D92D1D600613BD6 /* Info.plist */,
 			);
 			path = TTActionSheet;
+			sourceTree = "<group>";
+		};
+		814909601D92D2FB00613BD6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				814909641D92D2FB00613BD6 /* Tapptitude.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -132,12 +154,28 @@
 			mainGroup = 8149092A1D92D1D600613BD6;
 			productRefGroup = 814909351D92D1D600613BD6 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 814909601D92D2FB00613BD6 /* Products */;
+					ProjectRef = 8149095F1D92D2FB00613BD6 /* Tapptitude.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				814909331D92D1D600613BD6 /* TTActionSheet */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		814909641D92D2FB00613BD6 /* Tapptitude.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Tapptitude.framework;
+			remoteRef = 814909631D92D2FB00613BD6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		814909321D92D1D600613BD6 /* Resources */ = {
