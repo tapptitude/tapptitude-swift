@@ -37,6 +37,11 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         
         updateReloadingIndicatorView()
         updateEmptyViewAppearenceAnimated(false)
+    }
+    
+    public override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
         if forceTouchPreviewEnabled {
             registerForceTouchPreview()
         }
@@ -724,7 +729,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     
     internal func registerForceTouchPreview() {
         if #available(iOS 9, *) {
-            if traitCollection.forceTouchCapability == .Available {
+            if traitCollection.forceTouchCapability == .Available  && forceTouchPreviewContext == nil {
                 forceTouchPreviewContext = registerForPreviewingWithDelegate(self, sourceView: self.view!)
             }
         }
