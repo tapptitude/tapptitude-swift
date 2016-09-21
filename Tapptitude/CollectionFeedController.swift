@@ -687,6 +687,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         }
         
         let content = dataSource![indexPath]
+        var cellController = self.cellController
         let previousParentController = cellController.parentViewController
         let parentController = UIViewController()
         var dummyNavigationController: DummyNavigationController? = DummyNavigationController(rootViewController: parentController)
@@ -713,7 +714,11 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     internal class DummyNavigationController : UINavigationController {
         var capturedViewController: UIViewController?
         override func pushViewController(viewController: UIViewController, animated: Bool) {
-            capturedViewController = viewController
+            if !viewControllers.isEmpty {
+                capturedViewController = viewController
+            } else {
+                super.pushViewController(viewController, animated: animated)
+            }
         }
     }
     
