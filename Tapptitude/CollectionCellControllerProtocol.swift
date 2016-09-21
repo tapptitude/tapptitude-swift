@@ -148,8 +148,8 @@ extension TTCollectionCellController {
     
     public func nibToInstantiateCell(for content: ContentType) -> UINib? {
         let reuseIdentifier = self.reuseIdentifier(for: content)
-        if let _ = NSBundle.mainBundle().pathForResource(reuseIdentifier, ofType: "nib") {
-            return UINib(nibName: reuseIdentifier, bundle: nil)
+        if let _ = NSBundle(forClass: CellType.self).pathForResource(reuseIdentifier, ofType: "nib") {
+            return UINib(nibName: reuseIdentifier, bundle: NSBundle(forClass: CellType.self))
         } else {
             return nil
         }

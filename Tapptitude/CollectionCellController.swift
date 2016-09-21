@@ -92,8 +92,8 @@ public class CollectionCellController<ObjectClass, CellName: UICollectionViewCel
     }
     
     func nibToInstantiateCell() -> UINib? {
-        if let _ = NSBundle.mainBundle().pathForResource(reuseIdentifier, ofType: "nib") {
-            return UINib(nibName: reuseIdentifier, bundle: nil)
+        if let _ = NSBundle(forClass: CellType.self).pathForResource(reuseIdentifier, ofType: "nib") {
+            return UINib(nibName: reuseIdentifier, bundle: NSBundle(forClass: CellType.self))
         } else {
             return nil
         }
