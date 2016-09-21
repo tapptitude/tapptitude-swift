@@ -256,7 +256,7 @@ feedController.content = [
         UIColor(red: 223/255, green: 205/255, blue: 140/255, alpha:1.0)]
 
 
-XCPlaygroundPage.currentPage.liveView = feedController.view
+    
 
 
 
