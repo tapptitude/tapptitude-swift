@@ -9,6 +9,10 @@
 import UIKit
 import Tapptitude
 
+
+class MyViewController: CollectionFeedController {
+        
+
 public class TTActionSheet: CollectionFeedController {
 
     @IBOutlet weak var dismissView: UIView!

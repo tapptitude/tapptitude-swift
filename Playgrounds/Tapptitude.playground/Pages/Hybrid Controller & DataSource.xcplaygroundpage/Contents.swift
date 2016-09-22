@@ -5,7 +5,7 @@ import Tapptitude
 
 
 // 1 cell controller --------
-let stringCellController = CollectionCellController<String, TextCell>(cellSize: CGSize(width: 50, height: 50))
+let stringCellController = CollectionCellController<String, TextCell>(cellSize: CGSize(width: 320, height: 50))
 stringCellController.minimumInteritemSpacing = 20
 stringCellController.configureCell = { cell, content, indexPath in
     cell.backgroundColor = UIColor.redColor()
@@ -16,7 +16,7 @@ stringCellController.didSelectContent = { content, indexPath, collectionView in
 }
 
 // 2 cell controller --------
-let grayCellController = CollectionCellController<String, TextCell>(cellSize: CGSize(width: 50, height: 70))
+let grayCellController = CollectionCellController<String, TextCell>(cellSize: CGSize(width: 320, height: 70))
 grayCellController.minimumInteritemSpacing = 20
 grayCellController.configureCell = { cell, content, indexPath in
     cell.backgroundColor = UIColor.grayColor()
@@ -28,7 +28,7 @@ grayCellController.didSelectContent = { content, indexPath, collectionView in
 }
 
 // 3 cell controller --------
-let numberCellController = CollectionCellController<Int, UICollectionViewCell>(cellSize: CGSize(width: 100, height: 50))
+let numberCellController = CollectionCellController<Int, UICollectionViewCell>(cellSize: CGSize(width: 320, height: 50))
 numberCellController.configureCell = { cell, content, indexPath in
     cell.backgroundColor = UIColor.blueColor()
 }
@@ -38,11 +38,11 @@ numberCellController.didSelectContent = { content, indexPath, collectionView in
 
 
 // datasource
-let dataSource = DataSource(["Maria", "232", 23])
+let dataSource = DataSource(["John", "Doe", 11])
 let multiCellController = HybridCellController([stringCellController, numberCellController, grayCellController])
 
 let feedController = CollectionFeedController()
-feedController.dataSource = HybridDataSource(content: ["Maria", "232", 23], multiCellController: multiCellController)
+feedController.dataSource = HybridDataSource(content: ["John", "Doe", 11], multiCellController: multiCellController)
 feedController.cellController = multiCellController
 
 import XCPlayground
