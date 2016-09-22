@@ -1,6 +1,6 @@
 //
 //  Helpers.swift
-//  test
+//  Tapptitude
 //
 //  Created by Efraim Budusan on 9/6/16.
 //  Copyright © 2016 Efraim Budusan. All rights reserved.

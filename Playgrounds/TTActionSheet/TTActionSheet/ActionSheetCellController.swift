@@ -1,6 +1,6 @@
 //
 //  ActionSheetCellController.swift
-//  test
+//  Tapptitude
 //
 //  Created by Efraim Budusan on 9/6/16.
 //  Copyright © 2016 Efraim Budusan. All rights reserved.
@@ -14,6 +14,7 @@ class ActionSheetCellController: CollectionCellController<TTActionSheetAction, A
     init() {
         super.init(cellSize: CGSize(width: -1.0, height: 57.0))
     }
+    
     override func cellSize(for content: TTActionSheetAction, in collection: UICollectionView) -> CGSize {
         let cell = sizeCalculationCell
         self.cellConfiguration(cell, forContent: content, indexPath: NSIndexPath(forItem: 0, inSection: 0))

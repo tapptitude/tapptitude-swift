@@ -1,9 +1,9 @@
 //
 //  DimmingTransition.swift
-//  Winmasters
+//  Tapptitude
 //
 //  Created by Alexandru Tudose on 24/06/16.
-//  Copyright © 2016 Winmasters. All rights reserved.
+//  Copyright © 2016 Tapptitude. All rights reserved.
 //
 
 import UIKit

@@ -1,6 +1,6 @@
 //
 //  TTActionSheet.swift
-//  test
+//  Tapptitude
 //
 //  Created by Efraim Budusan on 9/6/16.
 //  Copyright © 2016 Efraim Budusan. All rights reserved.
@@ -20,7 +20,8 @@ public class TTActionSheet: CollectionFeedController {
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var maskView: UIView!
-    @IBOutlet weak var blulBgView: UIVisualEffectView!
+    @IBOutlet weak var blurBgView: UIVisualEffectView!
+    
     var sheetTitle:String? = nil
     var message: String? = nil
     var cancelMessage: String? = nil
@@ -58,7 +59,7 @@ public class TTActionSheet: CollectionFeedController {
         super.viewDidLoad()
         self.view.frame = UIScreen.mainScreen().bounds
         self.cellController = ActionSheetCellController()
-        self.configureUi()
+        self.configureUI()
         self.reloadDataSource()
         self.view.setNeedsLayout()
         self.view.layoutIfNeeded()
@@ -66,11 +67,11 @@ public class TTActionSheet: CollectionFeedController {
         maskViewHeightConstraint.constant = contentHeight + (headerIsVisible ? self.headerView.frame.height : 0)
     }
     
-    public func addAction(action:TTActionSheetAction) {
+    public func addAction(action: TTActionSheetAction) {
         self.actions.append(action)
     }
     
-    func configureUi() {
+    func configureUI() {
         self.collectionView?.frame = CGRect(origin: self.collectionView!.frame.origin, size: CGSizeMake(self.collectionView!.frame.width, 0))
         if sheetTitle == nil && message == nil {
             self.headerIsVisible = false
@@ -88,15 +89,15 @@ public class TTActionSheet: CollectionFeedController {
         if cancelMessage == nil && actions.count > 0 {
             bottomCollectionViewConstraint.constant = -(cancelButton.frame.height)
         } else {
-            let gr = UITapGestureRecognizer(target: self, action: #selector(cancelAction))
-            self.dismissView.addGestureRecognizer(gr)
+            let gesture = UITapGestureRecognizer(target: self, action: #selector(cancelAction))
+            self.dismissView.addGestureRecognizer(gesture)
         }
         
         messageLabel.text = message
         sheetTitleLabel.text = sheetTitle
         cancelButton.setTitle(cancelMessage, forState: .Normal)
         
-        blulBgView.effect = UIBlurEffect(style: .ExtraLight)
+        blurBgView.effect = UIBlurEffect(style: .ExtraLight)
         maskView.clipsToBounds = true
         maskView.layer.cornerRadius = 12.5
         cancelButton.layer.cornerRadius = 12.5
@@ -111,6 +112,5 @@ public class TTActionSheet: CollectionFeedController {
         var content:[Any] = []
         content.appendContentsOf(actions.map({ $0 as Any}))
         self.dataSource = DataSource(content)
-        
     }
 }
