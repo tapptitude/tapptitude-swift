@@ -8,9 +8,6 @@
 
 import UIKit
 import Tapptitude
-
-
-class MyViewController: CollectionFeedController {
         
 
 public class TTActionSheet: CollectionFeedController {
@@ -34,10 +31,10 @@ public class TTActionSheet: CollectionFeedController {
     
     let transtionController = DimmingTransition()
     
-    public init(title:String? = nil, message:String? = nil, cancelMessage: String? = nil ) {
-
+    public init(title:String? = nil, message:String? = nil, cancelMessage: String? = nil) {
         let bundle = NSBundle(forClass: TTActionSheet.self)
         super.init(nibName: "TTActionSheet", bundle: bundle)
+        
         self.modalPresentationStyle = .OverCurrentContext
         self.definesPresentationContext = true
         self.transitioningDelegate = transtionController
@@ -50,6 +47,27 @@ public class TTActionSheet: CollectionFeedController {
         super.init(coder: aDecoder)
     }
     
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.cellController = ActionSheetCellController()
+        
+        if NSBundle.allBundles().contains({ ($0.bundleIdentifier ?? "").hasPrefix("com.apple.dt.") }) {
+            self.view.frame = CGRect(x: 0, y: 0, width: 350, height: 667) // harcoded value
+            print("in playground --> TTActionSheet size harcoded to: ", self.view.frame.size)
+        } else {
+//            print("not in playground")
+            self.view.frame = UIScreen.mainScreen().bounds
+        }
+        
+        self.configureUI()
+        self.reloadDataSource()
+        self.view.setNeedsLayout()
+        self.view.layoutIfNeeded()
+        let contentHeight = self.collectionView!.contentSize.height
+        maskViewHeightConstraint.constant = contentHeight + (headerIsVisible ? self.headerView.frame.height : 0)
+    }
+    
     override public func viewDidAppear(animated: Bool) {
         let contentHeight = self.collectionView!.contentSize.height
         if contentHeight <= self.collectionView!.frame.height {
@@ -59,20 +77,9 @@ public class TTActionSheet: CollectionFeedController {
         }
     }
     
-    override public func viewDidLoad() {
-        super.viewDidLoad()
-        self.view.frame = UIScreen.mainScreen().bounds
-        self.cellController = ActionSheetCellController()
-        self.configureUI()
-        self.reloadDataSource()
-        self.view.setNeedsLayout()
-        self.view.layoutIfNeeded()
-        let contentHeight = self.collectionView!.contentSize.height
-        maskViewHeightConstraint.constant = contentHeight + (headerIsVisible ? self.headerView.frame.height : 0)
-    }
-    
     public func addAction(action: TTActionSheetAction) {
         self.actions.append(action)
+        self.reloadDataSource()
     }
     
     func configureUI() {
@@ -105,7 +112,6 @@ public class TTActionSheet: CollectionFeedController {
         maskView.clipsToBounds = true
         maskView.layer.cornerRadius = 12.5
         cancelButton.layer.cornerRadius = 12.5
-
     }
     
     @IBAction func cancelAction(sender: AnyObject) {
@@ -113,8 +119,11 @@ public class TTActionSheet: CollectionFeedController {
     }
     
     func reloadDataSource() {
-        var content:[Any] = []
-        content.appendContentsOf(actions.map({ $0 as Any}))
-        self.dataSource = DataSource(content)
+        self.dataSource = DataSource(actions)
+        
+        if isViewLoaded() {
+            let contentHeight = self.collectionView!.contentSize.height
+            maskViewHeightConstraint.constant = contentHeight + (headerIsVisible ? self.headerView.frame.height : 0)
+        }
     }
 }
