@@ -23,7 +23,6 @@ class TextCellController: CollectionCellController<String, TextCell> {
 }
 
 
-
 //============ API Mocks ==========
 class APIMock: TTCancellable {
     func cancel() {
@@ -109,11 +108,13 @@ class APIPaginateOffsetdMock: TTCancellable {
 
 //----------- Your code ------
 let feedController = CollectionFeedController()
+feedController.addPullToRefresh()
 feedController.dataSource = DataSource<String>(pageSize: 10, loadPage: { (offset, limit, callback) -> TTCancellable? in
     return APIMock(callback: callback)
 })
 DataSource<String>(pageSize: 10, loadPage: { APIMock(callback: $2) })
 feedController.cellController = TextCellController()
+feedController.pullToRefreshAction(feedController)
 
 let items = NSArray(arrayLiteral: "Why Algorithms as Microservices are Changing Software Development\n We recently wrote about how the Algorithm Economy and containers have created a fundamental shift in software development. Today, we want to look at the 10 ways algorithms as microservices change the way we build and deploy software.")
 let dataSource = DataSource<String>(items)
