@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2347DCB51D954D3200C311D8 /* Tapptitude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2347DCB41D954D2900C311D8 /* Tapptitude.framework */; };
 		2355FF9B1CA3350D00D7B393 /* TextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2355FF9A1CA3350D00D7B393 /* TextCell.xib */; };
 		2355FF9D1CA3355F00D7B393 /* TextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2355FF9C1CA3355F00D7B393 /* TextCell.swift */; };
 		2355FF9F1CA3367900D7B393 /* TextCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2355FF9E1CA3367900D7B393 /* TextCellController.swift */; };
@@ -16,11 +17,20 @@
 		23A550E11C78A1BC00695BF3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23A550E01C78A1BC00695BF3 /* Assets.xcassets */; };
 		23A550E41C78A1BC00695BF3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23A550E21C78A1BC00695BF3 /* LaunchScreen.storyboard */; };
 		23A551111C78A32300695BF3 /* FeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A551101C78A32300695BF3 /* FeedController.swift */; };
-		F181A238B6F54D0976A9E4B1 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B42782466A469DCD51ADB03C /* Pods.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		2347DCB31D954D2900C311D8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2347DCAF1D954D2900C311D8 /* Tapptitude.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 234ECBEF1C747FE800135CF9;
+			remoteInfo = Tapptitude;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
-		01FA323D538E2DB382E1B4EF /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		2347DCAF1D954D2900C311D8 /* Tapptitude.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Tapptitude.xcodeproj; path = ../Tapptitude.xcodeproj; sourceTree = "<group>"; };
 		2355FF9A1CA3350D00D7B393 /* TextCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextCell.xib; sourceTree = "<group>"; };
 		2355FF9C1CA3355F00D7B393 /* TextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextCell.swift; sourceTree = "<group>"; };
 		2355FF9E1CA3367900D7B393 /* TextCellController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextCellController.swift; sourceTree = "<group>"; };
@@ -33,7 +43,6 @@
 		23A550E51C78A1BC00695BF3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		23A551101C78A32300695BF3 /* FeedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedController.swift; sourceTree = "<group>"; };
 		B42782466A469DCD51ADB03C /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DC08900FB380D7F76755A195 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,13 +50,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F181A238B6F54D0976A9E4B1 /* Pods.framework in Frameworks */,
+				2347DCB51D954D3200C311D8 /* Tapptitude.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2347DCB01D954D2900C311D8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2347DCB41D954D2900C311D8 /* Tapptitude.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		2393482A1CA5D236005EB280 /* Test Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -61,9 +78,9 @@
 		23A550CD1C78A1BB00695BF3 = {
 			isa = PBXGroup;
 			children = (
+				2347DCAF1D954D2900C311D8 /* Tapptitude.xcodeproj */,
 				23A550D81C78A1BB00695BF3 /* TestTapptitude */,
 				23A550D71C78A1BB00695BF3 /* Products */,
-				87084110A1AB46063E1DEBA4 /* Pods */,
 				A05335A950B7B6E805845470 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -91,15 +108,6 @@
 			path = TestTapptitude;
 			sourceTree = "<group>";
 		};
-		87084110A1AB46063E1DEBA4 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				DC08900FB380D7F76755A195 /* Pods.debug.xcconfig */,
-				01FA323D538E2DB382E1B4EF /* Pods.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		A05335A950B7B6E805845470 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -115,12 +123,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 23A550E81C78A1BC00695BF3 /* Build configuration list for PBXNativeTarget "TestTapptitude" */;
 			buildPhases = (
-				141D013803BA178411951AAA /* Check Pods Manifest.lock */,
 				23A550D21C78A1BB00695BF3 /* Sources */,
 				23A550D31C78A1BB00695BF3 /* Frameworks */,
 				23A550D41C78A1BB00695BF3 /* Resources */,
-				9B32C8FAC92769C65D6B8754 /* Embed Pods Frameworks */,
-				111B94DDFDFEFE3539A15EFE /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -157,12 +162,28 @@
 			mainGroup = 23A550CD1C78A1BB00695BF3;
 			productRefGroup = 23A550D71C78A1BB00695BF3 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 2347DCB01D954D2900C311D8 /* Products */;
+					ProjectRef = 2347DCAF1D954D2900C311D8 /* Tapptitude.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				23A550D51C78A1BB00695BF3 /* TestTapptitude */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		2347DCB41D954D2900C311D8 /* Tapptitude.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Tapptitude.framework;
+			remoteRef = 2347DCB31D954D2900C311D8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		23A550D41C78A1BB00695BF3 /* Resources */ = {
@@ -177,54 +198,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		111B94DDFDFEFE3539A15EFE /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		141D013803BA178411951AAA /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		9B32C8FAC92769C65D6B8754 /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		23A550D21C78A1BB00695BF3 /* Sources */ = {
@@ -346,7 +319,6 @@
 		};
 		23A550E91C78A1BC00695BF3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DC08900FB380D7F76755A195 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = TestTapptitude/Info.plist;
@@ -354,12 +326,12 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tapptitude.TestTapptitude;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
 		23A550EA1C78A1BC00695BF3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 01FA323D538E2DB382E1B4EF /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = TestTapptitude/Info.plist;
@@ -367,6 +339,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tapptitude.TestTapptitude;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};

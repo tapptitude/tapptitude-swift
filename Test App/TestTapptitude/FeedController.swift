@@ -16,6 +16,10 @@ extension NSURLSessionTask: TTCancellable {
 
 class FeedController: CollectionFeedController {
     
+    var dataSourceString: DataSource<String> {
+        return self.dataSource as! DataSource<String>
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -27,9 +31,8 @@ class FeedController: CollectionFeedController {
         
 //        self.dataSource = DataSource(content: ["arra"])
         let cellController = TextCellController()
-        cellController.didSelectContent = { _, indexPath, collectionView in
-            let dataSource = self.dataSource as? TTDataSourceMutable
-            dataSource?.replace(at: indexPath, newElement: "Ghita")
+        cellController.didSelectContent = { [unowned self] _, indexPath, collectionView in
+            self.dataSourceString.replace(at: indexPath, newElement: "Ghita")
         }
         
         let numberCellController = CollectionCellController<Int, UICollectionViewCell>(cellSize: CGSize(width: 100, height: 50))
@@ -39,7 +42,7 @@ class FeedController: CollectionFeedController {
         
         self.cellController = MultiCollectionCellController([cellController, numberCellController])
         
-//        let dataSource = DataSource (load: { (callback: TTCallback<String>.Signature) -> TTCancellable? in
+//        let dataSource = DataSource<String> (load: { (callback: TTCallback<String>.Signature) -> TTCancellable? in
 //            return APIMock(callback: { (content, error) in
 //                var newContent : [String]? = content
 //                newContent?.append("2312")
@@ -47,10 +50,12 @@ class FeedController: CollectionFeedController {
 //            })
 //        })
         
-//        let dataSource = DataSource { APIMock(callback: $0) }
+//        let dataSource = DataSource<String> { APIMock(callback: $0) }
         
-        let dataSource = DataSource(pageSize: 10, loadPage: { (offset, limit, callback) -> TTCancellable? in
-            return APIMock(callback: callback)
+        let dataSource = DataSource<String>(pageSize: 2, loadPage: { (offset, pageSize, callback) -> TTCancellable? in
+            return APIPaginatedMock(offset: offset, pageSize: pageSize, callback: { (content, error) in
+                callback(content: content, error: error)
+            })
         })
         
 //        let items = NSArray(arrayLiteral: "Why Algorithms as Microservices are Changing Software Development\n We recently wrote about how the Algorithm Economy and containers have created a fundamental shift in software development. Today, we want to look at the 10 ways algorithms as microservices change the way we build and deploy software.", 123)
@@ -86,8 +91,6 @@ class FeedController: CollectionFeedController {
 //            return APIPaginateOffsetdMock(offset: offset, limit: 10, callback: callback)
 //        }
         self.dataSource = dataSource
-        
-        animatedUpdates = true
     }
     
     override func viewDidAppear(animated: Bool) {
