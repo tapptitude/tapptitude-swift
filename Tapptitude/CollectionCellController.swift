@@ -8,8 +8,8 @@
 
 import UIKit
 
-public class CollectionCellController<ObjectClass, CellName: UICollectionViewCell> : TTCollectionCellController, TTCollectionCellControllerSize {
-    public typealias ContentType = ObjectClass
+public class CollectionCellController<ContentName, CellName: UICollectionViewCell> : TTCollectionCellController, TTCollectionCellControllerSize {
+    public typealias ContentType = ContentName
     public typealias CellType = CellName
     
     public var cellSizeForContent : ((content: ContentType, collectionView: UICollectionView) -> CGSize)?

@@ -39,17 +39,18 @@ class APIPaginatedMock: TTCancellable {
     var wasCancelled = false
     var callback: (content: [String]?, error: NSError?)->Void
     
-    init(offset:Int, limit:Int, callback: (content: [String]?, error: NSError?)->Void) {
+    init(offset:Int, pageSize:Int, callback: (content: [String]?, error: NSError?)->Void) {
         self.callback = callback
         
         let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(3 * Double(NSEC_PER_SEC)))
         dispatch_after(delayTime, dispatch_get_main_queue()) {
-            print("test")
             if !self.wasCancelled {
                 if offset > 3 {
+                    print("completed")
                     callback(content: nil, error: nil)
                 } else {
-                    callback(content: ["234"], error: nil)
+                    print("loaded")
+                    callback(content: ["Maria", "Ion"], error: nil)
                 }
             }
         }

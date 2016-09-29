@@ -141,10 +141,11 @@ public class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutab
         var indexPaths = [NSIndexPath]();
         
         if let content = content {
-            _content.appendContentsOf(content)
+            let startIndex = _content.count
+            _content.appendContentsOf(content.map({$0 as! Element}))
             
             indexPaths = content.enumerate().map({ (index, _) -> NSIndexPath in
-                return NSIndexPath(forItem: index, inSection: 0)
+                return NSIndexPath(forItem: startIndex + index, inSection: 0)
             })
         }
         

@@ -54,17 +54,18 @@ class APIPaginatedMock: TTCancellable {
     var wasCancelled = false
     var callback: (content: [String]?, error: NSError?)->Void
     
-    init(offset:Int, limit:Int, callback: (content: [String]?, error: NSError?)->Void) {
+    init(offset:Int, pageSize:Int, callback: (content: [String]?, error: NSError?)->Void) {
         self.callback = callback
         
         let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(3 * Double(NSEC_PER_SEC)))
         dispatch_after(delayTime, dispatch_get_main_queue()) {
-            print("test")
             if !self.wasCancelled {
                 if offset > 3 {
+                    print("completed")
                     callback(content: nil, error: nil)
                 } else {
-                    callback(content: ["234"], error: nil)
+                    print("loaded")
+                    callback(content: ["Maria", "Ion"], error: nil)
                 }
             }
         }
@@ -109,26 +110,27 @@ class APIPaginateOffsetdMock: TTCancellable {
 //----------- Your code ------
 let feedController = CollectionFeedController()
 feedController.addPullToRefresh()
-feedController.dataSource = DataSource<String>(pageSize: 10, loadPage: { (offset, limit, callback) -> TTCancellable? in
-    return APIMock(callback: callback)
-})
-DataSource<String>(pageSize: 10, loadPage: { APIMock(callback: $2) })
+//feedController.dataSource = DataSource<String>(pageSize: 2, loadPage: { (offset, pageSize, callback) -> TTCancellable? in
+//    return APIPaginatedMock(offset: offset, pageSize: pageSize, callback: callback)
+//})
+feedController.dataSource = DataSource<String> (pageSize: 2, loadPage: { return APIPaginatedMock(offset: $0, pageSize: $1, callback: $2) })
+
 feedController.cellController = TextCellController()
 feedController.pullToRefreshAction(feedController)
 
 let items = NSArray(arrayLiteral: "Why Algorithms as Microservices are Changing Software Development\n We recently wrote about how the Algorithm Economy and containers have created a fundamental shift in software development. Today, we want to look at the 10 ways algorithms as microservices change the way we build and deploy software.")
 let dataSource = DataSource<String>(items)
-dataSource.feed = PaginatedDataFeed<String, String>(loadPage: { (offset, callback) -> TTCancellable? in
-    return APIPaginateOffsetdMock(offset: offset, limit: 10, callback: callback)
-})
-
-feedController.dataSource = dataSource
+//dataSource.feed = PaginatedDataFeed<String, String>(loadPage: { (offset, callback) -> TTCancellable? in
+//    return APIPaginateOffsetdMock(offset: offset, limit: 10, callback: callback)
+//})
+//
+//feedController.dataSource = dataSource
 //let dataSource = DataSource { (offset:String?, callback: TTCallbackNextOffset<String, String>.Signature) -> TTCancellable? in
 //    return APIPaginateOffsetdMock(offset: offset, limit: 10, callback: callback)
 //}
 
 
 import XCPlayground
-XCPlaygroundPage.currentPage.liveView = feedController.view
+XCPlaygroundPage.currentPage.liveView = feedController
 XCPlaygroundPage.currentPage.needsIndefiniteExecution = true
 //: [Next](@next)
