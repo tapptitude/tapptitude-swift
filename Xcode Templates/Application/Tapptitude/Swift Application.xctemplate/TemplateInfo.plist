@@ -32,7 +32,7 @@
 								<key>Debug</key>
 								<dict>
 									<key>OTHER_SWIFT_FLAGS</key>
-									<string>$(inherited) -DDEV</string>
+									<string>$(inherited) -DDEV -DDEBUG</string>
 								</dict>
 								<key>Release</key>
 								<dict>

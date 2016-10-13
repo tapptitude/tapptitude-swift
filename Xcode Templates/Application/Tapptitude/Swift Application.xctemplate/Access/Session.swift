@@ -114,7 +114,7 @@ extension Session {
         }
         
         // Delete login service token & username
-        let loginService = SAMKeychain.keychainService
+        let loginService = SessionInfo.keychainService
         let password = SAMKeychain.passwordForService(loginService, account: savedUserID)
         if (password != nil) {
             SAMKeychain.deletePasswordForService(loginService, account:savedUserID)
