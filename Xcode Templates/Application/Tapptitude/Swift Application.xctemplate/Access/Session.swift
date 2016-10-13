@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-import SSKeychain
+import SAMKeychain
 
 struct SessionInfo {
     static let previouslyLoggedUser = "previouslyLoggedUser"
@@ -35,7 +35,7 @@ class Session {
         return !isComplete
     }
     
-    static func closeWithError(error: NSError?) {
+    static func close(error error: NSError? = nil) {
         guard self.isValidSession() else {
             return
         }
@@ -96,29 +96,28 @@ class Session {
     
     static func setKeychainValue(value: String?, forKey key: String) {
         if let value = value {
-            SSKeychain.setPassword(value, forService: SessionInfo.keychainService, account: key)
+            SAMKeychain.setPassword(value, forService: SessionInfo.keychainService, account: key)
         } else {
-            SSKeychain.deletePasswordForService(SessionInfo.keychainService, account: key)
+            SAMKeychain.deletePasswordForService(SessionInfo.keychainService, account: key)
         }
     }
     
     static func keychainValueForKey(key: String) -> String? {
-        return SSKeychain.passwordForService(SessionInfo.keychainService, account: key)
+        return SAMKeychain.passwordForService(SessionInfo.keychainService, account: key)
     }
 }
 
 extension Session {
     static private func clearUserCredentials() {
-        let savedUserID = NSUserDefaults.standardUserDefaults().objectForKey(SessionInfo.previouslyLoggedUser) as? String;
-        guard savedUserID != nil else {
+        guard let savedUserID = NSUserDefaults.standardUserDefaults().objectForKey(SessionInfo.previouslyLoggedUser) as? String else {
             return
         }
         
         // Delete login service token & username
-        let loginService = SessionInfo.keychainService
-        let password = SSKeychain.passwordForService(loginService, account: savedUserID)
+        let loginService = SAMKeychain.keychainService
+        let password = SAMKeychain.passwordForService(loginService, account: savedUserID)
         if (password != nil) {
-            SSKeychain.deletePasswordForService(loginService, account:savedUserID)
+            SAMKeychain.deletePasswordForService(loginService, account:savedUserID)
         }
         
         NSUserDefaults.standardUserDefaults().removeObjectForKey(SessionInfo.previouslyLoggedUser)

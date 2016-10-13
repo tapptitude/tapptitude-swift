@@ -14,7 +14,7 @@ extension API {
     class func request(method: Alamofire.Method, path: String, parameters: [String : AnyObject]?, encoding: ParameterEncoding = .URL, headers: [String: String]? = nil) -> Request {
         
         let baseURL = NSURL(string: APISettings.serverURL)!
-        let url = baseURL.URLByAppendingPathComponent(path)
+        let url = baseURL.URLByAppendingPathComponent(path)!
         
         // append http headers
         var mutableHeaders : [String : String] = [:]
@@ -80,7 +80,7 @@ extension Request {
                 let accessDenied = response?.statusCode == 403 || response?.statusCode == 401
                 if accessDenied {
                     dispatch_sync(dispatch_get_main_queue(), {
-                        Session.closeWithError(error)
+                        Session.close(error: error)
                     })
                 }
                 
