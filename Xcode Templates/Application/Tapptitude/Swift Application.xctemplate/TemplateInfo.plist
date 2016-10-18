@@ -121,6 +121,8 @@ fi</string>
 						<string>Helpers/SeparatorView.swift</string>
 						<string>Helpers/RoundedButton.swift</string>
 						<string>Helpers/PlaceholderTextField.swift</string>
+						<string>Helpers/UILabel+TextAttributes.swift</string>
+						<string>Helpers/UIImageView+URL.swift</string>
 						<string>../bin/natalie.swift</string>
 						<string>Helpers/Storyboards.swift</string>
 					</array>
@@ -231,6 +233,24 @@ fi</string>
 							<integer>100</integer>
 							<key>Path</key>
 							<string>Helpers/PlaceholderTextField.swift</string>
+							<key>Group</key>
+							<string>Helpers</string>
+						</dict>
+						<key>Helpers/UIImageView+URL.swift</key>
+						<dict>
+							<key>SortOrder</key>
+							<integer>100</integer>
+							<key>Path</key>
+							<string>Helpers/UIImageView+URL.swift</string>
+							<key>Group</key>
+							<string>Helpers</string>
+						</dict>
+						<key>Helpers/UILabel+TextAttributes.swift</key>
+						<dict>
+							<key>SortOrder</key>
+							<integer>100</integer>
+							<key>Path</key>
+							<string>Helpers/UILabel+TextAttributes.swift</string>
 							<key>Group</key>
 							<string>Helpers</string>
 						</dict>
@@ -467,6 +487,8 @@ fi</string>
 						<string>Helpers/SeparatorView.swift</string>
 						<string>Helpers/RoundedButton.swift</string>
 						<string>Helpers/PlaceholderTextField.swift</string>
+						<string>Helpers/UILabel+TextAttributes.swift</string>
+						<string>Helpers/UIImageView+URL.swift</string>
 						<string>../bin/natalie.swift</string>
 						<string>Helpers/Storyboards.swift</string>
 					</array>
@@ -577,6 +599,24 @@ fi</string>
 							<integer>100</integer>
 							<key>Path</key>
 							<string>Helpers/PlaceholderTextField.swift</string>
+							<key>Group</key>
+							<string>Helpers</string>
+						</dict>
+						<key>Helpers/UIImageView+URL.swift</key>
+						<dict>
+							<key>SortOrder</key>
+							<integer>100</integer>
+							<key>Path</key>
+							<string>Helpers/UIImageView+URL.swift</string>
+							<key>Group</key>
+							<string>Helpers</string>
+						</dict>
+						<key>Helpers/UILabel+TextAttributes.swift</key>
+						<dict>
+							<key>SortOrder</key>
+							<integer>100</integer>
+							<key>Path</key>
+							<string>Helpers/UILabel+TextAttributes.swift</string>
 							<key>Group</key>
 							<string>Helpers</string>
 						</dict>
@@ -923,6 +963,24 @@ fi</string>
 							<integer>100</integer>
 							<key>Path</key>
 							<string>Helpers/PlaceholderTextField.swift</string>
+							<key>Group</key>
+							<string>Helpers</string>
+						</dict>
+						<key>Helpers/UIImageView+URL.swift</key>
+						<dict>
+							<key>SortOrder</key>
+							<integer>100</integer>
+							<key>Path</key>
+							<string>Helpers/UIImageView+URL.swift</string>
+							<key>Group</key>
+							<string>Helpers</string>
+						</dict>
+						<key>Helpers/UILabel+TextAttributes.swift</key>
+						<dict>
+							<key>SortOrder</key>
+							<integer>100</integer>
+							<key>Path</key>
+							<string>Helpers/UILabel+TextAttributes.swift</string>
 							<key>Group</key>
 							<string>Helpers</string>
 						</dict>
