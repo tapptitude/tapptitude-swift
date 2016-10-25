@@ -8,10 +8,10 @@
 
 import Foundation
 
-public class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable {
+open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable {
     public typealias Element = T
     
-    lazy private var _content : [T] = [T]()
+    lazy fileprivate var _content : [T] = [T]()
     
     public init(_ content : [T]) {
         _content = content
@@ -25,8 +25,8 @@ public class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutab
         _content = []
     }
     
-    public weak var delegate : TTDataSourceDelegate?
-    public var feed : TTDataFeed? {
+    open weak var delegate : TTDataSourceDelegate?
+    open var feed : TTDataFeed? {
         willSet {
             feed?.delegate = nil
         }
@@ -39,52 +39,52 @@ public class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutab
         feed?.delegate = nil
     }
     
-    public var content : [Any] {
+    open var content : [Any] {
         get {
             return _content.map({$0 as Any})
         }
     }
     
-    public func hasContent() -> Bool {
+    open func hasContent() -> Bool {
         return _content.isEmpty == false
     }
     
-    public func numberOfSections() -> Int {
+    open func numberOfSections() -> Int {
         return 1
     }
     
-    public func numberOfItems(inSection section: Int) -> Int {
+    open func numberOfItems(inSection section: Int) -> Int {
         return _content.count
     }
     
-    public func indexPath<S>(ofFirst filter: (item: S) -> Bool) -> NSIndexPath? {
-        let index = _content.indexOf { (item) -> Bool in
+    open func indexPath<S>(ofFirst filter: (_ item: S) -> Bool) -> IndexPath? {
+        let index = _content.index { (item) -> Bool in
             if let item = item as? S {
-                return filter(item: item)
+                return filter(item)
             } else {
                 return false
             }
         }
         
-        return index != nil ? NSIndexPath(forItem: index!, inSection: 0) : nil
+        return index != nil ? IndexPath(item: index!, section: 0) : nil
     }
     
-    public subscript(indexPath: NSIndexPath) -> Any {
+    open subscript(indexPath: IndexPath) -> Any {
         get { return _content[indexPath.item] }
     }
     
-    public subscript(indexPath: NSIndexPath) -> T {
+    open subscript(indexPath: IndexPath) -> T {
         get { return _content[indexPath.item] }
         set { editContent { (_content, delegate) in
             _content[indexPath.item] = newValue
             }}
     }
     
-    public subscript(section: Int, index: Int) -> Any {
+    open subscript(section: Int, index: Int) -> Any {
         get { return _content[index] }
     }
     
-    public subscript(section: Int, index: Int) -> T {
+    open subscript(section: Int, index: Int) -> T {
         get { return _content[index] }
         set { editContent { (_content, delegate) in
             _content[index] = newValue
@@ -95,26 +95,26 @@ public class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutab
 //        get { return _content[index] }
 //    }
     
-    public subscript(index: Int) -> T {
+    open subscript(index: Int) -> T {
         get { return _content[index] }
         set { editContent { (_content, delegate) in
             _content[index] = newValue
             }}
     }
     
-    public var dataSourceID : String?
+    open var dataSourceID : String?
     
 //}
 //
 //extension DataSource : TTDataFeedDelegate {
     
-    public func dataFeed(dataFeed: TTDataFeed?, failedWithError error: NSError) {
+    open func dataFeed(_ dataFeed: TTDataFeed?, failedWithError error: NSError) {
         if let delegate = delegate as? TTDataFeedDelegate {
             delegate.dataFeed(dataFeed, failedWithError: error)
         }
     }
     
-    public func dataFeed(dataFeed: TTDataFeed?, didReloadContent content: [Any]?) {
+    open func dataFeed(_ dataFeed: TTDataFeed?, didReloadContent content: [Any]?) {
         // pass delegate message
         if let delegate = delegate as? TTDataFeedDelegate {
             delegate.dataFeed(dataFeed, didReloadContent: content)
@@ -127,25 +127,25 @@ public class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutab
         let ignore = wasEmpty && isEmpty
         if !ignore {
             delegate?.dataSourceWillChangeContent(self)
-            delegate?.dataSource(self, didUpdateSections: NSIndexSet(index: 0))
+            delegate?.dataSource(self, didUpdateSections: IndexSet(integer: 0))
             delegate?.dataSourceDidChangeContent(self)
         }
     }
     
-    public func dataFeed(dataFeed: TTDataFeed?, didLoadMoreContent content: [Any]?) {
+    open func dataFeed(_ dataFeed: TTDataFeed?, didLoadMoreContent content: [Any]?) {
         // pass delegate message
         if let delegate = delegate as? TTDataFeedDelegate {
             delegate.dataFeed(dataFeed, didLoadMoreContent: content)
         }
         
-        var indexPaths = [NSIndexPath]();
+        var indexPaths = [IndexPath]();
         
         if let content = content {
             let startIndex = _content.count
-            _content.appendContentsOf(content.map({$0 as! Element}))
+            _content.append(contentsOf: content.map({$0 as! Element}))
             
-            indexPaths = content.enumerate().map({ (index, _) -> NSIndexPath in
-                return NSIndexPath(forItem: startIndex + index, inSection: 0)
+            indexPaths = content.enumerated().map({ (index, _) -> IndexPath in
+                return IndexPath(item: startIndex + index, section: 0)
             })
         }
         
@@ -156,13 +156,13 @@ public class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutab
         }
     }
     
-    public func dataFeed(dataFeed: TTDataFeed?, isReloading: Bool) {
+    open func dataFeed(_ dataFeed: TTDataFeed?, isReloading: Bool) {
         if let delegate = delegate as? TTDataFeedDelegate {
             delegate.dataFeed(dataFeed, isReloading: isReloading)
         }
     }
     
-    public func dataFeed(dataFeed: TTDataFeed?, isLoadingMore: Bool) {
+    open func dataFeed(_ dataFeed: TTDataFeed?, isLoadingMore: Bool) {
         if let delegate = delegate as? TTDataFeedDelegate {
             delegate.dataFeed(dataFeed, isLoadingMore: isLoadingMore)
         }
@@ -172,7 +172,7 @@ public class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutab
 //
 //
 //extension DataSource : TTDataSourceMutable {
-    public func perfomBatchUpdates(@noescape updates: (() -> Void), animationCompletion:(()->Void)?) {
+    open func perfomBatchUpdates(_ updates: (() -> Void), animationCompletion:(()->Void)?) {
         assert(allowWillDidChangeContent, "perform batche updates called multiple times")
         allowWillDidChangeContent = false
         delegate?.dataSourceWillChangeContent(self)
@@ -181,51 +181,52 @@ public class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutab
         allowWillDidChangeContent = true
     }
     
-    private var allowWillDidChangeContent = true
-    private func editContent(@noescape editBlock: ( inout content: [T], delegate: TTDataSourceDelegate?) -> Void) {
+    fileprivate var allowWillDidChangeContent = true
+    fileprivate func editContent(_ editBlock: ( _ content: inout [T], _ delegate: TTDataSourceDelegate?) -> Void) {
         if allowWillDidChangeContent {
             delegate?.dataSourceWillChangeContent(self)
         }
-        editBlock(content: &_content, delegate: delegate);
+        editBlock(&_content, delegate);
         if allowWillDidChangeContent {
             delegate?.dataSourceDidChangeContent(self, animationCompletion: nil)
         }
     }
     
-    public func append(_ newElement: T) {
+    open func append(_ newElement: T) {
         editContent { (_content, delegate) -> Void in
             _content.append(newElement)
-            let indexPath = NSIndexPath(forItem: max(0, _content.count - 1), inSection: 0)
+            let maxCount = _content.count - 1
+            let indexPath = IndexPath(item: maxCount > 0 ? maxCount : 0, section: 0)
             delegate?.dataSource(self, didInsertItemsAt: [indexPath])
         }
     }
     
-    public func append(contentsOf newElements: [T]) {
+    open func append(contentsOf newElements: [T]) {
         editContent { (_content, delegate) -> Void in
             let startIndex = _content.count
-            let indexPaths = newElements.enumerate().map({ (index, _) -> NSIndexPath in
-                return NSIndexPath(forItem: startIndex + index, inSection: 0)
+            let indexPaths = newElements.enumerated().map({ (index, _) -> IndexPath in
+                return IndexPath(item: startIndex + index, section: 0)
             })
             
-            _content.appendContentsOf(newElements)
+            _content.append(contentsOf: newElements)
             delegate?.dataSource(self, didInsertItemsAt: indexPaths)
         }
     }
     
-    public func insert(newElement: T, at indexPath: NSIndexPath) {
+    open func insert(_ newElement: T, at indexPath: IndexPath) {
         editContent { (_content, delegate) -> Void in
-            _content.insert(newElement, atIndex: indexPath.item)
+            _content.insert(newElement, at: indexPath.item)
             delegate?.dataSource(self, didInsertItemsAt: [indexPath])
         }
     }
     
-    public func insert(contentsOf newElements: [T], at indexPath: NSIndexPath) {
-        var insertedIndexPaths:[NSIndexPath] = []
+    open func insert(contentsOf newElements: [T], at indexPath: IndexPath) {
+        var insertedIndexPaths:[IndexPath] = []
         editContent { (_content, delegate) -> Void in
             var counter = 0
             for element in newElements {
-                _content.insert(element, atIndex: indexPath.item + counter)
-                insertedIndexPaths.append(NSIndexPath(forItem: indexPath.item + counter, inSection: 0))
+                _content.insert(element, at: indexPath.item + counter)
+                insertedIndexPaths.append(IndexPath(item: indexPath.item + counter, section: 0))
                 counter += 1
             }
             delegate?.dataSource(self, didInsertItemsAt: insertedIndexPaths)
@@ -233,35 +234,35 @@ public class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutab
     }
 
     
-    public func moveElement(from fromIndexPath: NSIndexPath, to toIndexPath: NSIndexPath) {
+    open func moveElement(from fromIndexPath: IndexPath, to toIndexPath: IndexPath) {
         editContent { (_content, delegate) -> Void in
             let item = _content[fromIndexPath.item]
-            _content.removeAtIndex(fromIndexPath.item)
+            _content.remove(at: fromIndexPath.item)
             
             var toIndex = toIndexPath.item
             if toIndexPath.item > fromIndexPath.item {
                 toIndex -= 1
             }
             
-            _content.insert(item, atIndex: toIndex)
+            _content.insert(item, at: toIndex)
             
             delegate?.dataSource(self, didMoveItemsFrom: [fromIndexPath], to: [toIndexPath])
         }
     }
     
-    public func remove(at indexPath: NSIndexPath) {
+    open func remove(at indexPath: IndexPath) {
         editContent { (_content, delegate) -> Void in
-            _content.removeAtIndex(indexPath.item)
+            _content.remove(at: indexPath.item)
             delegate?.dataSource(self, didDeleteItemsAt: [indexPath])
         }
     }
     
-    public func remove(at indexPaths: [NSIndexPath]) {
+    open func remove(at indexPaths: [IndexPath]) {
         if !indexPaths.isEmpty {
             var indexPathsToRemove:[Int] = indexPaths.map { return $0.item }
             editContent { (_content, delegate) -> Void in
                 for j in 0..<indexPathsToRemove.count   {
-                    _content.removeAtIndex(indexPathsToRemove[j])
+                    _content.remove(at: indexPathsToRemove[j])
                     for i in 0..<indexPathsToRemove.count{
                         if indexPathsToRemove[i] > indexPathsToRemove[j] {
                             indexPathsToRemove[i] -= 1
@@ -273,16 +274,16 @@ public class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutab
         }
     }
     
-    public func remove(@noescape filter: (item: T) -> Bool) {
+    open func remove(_ filter: (_ item: T) -> Bool) {
         editContent { (_content, delegate) -> Void in
-            var indexPaths: [NSIndexPath] = []
+            var indexPaths: [IndexPath] = []
             let content = _content
             var index = 0
             var collectionIndex = 0
             for item in content {
-                if filter(item: item) {
-                    _content.removeAtIndex(index)
-                    indexPaths.append(NSIndexPath(forItem: collectionIndex, inSection: 0))
+                if filter(item) {
+                    _content.remove(at: index)
+                    indexPaths.append(IndexPath(item: collectionIndex, section: 0))
                 } else {
                     index += 1
                 }
@@ -292,7 +293,7 @@ public class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutab
         }
     }
     
-    public func replace(at indexPath: NSIndexPath, newElement: T) {
+    open func replace(at indexPath: IndexPath, newElement: T) {
         editContent { (_content, delegate) -> Void in
             _content[indexPath.item] = newElement
             delegate?.dataSource(self, didUpdateItemsAt: [indexPath])
@@ -300,27 +301,27 @@ public class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutab
     }
 }
 
-public extension SequenceType {
+public extension Sequence {
     public func convertTo<NewType>() -> [NewType] {
         return self.map {$0 as! NewType }
     }
 }
 
-public func += <T>(inout left: DataSource<T>, right: DataSource<T>) {
+public func += <T>(left: inout DataSource<T>, right: DataSource<T>) {
     left.append(contentsOf: right.content.convertTo())
 }
 
-public func += <T>(inout left: DataSource<T>, right: [T]) {
+public func += <T>(left: inout DataSource<T>, right: [T]) {
     left.append(contentsOf: right)
 }
 
 
-extension DataSource: SequenceType {
-    public typealias Generator = AnyGenerator<T>
+extension DataSource: Sequence {
+    public typealias Iterator = AnyIterator<T>
     
-    public func generate() -> Generator {
+    public func makeIterator() -> Iterator {
         var index = 0
-        return AnyGenerator {
+        return AnyIterator {
             if index < self._content.count {
                 defer {index += 1}
                 return self._content[index]
@@ -331,7 +332,7 @@ extension DataSource: SequenceType {
 }
 
 
-extension DataSource : CollectionType {
+extension DataSource : Collection {
     public typealias Index = Int
     
     public var startIndex: Int {
@@ -341,4 +342,17 @@ extension DataSource : CollectionType {
     public var endIndex: Int {
         return _content.endIndex
     }
+    
+    public func index(after i: Int) -> Int {
+        return i + 1
+    }
+    
+    public var last: T? {
+        return _content.last
+    }
 }
+
+
+//extension DataSource: BidirectionalCollection {
+//    
+//}

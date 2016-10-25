@@ -8,26 +8,26 @@
 
 import Foundation
 
-public class SimpleDataFeed <T> : DataFeed <T> {
+open class SimpleDataFeed <T> : DataFeed <T> {
     
-    private var loadOperation: (TTCallback<T>.Signature) -> TTCancellable?
+    fileprivate var loadOperation: (@escaping TTCallback<T>.Signature) -> TTCancellable?
     
-    public init (load: (callback: TTCallback<T>.Signature) -> TTCancellable?) {
+    public init (load: @escaping (_ callback: @escaping TTCallback<T>.Signature) -> TTCancellable?) {
         self.loadOperation = load
         super.init()
     }
     
-    public override func reloadOperationWithCallback(callback: TTCallback<T>.Signature) -> TTCancellable? {
+    open override func reloadOperationWithCallback(_ callback: @escaping TTCallback<T>.Signature) -> TTCancellable? {
         return loadOperation(callback)
     }
     
-    public override var canLoadMore: Bool {
+    open override var canLoadMore: Bool {
         return false
     }
 }
 
 extension DataSource {
-    public convenience init <T>(load: (callback: TTCallback<T>.Signature) -> TTCancellable?) {
+    public convenience init <T>(load: @escaping (_ callback: TTCallback<T>.Signature) -> TTCancellable?) {
         self.init()
         feed = SimpleDataFeed(load: load)
         feed?.delegate = self

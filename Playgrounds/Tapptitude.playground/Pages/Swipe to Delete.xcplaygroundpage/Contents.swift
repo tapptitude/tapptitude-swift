@@ -14,14 +14,14 @@ class SwipeCell : TextCell, SwipeToEditCell {
         
         containerView = UIView(frame: bounds)
         containerView.addSubview(label)
-        containerView.backgroundColor = .lightGrayColor()
+        containerView.backgroundColor = .lightGray
         
         let rightFrame = CGRect(x: frame.width - 70, y: 0, width: 70, height: frame.height)
         let button = UIButton(frame: rightFrame)
-        button.setTitle("Delete", forState: .Normal)
-        button.addTarget(self, action: #selector(SwipeCell.deleteAction(_:)), forControlEvents: .TouchUpInside)
-        button.autoresizingMask = [.FlexibleLeftMargin]
-        button.backgroundColor = .redColor()
+        button.setTitle("Delete", for: .normal)
+        button.addTarget(self, action: #selector(SwipeCell.deleteAction(sender:)), for: .touchUpInside)
+        button.autoresizingMask = [.flexibleLeftMargin]
+        button.backgroundColor = .red
         
         rightView = button
         contentView.addSubview(rightView)
@@ -38,12 +38,12 @@ class SwipeCell : TextCell, SwipeToEditCell {
         }
         
         let controller = parentViewController as! CollectionFeedController
-        let indexPath = controller.collectionView!.indexPathForCell(self)
+        let indexPath = controller.collectionView!.indexPath(for:self)
         let dataSource = controller.dataSource as! DataSource<String>
         dataSource.remove(at: indexPath!)
     }
     
-    func didTranslate(transform: CGAffineTransform, translationPercentInsets: UIEdgeInsets) {
+    func didTranslate(_ transform: CGAffineTransform, translationPercentInsets: UIEdgeInsets) {
     }
     
     func shouldStartSwipe() -> Bool {
@@ -51,7 +51,7 @@ class SwipeCell : TextCell, SwipeToEditCell {
     }
     
     override func prepareForReuse() {
-        self.containerView.transform = CGAffineTransformIdentity
+        self.containerView.transform = .identity
     }
 }
 
@@ -77,12 +77,12 @@ class TextCellController: CollectionCellController<String, SwipeCell> {
         minimumLineSpacing = 5
     }
     
-    override func configureCell(cell: SwipeCell, for content: String, at indexPath: NSIndexPath) {
+    override func configureCell(_ cell: SwipeCell, for content: String, at indexPath: IndexPath) {
         cell.label.text = content
         cell.item = content
     }
     
-    override func didSelectContent(content: String, at indexPath: NSIndexPath, in collectionView: UICollectionView) {
+    override func didSelectContent(_ content: String, at indexPath: IndexPath, in collectionView: UICollectionView) {
         print("did select", content)
     }
 }
@@ -93,7 +93,7 @@ let feedController = SwipeController(nibName: "CollectionFeedController", bundle
 feedController.dataSource = dataSource
 feedController.cellController = TextCellController()
 
-import XCPlayground
-XCPlaygroundPage.currentPage.liveView = feedController.view
+import PlaygroundSupport
+PlaygroundPage.current.liveView = feedController.view
 
 //: [Next](@next)

@@ -16,14 +16,14 @@ class NameCellController: CollectionCellController<String, TextCell> {
         minimumInteritemSpacing = 20
     }
     
-    override func configureCell(cell: TextCell, for content: String, at indexPath: NSIndexPath) {
-        cell.backgroundColor = UIColor.redColor()
+    override func configureCell(_ cell: TextCell, for content: String, at indexPath: IndexPath) {
+        cell.backgroundColor = UIColor.red
         cell.label.text = content
     }
 }
 
 extension NameCellController: HybridCollectionCellController {
-    internal func mapItem(item: Any) -> [Any] {
+    internal func mapItem(_ item: Any) -> [Any] {
         if let item = item as? TestModel {
             return [item.name]
         } else {
@@ -39,15 +39,15 @@ class CountCellController: CollectionCellController<String, TextCell> {
         minimumInteritemSpacing = 20
     }
     
-    override func configureCell(cell: TextCell, for content: String, at indexPath: NSIndexPath) {
-        cell.backgroundColor = UIColor.grayColor()
-        cell.label.textColor = UIColor.whiteColor()
+    override func configureCell(_ cell: TextCell, for content: String, at indexPath: IndexPath) {
+        cell.backgroundColor = UIColor.gray
+        cell.label.textColor = UIColor.white
         cell.label.text = content
     }
 }
 
 extension CountCellController: HybridCollectionCellController {
-    internal func mapItem(item: Any) -> [Any] {
+    internal func mapItem(_ item: Any) -> [Any] {
         if let item = item as? TestModel {
             return [item.displayedCount]
         } else {
@@ -64,14 +64,14 @@ class NumberCellController: CollectionCellController<Int, TextCell> {
         super.init(cellSize: CGSize(width: 100, height: 50))
     }
     
-    override func configureCell(cell: TextCell, for content: Int, at indexPath: NSIndexPath) {
-        cell.backgroundColor = UIColor.blueColor()
+    override func configureCell(_ cell: TextCell, for content: Int, at indexPath: IndexPath) {
+        cell.backgroundColor = UIColor.blue
     }
 }
 
 
 extension NumberCellController: HybridCollectionCellController {
-    internal func mapItem(item: Any) -> [Any] {
+    internal func mapItem(_ item: Any) -> [Any] {
         if let item = item as? TestModel {
             return [item.count]
         } else {
@@ -86,5 +86,5 @@ let feedController = CollectionFeedController()
 feedController.dataSource = HybridDataSource(content: [TestModel()], multiCellController: multiCellController)
 feedController.cellController = multiCellController
 
-import XCPlayground
-XCPlaygroundPage.currentPage.liveView = feedController.view
+import PlaygroundSupport
+PlaygroundPage.current.liveView = feedController.view

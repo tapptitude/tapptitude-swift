@@ -8,24 +8,24 @@
 
 import UIKit
 
-public class LoadMoreView : UICollectionReusableView {
+open class LoadMoreView : UICollectionReusableView {
     
-    @IBOutlet weak public var loadingView: UIActivityIndicatorView?
+    @IBOutlet weak open var loadingView: UIActivityIndicatorView?
     
-    public func startAnimating() {
+    open func startAnimating() {
         loadingView?.startAnimating()
     }
-    public func stopAnimating() {
+    open func stopAnimating() {
         loadingView?.stopAnimating()
     }
     
-    public override func willMoveToSuperview(newSuperview: UIView?) {
-        super.willMoveToSuperview(newSuperview)
+    open override func willMove(toSuperview newSuperview: UIView?) {
+        super.willMove(toSuperview: newSuperview)
         backgroundColor = newSuperview?.backgroundColor
         loadingView?.backgroundColor = backgroundColor
     }
     
-    public override func awakeFromNib() {
+    open override func awakeFromNib() {
         super.awakeFromNib()
         loadingView?.center = center
     }

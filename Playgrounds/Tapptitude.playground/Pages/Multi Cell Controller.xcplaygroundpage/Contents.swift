@@ -8,7 +8,7 @@ let dataSource = DataSource<Any>(items)
 let stringCellController = CollectionCellController<String, UICollectionViewCell>(cellSize: CGSize(width: 50, height: 50))
 stringCellController.minimumInteritemSpacing = 20
 stringCellController.configureCell = { cell, content, indexPath in
-    cell.backgroundColor = UIColor.redColor()
+    cell.backgroundColor = UIColor.red
 }
 stringCellController.didSelectContent = { content, indexPath, collectionView in
     print("did select", content)
@@ -18,7 +18,7 @@ stringCellController.didSelectContent = { content, indexPath, collectionView in
 let numberCellController = CollectionCellController<Int, UICollectionViewCell>(cellSize: CGSize(width: 100, height: 50))
 
 numberCellController.configureCell = { cell, content, indexPath in
-    cell.backgroundColor = UIColor.blueColor()
+    cell.backgroundColor = UIColor.blue
 }
 numberCellController.didSelectContent = { content, indexPath, collectionView in
     print("did select", content)
@@ -31,8 +31,8 @@ let feedController = CollectionFeedController()
 feedController.dataSource = dataSource
 feedController.cellController = multiCellController
 
-import XCPlayground
-XCPlaygroundPage.currentPage.liveView = feedController.view
+import PlaygroundSupport
+PlaygroundPage.current.liveView = feedController.view
 
 
 //: [Next](@next)

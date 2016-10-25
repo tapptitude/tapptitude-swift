@@ -25,15 +25,15 @@ public protocol TTDataFeed {
     var isReloading: Bool { get } // should be KVO-compliant
     var isLoadingMore: Bool { get } // should be KVO-compliant
     
-    var lastReloadDate : NSDate? {get}
+    var lastReloadDate : Date? {get}
 }
 
 public protocol TTDataFeedDelegate: class {
-    func dataFeed(dataFeed: TTDataFeed?, failedWithError error: NSError)
+    func dataFeed(_ dataFeed: TTDataFeed?, failedWithError error: NSError)
     
-    func dataFeed(dataFeed: TTDataFeed?, didReloadContent content: [Any]?)
-    func dataFeed(dataFeed: TTDataFeed?, didLoadMoreContent content: [Any]?)
+    func dataFeed(_ dataFeed: TTDataFeed?, didReloadContent content: [Any]?)
+    func dataFeed(_ dataFeed: TTDataFeed?, didLoadMoreContent content: [Any]?)
     
-    func dataFeed(dataFeed: TTDataFeed?, isReloading: Bool)
-    func dataFeed(dataFeed: TTDataFeed?, isLoadingMore: Bool)
+    func dataFeed(_ dataFeed: TTDataFeed?, isReloading: Bool)
+    func dataFeed(_ dataFeed: TTDataFeed?, isLoadingMore: Bool)
 }

@@ -21,7 +21,7 @@ public protocol SwipeToEditOnCollection : class {
     
     func prepareForReuse() // override to reset transform
     
-    func didTranslate(transform:CGAffineTransform, translationPercentInsets : UIEdgeInsets)
+    func didTranslate(_ transform:CGAffineTransform, translationPercentInsets : UIEdgeInsets)
     
     func shouldStartSwipe() -> Bool
 }
@@ -33,7 +33,7 @@ public extension SwipeToEditCell where Self: UICollectionViewCell {
     }
     
     func prepareForReuse() {
-        self.containerView.transform = CGAffineTransformIdentity
+        self.containerView.transform = CGAffineTransform.identity
     }
 }
 
@@ -51,12 +51,12 @@ public extension SwipeToEditOnCollection {
         self.collectionView?.addGestureRecognizer(self.panGestureRecognizer!)
         
         self.panGestureRecognizer?.shouldBeginBlock = {[unowned self] (gesture : SwipeToEditGesture) -> Bool in
-            let point = gesture.locationInView(self.collectionView)
-            guard let indexPath = self.collectionView?.indexPathForItemAtPoint(point) else {
+            let point = gesture.location(in: self.collectionView)
+            guard let indexPath = self.collectionView?.indexPathForItem(at: point) else {
                 return false
             }
             
-            guard let editCell = self.collectionView?.cellForItemAtIndexPath(indexPath) as? SwipeToEditCell else {
+            guard let editCell = self.collectionView?.cellForItem(at: indexPath) as? SwipeToEditCell else {
                 return false
             }
             
@@ -70,7 +70,7 @@ public extension SwipeToEditOnCollection {
             }
             
             self.tapGestureRecognizer?.ignoreViews = [editCell.rightView]
-            self.tapGestureRecognizer?.enabled = true
+            self.tapGestureRecognizer?.isEnabled = true
             self.registerAnimationsToEditCell(editCell)
             
             return true
@@ -81,38 +81,38 @@ public extension SwipeToEditOnCollection {
         tapGestureRecognizer = TouchRecognizer(callback: {[unowned self] () -> Void in
             self.panGestureRecognizer?.resetTranslationAnimated(true)
             }, ignoreViews: nil)
-        tapGestureRecognizer?.enabled = false
+        tapGestureRecognizer?.isEnabled = false
         tapGestureRecognizer?.canPreventOtherGestureRecognizers = false
-        tapGestureRecognizer?.requireGestureRecognizerToFail(panGestureRecognizer!)
+        tapGestureRecognizer?.require(toFail: panGestureRecognizer!)
         
         collectionView?.addGestureRecognizer(tapGestureRecognizer!)
     }
     
-    func registerAnimationsToEditCell(editCell : SwipeToEditCell?) {
+    func registerAnimationsToEditCell(_ editCell : SwipeToEditCell?) {
         let gesture = self.panGestureRecognizer!
         
         gesture.targetPanView = editCell?.containerView
         let width = editCell?.rightView?.bounds.size.width
         gesture.allowedTranslationEdgeInsets = UIEdgeInsetsMake(0, -width!, 0, 0)
         gesture.tippingPercentageEdgeInsets = UIEdgeInsetsMake(0, 0.5, 0, 0.5)
-        gesture.targetTranslation = CGPointMake(-width!, 0)
+        gesture.targetTranslation = CGPoint(x: -width!, y: 0)
         
         gesture.moveView = {(transform, translationPercentInsets) in
             editCell?.didTranslate(transform, translationPercentInsets: translationPercentInsets)
         }
         
         gesture.setResetTranslateAnimation({ _ in
-                editCell?.didTranslate(CGAffineTransformIdentity, translationPercentInsets: UIEdgeInsetsZero)
+                editCell?.didTranslate(CGAffineTransform.identity, translationPercentInsets: UIEdgeInsets.zero)
             }, completion: {[unowned self] _ in
-                self.tapGestureRecognizer?.enabled = self.panGestureRecognizer!.isTranslated
-                editCell?.didTranslate(CGAffineTransformIdentity, translationPercentInsets: UIEdgeInsetsZero)
+                self.tapGestureRecognizer?.isEnabled = self.panGestureRecognizer!.isTranslated
+                editCell?.didTranslate(CGAffineTransform.identity, translationPercentInsets: UIEdgeInsets.zero)
         })
 
-        let transform = CGAffineTransformMakeTranslation(gesture.targetTranslation.x, gesture.targetTranslation.y)
+        let transform = CGAffineTransform(translationX: gesture.targetTranslation.x, y: gesture.targetTranslation.y)
         gesture.setTranslateAnimation({ _ in
                 editCell?.didTranslate(transform, translationPercentInsets: UIEdgeInsetsMake(0, 1.0, 0, 0))
             }, completion: {[unowned self] _ in
-                self.tapGestureRecognizer?.enabled = self.panGestureRecognizer!.isTranslated
+                self.tapGestureRecognizer?.isEnabled = self.panGestureRecognizer!.isTranslated
                 editCell?.didTranslate(transform, translationPercentInsets: UIEdgeInsetsMake(0, 1.0, 0, 0))
         })
     }
@@ -120,11 +120,11 @@ public extension SwipeToEditOnCollection {
 
 
 
-public class SwipeToEditGesture: PanViewGestureRecognizer {
-    public var shouldBeginBlock : ((gesture: SwipeToEditGesture) -> Bool)?
+open class SwipeToEditGesture: PanViewGestureRecognizer {
+    open var shouldBeginBlock : ((_ gesture: SwipeToEditGesture) -> Bool)?
     
-    public override func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
-        let shouldBegin = self.shouldBeginBlock!(gesture: self)
+    open override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        let shouldBegin = self.shouldBeginBlock!(self)
         if (shouldBegin) {
             return super.gestureRecognizerShouldBegin(gestureRecognizer)
         }

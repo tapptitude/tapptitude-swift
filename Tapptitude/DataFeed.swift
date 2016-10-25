@@ -7,27 +7,47 @@
 //
 
 import Foundation
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 public protocol TTCancellable {
     func cancel()
 }
 
 public enum TTCallback <T> {
-    public typealias Signature = (content: [T]?, error: NSError?) -> ()
+    public typealias Signature = (_ content: [T]?, _ error: NSError?) -> ()
 }
 
 public enum TTCallbackNextOffset <T, OffsetType> {
-    public typealias Signature = (content: [T]?, nextOffset: OffsetType?, error: NSError?) -> () // next offset is given by backend
+    public typealias Signature = (_ content: [T]?, _ nextOffset: OffsetType?, _ error: NSError?) -> () // next offset is given by backend
 }
 
-public class DataFeed<T>: TTDataFeed {
-    public weak var delegate: TTDataFeedDelegate?
+open class DataFeed<T>: TTDataFeed {
+    open weak var delegate: TTDataFeedDelegate?
     
-    public func reloadOperationWithCallback(callback: TTCallback<T>.Signature) -> TTCancellable? {
+    open func reloadOperationWithCallback(_ callback: @escaping TTCallback<T>.Signature) -> TTCancellable? {
         return nil
     }
     
-    public func loadMoreOperationWithCallback(callback: TTCallback<T>.Signature) -> TTCancellable? {
+    open func loadMoreOperationWithCallback(_ callback: @escaping TTCallback<T>.Signature) -> TTCancellable? {
         return nil
     }
     
@@ -40,18 +60,18 @@ public class DataFeed<T>: TTDataFeed {
     }
     
     //Mark: re-update content
-    public var enableReloadAfterXSeconds = 5 * 60.0
-    public var lastReloadDate : NSDate?
-    public func shouldReload() -> Bool {
+    open var enableReloadAfterXSeconds = 5 * 60.0
+    open var lastReloadDate : Date?
+    open func shouldReload() -> Bool {
         let shouldReload = canReload && (lastReloadDate == nil || (lastReloadDate?.timeIntervalSinceNow > enableReloadAfterXSeconds))
         return shouldReload
     }
     
     //MARK: Reload -
-    public var canReload: Bool {
+    open var canReload: Bool {
         return !isReloading
     }
-    public func reload() {
+    open func reload() {
         if canReload {
             print("Reloading content...")
             isReloading = true
@@ -67,7 +87,7 @@ public class DataFeed<T>: TTDataFeed {
                 if let error = error {
                     self.delegate?.dataFeed(self, failedWithError: error)
                 } else {
-                    self.lastReloadDate = NSDate()
+                    self.lastReloadDate = Date()
                     let castedContent = content?.map { $0 as Any }
                     self.delegate?.dataFeed(self, didReloadContent: castedContent )
                 }
@@ -76,7 +96,7 @@ public class DataFeed<T>: TTDataFeed {
             })
         }
     }
-    public func cancelReload() {
+    open func cancelReload() {
         if isReloading {
             executingReloadOperation?.cancel()
             executingReloadOperation = nil
@@ -90,10 +110,10 @@ public class DataFeed<T>: TTDataFeed {
     
     
     //MARK: Load More -
-    public var canLoadMore: Bool {
+    open var canLoadMore: Bool {
         return !isReloading && !isLoadingMore && didReloadContent
     }
-    public func loadMore() {
+    open func loadMore() {
         if canLoadMore {
             print("Loading more content...")
             isLoadingMore = true
@@ -113,7 +133,7 @@ public class DataFeed<T>: TTDataFeed {
             })
         }
     }
-    public func cancelLoadMore() {
+    open func cancelLoadMore() {
         if isLoadingMore {
             executingLoadMoreOperation?.cancel()
             executingLoadMoreOperation = nil
@@ -122,12 +142,12 @@ public class DataFeed<T>: TTDataFeed {
         }
     }
     
-    public var isReloading: Bool = false {
+    open var isReloading: Bool = false {
         didSet {
             delegate?.dataFeed(self, isReloading: isReloading)
         }
     }
-    public var isLoadingMore: Bool = false {
+    open var isLoadingMore: Bool = false {
         didSet {
             delegate?.dataFeed(self, isLoadingMore: isLoadingMore)
         }

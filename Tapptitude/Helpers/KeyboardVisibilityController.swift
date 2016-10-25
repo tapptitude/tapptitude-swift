@@ -9,47 +9,47 @@
 import Foundation
 import UIKit
 
-public class KeyboardVisibilityController: NSObject {
+open class KeyboardVisibilityController: NSObject {
     
-    public weak var view: UIView? // this view will be translated up, will make firstResponder visible
-    public weak var toBeVisibleView: UIView? //when keyboard is visible move this view up
+    open weak var view: UIView? // this view will be translated up, will make firstResponder visible
+    open weak var toBeVisibleView: UIView? //when keyboard is visible move this view up
     
-    public var dismissKeyboardTouchRecognizer: TouchRecognizer? { //nil by default
+    open var dismissKeyboardTouchRecognizer: TouchRecognizer? { //nil by default
         willSet {
             if let touchRecognizer = self.dismissKeyboardTouchRecognizer {
                 touchRecognizer.view?.removeGestureRecognizer(touchRecognizer)
             }
         }
     }
-    public var moveViewUpByValue: CGFloat = 0 // move by a exact value, when 0 view is moved up by keyboard height
-    public var addMoveUpValue: CGFloat = 0 // you can add extra height
-    public var makeFirstRespondeSuperviewVisible: Bool = false //instead of firstResponder view
+    open var moveViewUpByValue: CGFloat = 0 // move by a exact value, when 0 view is moved up by keyboard height
+    open var addMoveUpValue: CGFloat = 0 // you can add extra height
+    open var makeFirstRespondeSuperviewVisible: Bool = false //instead of firstResponder view
     
-    public var additionallAnimatioBlock: ((moveUp: Bool) -> Void)? //view properties to be animated
-    public var disableKeyboardMoveUpAnimation: Bool = false
-    public var keyboardVisible: Bool = false
+    open var additionallAnimatioBlock: ((_ moveUp: Bool) -> Void)? //view properties to be animated
+    open var disableKeyboardMoveUpAnimation: Bool = false
+    open var keyboardVisible: Bool = false
     
     public override init() {
         super.init()
         
-        NSNotificationCenter.defaultCenter().addObserver(self,
+        NotificationCenter.default.addObserver(self,
                                                          selector: #selector(KeyboardVisibilityController.keyboardWillAppear),
-                                                         name: UIKeyboardWillShowNotification,
+                                                         name: NSNotification.Name.UIKeyboardWillShow,
                                                          object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self,
+        NotificationCenter.default.addObserver(self,
                                                          selector: #selector(KeyboardVisibilityController.keyboardWillDisappear),
-                                                         name: UIKeyboardWillHideNotification,
+                                                         name: NSNotification.Name.UIKeyboardWillHide,
                                                          object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self,
+        NotificationCenter.default.addObserver(self,
                                                          selector: #selector(KeyboardVisibilityController.applicationWillResign),
-                                                         name: UIApplicationWillResignActiveNotification,
+                                                         name: NSNotification.Name.UIApplicationWillResignActive,
                                                          object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self,
+        NotificationCenter.default.addObserver(self,
                                                          selector: #selector(KeyboardVisibilityController.keyboardWillChangeFrame),
-                                                         name: UIKeyboardWillChangeFrameNotification,
+                                                         name: NSNotification.Name.UIKeyboardWillChangeFrame,
                                                          object: nil)
     }
     
@@ -63,41 +63,41 @@ public class KeyboardVisibilityController: NSObject {
             touchRecognizer.view?.removeGestureRecognizer(touchRecognizer)
         }
         
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     //MARK: - keyboard events
     
-    func keyboardWillAppear(notification: NSNotification) {
+    func keyboardWillAppear(_ notification: Notification) {
         self.keyboardVisible = true
-        self.dismissKeyboardTouchRecognizer?.enabled = true
+        self.dismissKeyboardTouchRecognizer?.isEnabled = true
         self.moveViewUp(true, usingKeyboardNotification: notification)
     }
     
-    func keyboardWillDisappear(notification: NSNotification) {
+    func keyboardWillDisappear(_ notification: Notification) {
         self.keyboardVisible = false
-        self.dismissKeyboardTouchRecognizer?.enabled = false
+        self.dismissKeyboardTouchRecognizer?.isEnabled = false
         self.moveViewUp(false, usingKeyboardNotification: notification)
     }
     
-    func applicationWillResign(notification: NSNotification) {
+    func applicationWillResign(_ notification: Notification) {
         self.view?.endEditing(true)
     }
     
-    func keyboardWillChangeFrame(notification: NSNotification) {
+    func keyboardWillChangeFrame(_ notification: Notification) {
         //        var userInfo: [NSObject : AnyObject] = notification.userInfo!
         //        let keyboardEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue()
         ////        let goingUp = keyboardEndFrame.size.height == 0; //COMMENTED
         self.moveViewUp(true, usingKeyboardNotification: notification)
     }
     
-    func moveViewUp(up: Bool, usingKeyboardNotification notification: NSNotification) {
+    func moveViewUp(_ up: Bool, usingKeyboardNotification notification: Notification) {
         if self.view == nil || self.view?.window == nil {
             return //ingore
         }
         
-        let userInfo = notification.userInfo!
-        let keyboardEndFrame = userInfo[UIKeyboardFrameEndUserInfoKey]?.CGRectValue()
+        let userInfo = (notification as NSNotification).userInfo!
+        let keyboardEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as AnyObject).cgRectValue
         
         var toBeVisibleView = self.toBeVisibleView
         
@@ -124,7 +124,7 @@ public class KeyboardVisibilityController: NSObject {
         
         var moveUpValue: CGFloat = self.moveViewUpByValue
         if let visibleView = toBeVisibleView {
-            let frame = visibleView.convertRect(visibleView.bounds, toView: visibleView.window)
+            let frame = visibleView.convert(visibleView.bounds, to: visibleView.window)
             
             if let endFrame = keyboardEndFrame {
                 let deltaY = frame.maxY - endFrame.origin.y
@@ -137,18 +137,18 @@ public class KeyboardVisibilityController: NSObject {
         moveUpValue += addMoveUpValue
         
         if let scrollView = self.view as? UIScrollView{
-            let frame = scrollView.convertRect(scrollView.bounds, toView: scrollView.window)
+            let frame = scrollView.convert(scrollView.bounds, to: scrollView.window)
             let diff = scrollView.window!.bounds.size.height - frame.maxY
             
             let key = "previousInsetBottom"
             var inset = scrollView.contentInset
             if up {
-                if scrollView.layer.valueForKey(key) == nil {
+                if scrollView.layer.value(forKey: key) == nil {
                     scrollView.layer.setValue(inset.bottom, forKey: key)
                 }
                 inset.bottom = keyboardEndFrame!.size.height - diff;
             } else {
-                inset.bottom = CGFloat(scrollView.layer.valueForKey(key)!.floatValue)
+                inset.bottom = CGFloat((scrollView.layer.value(forKey: key)! as AnyObject).floatValue)
             }
             
             scrollView.contentInset = inset
@@ -158,20 +158,20 @@ public class KeyboardVisibilityController: NSObject {
             
             if up {
                 let newY = scrollView.contentOffset.y + (up ? moveUpValue : 0)
-                scrollView.contentOffset = CGPointMake(0, newY)
+                scrollView.contentOffset = CGPoint(x: 0, y: newY)
             }
         } else {
-            self.view?.transform = up ? CGAffineTransformMakeTranslation(0, -moveUpValue) : CGAffineTransformIdentity
+            self.view?.transform = up ? CGAffineTransform(translationX: 0, y: -moveUpValue) : CGAffineTransform.identity
         }
         
-        additionallAnimatioBlock?(moveUp: up)
+        additionallAnimatioBlock?(up)
         
         if !self.disableKeyboardMoveUpAnimation {
             UIView.commitAnimations()
         }
     }
     
-    func dismissFirstResponder(sender: AnyObject) {
+    func dismissFirstResponder(_ sender: AnyObject) {
         self.view?.findFirstResponder()?.resignFirstResponder()
     }
 }
@@ -179,7 +179,7 @@ public class KeyboardVisibilityController: NSObject {
 import ObjectiveC
 public extension UIView {
     
-    private struct KeyboardAssociatedKey {
+    fileprivate struct KeyboardAssociatedKey {
         static var viewExtension = "viewExtensionKeyboardVisibilityController"
     }
     
@@ -199,7 +199,7 @@ public extension UIView {
             keyboardController = KeyboardVisibilityController(viewToMove: self)
             keyboardController?.dismissKeyboardTouchRecognizer = TouchRecognizer(target: keyboardController, action: #selector(KeyboardVisibilityController.dismissFirstResponder))
             keyboardController?.dismissKeyboardTouchRecognizer?.ignoreFirstResponder = true
-            keyboardController?.dismissKeyboardTouchRecognizer?.enabled = false
+            keyboardController?.dismissKeyboardTouchRecognizer?.isEnabled = false
             
             if let touchKeyboard = keyboardController?.dismissKeyboardTouchRecognizer {
                 self.addGestureRecognizer(touchKeyboard)
@@ -219,12 +219,12 @@ public extension UIView {
 public extension UIView {
     
     public func findFirstResponder() -> UIView? {
-        if isFirstResponder() {
+        if isFirstResponder {
             return self
         }
         
         for subView in subviews {
-            if subView.isFirstResponder() {
+            if subView.isFirstResponder {
                 return subView
             }
             if let firstResponder = subView.findFirstResponder() {

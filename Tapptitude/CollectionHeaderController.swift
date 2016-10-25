@@ -17,11 +17,11 @@ public protocol TTCollectionHeaderControllerProtocol {
     
     weak var parentViewController : UIViewController? {get set}
     
-    func acceptsContent(content: Any) -> Bool
+    func acceptsContent(_ content: Any) -> Bool
     
     func headerSize(for content: Any, in collectionView: UICollectionView) -> CGSize
     
-    func configureHeader(header: UICollectionReusableView, for content: Any, at indexPath: NSIndexPath)
+    func configureHeader(_ header: UICollectionReusableView, for content: Any, at indexPath: IndexPath)
 }
 
 public protocol TTCollectionHeaderController: TTCollectionHeaderControllerProtocol {
@@ -35,7 +35,7 @@ public protocol TTCollectionHeaderController: TTCollectionHeaderControllerProtoc
     var headerSize: CGSize {get}
     
     func headerSize(for content: ContentType, in collectionView: UICollectionView) -> CGSize
-    func configureHeader(cell: HeaderType, for content: ContentType, at indexPath: NSIndexPath)
+    func configureHeader(_ cell: HeaderType, for content: ContentType, at indexPath: IndexPath)
 }
 
 extension TTCollectionHeaderController {
@@ -44,7 +44,7 @@ extension TTCollectionHeaderController {
     }
     
     public func nibToInstantiate() -> UINib? {
-        if let _ = NSBundle.mainBundle().pathForResource(reuseIdentifier, ofType: "nib") {
+        if let _ = Bundle.main.path(forResource: reuseIdentifier, ofType: "nib") {
             return UINib(nibName: reuseIdentifier, bundle: nil)
         } else {
             return nil
@@ -55,39 +55,39 @@ extension TTCollectionHeaderController {
         return headerSize(for: content as! ContentType, in: collectionView)
     }
     
-    public func configureHeader(header: UICollectionReusableView, for content: Any, at indexPath: NSIndexPath) {
+    public func configureHeader(_ header: UICollectionReusableView, for content: Any, at indexPath: IndexPath) {
         configureHeader(header as! HeaderType, for: content as! ContentType, at: indexPath)
     }
     
-    public func acceptsContent(content: Any) -> Bool {
+    public func acceptsContent(_ content: Any) -> Bool {
         return content is ContentType
     }
 }
 
-public class CollectionHeaderController<ItemType, HeaderName: UICollectionReusableView> : TTCollectionHeaderController {
+open class CollectionHeaderController<ItemType, HeaderName: UICollectionReusableView> : TTCollectionHeaderController {
     public typealias ContentType = ItemType
     public typealias HeaderType = HeaderName
     
-    public var headerSizeForContent : ((content: ContentType, collectionView: UICollectionView) -> CGSize)?
-    public var configureHeader : ((header: HeaderType, content: ContentType, indexPath: NSIndexPath) -> Void)?
+    open var headerSizeForContent : ((_ content: ContentType, _ collectionView: UICollectionView) -> CGSize)?
+    open var configureHeader : ((_ header: HeaderType, _ content: ContentType, _ indexPath: IndexPath) -> Void)?
     
     
-    public var headerSize : CGSize
-    public var reuseIdentifier: String
+    open var headerSize : CGSize
+    open var reuseIdentifier: String
     
-    public weak var parentViewController : UIViewController?
+    open weak var parentViewController : UIViewController?
     
     public init(headerSize : CGSize, reuseIdentifier:String? = nil) {
         self.headerSize = headerSize
-        self.reuseIdentifier = reuseIdentifier ?? String(HeaderType)
+        self.reuseIdentifier = reuseIdentifier ?? String(describing: HeaderType.self)
     }
     
-    public func headerSize(for content: ContentType, in collectionView: UICollectionView) -> CGSize {
-        let blockCellSize = headerSizeForContent?(content: content, collectionView: collectionView)
+    open func headerSize(for content: ContentType, in collectionView: UICollectionView) -> CGSize {
+        let blockCellSize = headerSizeForContent?(content, collectionView)
         return blockCellSize ?? headerSize
     }
     
-    public func configureHeader(header: HeaderType, for content: ContentType, at indexPath: NSIndexPath) {
-        self.configureHeader?(header: header, content: content, indexPath: indexPath)
+    open func configureHeader(_ header: HeaderType, for content: ContentType, at indexPath: IndexPath) {
+        self.configureHeader?(header, content, indexPath)
     }
 }

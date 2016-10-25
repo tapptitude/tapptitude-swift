@@ -9,16 +9,16 @@
 import UIKit
 
 public protocol TTCollectionCellControllerProtocol {
-    func acceptsContent(content: Any) -> Bool
+    func acceptsContent(_ content: Any) -> Bool
     
     func classToInstantiateCell(for content: Any) -> AnyClass?
     func nibToInstantiateCell(for content: Any) -> UINib?
     
     func reuseIdentifier(for content: Any) -> String
     
-    func configureCell(cell: UICollectionViewCell, for content: Any, at indexPath: NSIndexPath)
+    func configureCell(_ cell: UICollectionViewCell, for content: Any, at indexPath: IndexPath)
     
-    func didSelectContent(content: Any, at indexPath: NSIndexPath, in collectionView: UICollectionView)
+    func didSelectContent(_ content: Any, at indexPath: IndexPath, in collectionView: UICollectionView)
     
     weak var parentViewController: UIViewController? { get set }
     
@@ -35,8 +35,8 @@ public protocol TTCollectionCellControllerProtocol {
 
 // TODO: implement as option protocol
 public protocol TTCollectionCellControllerProtocolExtended {
-    func configureCell(cell: UICollectionViewCell, for content: Any, at indexPath: NSIndexPath, dataSourceCount count: Int)
-    func shouldHighlightContent(content: Any, atIndexPath indexPath: NSIndexPath) -> Bool
+    func configureCell(_ cell: UICollectionViewCell, for content: Any, at indexPath: IndexPath, dataSourceCount count: Int)
+    func shouldHighlightContent(_ content: Any, atIndexPath indexPath: IndexPath) -> Bool
 }
 
 public protocol TTCollectionCellController : TTCollectionCellControllerProtocol {
@@ -48,9 +48,9 @@ public protocol TTCollectionCellController : TTCollectionCellControllerProtocol 
     
     func reuseIdentifier(for content: ContentType) -> String
     
-    func configureCell(cell: CellType, for content: ContentType, at indexPath: NSIndexPath)
+    func configureCell(_ cell: CellType, for content: ContentType, at indexPath: IndexPath)
     
-    func didSelectContent(content: ContentType, at indexPath: NSIndexPath, in collectionView: UICollectionView)
+    func didSelectContent(_ content: ContentType, at indexPath: IndexPath, in collectionView: UICollectionView)
     
     func cellSize(for content: ContentType, in collectionView: UICollectionView) -> CGSize
     func sectionInset(for content: ContentType, in collectionView: UICollectionView) -> UIEdgeInsets
@@ -61,23 +61,23 @@ public protocol TTCollectionCellController : TTCollectionCellControllerProtocol 
 public protocol TTCollectionCellControllerSize: TTCollectionCellController {
     var sizeCalculationCell: CellType! {get}
     
-    func cellSizeToFit(text text: String, labelName: String, maxSize: CGSize) -> CGSize
-    func cellSizeToFit(text text: String, labelName: String) -> CGSize // stretch height to max 2040 (label)
+    func cellSizeToFit(text: String, labelName: String, maxSize: CGSize) -> CGSize
+    func cellSizeToFit(text: String, labelName: String) -> CGSize // stretch height to max 2040 (label)
     
-    func cellSizeToFit(attributedText attributedText: NSAttributedString, labelName: String, maxSize: CGSize) -> CGSize
-    func cellSizeToFit(attributedText attributedText: NSAttributedString, labelName: String) -> CGSize
+    func cellSizeToFit(attributedText: NSAttributedString, labelName: String, maxSize: CGSize) -> CGSize
+    func cellSizeToFit(attributedText: NSAttributedString, labelName: String) -> CGSize
 }
 
 extension TTCollectionCellControllerSize {
-    public func cellSizeToFit(text text: String, labelName: String, maxSize: CGSize) -> CGSize {
+    public func cellSizeToFit(text: String, labelName: String, maxSize: CGSize) -> CGSize {
         var size = sizeCalculationCell.bounds.size
-        let label: UILabel = sizeCalculationCell.valueForKey(labelName) as! UILabel
+        let label: UILabel = sizeCalculationCell.value(forKey: labelName) as! UILabel
         var maxSize = maxSize
         
         label.text = text;
         
         if (maxSize.width < 0) {
-            assert(label.lineBreakMode == .ByWordWrapping, "Label line break mode should be NSLineBreakByWordWrapping")
+            assert(label.lineBreakMode == .byWordWrapping, "Label line break mode should be NSLineBreakByWordWrapping")
             assert(label.numberOfLines != 1, "Label number of lines should be set to 0")
             maxSize.width = label.bounds.size.width
             let  newLabelSize = label.sizeThatFits(maxSize)
@@ -93,19 +93,19 @@ extension TTCollectionCellControllerSize {
         return size;
     }
     
-    public func cellSizeToFit(text text: String, labelName: String) -> CGSize { // stretch height to max 2040 (label)
-        return cellSizeToFit(text: text, labelName: labelName, maxSize: CGSizeMake(-1, 2040))
+    public func cellSizeToFit(text: String, labelName: String) -> CGSize { // stretch height to max 2040 (label)
+        return cellSizeToFit(text: text, labelName: labelName, maxSize: CGSize(width: -1, height: 2040))
     }
     
-    public func cellSizeToFit(attributedText attributedText: NSAttributedString, labelName: String, maxSize: CGSize) -> CGSize {
+    public func cellSizeToFit(attributedText: NSAttributedString, labelName: String, maxSize: CGSize) -> CGSize {
         var size = sizeCalculationCell.bounds.size
-        let label: UILabel = sizeCalculationCell.valueForKey(labelName) as! UILabel
+        let label: UILabel = sizeCalculationCell.value(forKey: labelName) as! UILabel
         var maxSize = maxSize
         
         label.attributedText = attributedText;
         
         if (maxSize.width < 0) {
-            assert(label.lineBreakMode == .ByWordWrapping, "Label line break mode should be NSLineBreakByWordWrapping")
+            assert(label.lineBreakMode == .byWordWrapping, "Label line break mode should be NSLineBreakByWordWrapping")
             maxSize.width = label.bounds.size.width
             let newLabelSize = label.sizeThatFits(maxSize)
             size.height += newLabelSize.height - label.bounds.size.height
@@ -116,7 +116,7 @@ extension TTCollectionCellControllerSize {
             size.width += newLabelSize.width - label.bounds.size.width
             size.height = cellSize.height;
         } else {
-            assert(label.lineBreakMode == .ByWordWrapping, "Label line break mode should be NSLineBreakByWordWrapping")
+            assert(label.lineBreakMode == .byWordWrapping, "Label line break mode should be NSLineBreakByWordWrapping")
             var frame = sizeCalculationCell.frame
             frame.size.width = maxSize.width
             sizeCalculationCell.frame = frame
@@ -130,15 +130,15 @@ extension TTCollectionCellControllerSize {
         return size;
     }
     
-    public func cellSizeToFit(attributedText attributedText: NSAttributedString, labelName: String) -> CGSize {
-        return cellSizeToFit(attributedText: attributedText, labelName: labelName, maxSize: CGSizeMake(-1, 2040))
+    public func cellSizeToFit(attributedText: NSAttributedString, labelName: String) -> CGSize {
+        return cellSizeToFit(attributedText: attributedText, labelName: labelName, maxSize: CGSize(width: -1, height: 2040))
     }
 }
 
 
 
 extension TTCollectionCellController {
-    public func acceptsContent(content: Any) -> Bool {
+    public func acceptsContent(_ content: Any) -> Bool {
         return content is ContentType
     }
     
@@ -148,26 +148,26 @@ extension TTCollectionCellController {
     
     public func nibToInstantiateCell(for content: ContentType) -> UINib? {
         let reuseIdentifier = self.reuseIdentifier(for: content)
-        if let _ = NSBundle(forClass: CellType.self).pathForResource(reuseIdentifier, ofType: "nib") {
-            return UINib(nibName: reuseIdentifier, bundle: NSBundle(forClass: CellType.self))
+        if let _ = Bundle(for: CellType.self).path(forResource: reuseIdentifier, ofType: "nib") {
+            return UINib(nibName: reuseIdentifier, bundle: Bundle(for: CellType.self))
         } else {
             return nil
         }
     }
     
     public var reuseIdentifier: String {
-        return String(CellType)
+        return String(describing: CellType.self)
     }
     
     public func reuseIdentifier(for content: ContentType) -> String {
         return reuseIdentifier
     }
     
-    public func configureCell(cell: CellType, for content: ContentType, at indexPath: NSIndexPath) {
+    public func configureCell(_ cell: CellType, for content: ContentType, at indexPath: IndexPath) {
         
     }
     
-    public func didSelectContent(content: ContentType, at indexPath: NSIndexPath, in collectionView: UICollectionView) {
+    public func didSelectContent(_ content: ContentType, at indexPath: IndexPath, in collectionView: UICollectionView) {
         
     }
     
@@ -180,10 +180,10 @@ extension TTCollectionCellController {
     public func reuseIdentifier(for content: Any) -> String {
         return reuseIdentifier(for: content as! ContentType)
     }
-    public func configureCell(cell: UICollectionViewCell, for content: Any, at indexPath: NSIndexPath) {
+    public func configureCell(_ cell: UICollectionViewCell, for content: Any, at indexPath: IndexPath) {
         configureCell(cell as! CellType, for: content as! ContentType, at: indexPath)
     }
-    public func didSelectContent(content: Any, at indexPath: NSIndexPath, in collectionView: UICollectionView) {
+    public func didSelectContent(_ content: Any, at indexPath: IndexPath, in collectionView: UICollectionView) {
         didSelectContent(content as! ContentType, at: indexPath, in: collectionView)
     }
     
@@ -221,7 +221,7 @@ extension TTCollectionCellController {
 }
 
 extension UICollectionReusableView {
-    private struct AssociatedKey {
+    fileprivate struct AssociatedKey {
         static var viewExtension = "viewExtension"
     }
     

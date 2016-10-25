@@ -15,7 +15,7 @@ let cellController = CollectionCellController<String, TextCell>(cellSize: CGSize
 cellController.sectionInset = UIEdgeInsetsMake(0, 0, 10, 0)
 cellController.minimumInteritemSpacing = 10
 cellController.configureCell = { cell, content, indexPath in
-    cell.backgroundColor = UIColor.redColor()
+    cell.backgroundColor = UIColor.red
     cell.label.text = content
 }
 cellController.cellSizeForContent = { (content, _) in
@@ -28,12 +28,12 @@ feedController.cellController = cellController
 
 dataSource.dataFeed(nil, didLoadMoreContent: [["Nenea"]])
 dataSource[0, 0] = "Ion"
-let indexPath = NSIndexPath(forItem: 0, inSection: 0)
+let indexPath = IndexPath(item: 0, section: 0)
 dataSource[indexPath] = "New Ion"
 
 print(dataSource.content)
 let testDataSource = SectionedDataSource<String>(NSArray(array: [["Test"]]))
 
-import XCPlayground
-XCPlaygroundPage.currentPage.liveView = feedController.view
+import PlaygroundSupport
+PlaygroundPage.current.liveView = feedController.view
 //: [Next](@next)

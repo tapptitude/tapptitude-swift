@@ -18,14 +18,14 @@ public struct HybridItem {
 }
 
 public protocol HybridCollectionCellController: TTCollectionCellControllerProtocol {
-    func mapItem(item: Any) -> [Any]
+    func mapItem(_ item: Any) -> [Any]
 }
 
 extension HybridCollectionCellController {
     
 }
 
-public class HybridDataSource : SectionedDataSource<Any> {
+open class HybridDataSource : SectionedDataSource<Any> {
     let multiCellController : HybridCellController!
     
     public init(content: [Any], multiCellController: HybridCellController) {
@@ -41,7 +41,7 @@ public class HybridDataSource : SectionedDataSource<Any> {
         super.init(items)
     }
     
-    override public func dataFeed(dataFeed: TTDataFeed?, didLoadMoreContent content: [Any]?) {
+    override open func dataFeed(_ dataFeed: TTDataFeed?, didLoadMoreContent content: [Any]?) {
         if let content = content {
             super.dataFeed(dataFeed, didLoadMoreContent: transformContent(content))
         } else {
@@ -50,7 +50,7 @@ public class HybridDataSource : SectionedDataSource<Any> {
         
     }
     
-    override public func dataFeed(dataFeed: TTDataFeed?, didReloadContent content: [Any]?) {
+    override open func dataFeed(_ dataFeed: TTDataFeed?, didReloadContent content: [Any]?) {
         if let content = content {
             super.dataFeed(dataFeed, didReloadContent: transformContent(content))
         } else {
@@ -58,7 +58,7 @@ public class HybridDataSource : SectionedDataSource<Any> {
         }
     }
     
-    static func transformContent(content: [Any], cellControllers: [TTCollectionCellControllerProtocol]) -> [[HybridItem]] {
+    static func transformContent(_ content: [Any], cellControllers: [TTCollectionCellControllerProtocol]) -> [[HybridItem]] {
         var allItems = [[HybridItem]]()
         var items = [HybridItem]()
         
@@ -102,23 +102,23 @@ public class HybridDataSource : SectionedDataSource<Any> {
         return allItems
     }
     
-    func transformContent(content:[Any]) -> [Any] {
+    func transformContent(_ content:[Any]) -> [Any] {
         let items = HybridDataSource.transformContent(content, cellControllers: multiCellController.cellControllers)
         return items.map({$0 as Any})
     }
 }
 
-public class GroupCellController<ItemType>: MultiCollectionCellController, HybridCollectionCellController {
+open class GroupCellController<ItemType>: MultiCollectionCellController, HybridCollectionCellController {
     public override init (_ cellControllers: [TTCollectionCellControllerProtocol]) {
         super.init(cellControllers)
     }
     
-    public init (_ cellControllers: [TTCollectionCellControllerProtocol], acceptsContent: ((content: ItemType) -> Bool)) {
+    public init (_ cellControllers: [TTCollectionCellControllerProtocol], acceptsContent: @escaping ((_ content: ItemType) -> Bool)) {
         super.init(cellControllers)
         self.acceptsContent = acceptsContent
     }
     
-    public override func acceptsContent(content: Any) -> Bool {
+    open override func acceptsContent(_ content: Any) -> Bool {
         if let item = content as? ItemType {
             return acceptsContent(item)
         } else {
@@ -126,17 +126,13 @@ public class GroupCellController<ItemType>: MultiCollectionCellController, Hybri
         }
     }
     
-    public func acceptsContent(content: ItemType) -> Bool {
-        if let acccepts = acceptsContent {
-            return acccepts(content: content)
-        } else {
-            return true
-        }
+    open func acceptsContent(_ content: ItemType) -> Bool {
+        return acceptsContent?(content) ?? true
     }
     
-    public var acceptsContent: ((content: ItemType) -> Bool)?
+    open var acceptsContent: ((_ content: ItemType) -> Bool)?
     
-    public func mapItem(item: Any) -> [Any] {
+    open func mapItem(_ item: Any) -> [Any] {
         if acceptsContent(item) {
             var items = [Any]()
             
@@ -161,17 +157,17 @@ public class GroupCellController<ItemType>: MultiCollectionCellController, Hybri
     }
 }
 
-public class HybridCellController : MultiCollectionCellController {
+open class HybridCellController : MultiCollectionCellController {
     
-    override public func controllerForContent(content: Any) -> TTCollectionCellControllerProtocol? {
+    override open func controllerForContent(_ content: Any) -> TTCollectionCellControllerProtocol? {
         return (content is HybridItem) ? self : super.controllerForContent(content)
     }
     
-    override public func acceptsContent(content: Any) -> Bool {
+    override open func acceptsContent(_ content: Any) -> Bool {
         return controllerForContent(content) != nil
     }
     
-    override public func classToInstantiateCell(for content: Any) -> AnyClass? {
+    override open func classToInstantiateCell(for content: Any) -> AnyClass? {
         if let content = content as? HybridItem {
             return content.cellController.classToInstantiateCell(for: content.element)
         } else {
@@ -179,7 +175,7 @@ public class HybridCellController : MultiCollectionCellController {
         }
     }
     
-    override public func nibToInstantiateCell(for content: Any) -> UINib? {
+    override open func nibToInstantiateCell(for content: Any) -> UINib? {
         if let content = content as? HybridItem {
             return content.cellController.nibToInstantiateCell(for: content.element)
         } else {
@@ -187,7 +183,7 @@ public class HybridCellController : MultiCollectionCellController {
         }
     }
     
-    override public func reuseIdentifier(for content: Any) -> String {
+    override open func reuseIdentifier(for content: Any) -> String {
         if let content = content as? HybridItem {
             return content.cellController.reuseIdentifier(for: content.element)
         } else {
@@ -195,7 +191,7 @@ public class HybridCellController : MultiCollectionCellController {
         }
     }
     
-    override public func configureCell(cell: UICollectionViewCell, for content: Any, at indexPath: NSIndexPath) {
+    override open func configureCell(_ cell: UICollectionViewCell, for content: Any, at indexPath: IndexPath) {
         if let content = content as? HybridItem {
             return content.cellController.configureCell(cell, for: content.element, at: indexPath)
         } else {
@@ -203,7 +199,7 @@ public class HybridCellController : MultiCollectionCellController {
         }
     }
     
-    override public func didSelectContent(content: Any, at indexPath: NSIndexPath, in collectionView: UICollectionView) {
+    override open func didSelectContent(_ content: Any, at indexPath: IndexPath, in collectionView: UICollectionView) {
         if let content = content as? HybridItem {
             return content.cellController.didSelectContent(content.element, at: indexPath, in: collectionView)
         } else {
@@ -211,7 +207,7 @@ public class HybridCellController : MultiCollectionCellController {
         }
     }
     
-    override public func cellSize(for content: Any, in collectionView: UICollectionView) -> CGSize {
+    override open func cellSize(for content: Any, in collectionView: UICollectionView) -> CGSize {
         if let content = content as? HybridItem {
             return content.cellController.cellSize(for: content.element, in: collectionView)
         } else {
@@ -219,7 +215,7 @@ public class HybridCellController : MultiCollectionCellController {
         }
     }
     
-    override public func sectionInset(for content: Any, in collectionView: UICollectionView) -> UIEdgeInsets {
+    override open func sectionInset(for content: Any, in collectionView: UICollectionView) -> UIEdgeInsets {
         if let content = content as? HybridItem {
             return content.cellController.sectionInset(for: content.element, in: collectionView)
         } else {
@@ -227,7 +223,7 @@ public class HybridCellController : MultiCollectionCellController {
         }
     }
     
-    override public func minimumLineSpacing(for content: Any, in collectionView: UICollectionView) -> CGFloat {
+    override open func minimumLineSpacing(for content: Any, in collectionView: UICollectionView) -> CGFloat {
         if let content = content as? HybridItem {
             return content.cellController.minimumLineSpacing(for: content.element, in: collectionView)
         } else {
@@ -235,7 +231,7 @@ public class HybridCellController : MultiCollectionCellController {
         }
     }
     
-    override public func minimumInteritemSpacing(for content: Any, in collectionView: UICollectionView) -> CGFloat {
+    override open func minimumInteritemSpacing(for content: Any, in collectionView: UICollectionView) -> CGFloat {
         if let content = content as? HybridItem {
             return content.cellController.minimumInteritemSpacing(for: content.element, in: collectionView)
         } else {

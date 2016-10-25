@@ -15,7 +15,7 @@ public protocol TTDataSource : TTDataFeedDelegate, CustomStringConvertible {
     func numberOfSections() -> Int
     func numberOfItems(inSection section: Int) -> Int
     
-    subscript(indexPath: NSIndexPath) -> Any { get }
+    subscript(indexPath: IndexPath) -> Any { get }
     subscript(section: Int, index: Int) -> Any { get }
     
     func sectionItem(at section: Int) -> Any?
@@ -25,7 +25,7 @@ public protocol TTDataSource : TTDataFeedDelegate, CustomStringConvertible {
     
     var dataSourceID: String? { get set } //usefull information
     
-    func indexPath<S>(ofFirst filter: (item: S) -> Bool) -> NSIndexPath?
+    func indexPath<S>(ofFirst filter: (_ item: S) -> Bool) -> IndexPath?
 }
 
 public extension TTDataSource {
@@ -37,22 +37,22 @@ public extension TTDataSource {
 public protocol TTDataSourceMutable {
     associatedtype Element
     
-    func perfomBatchUpdates(@noescape updates: (() -> Void), animationCompletion:(()->Void)?);
+    func perfomBatchUpdates(_ updates: (() -> Void), animationCompletion:(()->Void)?);
     
     func append(_ newElement: Element)
     func append(contentsOf newElements: [Element])
 
-    func insert(newElement: Element, at indexPath: NSIndexPath)
-    func insert(contentsOf newElements: [Element], at indexPath: NSIndexPath)
+    func insert(_ newElement: Element, at indexPath: IndexPath)
+    func insert(contentsOf newElements: [Element], at indexPath: IndexPath)
     
-    func moveElement(from fromIndexPath: NSIndexPath, to toIndexPath: NSIndexPath)
-    func remove(at indexPaths: [NSIndexPath])
-    func remove(at indexPath: NSIndexPath)
-    func remove(@noescape filter: (item: Element) -> Bool)
+    func moveElement(from fromIndexPath: IndexPath, to toIndexPath: IndexPath)
+    func remove(at indexPaths: [IndexPath])
+    func remove(at indexPath: IndexPath)
+    func remove(_ filter: (_ item: Element) -> Bool)
     
-    func replace(at indexPath: NSIndexPath, newElement: Element)
+    func replace(at indexPath: IndexPath, newElement: Element)
     
-    subscript(indexPath: NSIndexPath) -> Element { get set }
+    subscript(indexPath: IndexPath) -> Element { get set }
     subscript(section: Int, index: Int) -> Element { get set }
 }
 
@@ -62,29 +62,29 @@ extension TTDataSourceMutable where Element == Any {
         append(contentsOf: items)
     }
     
-    public func insert<S>(contentsOf newElements: [S], at indexPath: NSIndexPath) {
+    public func insert<S>(contentsOf newElements: [S], at indexPath: IndexPath) {
         self.insert(contentsOf: newElements.map({$0 as Any}), at: indexPath)
     }
 }
 
 
 public protocol TTDataSourceDelegate: class {
-    func dataSourceWillChangeContent(dataSource: TTDataSource)
+    func dataSourceWillChangeContent(_ dataSource: TTDataSource)
     
-    func dataSource(dataSource: TTDataSource, didUpdateItemsAt indexPaths: [NSIndexPath])
-    func dataSource(dataSource: TTDataSource, didDeleteItemsAt indexPaths: [NSIndexPath])
-    func dataSource(dataSource: TTDataSource, didInsertItemsAt indexPaths: [NSIndexPath])
-    func dataSource(dataSource: TTDataSource, didMoveItemsFrom fromIndexPaths: [NSIndexPath], to toIndexPaths: [NSIndexPath])
+    func dataSource(_ dataSource: TTDataSource, didUpdateItemsAt indexPaths: [IndexPath])
+    func dataSource(_ dataSource: TTDataSource, didDeleteItemsAt indexPaths: [IndexPath])
+    func dataSource(_ dataSource: TTDataSource, didInsertItemsAt indexPaths: [IndexPath])
+    func dataSource(_ dataSource: TTDataSource, didMoveItemsFrom fromIndexPaths: [IndexPath], to toIndexPaths: [IndexPath])
     
-    func dataSource(dataSource: TTDataSource, didInsertSections addedSections: NSIndexSet)
-    func dataSource(dataSource: TTDataSource, didDeleteSections deletedSections: NSIndexSet)
-    func dataSource(dataSource: TTDataSource, didUpdateSections updatedSections: NSIndexSet)
+    func dataSource(_ dataSource: TTDataSource, didInsertSections addedSections: IndexSet)
+    func dataSource(_ dataSource: TTDataSource, didDeleteSections deletedSections: IndexSet)
+    func dataSource(_ dataSource: TTDataSource, didUpdateSections updatedSections: IndexSet)
     
-    func dataSourceDidChangeContent(dataSource: TTDataSource, animationCompletion:(() -> Void)?)
+    func dataSourceDidChangeContent(_ dataSource: TTDataSource, animationCompletion:(() -> Void)?)
 }
 
 extension TTDataSourceDelegate {
-    func dataSourceDidChangeContent(dataSource: TTDataSource) {
+    func dataSourceDidChangeContent(_ dataSource: TTDataSource) {
         dataSourceDidChangeContent(dataSource, animationCompletion: nil)
     }
 }
@@ -92,6 +92,6 @@ extension TTDataSourceDelegate {
 
 extension TTDataSource {
     public var description: String {
-        return String(self.dynamicType) + ": " + content.description
+        return String(describing: type(of: self)) + ": " + content.description
     }
 }

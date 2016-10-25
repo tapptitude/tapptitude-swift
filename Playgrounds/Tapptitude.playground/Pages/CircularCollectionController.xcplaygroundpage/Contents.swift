@@ -12,7 +12,7 @@ import Foundation
 
 import Tapptitude
 import UIKit
-import XCPlayground
+import PlaygroundSupport
 
 class CircularCollectionController: CollectionFeedController {
     
@@ -26,12 +26,12 @@ class CircularCollectionController: CollectionFeedController {
     var content: [AnyObject] = [] {
         didSet {
             pageControl?.numberOfPages = content.count
-            pageControl?.hidden = content.count < 2
+            pageControl?.isHidden = content.count < 2
             
             var circularContent = content
             if circularContent.count > 1 {
                 circularContent.append(content.first!)
-                circularContent.insert(content.last!, atIndex: 0)
+                circularContent.insert(content.last!, at: 0)
             }
             self.dataSource = DataSource(circularContent)
             
@@ -64,13 +64,13 @@ class CircularCollectionController: CollectionFeedController {
         set {
             pageControl?.currentPage = newValue
             let item = newValue + (content.count > 1 ? 1 : 0)
-            let indexPath = NSIndexPath(forItem: item, inSection: 0)
-            self.collectionView?.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: false)
+            let indexPath = IndexPath(item: item, section: 0)
+            self.collectionView?.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
         }
     }
     
-    var lastContentOffsetX = CGFloat.min
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    var lastContentOffsetX = CGFloat.leastNonzeroMagnitude
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let count = dataSource!.content.count
         if count < 2 {
             return
@@ -78,7 +78,7 @@ class CircularCollectionController: CollectionFeedController {
         
         // We can ignore the first time scroll,
         // because it is caused by the call scrollToItemAtIndexPath: in ViewWillAppear
-        if (CGFloat.min == lastContentOffsetX) {
+        if (CGFloat.leastNonzeroMagnitude == lastContentOffsetX) {
             lastContentOffsetX = scrollView.contentOffset.x
             return;
         }
@@ -114,7 +114,7 @@ class CircularCollectionController: CollectionFeedController {
         //            // user is scrolling to the right from the last item to the 'fake' item 1.
         //            // reposition offset to show the 'real' item 1 at the left-hand end of the collection view
         //
-        //            let indexPath = NSIndexPath(forItem: 1, inSection: 0)
+        //            let indexPath = IndexPath(item: 1, section: 0)
         //
         //            collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Left, animated: false)
         //        } else if scrollView.contentOffset.x == 0  {
@@ -122,26 +122,26 @@ class CircularCollectionController: CollectionFeedController {
         //            // user is scrolling to the left from the first item to the fake 'item N'.
         //            // reposition offset to show the 'real' item N at the right end end of the collection view
         //
-        //            let indexPath = NSIndexPath(forItem: count - 2, inSection: 0)
+        //            let indexPath = IndexPath(item: count - 2, section: 0)
         //            collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Left, animated: false)
         //        }
     }
     
     func scrollToNextPageAnimated() {
-        if let visibleIndex = collectionView?.indexPathsForVisibleItems().first {
+        if let visibleIndex = collectionView?.indexPathsForVisibleItems.first {
             var currentPage = visibleIndex.row + 1
-            if currentPage >= dataSource?.numberOfItems(inSection: 0) {
+            if currentPage >= dataSource?.numberOfItems(inSection: 0) ?? Int.max {
                 currentPage = 1
             }
             
-            let index = NSIndexPath(forItem: currentPage, inSection: 0)
-            collectionView?.scrollToItemAtIndexPath(index, atScrollPosition: .Right, animated: true)
+            let index = IndexPath(item: currentPage, section: 0)
+            collectionView?.scrollToItem(at: index, at: .right, animated: true)
         }
         
         configureTimer()
     }
     
-    var timer: NSTimer!
+    var timer: Timer!
     
     deinit {
         timer?.invalidate()
@@ -156,12 +156,12 @@ class CircularCollectionController: CollectionFeedController {
         if content.count > 1 && !userDidScroll && sliderTimeInterval > 0.0 {
             animateProgressBar()
             
-            timer = NSTimer(timeInterval: sliderTimeInterval, target: self, selector: #selector(CircularCollectionController.scrollToNextPageAnimated), userInfo: nil, repeats: false)
-            NSRunLoop.currentRunLoop().addTimer(timer, forMode: NSDefaultRunLoopMode)
+            timer = Timer(timeInterval: sliderTimeInterval, target: self, selector: #selector(scrollToNextPageAnimated), userInfo: nil, repeats: false)
+            RunLoop.current.add(timer, forMode: RunLoopMode.defaultRunLoopMode)
         }
     }
     
-    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         userDidScroll = true
         if timer != nil {
             timer.invalidate()
@@ -169,7 +169,7 @@ class CircularCollectionController: CollectionFeedController {
             if let progressBarView = progressBarView {
                 progressBarView.layer.removeAllAnimations()
                 let frame = progressBarView.bounds
-                progressBarView.frame = CGRectMake(frame.origin.x, frame.origin.y, scrollView.frame.width, frame.height) //width 0
+                progressBarView.frame = CGRect(x:frame.origin.x, y:frame.origin.y, width:scrollView.frame.width, height:frame.height) //width 0
                 //                progressBarView.frame = frame
             }
         }
@@ -185,8 +185,8 @@ class CircularCollectionController: CollectionFeedController {
         if let frame = progressBarView.superview?.bounds {
             progressBarView.frame = frame
             
-            UIView.animateWithDuration(sliderTimeInterval) {
-                progressBarView.frame = CGRectMake(frame.origin.x, frame.origin.y, 0, frame.height)
+            UIView.animate(withDuration: sliderTimeInterval) {
+                progressBarView.frame = CGRect(x:frame.origin.x, y:frame.origin.y, width:0, height:frame.height)
             }
         }
     }
@@ -209,14 +209,14 @@ class TextCell : UICollectionViewCell {
         super.init(frame: frame)
         
         label = UILabel(frame: bounds)
-        label.textColor = UIColor.blackColor()
-        label.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-        label.textAlignment = .Center
+        label.textColor = UIColor.black
+        label.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         
         contentView.frame = self.bounds
         contentView.autoresizesSubviews = true
-        contentView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         contentView.addSubview(label)
         contentView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -238,16 +238,16 @@ cellController.configureCell = { cell, content, indexPath in
 let feedController = CircularCollectionController()
 feedController.cellController = cellController
 
-feedController.view?.frame = CGRect(origin: CGPointZero, size: CGSizeMake(300, 300))
-let collectionView: UICollectionView = UICollectionView(frame: CGRect(origin: CGPointZero, size: CGSizeMake(300, 300)), collectionViewLayout: UICollectionViewFlowLayout())
-collectionView.pagingEnabled = true
+feedController.view?.frame = CGRect(origin: CGPoint.zero, size: CGSize(width:300, height:300))
+let collectionView: UICollectionView = UICollectionView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width:300, height:300)), collectionViewLayout: UICollectionViewFlowLayout())
+collectionView.isPagingEnabled = true
 let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
-layout.scrollDirection = .Horizontal
+layout.scrollDirection = .horizontal
 feedController.collectionView = collectionView
 feedController.view.addSubview(collectionView)
-feedController.collectionView!.backgroundColor = UIColor.whiteColor()
+feedController.collectionView!.backgroundColor = UIColor.white
 
-let pageControl = UIPageControl(frame: CGRect(origin: CGPointMake(125, 270), size: CGSizeMake(50, 10)))
+let pageControl = UIPageControl(frame: CGRect(origin: CGPoint(x:125, y:270), size: CGSize(width:50, height: 10)))
 feedController.pageControl = pageControl
 feedController.view.addSubview(pageControl)
 feedController.content = [
@@ -255,6 +255,8 @@ feedController.content = [
         UIColor(red: 120/255, green: 194/255, blue: 177/255, alpha: 1.0),
         UIColor(red: 223/255, green: 205/255, blue: 140/255, alpha:1.0)]
 
+import PlaygroundSupport
+PlaygroundPage.current.liveView = feedController.view
 
     
 

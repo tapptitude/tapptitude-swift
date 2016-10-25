@@ -13,7 +13,7 @@ cellController.sectionInset = UIEdgeInsetsMake(0, 0, 10, 0)
 cellController.minimumInteritemSpacing = 10
 cellController.minimumLineSpacing = 10
 cellController.configureCell = { cell, content, indexPath in
-    cell.backgroundColor = UIColor.redColor()
+    cell.backgroundColor = UIColor.red
     cell.label.text = content
 }
 cellController.cellSizeForContent = { (content, _) in
@@ -29,8 +29,8 @@ dataSource.filter(nil)
 
 print(dataSource.content)
 
-import XCPlayground
-XCPlaygroundPage.currentPage.liveView = feedController.view
+import PlaygroundSupport
+PlaygroundPage.current.liveView = feedController.view
 
 
 //: [Next](@next)

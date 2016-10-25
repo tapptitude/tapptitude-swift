@@ -8,13 +8,13 @@
 
 import Foundation
 
-public class FilteredDataSource<T> : DataSource<T> {
+open class FilteredDataSource<T> : DataSource<T> {
     
     override public init(_ content: [T]) {
         super.init(content)
     }
     
-    public func filter(filter: (T -> Bool)?) { //pass nil to reset filter
+    open func filter(_ filter: ((T) -> Bool)?) { //pass nil to reset filter
         self.filterBy = filter
         
         if filterBy == nil {
@@ -30,13 +30,13 @@ public class FilteredDataSource<T> : DataSource<T> {
         }
     }
     
-    var filterBy: (T -> Bool)?
+    var filterBy: ((T) -> Bool)?
     
-    public var isFiltered: Bool {
+    open var isFiltered: Bool {
         return filterBy != nil
     }
     
-    public var unfilteredContent: [T] {
+    open var unfilteredContent: [T] {
         return originalContent ?? content.convertTo()
     }
     
@@ -44,7 +44,7 @@ public class FilteredDataSource<T> : DataSource<T> {
 //}
 //
 //extension FilteredDataSource {
-    override public func dataFeed(dataFeed: TTDataFeed?, didReloadContent content: [Any]?) {
+    override open func dataFeed(_ dataFeed: TTDataFeed?, didReloadContent content: [Any]?) {
         var content = content
         
         if isFiltered {
@@ -54,10 +54,11 @@ public class FilteredDataSource<T> : DataSource<T> {
         super.dataFeed(dataFeed, didReloadContent: content)
     }
     
-    override public func dataFeed(dataFeed: TTDataFeed?, didLoadMoreContent content: [Any]?) {
+    override open func dataFeed(_ dataFeed: TTDataFeed?, didLoadMoreContent content: [Any]?) {
         var content = content
         if isFiltered {
-            originalContent?.appendContentsOf(content ?? [])
+            let mappedContent: [T]? = content?.map({$0 as! T })
+            originalContent?.append(contentsOf: mappedContent ?? [])
             content = content?.convertTo().filter(filterBy!).convertTo()
         }
         super.dataFeed(dataFeed, didLoadMoreContent: content)

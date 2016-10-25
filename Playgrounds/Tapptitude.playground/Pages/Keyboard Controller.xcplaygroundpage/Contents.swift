@@ -21,7 +21,7 @@ class KeyboardViewController: UIViewController {
         keyboardController.dismissKeyboardTouchRecognizer = nil
     }
     
-    @IBAction func segmentedControlValueChanged(sender: AnyObject) {
+    @IBAction func segmentedControlValueChanged(_ sender: AnyObject) {
         self.view.endEditing(true)
         var newY = self.textFieldContainer.frame.origin.y
         
@@ -36,8 +36,8 @@ class KeyboardViewController: UIViewController {
     }
     
     
-    func moveTextFieldContainerAtYCoordinate(y: CGFloat) {
-        self.textFieldContainer.transform = CGAffineTransformIdentity
+    func moveTextFieldContainerAtYCoordinate(_ y: CGFloat) {
+        self.textFieldContainer.transform = CGAffineTransform.identity
         var frame = self.textFieldContainer.frame
         frame.origin.y = y
         self.textFieldContainer.frame = frame
@@ -45,7 +45,7 @@ class KeyboardViewController: UIViewController {
 }
 
 
-import XCPlayground
+import PlaygroundSupport
 let controller = KeyboardViewController(nibName: "KeyboardViewController", bundle: nil)
-XCPlaygroundPage.currentPage.liveView = controller.view
+PlaygroundPage.current.liveView = controller.view
 //: [Next](@next)

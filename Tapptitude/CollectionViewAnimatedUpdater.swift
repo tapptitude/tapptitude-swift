@@ -9,32 +9,32 @@
 import UIKit
 
 protocol TTCollectionViewAnimatedUpdater {
-    func collectionViewWillChangeContent(collectionView: UICollectionView)
-    func collectionViewDidChangeContent(collectionView: UICollectionView, animationCompletion: (() -> Void)?)
+    func collectionViewWillChangeContent(_ collectionView: UICollectionView)
+    func collectionViewDidChangeContent(_ collectionView: UICollectionView, animationCompletion: (() -> Void)?)
     
     
-    func collectionView(collectionView: UICollectionView, didUpdateItemsAt indexPaths: [NSIndexPath])
-    func collectionView(collectionView: UICollectionView, didDeleteItemsAt indexPaths: [NSIndexPath])
-    func collectionView(collectionView: UICollectionView, didInsertItemsAt indexPaths: [NSIndexPath])
+    func collectionView(_ collectionView: UICollectionView, didUpdateItemsAt indexPaths: [IndexPath])
+    func collectionView(_ collectionView: UICollectionView, didDeleteItemsAt indexPaths: [IndexPath])
+    func collectionView(_ collectionView: UICollectionView, didInsertItemsAt indexPaths: [IndexPath])
     
-    func collectionView(collectionView: UICollectionView, didMoveItemsFrom fromIndexPaths: [NSIndexPath], to toIndexPaths: [NSIndexPath])
+    func collectionView(_ collectionView: UICollectionView, didMoveItemsFrom fromIndexPaths: [IndexPath], to toIndexPaths: [IndexPath])
 
-    func collectionView(collectionView: UICollectionView, didInsertSections sections: NSIndexSet)
-    func collectionView(collectionView: UICollectionView, didDeleteSections sections: NSIndexSet)
-    func collectionView(collectionView: UICollectionView, didUpdateSections sections: NSIndexSet)
+    func collectionView(_ collectionView: UICollectionView, didInsertSections sections: IndexSet)
+    func collectionView(_ collectionView: UICollectionView, didDeleteSections sections: IndexSet)
+    func collectionView(_ collectionView: UICollectionView, didUpdateSections sections: IndexSet)
 }
 
 class CollectionViewAnimatedUpdater: TTCollectionViewAnimatedUpdater {
-    private var shouldReloadCollectionView = false
-    private var batchOperation: [() -> Void]?
+    fileprivate var shouldReloadCollectionView = false
+    fileprivate var batchOperation: [() -> Void]?
     
-    func collectionViewWillChangeContent(collectionView: UICollectionView) {
+    func collectionViewWillChangeContent(_ collectionView: UICollectionView) {
         shouldReloadCollectionView = false
         assert(batchOperation == nil, "Updating block operation should be nil");
         batchOperation = []
     }
     
-    func collectionViewDidChangeContent(collectionView: UICollectionView, animationCompletion: (() -> Void)?) {
+    func collectionViewDidChangeContent(_ collectionView: UICollectionView, animationCompletion: (() -> Void)?) {
         // Checks if we should reload the collection view to fix a bug @ http://openradar.appspot.com/12954582
         if (shouldReloadCollectionView) {
             collectionView.reloadData()
@@ -54,56 +54,56 @@ class CollectionViewAnimatedUpdater: TTCollectionViewAnimatedUpdater {
     
     
     // MARK: - items operation
-    func collectionView(collectionView: UICollectionView, didUpdateItemsAt indexPaths: [NSIndexPath]) {
+    func collectionView(_ collectionView: UICollectionView, didUpdateItemsAt indexPaths: [IndexPath]) {
         batchOperation?.append({
-            collectionView.reloadItemsAtIndexPaths(indexPaths)
+            collectionView.reloadItems(at: indexPaths)
         })
     }
     
-    func collectionView(collectionView: UICollectionView, didDeleteItemsAt indexPaths: [NSIndexPath]) {
+    func collectionView(_ collectionView: UICollectionView, didDeleteItemsAt indexPaths: [IndexPath]) {
         let indexPath = indexPaths.last!
         
-        if collectionView.numberOfItemsInSection(indexPath.section) == 1 {
+        if collectionView.numberOfItems(inSection: indexPath.section) == 1 {
             shouldReloadCollectionView = true
         } else {
             batchOperation?.append({
-                collectionView.deleteItemsAtIndexPaths(indexPaths)
+                collectionView.deleteItems(at: indexPaths)
             })
         }
     }
     
-    func collectionView(collectionView: UICollectionView, didInsertItemsAt indexPaths: [NSIndexPath]) {
-        if collectionView.numberOfSections() > 0 {
+    func collectionView(_ collectionView: UICollectionView, didInsertItemsAt indexPaths: [IndexPath]) {
+        if collectionView.numberOfSections > 0 {
             batchOperation?.append({
-                collectionView.insertItemsAtIndexPaths(indexPaths)
+                collectionView.insertItems(at: indexPaths)
             })
         } else {
             shouldReloadCollectionView = true
         }
     }
     
-    func collectionView(collectionView: UICollectionView, didMoveItemsFrom fromIndexPaths: [NSIndexPath], to toIndexPaths: [NSIndexPath]) {
+    func collectionView(_ collectionView: UICollectionView, didMoveItemsFrom fromIndexPaths: [IndexPath], to toIndexPaths: [IndexPath]) {
         batchOperation?.append({
-            fromIndexPaths.enumerate().forEach({ (index, indexPath) in
+            fromIndexPaths.enumerated().forEach({ (index, indexPath) in
                 let toIndexPath = toIndexPaths[index]
-                collectionView.moveItemAtIndexPath(indexPath, toIndexPath:toIndexPath)
+                collectionView.moveItem(at: indexPath, to:toIndexPath)
             })
         })
     }
     
-    func collectionView(collectionView: UICollectionView, didInsertSections sections: NSIndexSet) {
+    func collectionView(_ collectionView: UICollectionView, didInsertSections sections: IndexSet) {
         batchOperation?.append({
             collectionView.insertSections(sections)
         })
     }
     
-    func collectionView(collectionView: UICollectionView, didDeleteSections sections: NSIndexSet) {
+    func collectionView(_ collectionView: UICollectionView, didDeleteSections sections: IndexSet) {
         batchOperation?.append({
             collectionView.deleteSections(sections)
         })
     }
     
-    func collectionView(collectionView: UICollectionView, didUpdateSections sections: NSIndexSet) {
+    func collectionView(_ collectionView: UICollectionView, didUpdateSections sections: IndexSet) {
         batchOperation?.append({
             collectionView.reloadSections(sections)
         })

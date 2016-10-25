@@ -15,7 +15,7 @@ let cellController = CollectionCellController<String, TextCell>(cellSize: CGSize
 cellController.minimumInteritemSpacing = 10
 cellController.sectionInset = UIEdgeInsetsMake(0, 0, 10, 0)
 cellController.configureCell = { cell, content, indexPath in
-    cell.backgroundColor = UIColor.redColor()
+    cell.backgroundColor = UIColor.red
     cell.label.text = content
 }
 cellController.cellSizeForContent = {[weak cellController] (content, _) in
@@ -29,6 +29,6 @@ feedController.cellController = cellController
 dataSource.dataFeed(nil, didLoadMoreContent: ["Ion"])
 dataSource.filter(nil)
 
-import XCPlayground
-XCPlaygroundPage.currentPage.liveView = feedController.view
+import PlaygroundSupport
+PlaygroundPage.current.liveView = feedController.view
 //: [Next](@next)

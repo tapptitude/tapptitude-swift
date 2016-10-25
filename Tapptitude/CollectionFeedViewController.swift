@@ -25,15 +25,15 @@ protocol TTCollectionFeedController : class, UICollectionViewDelegateFlowLayout,
     var autoLoadMoreContent: Bool {get set}
     var numberOfPagesToPreload: Int {get set}
     var canShowLoadMoreView : Bool {get set}
-    func shouldShowLoadMoreForSection(section: Int) -> Bool
+    func shouldShowLoadMore(section: Int) -> Bool
     
     var loadMoreViewXIBName: String! {get set}
     
     /* Pull to Refresh functionality */
     weak var refreshControl: UIRefreshControl? {get set}
-    func pullToRefreshAction(sender: AnyObject!)
+    func pullToRefreshAction(_ sender: AnyObject!)
     func addPullToRefresh()
     
     // helpers
-    func scrollToElement<T>(ofFirst filter: (item: T) -> Bool, animated: Bool)
+    func scrollToElement<T>(ofFirst filter: (_ item: T) -> Bool, animated: Bool)
 }

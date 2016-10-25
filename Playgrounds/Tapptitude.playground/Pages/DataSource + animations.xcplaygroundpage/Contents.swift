@@ -4,40 +4,40 @@ import Foundation
 import Tapptitude
 
 import UIKit
-import XCPlayground
+import PlaygroundSupport
 
 var dataSource = DataSource([2, 4, 6])
 
 let cellController = CollectionCellController<Int, UICollectionViewCell>(cellSize: CGSize(width: 50, height: 50))
 cellController.configureCell = { cell, content, indexPath in
-    cell.backgroundColor = UIColor.redColor()
+    cell.backgroundColor = UIColor.red
 }
 let feedController = CollectionFeedController()
 feedController.dataSource = dataSource
 feedController.cellController = cellController
 feedController.animatedUpdates = true
 
-XCPlaygroundPage.currentPage.liveView = feedController.view
-feedController.collectionView?.backgroundColor = UIColor.blackColor()
+PlaygroundPage.current.liveView = feedController.view
+feedController.collectionView?.backgroundColor = UIColor.black
 
 
-func dispatch_after_on_main_queue (delayInSeconds: Double , closure: ()->()) {
-    let popTime = dispatch_time(DISPATCH_TIME_NOW,  Int64(delayInSeconds * Double(NSEC_PER_SEC)));
-    dispatch_after(popTime, dispatch_get_main_queue(), closure);
+func dispatch_after_on_main_queue (_ delayInSeconds: Double , closure: @escaping ()->()) {
+    let popTime = DispatchTime.now() + Double(Int64(delayInSeconds * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC);
+    DispatchQueue.main.asyncAfter(deadline: popTime, execute: closure);
 }
 
 
 dataSource.perfomBatchUpdates({ 
     dataSource.append(232)
     }) { 
-        dataSource.remove(at: NSIndexPath(forItem: 0, inSection: 0))
+        dataSource.remove(at: IndexPath(item: 0, section: 0))
 }
 
 
 dataSource.perfomBatchUpdates({
-    dataSource.remove(at: NSIndexPath(forItem: 0, inSection: 0))
-    dataSource.insert(34, at: NSIndexPath(forItem: 1, inSection: 0))
-    dataSource.insert(34, at: NSIndexPath(forItem: 1, inSection: 0))
+    dataSource.remove(at: IndexPath(item: 0, section: 0))
+    dataSource.insert(34, at: IndexPath(item: 1, section: 0))
+    dataSource.insert(34, at: IndexPath(item: 1, section: 0))
     dataSource.append(23)
     dataSource.append(29)
     }, animationCompletion: {

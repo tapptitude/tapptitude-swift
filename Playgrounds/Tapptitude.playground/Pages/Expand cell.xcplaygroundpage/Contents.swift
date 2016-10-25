@@ -9,20 +9,20 @@ class TextCell : UICollectionViewCell {
         super.init(frame: frame)
         
         label = UILabel(frame: bounds)
-        label.textColor = UIColor.blackColor()
-        label.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
-        label.textAlignment = .Center
+        label.textColor = UIColor.black
+        label.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         
         contentView.frame = self.bounds
         contentView.autoresizesSubviews = true
-        contentView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         contentView.addSubview(label)
         contentView.translatesAutoresizingMaskIntoConstraints = false
         
         let rectView = UIView(frame: CGRect(x: 10, y: 10, width: 10, height: 10))
-        rectView.backgroundColor = UIColor.redColor()
-        rectView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+        rectView.backgroundColor = UIColor.red
+        rectView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         contentView.addSubview(rectView)
         
         backgroundColor = UIColor(white: 0, alpha: 0.3)
@@ -42,15 +42,15 @@ cellController.minimumInteritemSpacing = 5
 let feedController = CollectionFeedController()
 feedController.dataSource = dataSource
 feedController.cellController = cellController
-feedController.collectionView?.backgroundColor = UIColor.whiteColor()
+feedController.collectionView?.backgroundColor = UIColor.white
 //feedController.animatedUpdates = true
 
 cellController.cellSizeForContent = { content, collectionView in
     return CGSize(width: content, height: content)
 }
 cellController.configureCell = { cell, content, indexPath in
-    cell.backgroundColor = UIColor.redColor()
-    cell.contentView.backgroundColor = UIColor.blueColor()
+    cell.backgroundColor = UIColor.red
+    cell.contentView.backgroundColor = UIColor.blue
     cell.label.text = "\(content)"
     print("configure ", content)
 }
@@ -63,7 +63,7 @@ cellController.didSelectContent = { content, indexPath, collectionView in
     
 }
 
-import XCPlayground
-XCPlaygroundPage.currentPage.liveView = feedController.view
+import PlaygroundSupport
+PlaygroundPage.current.liveView = feedController.view
 
 //: [Next](@next)

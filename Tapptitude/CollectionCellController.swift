@@ -8,59 +8,59 @@
 
 import UIKit
 
-public class CollectionCellController<ContentName, CellName: UICollectionViewCell> : TTCollectionCellController, TTCollectionCellControllerSize {
+open class CollectionCellController<ContentName, CellName: UICollectionViewCell> : TTCollectionCellController, TTCollectionCellControllerSize {
     public typealias ContentType = ContentName
     public typealias CellType = CellName
     
-    public var cellSizeForContent : ((content: ContentType, collectionView: UICollectionView) -> CGSize)?
-    public var configureCell : ((cell: CellType, content: ContentType, indexPath: NSIndexPath) -> Void)?
-    public var didSelectContent : ((content: ContentType, indexPath: NSIndexPath, collectionView: UICollectionView) -> Void)?
-    public var setPreferredSizeOfLabels: ((cell: CellType, laidOutCell: CellType) -> Void)?
+    open var cellSizeForContent : ((_ content: ContentType, _ collectionView: UICollectionView) -> CGSize)?
+    open var configureCell : ((_ cell: CellType, _ content: ContentType, _ indexPath: IndexPath) -> Void)?
+    open var didSelectContent : ((_ content: ContentType, _ indexPath: IndexPath, _ collectionView: UICollectionView) -> Void)?
+    open var setPreferredSizeOfLabels: ((_ cell: CellType, _ laidOutCell: CellType) -> Void)?
     
-    public var sectionInset = UIEdgeInsetsZero
-    public var minimumLineSpacing: CGFloat = 0.0
-    public var minimumInteritemSpacing: CGFloat = 0.0
-    public var cellSize : CGSize
-    public var reuseIdentifier: String
+    open var sectionInset = UIEdgeInsets.zero
+    open var minimumLineSpacing: CGFloat = 0.0
+    open var minimumInteritemSpacing: CGFloat = 0.0
+    open var cellSize : CGSize
+    open var reuseIdentifier: String
     
-    public weak var parentViewController : UIViewController?
+    open weak var parentViewController : UIViewController?
     
-    public init(cellSize : CGSize, reuseIdentifier: String = String(CellType)) {
+    public init(cellSize : CGSize, reuseIdentifier: String = String(describing: CellType.self)) {
         self.cellSize = cellSize
         self.reuseIdentifier = reuseIdentifier
     }
     
-    public func cellSize(for content: ContentType, in collectionView: UICollectionView) -> CGSize {
-        let blockCellSize = cellSizeForContent?(content: content, collectionView: collectionView)
+    open func cellSize(for content: ContentType, in collectionView: UICollectionView) -> CGSize {
+        let blockCellSize = cellSizeForContent?(content, collectionView)
         return blockCellSize ?? cellSize
     }
     
-    public func configureCell(cell: CellType, for content: ContentType, at indexPath: NSIndexPath) {
+    open func configureCell(_ cell: CellType, for content: ContentType, at indexPath: IndexPath) {
         if let parent = self.parentViewController as? CollectionFeedController {
             if let layout = parent.collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
-                if layout.estimatedItemSize != CGSizeZero {
+                if layout.estimatedItemSize != CGSize.zero {
                     assert(setPreferredSizeOfLabels != nil, "Implementation for setPrefferedSizeOfLabels is missing")
-                    self.setPreferredSizeOfLabels?(cell:cell,laidOutCell: self.sizeCalculationCell)
+                    self.setPreferredSizeOfLabels?(cell,self.sizeCalculationCell)
                 }
             }
         }
-        configureCell?(cell: cell, content: content, indexPath: indexPath)
+        configureCell?(cell, content, indexPath)
     }
     
-    public func didSelectContent(content: ContentType, at indexPath: NSIndexPath, in collectionView: UICollectionView) {
-        didSelectContent?(content: content, indexPath: indexPath, collectionView: collectionView)
+    open func didSelectContent(_ content: ContentType, at indexPath: IndexPath, in collectionView: UICollectionView) {
+        didSelectContent?(content, indexPath, collectionView)
     }
     
     
     var _sizeCalculationCell: CellType!
     
-    public var sizeCalculationCell: CellType! {
+    open var sizeCalculationCell: CellType! {
         if _sizeCalculationCell == nil {
             var sizeCalculationCell: CellType! = nil
             if let nib = nibToInstantiateCell() {
-                sizeCalculationCell = nib.instantiateWithOwner(nil, options: nil).last as! CellType
+                sizeCalculationCell = nib.instantiate(withOwner: nil, options: nil).last as! CellType
             } else {
-                sizeCalculationCell = CellType(frame: CGRect(origin: CGPointZero, size: self.cellSize))
+                sizeCalculationCell = CellType(frame: CGRect(origin: CGPoint.zero, size: self.cellSize))
             }
             
             if cellSize.width < 0 || cellSize.height < 0 {
@@ -79,7 +79,7 @@ public class CollectionCellController<ContentName, CellName: UICollectionViewCel
         return _sizeCalculationCell!
     }
     
-    public func acceptsContent(content: Any) -> Bool {
+    open func acceptsContent(_ content: Any) -> Bool {
         if let content = content as? ContentType {
             return acceptsContent(content)
         } else {
@@ -87,19 +87,19 @@ public class CollectionCellController<ContentName, CellName: UICollectionViewCel
         }
     }
     
-    public func acceptsContent(content: ContentType) -> Bool {
+    open func acceptsContent(_ content: ContentType) -> Bool {
         return true
     }
     
-    func nibToInstantiateCell() -> UINib? {
-        if let _ = NSBundle(forClass: CellType.self).pathForResource(reuseIdentifier, ofType: "nib") {
-            return UINib(nibName: reuseIdentifier, bundle: NSBundle(forClass: CellType.self))
+    open func nibToInstantiateCell() -> UINib? {
+        if let _ = Bundle(for: CellType.self).path(forResource: reuseIdentifier, ofType: "nib") {
+            return UINib(nibName: reuseIdentifier, bundle: Bundle(for: CellType.self))
         } else {
             return nil
         }
     }
     
-    public func reuseIdentifier(for content: ContentType) -> String {
+    open func reuseIdentifier(for content: ContentType) -> String {
         return reuseIdentifier
     }
 }

@@ -11,12 +11,12 @@ class TextCellController: CollectionCellController<String, TextCell> {
         sectionInset = UIEdgeInsetsMake(0, 0, 10, 0)
     }
     
-    override func configureCell(cell: TextCell, for content: String, at indexPath: NSIndexPath) {
+    override func configureCell(cell: TextCell, for content: String, at indexPath: IndexPath) {
         cell.label.text = content
     }
     
     override func cellSize(for content: String, in collectionView: UICollectionView) -> CGSize {
-        var size = cellSizeToFit(text: content, labelName: "label" , maxSize: CGSizeMake(-1, 300))
+        var size = cellSizeToFit(text: content, labelName: "label" , maxSize: CGSize(-1, 300))
         size.height = min(size.height, 200)
         return size
     }
@@ -130,7 +130,7 @@ let dataSource = DataSource<String>(items)
 //}
 
 
-import XCPlayground
-XCPlaygroundPage.currentPage.liveView = feedController
-XCPlaygroundPage.currentPage.needsIndefiniteExecution = true
+import PlaygroundSupport
+PlaygroundPage.current.liveView = feedController
+PlaygroundPage.current.needsIndefiniteExecution = true
 //: [Next](@next)

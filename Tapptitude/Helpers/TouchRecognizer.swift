@@ -9,13 +9,13 @@
 import UIKit
 import UIKit.UIGestureRecognizerSubclass
 
-public class TouchRecognizer: UIGestureRecognizer {
-    public var callback: () -> Void
-    public var ignoreViews: [UIView]?
-    public var canPreventOtherGestureRecognizers: Bool = true
-    public var ignoreFirstResponder: Bool = false // enable touches on view with keboard
+open class TouchRecognizer: UIGestureRecognizer {
+    open var callback: () -> Void
+    open var ignoreViews: [UIView]?
+    open var canPreventOtherGestureRecognizers: Bool = true
+    open var ignoreFirstResponder: Bool = false // enable touches on view with keboard
     
-    public init(callback: () -> Void, ignoreViews views: [UIView]?) {
+    public init(callback: @escaping () -> Void, ignoreViews views: [UIView]?) {
         self.callback = callback
         self.ignoreViews = views
         
@@ -23,34 +23,34 @@ public class TouchRecognizer: UIGestureRecognizer {
         addTarget(self, action: #selector(TouchRecognizer.touchRecongized(_:)))
     }
     
-    override init(target: AnyObject?, action: Selector) {
+    override init(target: Any?, action: Selector?) {
         self.callback = {}
         super.init(target: target, action: action)
     }
     
-    func touchRecongized(sender: UIGestureRecognizer) {
+    func touchRecongized(_ sender: UIGestureRecognizer) {
         callback()
     }
     
-    override public func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent) {
-        super.touchesBegan(touches, withEvent: event)
+    override open func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
+        super.touchesBegan(touches, with: event)
         
         let touch = touches.first!
-        if ignoreFirstResponder && touch.view!.isFirstResponder() {
+        if ignoreFirstResponder && touch.view!.isFirstResponder {
             return
         }
         
         for view in (ignoreViews ?? []) {
-            if CGRectContainsPoint(view.bounds, touch.locationInView(view)) {
-                self.state = .Failed
+            if view.bounds.contains(touch.location(in: view)) {
+                self.state = .failed
                 return
             }
         }
         
-        self.state = .Recognized
+        self.state = .recognized
     }
     
-    public override func canPreventGestureRecognizer(preventedGestureRecognizer: UIGestureRecognizer) -> Bool {
+    open override func canPrevent(_ preventedGestureRecognizer: UIGestureRecognizer) -> Bool {
         return canPreventOtherGestureRecognizers
     }
 }

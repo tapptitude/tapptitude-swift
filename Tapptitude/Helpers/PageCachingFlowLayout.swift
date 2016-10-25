@@ -17,16 +17,16 @@ class PageCachingFlowLayout: UICollectionViewFlowLayout {
                                     // UIEdgeInsetsMake(-1, 0, -1, 0) for vertical scrolling
     
 
-    override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         if !enableCachingOfAdiacentCells {
-            return super.layoutAttributesForElementsInRect(rect)
+            return super.layoutAttributesForElements(in: rect)
         }
 
         let biggerRect = UIEdgeInsetsInsetRect(rect, cachingInset)
-        let isHorizontalScrolling = self.scrollDirection == .Horizontal
+        let isHorizontalScrolling = self.scrollDirection == .horizontal
         
         let bounds = self.collectionView?.bounds
-        let attributes = super.layoutAttributesForElementsInRect(biggerRect)
+        let attributes = super.layoutAttributesForElements(in: biggerRect)
         var newAttributes: [UICollectionViewLayoutAttributes] = []
         
         if let attributes = attributes, let bounds = bounds {
@@ -35,24 +35,24 @@ class PageCachingFlowLayout: UICollectionViewFlowLayout {
                 
                 var diff: CGFloat = 0.0
                 if isHorizontalScrolling {
-                    if CGRectGetMaxX(bounds) <= attribute.frame.origin.x {
-                        diff = CGRectGetMaxX(bounds) - CGRectGetMinX(attribute.frame) - 1.0
+                    if bounds.maxX <= attribute.frame.origin.x {
+                        diff = bounds.maxX - attribute.frame.minX - 1.0
                         attribute.alpha = 0.0
-                        attribute.frame = CGRectOffset(attribute.frame, diff, 0)
-                    } else if bounds.origin.x >= CGRectGetMaxX(attribute.frame) {
-                        diff = CGRectGetMinX(bounds) - CGRectGetMaxX(attribute.frame) + 1.0
+                        attribute.frame = attribute.frame.offsetBy(dx: diff, dy: 0)
+                    } else if bounds.origin.x >= attribute.frame.maxX {
+                        diff = bounds.minX - attribute.frame.maxX + 1.0
                         attribute.alpha = 0.0
-                        attribute.frame = CGRectOffset(attribute.frame, diff, 0)
+                        attribute.frame = attribute.frame.offsetBy(dx: diff, dy: 0)
                     }
                 } else { //vertical
-                    if CGRectGetMaxY(bounds) <= attribute.frame.origin.y {
-                        diff = CGRectGetMaxY(bounds) - CGRectGetMinY(attribute.frame) - 1.0
+                    if bounds.maxY <= attribute.frame.origin.y {
+                        diff = bounds.maxY - attribute.frame.minY - 1.0
                         attribute.alpha = 0.0
-                        attribute.frame = CGRectOffset(attribute.frame, 0, diff)
-                    } else if bounds.origin.y >= CGRectGetMaxY(attribute.frame) {
-                        diff = CGRectGetMinY(bounds) - CGRectGetMaxY(attribute.frame) + 1.0
+                        attribute.frame = attribute.frame.offsetBy(dx: 0, dy: diff)
+                    } else if bounds.origin.y >= attribute.frame.maxY {
+                        diff = bounds.minY - attribute.frame.maxY + 1.0
                         attribute.alpha = 0.0
-                        attribute.frame = CGRectOffset(attribute.frame, 0, diff)
+                        attribute.frame = attribute.frame.offsetBy(dx: 0, dy: diff)
                     }
                 }
                 
@@ -63,7 +63,7 @@ class PageCachingFlowLayout: UICollectionViewFlowLayout {
         return newAttributes
     }
     
-    override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool {
+    override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
         return enableCachingOfAdiacentCells
     }
 }

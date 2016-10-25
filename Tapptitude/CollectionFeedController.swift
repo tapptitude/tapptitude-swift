@@ -7,17 +7,37 @@
 //
 
 import UIKit
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
 
-public class CollectionFeedController: UIViewController, TTCollectionFeedController, TTDataFeedDelegate, TTDataSourceDelegate, UIViewControllerPreviewingDelegate {
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
+
+open class CollectionFeedController: UIViewController, TTCollectionFeedController, TTDataFeedDelegate, TTDataSourceDelegate, UIViewControllerPreviewingDelegate {
     
     public struct Options {
         public var emptyMessage = NSLocalizedString("No content", comment: "No content")
-        public var loadMoreIndicatorViewColor = UIColor.grayColor()
+        public var loadMoreIndicatorViewColor = UIColor.gray
     }
     
-    public var options = Options()
+    open var options = Options()
     
-    public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
@@ -32,14 +52,14 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         dataSource?.delegate = nil
     }
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         
         updateReloadingIndicatorView()
         updateEmptyViewAppearenceAnimated(false)
     }
     
-    public override func viewDidAppear(animated: Bool) {
+    open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         if forceTouchPreviewEnabled {
@@ -47,7 +67,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         }
     }
     
-    public override func awakeFromNib() {
+    open override func awakeFromNib() {
         super.awakeFromNib()
         
         updateReloadingIndicatorView()
@@ -58,7 +78,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     internal var isScrollDirectionConfigured : Bool = false
     internal weak var previousCollectionView : UICollectionView! = nil
     
-    @IBOutlet public weak var collectionView: UICollectionView? {
+    @IBOutlet open weak var collectionView: UICollectionView? {
         willSet {
             collectionView?.dataSource = nil
             collectionView?.delegate = nil
@@ -71,8 +91,8 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
                 collectionView.delegate = self
                 collectionView.dataSource = self
                 
-                let nib = UINib(nibName: loadMoreViewXIBName, bundle: NSBundle(forClass: CollectionFeedController.self))
-                collectionView.registerNib(nib, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: loadMoreViewXIBName)
+                let nib = UINib(nibName: loadMoreViewXIBName, bundle: Bundle(for: CollectionFeedController.self))
+                collectionView.register(nib, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: loadMoreViewXIBName)
                 
                 if !self.isScrollDirectionConfigured {
                     // fetch scrollDirection value from collectionView layout
@@ -86,9 +106,9 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         }
     }
     
-    @IBOutlet public weak var reloadIndicatorView: UIActivityIndicatorView?
+    @IBOutlet open weak var reloadIndicatorView: UIActivityIndicatorView?
     internal var _emptyView: UIView?
-    @IBOutlet public var emptyView: UIView? { //set from XIB or overwrite
+    @IBOutlet open var emptyView: UIView? { //set from XIB or overwrite
         set {
             _emptyView = newValue
             _emptyView?.removeFromSuperview()
@@ -103,10 +123,10 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
             }
             
             let noContent = UILabel()
-            noContent.backgroundColor = UIColor.clearColor()
+            noContent.backgroundColor = UIColor.clear
             noContent.text = options.emptyMessage
-            noContent.frame = CGRectIntegral(collectionView!.frame)
-            noContent.textAlignment = .Center
+            noContent.frame = collectionView!.frame.integral
+            noContent.textAlignment = .center
             noContent.numberOfLines = 0
             noContent.textColor = UIColor(white: 0.4, alpha: 1.0)
             noContent.autoresizingMask = collectionView!.autoresizingMask
@@ -115,7 +135,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         }
     }
     
-    public var dataSource: TTDataSource? {
+    open var dataSource: TTDataSource? {
         willSet {
             displayedEmptyView?.removeFromSuperview()
             displayedEmptyView = nil
@@ -139,7 +159,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         }
     }
     
-    public var cellController: TTCollectionCellControllerProtocol! {
+    open var cellController: TTCollectionCellControllerProtocol! {
         willSet {
             cellController?.parentViewController = nil
         }
@@ -149,7 +169,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         }
     }
     
-    public var headerController: TTCollectionHeaderControllerProtocol? {
+    open var headerController: TTCollectionHeaderControllerProtocol? {
         willSet {
             headerController?.parentViewController = nil
         }
@@ -158,7 +178,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         }
     }
     
-    public var headerIsSticky = false {
+    open var headerIsSticky = false {
         didSet {
             if #available(iOS 9.0, *) {
                 (self.collectionView?.collectionViewLayout as! UICollectionViewFlowLayout).sectionHeadersPinToVisibleBounds = headerIsSticky
@@ -166,15 +186,15 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         }
     }
     
-    public var scrollDirection: UICollectionViewScrollDirection = .Vertical {
+    open var scrollDirection: UICollectionViewScrollDirection = .vertical {
         didSet {
             isScrollDirectionConfigured = true
             updateCollectionViewScrollDirection()
         }
     }
     internal func updateCollectionViewScrollDirection() {
-        let verticalScroll = (self.scrollDirection == .Vertical)
-        let horizontalScroll = (self.scrollDirection == .Horizontal)
+        let verticalScroll = (self.scrollDirection == .vertical)
+        let horizontalScroll = (self.scrollDirection == .horizontal)
         
         collectionView?.scrollsToTop = verticalScroll
         collectionView?.alwaysBounceHorizontal = horizontalScroll
@@ -203,7 +223,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     
     internal var displayedEmptyView : UIView?
     // UI appearence
-    public func updateEmptyViewAppearenceAnimated(animated: Bool) {
+    open func updateEmptyViewAppearenceAnimated(_ animated: Bool) {
         let feedIsLoading = (dataSource?.feed?.isReloading == true) || (dataSource?.feed?.isLoadingMore == true)
         let hasContent = dataSource?.hasContent() == true
         
@@ -211,7 +231,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
             if animated {
                 let emptyView = displayedEmptyView
                 displayedEmptyView = nil
-                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                UIView.animate(withDuration: 0.3, animations: { () -> Void in
                     emptyView?.alpha = 0
                     }, completion: { (_) -> Void in
                         if emptyView != self.emptyView {
@@ -233,14 +253,14 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
             
             if animated {
                 displayedEmptyView?.alpha = 0.0
-                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                UIView.animate(withDuration: 0.3, animations: { () -> Void in
                     self.displayedEmptyView?.alpha = 1.0
                 })
             }
         }
     }
     
-    public func updateReloadingIndicatorView() {
+    open func updateReloadingIndicatorView() {
         guard let dataSource = self.dataSource else {
             reloadIndicatorView?.stopAnimating()
             return
@@ -250,7 +270,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
             if hideReloadViewIfHasContent && dataSource.hasContent() {
                 
             } else {
-                if refreshControl == nil || (refreshControl?.refreshing == false) {
+                if refreshControl == nil || (refreshControl?.isRefreshing == false) {
                     reloadIndicatorView?.startAnimating()
                 }
             }
@@ -258,22 +278,22 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
             reloadIndicatorView?.stopAnimating()
         }
     }
-    public var hideReloadViewIfHasContent: Bool = true
+    open var hideReloadViewIfHasContent: Bool = true
     
     
     
-    public func scrollToElement<T>(ofFirst filter: (item: T) -> Bool, animated: Bool) {
+    open func scrollToElement<T>(ofFirst filter: (_ item: T) -> Bool, animated: Bool) {
         guard let collectionView = self.collectionView, let dataSource = self.dataSource else {
             return
         }
         
         if let indexPath = dataSource.indexPath(ofFirst: filter) {
             let layout = collectionView.collectionViewLayout
-            var attribute = layout.layoutAttributesForItemAtIndexPath(indexPath)
+            var attribute = layout.layoutAttributesForItem(at: indexPath)
             if attribute?.frame.size.width < 1.0 {
-                layout.prepareLayout()
-                attribute = layout.layoutAttributesForItemAtIndexPath(indexPath)
-                collectionView.contentSize = layout.collectionViewContentSize()
+                layout.prepare()
+                attribute = layout.layoutAttributesForItem(at: indexPath)
+                collectionView.contentSize = layout.collectionViewContentSize
             }
             
             if attribute != nil {
@@ -283,16 +303,16 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     }
     
     //MARK: Load More -
-    public var supportsLoadMore: Bool = true
-    public var autoLoadMoreContent: Bool = true
-    public var numberOfPagesToPreload: Int = 2 // load more content when last 2 pages are visible
-    public var canShowLoadMoreView : Bool = false
-    public func shouldShowLoadMoreForSection(section: Int) -> Bool { // default - YES only for last section
+    open var supportsLoadMore: Bool = true
+    open var autoLoadMoreContent: Bool = true
+    open var numberOfPagesToPreload: Int = 2 // load more content when last 2 pages are visible
+    open var canShowLoadMoreView : Bool = false
+    open func shouldShowLoadMore(section: Int) -> Bool { // default - YES only for last section
         return (dataSource != nil && (section == dataSource!.numberOfSections() - 1))
     }
     
-    public var loadMoreViewXIBName: String! = "LoadMoreView" // Expected same methods as in LoadMoreView
-    internal func updateCanShowLoadMoreViewAnimated(animated:Bool) {
+    open var loadMoreViewXIBName: String! = "LoadMoreView" // Expected same methods as in LoadMoreView
+    internal func updateCanShowLoadMoreViewAnimated(_ animated:Bool) {
         let feed = self.dataSource?.feed
         let showLoadMore = supportsLoadMore && (feed?.canLoadMore == true || feed?.isLoadingMore == true)
         
@@ -300,7 +320,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
             print("showLoadMore = \(showLoadMore)")
         }
         if canShowLoadMoreView != showLoadMore {
-            if animated && collectionView?.indexPathsForVisibleItems().count > 0 {
+            if animated && collectionView?.indexPathsForVisibleItems.count > 0 {
                 collectionView?.performBatchUpdates({ () -> Void in
                     self.canShowLoadMoreView = showLoadMore
                     self.collectionView?.collectionViewLayout.invalidateLayout()
@@ -313,13 +333,13 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         }
     }
     
-    public func checkIfShouldLoadMoreContent() {
-        guard let collectionView = collectionView, feed = dataSource?.feed else {
+    open func checkIfShouldLoadMoreContent() {
+        guard let collectionView = collectionView, let feed = dataSource?.feed else {
             return
         }
         
         if autoLoadMoreContent && supportsLoadMore && feed.canLoadMore == true {
-            if let indexPath = collectionView.indexPathsForVisibleItems().last {
+            if let indexPath = collectionView.indexPathsForVisibleItems.last {
                 self.checkIfShouldLoadMoreContentForIndexPath(indexPath)
             } else if dataSource?.hasContent() == false {
                 feed.loadMore()
@@ -327,8 +347,8 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         }
     }
     
-    internal func checkIfShouldLoadMoreContentForIndexPath(indexPath: NSIndexPath?) {  //Future - indexPath used for identifying section
-        guard let feed = self.dataSource?.feed, indexPath = indexPath, collectionView = collectionView else {
+    internal func checkIfShouldLoadMoreContentForIndexPath(_ indexPath: IndexPath?) {  //Future - indexPath used for identifying section
+        guard let feed = self.dataSource?.feed, let indexPath = indexPath, let collectionView = collectionView else {
             return
         }
         
@@ -336,16 +356,16 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
             return
         }
         
-        if shouldShowLoadMoreForSection(indexPath.section) {
+        if shouldShowLoadMore(section: indexPath.section) {
             var preloadMoreContent = false
             let bounds = collectionView.bounds
             let contentSize = collectionView.contentSize
             let numberOfPagesToPreload = CGFloat(self.numberOfPagesToPreload)
             
-            if scrollDirection == .Vertical {
-                preloadMoreContent = (contentSize.height - CGRectGetMaxY(bounds)) < (numberOfPagesToPreload * bounds.size.height)
+            if scrollDirection == .vertical {
+                preloadMoreContent = (contentSize.height - bounds.maxY) < (numberOfPagesToPreload * bounds.size.height)
             } else  {
-                preloadMoreContent = (contentSize.width - CGRectGetMaxX(bounds)) < (numberOfPagesToPreload * bounds.size.width)
+                preloadMoreContent = (contentSize.width - bounds.maxX) < (numberOfPagesToPreload * bounds.size.width)
             }
             
             if preloadMoreContent {
@@ -357,9 +377,9 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     
     //MARK: ForceTouch Preview -
     internal weak var forceTouchPreviewContext: UIViewControllerPreviewing?
-    public var forceTouchPreviewEnabled: Bool = false {
+    open var forceTouchPreviewEnabled: Bool = false {
         didSet {
-            if !isViewLoaded() {
+            if !isViewLoaded {
                 return
             }
             
@@ -372,14 +392,14 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     }
     
     //MARK: Pull to Refresh -
-    @IBOutlet public  weak var refreshControl: UIRefreshControl?
-    public func pullToRefreshAction(sender: AnyObject!) {
+    @IBOutlet open  weak var refreshControl: UIRefreshControl?
+    open func pullToRefreshAction(_ sender: AnyObject!) {
         dataSource?.feed?.reload()
     }
-    public func addPullToRefresh() {
+    open func addPullToRefresh() {
         let refreshControl = UIRefreshControl()
         refreshControl.backgroundColor = collectionView?.backgroundColor
-        refreshControl.addTarget(self, action: #selector(CollectionFeedController.pullToRefreshAction(_:)), forControlEvents: .ValueChanged)
+        refreshControl.addTarget(self, action: #selector(CollectionFeedController.pullToRefreshAction(_:)), for: .valueChanged)
         self.refreshControl = refreshControl
         collectionView?.addSubview(refreshControl)
     }
@@ -388,40 +408,40 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         // apple bug, after reload, collectionview calls unhighlight on cells that where removed from superview.
         let method = "_" + "unhighlightAllItems"
         let selector = Selector(method)
-        if collectionView?.respondsToSelector(selector) == true {
-            collectionView?.performSelector(selector)
+        if collectionView?.responds(to: selector) == true {
+            let _ = collectionView?.perform(selector)
         }
         collectionView?.reloadData()
     }
     
     
-    public var animatedUpdates = false
-    private var animatedUpdater: CollectionViewAnimatedUpdater?
+    open var animatedUpdates = false
+    fileprivate var animatedUpdater: CollectionViewAnimatedUpdater?
 //}
 //
 //
 ////MARK: Data Feed -
 //extension CollectionFeedController : TTDataFeedDelegate {
-    public func dataFeed(dataFeed: TTDataFeed?, failedWithError error: NSError) {
+    open func dataFeed(_ dataFeed: TTDataFeed?, failedWithError error: NSError) {
         refreshControl?.endRefreshing()
     }
     
-    public func dataFeed(dataFeed: TTDataFeed?, didReloadContent content: [Any]?) {
+    open func dataFeed(_ dataFeed: TTDataFeed?, didReloadContent content: [Any]?) {
         refreshControl?.endRefreshing()
     }
     
-    public func dataFeed(dataFeed: TTDataFeed?, didLoadMoreContent content: [Any]?) {
+    open func dataFeed(_ dataFeed: TTDataFeed?, didLoadMoreContent content: [Any]?) {
         
     }
     
-    public func dataFeed(dataFeed: TTDataFeed?, isReloading: Bool) {
+    open func dataFeed(_ dataFeed: TTDataFeed?, isReloading: Bool) {
         checkIfShouldLoadMoreContent()
         updateReloadingIndicatorView()
         updateCanShowLoadMoreViewAnimated(true)
         updateEmptyViewAppearenceAnimated(true)
     }
     
-    public func dataFeed(dataFeed: TTDataFeed?, isLoadingMore: Bool) {
+    open func dataFeed(_ dataFeed: TTDataFeed?, isLoadingMore: Bool) {
         checkIfShouldLoadMoreContent()
         updateCanShowLoadMoreViewAnimated(true)
         updateEmptyViewAppearenceAnimated(true)
@@ -432,7 +452,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
 //
 // MARK: Incremental Changes on Data source
 //extension CollectionFeedController : TTDataSourceDelegate {
-    public func dataSourceWillChangeContent(dataSource: TTDataSource) {
+    open func dataSourceWillChangeContent(_ dataSource: TTDataSource) {
         if let collectionView = collectionView {
             animatedUpdater = animatedUpdates ? CollectionViewAnimatedUpdater() : nil
             animatedUpdater?.collectionViewWillChangeContent(collectionView)
@@ -441,7 +461,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         }
     }
     
-    public func dataSourceDidChangeContent(dataSource: TTDataSource, animationCompletion: (() -> Void)?) {
+    open func dataSourceDidChangeContent(_ dataSource: TTDataSource, animationCompletion: (() -> Void)?) {
         if animatedUpdater == nil {
             reloadDataOnCollectionView()
         } else {
@@ -455,33 +475,33 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         animatedUpdater = nil
     }
 
-    public func dataSourceDidChangeContent(dataSource: TTDataSource) {
+    open func dataSourceDidChangeContent(_ dataSource: TTDataSource) {
         dataSourceDidChangeContent(dataSource, animationCompletion: nil)
     }
     
-    public func dataSource(dataSource: TTDataSource, didUpdateItemsAt indexPaths: [NSIndexPath]) {
+    open func dataSource(_ dataSource: TTDataSource, didUpdateItemsAt indexPaths: [IndexPath]) {
         animatedUpdater?.collectionView(collectionView!, didUpdateItemsAt: indexPaths)
     }
     
-    public func dataSource(dataSource: TTDataSource, didDeleteItemsAt indexPaths: [NSIndexPath]) {
+    open func dataSource(_ dataSource: TTDataSource, didDeleteItemsAt indexPaths: [IndexPath]) {
         animatedUpdater?.collectionView(collectionView!, didDeleteItemsAt: indexPaths)
     }
     
-    public func dataSource(dataSource: TTDataSource, didInsertItemsAt indexPaths: [NSIndexPath]) {
+    open func dataSource(_ dataSource: TTDataSource, didInsertItemsAt indexPaths: [IndexPath]) {
         animatedUpdater?.collectionView(collectionView!, didInsertItemsAt: indexPaths)
     }
     
-    public func dataSource(dataSource: TTDataSource, didMoveItemsFrom fromIndexPaths: [NSIndexPath], to toIndexPaths: [NSIndexPath]) {
+    open func dataSource(_ dataSource: TTDataSource, didMoveItemsFrom fromIndexPaths: [IndexPath], to toIndexPaths: [IndexPath]) {
         animatedUpdater?.collectionView(collectionView!, didMoveItemsFrom: fromIndexPaths, to: toIndexPaths)
     }
     
-    public func dataSource(dataSource: TTDataSource, didInsertSections addedSections: NSIndexSet) {
+    open func dataSource(_ dataSource: TTDataSource, didInsertSections addedSections: IndexSet) {
         animatedUpdater?.collectionView(collectionView!, didInsertSections: addedSections)
     }
-    public func dataSource(dataSource: TTDataSource, didDeleteSections deletedSections: NSIndexSet) {
+    open func dataSource(_ dataSource: TTDataSource, didDeleteSections deletedSections: IndexSet) {
         animatedUpdater?.collectionView(collectionView!, didDeleteSections: deletedSections)
     }
-    public func dataSource(dataSource: TTDataSource, didUpdateSections updatedSections: NSIndexSet) {
+    open func dataSource(_ dataSource: TTDataSource, didUpdateSections updatedSections: IndexSet) {
         animatedUpdater?.collectionView(collectionView!, didUpdateSections: updatedSections)
     }
 //}
@@ -489,7 +509,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
 // MARK: Data Source -
 //extension CollectionFeedController : UICollectionViewDataSource {
     
-    public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    open func numberOfSections(in collectionView: UICollectionView) -> Int {
         assert(cellController != nil, "cellController is nil, please do self.cellController = ...")
         guard let dataSource = self.dataSource else {
             return 0
@@ -504,11 +524,11 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         return dataSource.numberOfSections()
     }
     
-    public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return dataSource!.numberOfItems(inSection: section)
     }
     
-    public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let content = dataSource![indexPath]
         let reuseIdentifier = cellController.reuseIdentifier(for: content)
         
@@ -518,16 +538,16 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         
         if registeredCellIdentifiers?.contains(reuseIdentifier) == false {
             if let nib = cellController.nibToInstantiateCell(for: content) {
-                collectionView.registerNib(nib, forCellWithReuseIdentifier: reuseIdentifier)
+                collectionView.register(nib, forCellWithReuseIdentifier: reuseIdentifier)
             } else {
                 let cellClass: AnyClass? = cellController.classToInstantiateCell(for: content)
-                collectionView.registerClass(cellClass, forCellWithReuseIdentifier: reuseIdentifier)
+                collectionView.register(cellClass, forCellWithReuseIdentifier: reuseIdentifier)
             }
             
             registeredCellIdentifiers?.append(reuseIdentifier)
         }
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
         assert(cellController.acceptsContent(content), "Can't produce cell for content \(content)")
         assert(cell.reuseIdentifier == reuseIdentifier , "Cell returned from cell controller \(cellController) had reuseIdenfier \(cell.reuseIdentifier), which must be equal to the cell controller's reuseIdentifierForContent, which returned \(reuseIdentifier)")
         
@@ -545,7 +565,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         
         if autoLoadMoreContent {
             //schedule on next run loop
-            CFRunLoopPerformBlock(CFRunLoopGetMain(), kCFRunLoopCommonModes, {
+            CFRunLoopPerformBlock(CFRunLoopGetMain(), CFRunLoopMode.commonModes as CFTypeRef!, {
                 self.checkIfShouldLoadMoreContentForIndexPath(indexPath)
             })
         }
@@ -553,7 +573,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         return cell;
     }
     
-    public func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+    open func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard let dataSource = self.dataSource else {
             return UICollectionReusableView()
         }
@@ -561,9 +581,9 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         // load more
         let showLoadMore = kind == UICollectionElementKindSectionFooter && canShowLoadMoreView
         if showLoadMore {
-            let reusableView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: loadMoreViewXIBName, forIndexPath: indexPath)
+            let reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: loadMoreViewXIBName, for: indexPath)
             if let loadMoreView = reusableView as? LoadMoreView {
-                loadMoreView.loadingView?.hidden = false
+                loadMoreView.loadingView?.isHidden = false
                 loadMoreView.loadingView?.color = options.loadMoreIndicatorViewColor
                 loadMoreView.startAnimating()
                 
@@ -583,16 +603,16 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
             
             if registeredCellIdentifiers?.contains(reuseIdentifier) == false {
                 if let nib = headerController!.nibToInstantiate() {
-                    collectionView.registerNib(nib, forSupplementaryViewOfKind: kind, withReuseIdentifier: reuseIdentifier)
+                    collectionView.register(nib, forSupplementaryViewOfKind: kind, withReuseIdentifier: reuseIdentifier)
                 } else {
                     let headerClass: AnyClass? = headerController!.classToInstantiate()
-                    collectionView.registerClass(headerClass, forSupplementaryViewOfKind: kind, withReuseIdentifier: reuseIdentifier)
+                    collectionView.register(headerClass, forSupplementaryViewOfKind: kind, withReuseIdentifier: reuseIdentifier)
                 }
                 
                 registeredCellIdentifiers?.append(reuseIdentifier)
             }
             
-            let headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: reuseIdentifier, forIndexPath: indexPath)
+            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: reuseIdentifier, for: indexPath)
             headerView.parentViewController = self
             let content = dataSource[indexPath]
             headerController!.configureHeader(headerView, for: content, at: indexPath)
@@ -607,7 +627,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     
     // TODO: support for headerCellController
     
-    public func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+    open func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         cell.parentViewController = nil
     }
 //}
@@ -616,13 +636,13 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
 //
 // MARK: Did Select -
 //extension CollectionFeedController {
-    public func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    open func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let content = dataSource![indexPath]
         cellController.didSelectContent(content, at: indexPath, in: collectionView)
     }
 
 //    TODO: Fix should highlight
-//    func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+//    func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: IndexPath) -> Bool {
 //        if cellController.respondsToSelector(Selector("shouldHighlightContent:atIndexPath:")) {
 //            let content = dataSource.objectAtIndexPath(indexPath)
 //            return cellController.shouldHighlightContent!(content, atIndexPath: indexPath)
@@ -634,23 +654,23 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
 //
 // MARK: Layout Size -
 //extension CollectionFeedController {
-    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let content = dataSource![indexPath]
         let size = cellController.cellSize(for: content, in: collectionView)
         let boundsSize = collectionView.bounds.size
-        return CGSizeMake(size.width < 0.0 ? boundsSize.width : size.width, size.height < 0.0 ? boundsSize.height : size.height)
+        return CGSize(width: size.width < 0.0 ? boundsSize.width : size.width, height: size.height < 0.0 ? boundsSize.height : size.height)
     }
     
-    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         if dataSource?.numberOfItems(inSection: section) > 0 {
             let content = dataSource![section, 0]
             return cellController.sectionInset(for: content, in: collectionView)
         } else {
-            return UIEdgeInsetsZero
+            return UIEdgeInsets.zero
         }
     }
     
-    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         if dataSource?.numberOfItems(inSection: section) > 0 {
             let content = dataSource![section, 0]
             return cellController.minimumInteritemSpacing(for: content, in: collectionView)
@@ -659,7 +679,7 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         }
     }
     
-    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         if dataSource?.numberOfItems(inSection: section) > 0 {
             let content = dataSource![section, 0]
             return cellController.minimumLineSpacing(for: content, in: collectionView)
@@ -668,16 +688,16 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
         }
     }
     
-    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        return ((canShowLoadMoreView && shouldShowLoadMoreForSection(section)) ? CGSizeMake(30, 40) : CGSizeZero)
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        return ((canShowLoadMoreView && shouldShowLoadMore(section: section)) ? CGSize(width: 30, height: 40) : CGSize.zero)
     }
     
-    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection  section: Int) -> CGSize {
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection  section: Int) -> CGSize {
         let showHeader = headerController != nil && self.dataSource?.numberOfItems(inSection: section) > 0
         if showHeader && headerController!.acceptsContent(dataSource![section, 0]) {
             return headerController!.headerSize
         } else {
-            return CGSizeZero
+            return CGSize.zero
         }
     }
 //}
@@ -685,40 +705,40 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
 //MARK: ForceTouch Delegate
 //extension CollectionFeedController : UIViewControllerPreviewingDelegate {
     @available(iOS 9.0, *)
-    public func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        let point = collectionView!.convertPoint(location, fromView: self.view)
-        guard let indexPath = collectionView!.indexPathForItemAtPoint(point) else {
+    open func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        let point = collectionView!.convert(location, from: self.view)
+        guard let indexPath = collectionView!.indexPathForItem(at: point) else {
             return nil
         }
         
         let content = dataSource![indexPath]
         var cellController = self.cellController
-        let previousParentController = cellController.parentViewController
+        let previousParentController = cellController?.parentViewController
         let parentController = UIViewController()
         var dummyNavigationController: DummyNavigationController? = DummyNavigationController(rootViewController: parentController)
-        cellController.parentViewController = parentController
-        cellController.didSelectContent(content, at: indexPath, in: collectionView!)
-        cellController.parentViewController = previousParentController
+        cellController?.parentViewController = parentController
+        cellController?.didSelectContent(content, at: indexPath, in: collectionView!)
+        cellController?.parentViewController = previousParentController
         
         let controller = dummyNavigationController!.capturedViewController
         dummyNavigationController = nil // destroy
         if let controller = controller {
-            controller.preferredContentSize = CGSizeZero
+            controller.preferredContentSize = CGSize.zero
             
-            let cell = collectionView!.cellForItemAtIndexPath(indexPath)
-            previewingContext.sourceRect = cell!.convertRect(cell!.bounds, toView:self.view)
+            let cell = collectionView!.cellForItem(at: indexPath)
+            previewingContext.sourceRect = cell!.convert(cell!.bounds, to:self.view)
         }
         
         return controller
     }
     
-    public func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
-        showViewController(viewControllerToCommit, sender: self)
+    open func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        show(viewControllerToCommit, sender: self)
     }
     
     internal class DummyNavigationController : UINavigationController {
         var capturedViewController: UIViewController?
-        override func pushViewController(viewController: UIViewController, animated: Bool) {
+        override func pushViewController(_ viewController: UIViewController, animated: Bool) {
             if !viewControllers.isEmpty {
                 capturedViewController = viewController
             } else {
@@ -729,23 +749,23 @@ public class CollectionFeedController: UIViewController, TTCollectionFeedControl
     
     internal func registerForceTouchPreview() {
         if #available(iOS 9, *) {
-            if traitCollection.forceTouchCapability == .Available  && forceTouchPreviewContext == nil {
-                forceTouchPreviewContext = registerForPreviewingWithDelegate(self, sourceView: self.view!)
+            if traitCollection.forceTouchCapability == .available  && forceTouchPreviewContext == nil {
+                forceTouchPreviewContext = registerForPreviewing(with: self, sourceView: self.view!)
             }
         }
     }
     internal func unregisterForceTouchPreview() {
         if #available(iOS 9, *) {
-            if traitCollection.forceTouchCapability == .Available {
+            if traitCollection.forceTouchCapability == .available {
                 if forceTouchPreviewContext != nil {
-                    unregisterForPreviewingWithContext(forceTouchPreviewContext!)
+                    unregisterForPreviewing(withContext: forceTouchPreviewContext!)
                     forceTouchPreviewContext = nil
                 }
             }
         }
     }
     
-    public override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         
         if forceTouchPreviewContext == nil && forceTouchPreviewEnabled {
