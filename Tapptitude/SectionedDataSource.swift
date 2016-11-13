@@ -154,47 +154,7 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         
         return nil
     }
-    
-//    public func indexPath<T: Equatable>(of element: T) -> IndexPath? {
-//        var i = 0
-//        for subArray in _content {
-//            let index = subArray.indexOf({ (searchedItem) -> Bool in
-//                if let item = searchedItem as? T {
-//                    return item == element
-//                }
-//                return false
-//            })
-//            
-//            if let index = index {
-//                return IndexPath(item: index, section: 0)
-//            }
-//            
-//            i += 1
-//        }
-//        
-//        return nil
-//    }
-//
-//    public func indexPath<T: AnyObject>(of element: T) -> IndexPath? {
-//        var i = 0
-//        for subArray in _content {
-//            let index = subArray.indexOf({ (searchedItem) -> Bool in
-//                if let item = searchedItem as? T {
-//                    return item === element
-//                }
-//                return false
-//            })
-//            
-//            if let index = index {
-//                return IndexPath(item: index, section: 0)
-//            }
-//            
-//            i += 1
-//        }
-//        
-//        return nil
-//    }
-    
+        
     //}
     //
     //extension DataSource : TTDataFeedDelegate {
