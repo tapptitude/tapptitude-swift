@@ -7,26 +7,6 @@
 //
 
 import Foundation
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
 
 open class PaginatedDataFeed<ContentType, OffsetType> : DataFeed<ContentType> {
     open var offset: OffsetType? // dependends on backend API
@@ -70,7 +50,8 @@ public extension PaginatedDataFeed where OffsetType: Integer {
         self.init { (offset, callback) -> TTCancellable? in
             let pageSize = pageSize as! Int
             return loadPage(offset ?? 0, pageSize, { (content, error) in
-                let loadMore = enableLoadMoreOnlyForCompletePage ? (content?.count == pageSize) : (content?.count > 0)
+                let contentCount = content?.count ?? 0
+                let loadMore = enableLoadMoreOnlyForCompletePage ? (contentCount == pageSize) : (contentCount > 0)
                 let nextOffset: OffsetType? = loadMore ? ((offset ?? 0) + (pageSize as! OffsetType)) : nil
                 
                 callback(content, nextOffset, error)

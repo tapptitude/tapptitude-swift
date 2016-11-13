@@ -19,6 +19,12 @@ class EditViewController: CollectionFeedController {
             cell.label.text = "\(content)"
         }
         
+        let headerController = CollectionHeaderController<Int, UICollectionReusableView>(headerSize: CGSize(width: 0, height: 30))
+        headerController.configureHeader = {(header, _, _) in
+            header.backgroundColor = UIColor.darkGray
+        }
+        self.headerController = headerController
+        
         self.cellController = cellController
         self.dataSource = DataSource([1, 2])
     }
@@ -29,8 +35,6 @@ class EditViewController: CollectionFeedController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        collectionView?.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "test")
         
         animatedUpdates = true
     }
@@ -79,21 +83,6 @@ class EditViewController: CollectionFeedController {
         let toIndexPath = IndexPath(item:0, section:0)
         print("from \(fromIndexPath.row) to \(toIndexPath.row)")
         dataSourceMutable.moveElement(from: fromIndexPath, to: toIndexPath)
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        let size: CGSize = dataSource!.hasContent() == true ? CGSize(width: 0, height: 30) : CGSize.zero
-        return size
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        if kind == UICollectionElementKindSectionHeader {
-            let header: UICollectionReusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "test", for: indexPath);
-            header.backgroundColor = UIColor.darkGray;
-            return header;
-        } else {
-            return super.collectionView(collectionView, viewForSupplementaryElementOfKind: kind, at: indexPath)
-        }
     }
 }
 

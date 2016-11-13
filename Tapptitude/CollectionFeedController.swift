@@ -7,26 +7,6 @@
 //
 
 import UIKit
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
 
 open class CollectionFeedController: UIViewController, TTCollectionFeedController, TTDataFeedDelegate, TTDataSourceDelegate, UIViewControllerPreviewingDelegate {
     
@@ -290,7 +270,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         if let indexPath = dataSource.indexPath(ofFirst: filter) {
             let layout = collectionView.collectionViewLayout
             var attribute = layout.layoutAttributesForItem(at: indexPath)
-            if attribute?.frame.size.width < 1.0 {
+            if (attribute?.frame.size.width ?? 0.0) < 1.0 {
                 layout.prepare()
                 attribute = layout.layoutAttributesForItem(at: indexPath)
                 collectionView.contentSize = layout.collectionViewContentSize
@@ -320,8 +300,8 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
             print("showLoadMore = \(showLoadMore)")
         }
         if canShowLoadMoreView != showLoadMore {
-            if animated && collectionView?.indexPathsForVisibleItems.count > 0 {
-                collectionView?.performBatchUpdates({ () -> Void in
+            if animated == true, let collectionView = collectionView, collectionView.indexPathsForVisibleItems.count > 0 {
+                collectionView.performBatchUpdates({ () -> Void in
                     self.canShowLoadMoreView = showLoadMore
                     self.collectionView?.collectionViewLayout.invalidateLayout()
                     }, completion: nil)
@@ -662,8 +642,8 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     }
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        if dataSource?.numberOfItems(inSection: section) > 0 {
-            let content = dataSource![section, 0]
+        if let dataSource = dataSource, dataSource.numberOfItems(inSection: section) > 0 {
+            let content = dataSource[section, 0]
             return cellController.sectionInset(for: content, in: collectionView)
         } else {
             return UIEdgeInsets.zero
@@ -671,8 +651,8 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     }
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        if dataSource?.numberOfItems(inSection: section) > 0 {
-            let content = dataSource![section, 0]
+        if let dataSource = dataSource, dataSource.numberOfItems(inSection: section) > 0 {
+            let content = dataSource[section, 0]
             return cellController.minimumInteritemSpacing(for: content, in: collectionView)
         } else {
             return 0.0
@@ -680,8 +660,8 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     }
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        if dataSource?.numberOfItems(inSection: section) > 0 {
-            let content = dataSource![section, 0]
+        if let dataSource = dataSource, dataSource.numberOfItems(inSection: section) > 0 {
+            let content = dataSource[section, 0]
             return cellController.minimumLineSpacing(for: content, in: collectionView)
         } else {
             return 0.0
@@ -693,9 +673,9 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     }
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection  section: Int) -> CGSize {
-        let showHeader = headerController != nil && self.dataSource?.numberOfItems(inSection: section) > 0
-        if showHeader && headerController!.acceptsContent(dataSource![section, 0]) {
-            return headerController!.headerSize
+        if let dataSource = dataSource, dataSource.numberOfItems(inSection: section) > 0,
+            let headerController = headerController, headerController.acceptsContent(dataSource[section, 0]) {
+            return headerController.headerSize
         } else {
             return CGSize.zero
         }
