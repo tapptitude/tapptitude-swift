@@ -422,7 +422,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
 //
 ////MARK: Data Feed -
 //extension CollectionFeedController : TTDataFeedDelegate {
-    open func dataFeed(_ dataFeed: TTDataFeed?, failedWithError error: NSError) {
+    open func dataFeed(_ dataFeed: TTDataFeed?, failedWithError error: Error) {
         refreshControl?.endRefreshing()
     }
     

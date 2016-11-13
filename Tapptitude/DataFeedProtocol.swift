@@ -29,7 +29,7 @@ public protocol TTDataFeed {
 }
 
 public protocol TTDataFeedDelegate: class {
-    func dataFeed(_ dataFeed: TTDataFeed?, failedWithError error: NSError)
+    func dataFeed(_ dataFeed: TTDataFeed?, failedWithError error: Error)
     
     func dataFeed(_ dataFeed: TTDataFeed?, didReloadContent content: [Any]?)
     func dataFeed(_ dataFeed: TTDataFeed?, didLoadMoreContent content: [Any]?)

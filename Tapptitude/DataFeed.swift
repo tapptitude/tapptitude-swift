@@ -7,37 +7,17 @@
 //
 
 import Foundation
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
 
 public protocol TTCancellable {
     func cancel()
 }
 
 public enum TTCallback <T> {
-    public typealias Signature = (_ content: [T]?, _ error: NSError?) -> ()
+    public typealias Signature = (_ content: [T]?, _ error: Error?) -> ()
 }
 
 public enum TTCallbackNextOffset <T, OffsetType> {
-    public typealias Signature = (_ content: [T]?, _ nextOffset: OffsetType?, _ error: NSError?) -> () // next offset is given by backend
+    public typealias Signature = (_ content: [T]?, _ nextOffset: OffsetType?, _ error: Error?) -> () // next offset is given by backend
 }
 
 open class DataFeed<T>: TTDataFeed {
@@ -63,7 +43,7 @@ open class DataFeed<T>: TTDataFeed {
     open var enableReloadAfterXSeconds = 5 * 60.0
     open var lastReloadDate : Date?
     open func shouldReload() -> Bool {
-        let shouldReload = canReload && (lastReloadDate == nil || (lastReloadDate?.timeIntervalSinceNow > enableReloadAfterXSeconds))
+        let shouldReload = canReload && (lastReloadDate == nil || (lastReloadDate!.timeIntervalSinceNow > enableReloadAfterXSeconds))
         return shouldReload
     }
     

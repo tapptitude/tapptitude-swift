@@ -108,7 +108,7 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
 //
 //extension DataSource : TTDataFeedDelegate {
     
-    open func dataFeed(_ dataFeed: TTDataFeed?, failedWithError error: NSError) {
+    open func dataFeed(_ dataFeed: TTDataFeed?, failedWithError error: Error) {
         if let delegate = delegate as? TTDataFeedDelegate {
             delegate.dataFeed(dataFeed, failedWithError: error)
         }
