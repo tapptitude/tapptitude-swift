@@ -11,9 +11,9 @@ import Foundation
 open class PaginatedDataFeed<ContentType, OffsetType> : DataFeed<ContentType> {
     open var offset: OffsetType? // dependends on backend API
     
-    fileprivate var loadPageNextOffsetOperation: (_ offset: OffsetType?, _ callback: TTCallbackNextOffset<ContentType, OffsetType>.Signature) -> TTCancellable? // next page offset is given by backend
+    fileprivate var loadPageNextOffsetOperation: (_ offset: OffsetType?, _ callback: @escaping TTCallbackNextOffset<ContentType, OffsetType>.Signature) -> TTCancellable? // next page offset is given by backend
     
-    public init(loadPage: @escaping (_ offset: OffsetType?, _ callback: TTCallbackNextOffset<ContentType, OffsetType>.Signature) -> TTCancellable?) {
+    public init(loadPage: @escaping (_ offset: OffsetType?, _ callback: @escaping TTCallbackNextOffset<ContentType, OffsetType>.Signature) -> TTCancellable?) {
         self.loadPageNextOffsetOperation = loadPage
     }
     
@@ -46,7 +46,7 @@ open class PaginatedDataFeed<ContentType, OffsetType> : DataFeed<ContentType> {
 public extension PaginatedDataFeed where OffsetType: Integer {
     
     convenience public init(pageSize: OffsetType, enableLoadMoreOnlyForCompletePage: Bool = true,
-                            loadPage: @escaping (_ offset:OffsetType, _ pageSize:Int, _ callback:TTCallback<ContentType>.Signature) -> TTCancellable?) {
+                            loadPage: @escaping (_ offset:OffsetType, _ pageSize:Int, _ callback: @escaping TTCallback<ContentType>.Signature) -> TTCancellable?) {
         self.init { (offset, callback) -> TTCancellable? in
             let pageSize = pageSize as! Int
             return loadPage(offset ?? 0, pageSize, { (content, error) in
@@ -61,13 +61,13 @@ public extension PaginatedDataFeed where OffsetType: Integer {
 }
 
 extension DataSource {
-    public convenience init<T, OffsetType>(loadPage: @escaping (_ offset: OffsetType?, _ callback:TTCallbackNextOffset<T, OffsetType>.Signature) -> TTCancellable?) {
+    public convenience init<T, OffsetType>(loadPage: @escaping (_ offset: OffsetType?, _ callback: @escaping TTCallbackNextOffset<T, OffsetType>.Signature) -> TTCancellable?) {
         self.init()
         self.feed = PaginatedDataFeed(loadPage: loadPage)
         self.feed?.delegate = self // need to set otherwise is null in init
     }
     
-    public convenience init<T>(pageSize:Int, loadPage: @escaping (_ offset:Int, _ pageSize:Int, _ callback:TTCallback<T>.Signature) -> TTCancellable?) {
+    public convenience init<T>(pageSize:Int, loadPage: @escaping (_ offset:Int, _ pageSize:Int, _ callback: @escaping TTCallback<T>.Signature) -> TTCancellable?) {
         self.init()
         self.feed = PaginatedDataFeed(pageSize: pageSize, loadPage: loadPage)
         self.feed?.delegate = self // need to set otherwise is null in init
