@@ -200,6 +200,7 @@ public extension UIView {
         }
     }
     
+    @discardableResult
     public func addKeyboardVisibilityController() -> KeyboardVisibilityController {
         var keyboardController = self.keyboardVisibilityController
         
