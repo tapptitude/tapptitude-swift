@@ -9,7 +9,7 @@
 import UIKit
 import Tapptitude
 
-extension NSURLSessionTask: TTCancellable {
+extension URLSessionTask: TTCancellable {
     
 }
 
@@ -23,7 +23,7 @@ class FeedController: CollectionFeedController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        collectionView!.registerClass(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "test")
+        collectionView!.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "test")
         
         addPullToRefresh()
         forceTouchPreviewEnabled = true
@@ -37,7 +37,7 @@ class FeedController: CollectionFeedController {
         
         let numberCellController = CollectionCellController<Int, UICollectionViewCell>(cellSize: CGSize(width: 100, height: 50))
         numberCellController.configureCell = { cell, content, indexPath in
-            cell.backgroundColor = UIColor.blueColor()
+            cell.backgroundColor = UIColor.blue
         }
         
         self.cellController = MultiCollectionCellController([cellController, numberCellController])
@@ -54,7 +54,7 @@ class FeedController: CollectionFeedController {
         
         let dataSource = DataSource<String>(pageSize: 2, loadPage: { (offset, pageSize, callback) -> TTCancellable? in
             return APIPaginatedMock(offset: offset, pageSize: pageSize, callback: { (content, error) in
-                callback(content: content, error: error)
+                callback(content, error)
             })
         })
         
@@ -66,7 +66,7 @@ class FeedController: CollectionFeedController {
         
 //        let url = NSURL(string: "https://httpbin.org/get")
 //        var url_request = NSMutableURLRequest(URL: url!)
-//        
+//
 //        dataSource.feed = SimpleDataFeed<String> { (callback) -> TTCancellable? in
 //            let task = NSURLSession.sharedSession().dataTaskWithRequest(url_request) { data , response , error  in
 //                let stringResponse = data != nil ? String(data: data!, encoding: NSUTF8StringEncoding) : nil
@@ -93,22 +93,22 @@ class FeedController: CollectionFeedController {
         self.dataSource = dataSource
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
     
-    override func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        let size: CGSize = dataSource!.hasContent() == true ? CGSizeMake(0, 30) : CGSizeZero
+    override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        let size: CGSize = dataSource!.hasContent() == true ? CGSize(width: 0, height: 30) : CGSize.zero
         return size
     }
     
-    override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionElementKindSectionHeader {
-            let header: UICollectionReusableView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "test", forIndexPath: indexPath);
-            header.backgroundColor = UIColor.darkGrayColor();
+            let header: UICollectionReusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "test", for: indexPath);
+            header.backgroundColor = UIColor.darkGray;
             return header;
         } else {
-            return super.collectionView(collectionView, viewForSupplementaryElementOfKind: kind, atIndexPath: indexPath)
+            return super.collectionView(collectionView, viewForSupplementaryElementOfKind: kind, at: indexPath)
         }
     }
 }

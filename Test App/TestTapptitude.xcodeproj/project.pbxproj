@@ -11,6 +11,7 @@
 		2355FF9B1CA3350D00D7B393 /* TextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2355FF9A1CA3350D00D7B393 /* TextCell.xib */; };
 		2355FF9D1CA3355F00D7B393 /* TextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2355FF9C1CA3355F00D7B393 /* TextCell.swift */; };
 		2355FF9F1CA3367900D7B393 /* TextCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2355FF9E1CA3367900D7B393 /* TextCellController.swift */; };
+		23670E6C1DF95FDE0059D5AA /* ParallelFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23670E6B1DF95FDE0059D5AA /* ParallelFeedController.swift */; };
 		2393482C1CA5D268005EB280 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2393482B1CA5D268005EB280 /* API.swift */; };
 		23A550DA1C78A1BC00695BF3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A550D91C78A1BC00695BF3 /* AppDelegate.swift */; };
 		23A550DF1C78A1BC00695BF3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23A550DD1C78A1BC00695BF3 /* Main.storyboard */; };
@@ -34,6 +35,7 @@
 		2355FF9A1CA3350D00D7B393 /* TextCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextCell.xib; sourceTree = "<group>"; };
 		2355FF9C1CA3355F00D7B393 /* TextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextCell.swift; sourceTree = "<group>"; };
 		2355FF9E1CA3367900D7B393 /* TextCellController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextCellController.swift; sourceTree = "<group>"; };
+		23670E6B1DF95FDE0059D5AA /* ParallelFeedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParallelFeedController.swift; sourceTree = "<group>"; };
 		2393482B1CA5D268005EB280 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		23A550D61C78A1BB00695BF3 /* TestTapptitude.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestTapptitude.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		23A550D91C78A1BC00695BF3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 			children = (
 				23A550D91C78A1BC00695BF3 /* AppDelegate.swift */,
 				23A551101C78A32300695BF3 /* FeedController.swift */,
+				23670E6B1DF95FDE0059D5AA /* ParallelFeedController.swift */,
 				2393482B1CA5D268005EB280 /* API.swift */,
 				2393482A1CA5D236005EB280 /* Test Cell */,
 				23A550DD1C78A1BC00695BF3 /* Main.storyboard */,
@@ -143,11 +146,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = Tapptitude;
 				TargetAttributes = {
 					23A550D51C78A1BB00695BF3 = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0810;
 					};
 				};
 			};
@@ -204,6 +208,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23670E6C1DF95FDE0059D5AA /* ParallelFeedController.swift in Sources */,
 				2355FF9D1CA3355F00D7B393 /* TextCell.swift in Sources */,
 				23A551111C78A32300695BF3 /* FeedController.swift in Sources */,
 				23A550DA1C78A1BC00695BF3 /* AppDelegate.swift in Sources */,
@@ -248,8 +253,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -293,8 +300,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -313,6 +322,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -326,7 +336,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tapptitude.TestTapptitude;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -339,7 +349,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tapptitude.TestTapptitude;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

@@ -30,6 +30,7 @@
 		235500B81CA4569200D7B393 /* CollectionFeedController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 235500A71CA4569200D7B393 /* CollectionFeedController.xib */; };
 		235500BA1CA4569200D7B393 /* tapptitude-swift.h in Headers */ = {isa = PBXBuildFile; fileRef = 235500A91CA4569200D7B393 /* tapptitude-swift.h */; };
 		23604B691DD216680085FD15 /* FetchedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23604B681DD216680085FD15 /* FetchedDataSource.swift */; };
+		23670E671DF89EA10059D5AA /* ParallelOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23670E661DF89EA10059D5AA /* ParallelOperations.swift */; };
 		23C5A6F01CB82B6E00FE5152 /* FilteredDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C5A6EF1CB82B6E00FE5152 /* FilteredDataSource.swift */; };
 		23C8ADEE1CAC1D0600BC47E3 /* HybridDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C8ADED1CAC1D0600BC47E3 /* HybridDataSource.swift */; };
 		23D6608C1CBF901C0005470F /* CollectionHeaderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D6608B1CBF901C0005470F /* CollectionHeaderController.swift */; };
@@ -61,6 +62,7 @@
 		235500A81CA4569200D7B393 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Tapptitude/Info.plist; sourceTree = SOURCE_ROOT; };
 		235500A91CA4569200D7B393 /* tapptitude-swift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "tapptitude-swift.h"; path = "Tapptitude/tapptitude-swift.h"; sourceTree = SOURCE_ROOT; };
 		23604B681DD216680085FD15 /* FetchedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FetchedDataSource.swift; path = Tapptitude/FetchedDataSource.swift; sourceTree = SOURCE_ROOT; };
+		23670E661DF89EA10059D5AA /* ParallelOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParallelOperations.swift; path = Tapptitude/ParallelOperations.swift; sourceTree = SOURCE_ROOT; };
 		23C5A6EF1CB82B6E00FE5152 /* FilteredDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilteredDataSource.swift; path = Tapptitude/FilteredDataSource.swift; sourceTree = SOURCE_ROOT; };
 		23C8ADED1CAC1D0600BC47E3 /* HybridDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HybridDataSource.swift; path = Tapptitude/HybridDataSource.swift; sourceTree = SOURCE_ROOT; };
 		23D6608B1CBF901C0005470F /* CollectionHeaderController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionHeaderController.swift; path = Tapptitude/CollectionHeaderController.swift; sourceTree = SOURCE_ROOT; };
@@ -124,6 +126,7 @@
 				2355009F1CA4569200D7B393 /* DataFeed.swift */,
 				235500A01CA4569200D7B393 /* SimpleDataFeed.swift */,
 				2355009E1CA4569200D7B393 /* PaginatedDataFeed.swift */,
+				23670E661DF89EA10059D5AA /* ParallelOperations.swift */,
 				235500A21CA4569200D7B393 /* CollectionFeedViewController.swift */,
 				2355009B1CA4569200D7B393 /* CollectionFeedController.swift */,
 				235500A71CA4569200D7B393 /* CollectionFeedController.xib */,
@@ -235,6 +238,7 @@
 				23C8ADEE1CAC1D0600BC47E3 /* HybridDataSource.swift in Sources */,
 				235500B51CA4569200D7B393 /* CollectionViewAnimatedUpdater.swift in Sources */,
 				23D6608C1CBF901C0005470F /* CollectionHeaderController.swift in Sources */,
+				23670E671DF89EA10059D5AA /* ParallelOperations.swift in Sources */,
 				234BC72F1CDCF9A6004057D4 /* SwipeToEditOnCollection.swift in Sources */,
 				235500B01CA4569200D7B393 /* DataFeed.swift in Sources */,
 				23014FF41CBBC41B001F9DC6 /* SectionedDataSource.swift in Sources */,

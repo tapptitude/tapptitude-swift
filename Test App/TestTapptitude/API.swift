@@ -15,16 +15,16 @@ class APIMock: TTCancellable {
     }
     
     var wasCancelled = false
-    var callback: (content: [String]?, error: NSError?)->Void
+    var callback: (_ content: [String]?, _ error: NSError?)->Void
     
-    init(callback: (content: [String]?, error: NSError?)->Void) {
+    init(callback: @escaping (_ content: [String]?, _ error: NSError?)->Void) {
         self.callback = callback
         
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(5 * Double(NSEC_PER_SEC)))
-        dispatch_after(delayTime, dispatch_get_main_queue()) {
+        let delayTime = DispatchTime.now() + Double(Int64(5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: delayTime) {
             print("test")
             if !self.wasCancelled {
-                callback(content: ["234"], error: nil)
+                callback(["234"], nil)
             }
         }
     }
@@ -37,20 +37,20 @@ class APIPaginatedMock: TTCancellable {
     }
     
     var wasCancelled = false
-    var callback: (content: [String]?, error: NSError?)->Void
+    var callback: (_ content: [String]?, _ error: NSError?)->Void
     
-    init(offset:Int, pageSize:Int, callback: (content: [String]?, error: NSError?)->Void) {
+    init(offset:Int, pageSize:Int, callback: @escaping (_ content: [String]?, _ error: NSError?)->Void) {
         self.callback = callback
         
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(3 * Double(NSEC_PER_SEC)))
-        dispatch_after(delayTime, dispatch_get_main_queue()) {
+        let delayTime = DispatchTime.now() + Double(Int64(3 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: delayTime) {
             if !self.wasCancelled {
                 if offset > 3 {
                     print("completed")
-                    callback(content: nil, error: nil)
+                    callback(nil, nil)
                 } else {
                     print("loaded")
-                    callback(content: ["Maria", "Ion"], error: nil)
+                    callback(["Maria", "Ion"], nil)
                 }
             }
         }
@@ -64,27 +64,27 @@ class APIPaginateOffsetdMock: TTCancellable {
     }
     
     var wasCancelled = false
-    var callback: (content: [String]?, nextOffset:String?, error: NSError?)->Void
+    var callback: (_ content: [String]?, _ nextOffset:String?, _ error: NSError?)->Void
     
-    init(offset:String?, limit:Int, callback: (content: [String]?, nextOffset:String?, error: NSError?)->Void) {
+    init(offset:String?, limit:Int, callback: @escaping (_ content: [String]?, _ nextOffset:String?, _ error: NSError?)->Void) {
         self.callback = callback
         
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC)))
-        dispatch_after(delayTime, dispatch_get_main_queue()) {
+        let delayTime = DispatchTime.now() + Double(Int64(0.1 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: delayTime) {
             print("test")
             if !self.wasCancelled {
                 if offset == nil {
-                    callback(content: nil, nextOffset: "1", error: nil)
+                    callback(nil, "1", nil)
                 } else if offset == "1" {
-                    callback(content: [""], nextOffset: "2", error: nil)
+                    callback([""], "2", nil)
                 } else if offset == "2" {
-                    callback(content: [""], nextOffset: "3", error: nil)
+                    callback([""], "3", nil)
                 } else if offset == "3" {
-                    callback(content: nil, nextOffset: "4", error: nil)
+                    callback(nil, "4", nil)
                 } else if offset == "4" {
-                    callback(content: [""], nextOffset: "5", error: nil)
+                    callback([""], "5", nil)
                 } else if offset == "5" {
-                    callback(content: [""], nextOffset: nil, error: nil)
+                    callback([""], nil, nil)
                 }
             }
         }

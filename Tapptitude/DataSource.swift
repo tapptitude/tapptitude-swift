@@ -8,6 +8,8 @@
 
 import Foundation
 
+/// Single section dataSource used by TTCollectionFeedController
+/// use feed property to fetch data from API
 open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable {
     public typealias Element = T
     
@@ -103,6 +105,8 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
     }
     
     open var dataSourceID : String?
+    /// store/access any information here by using a unique key
+    open var info: [String: Any] = [:]
     
 //}
 //

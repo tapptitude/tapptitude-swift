@@ -17,9 +17,9 @@ class TextCellController : CollectionCellController<String, TextCell> {
         minimumLineSpacing = 10
     }
     
-    override func configureCell(cell: CellType, for content: ContentType, at indexPath: NSIndexPath) {
+    override func configureCell(_ cell: CellType, for content: ContentType, at indexPath: IndexPath) {
         cell.label.text = content
-        cell.backgroundColor = UIColor.redColor()
+        cell.backgroundColor = UIColor.red
     }
     
     override func cellSize(for content: ContentType, in collectionView: UICollectionView) -> CGSize {

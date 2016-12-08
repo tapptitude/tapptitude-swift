@@ -12,27 +12,25 @@ public protocol TTCancellable {
     func cancel()
 }
 
-public enum TTCallback <T> {
-    public typealias Signature = (_ content: [T]?, _ error: Error?) -> ()
-}
+public typealias TTCallback<T> = (_ content: [T]?, _ error: Error?) -> ()
 
-public enum TTCallbackNextOffset <T, OffsetType> {
-    public typealias Signature = (_ content: [T]?, _ nextOffset: OffsetType?, _ error: Error?) -> () // next offset is given by backend
-}
+public typealias TTCallbackNextOffset<T, OffsetType> = (_ content: [T]?, _ nextOffset: OffsetType?, _ error: Error?) -> () // next offset is given by backend
+
+
 
 open class DataFeed<T>: TTDataFeed {
     open weak var delegate: TTDataFeedDelegate?
     
-    open func reloadOperationWithCallback(_ callback: @escaping TTCallback<T>.Signature) -> TTCancellable? {
+    open func reloadOperationWithCallback(_ callback: @escaping TTCallback<T>) -> TTCancellable? {
         return nil
     }
     
-    open func loadMoreOperationWithCallback(_ callback: @escaping TTCallback<T>.Signature) -> TTCancellable? {
+    open func loadMoreOperationWithCallback(_ callback: @escaping TTCallback<T>) -> TTCancellable? {
         return nil
     }
     
-    internal var executingReloadOperation: TTCancellable?;
-    internal var executingLoadMoreOperation: TTCancellable?;
+    internal var executingReloadOperation: TTCancellable?
+    internal var executingLoadMoreOperation: TTCancellable?
     
     deinit {
         executingReloadOperation?.cancel()
@@ -51,6 +49,7 @@ open class DataFeed<T>: TTDataFeed {
     open var canReload: Bool {
         return !isReloading
     }
+    /// Will cancel any loadMore operation if any, or will do nothing if canReload is false
     open func reload() {
         if canReload {
             print("Reloading content...")
@@ -132,4 +131,7 @@ open class DataFeed<T>: TTDataFeed {
             delegate?.dataFeed(self, isLoadingMore: isLoadingMore)
         }
     }
+    
+    /// store/access any information here by using a unique key
+    open var info: [String: Any] = [:]
 }

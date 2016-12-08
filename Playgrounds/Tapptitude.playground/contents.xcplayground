@@ -22,5 +22,6 @@
         <page name='Chat Controller'/>
         <page name='Auto Expanded TextView'/>
         <page name='SelfSizingCells'/>
+        <page name='ParalledDataFeed'/>
     </pages>
 </playground>
