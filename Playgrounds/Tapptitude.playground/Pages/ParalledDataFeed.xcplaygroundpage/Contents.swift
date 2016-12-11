@@ -67,12 +67,33 @@ class API {
         
         return task
     }
+    
+    static func getHackerNewsParams(param: Int, callback: @escaping (_ items: [String]?, _ error: Error?) -> ()) -> TTCancellable? {
+        let url = URL(string: "https://news.ycombinator.com/news")
+        let url_request = URLRequest(url: url!)
+        
+        let task = URLSession.shared.dataTask(with: url_request) { data , response , error  in
+            let stringResponse = data != nil ? String(data: data!, encoding: String.Encoding.utf8) : nil
+            let items: [String]? = stringResponse != nil ? [stringResponse!] : nil
+            print(error ?? "")
+            
+            DispatchQueue.main.async {
+                callback(items, error)
+            }
+        }
+        task.resume()
+        
+        return task
+    }
 }
 
 let feedController = CollectionFeedController()
 let dataSource = DataSource<Any>()
 dataSource.addOperation(load: API.getBin)
 dataSource.addOperation(load: API.getHackerNews)
+dataSource.addOperation(load: { callback -> TTCancellable? in
+    return API.getHackerNewsParams(param: 1, callback: callback)
+})
 feedController.dataSource = dataSource
 feedController.cellController = TextCellController()
 

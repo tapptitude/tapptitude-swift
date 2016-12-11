@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Allows multiple operation to be loaded
 open class ParallelDataFeed: DataFeed<Any> {
     fileprivate var parallelOperation: ParallelOperations!
     
@@ -23,6 +24,8 @@ open class ParallelDataFeed: DataFeed<Any> {
         self.parallelOperation = ParallelOperations()
     }
     
+    /// assign an operation that is loaded
+    /// - parameter isOptional : on true datafeed will ignore response of load operation when error != nil
     public func addOperation<T>(_ isOptional: Bool = false, load: @escaping (_ callback: @escaping TTCallback<T>) -> TTCancellable?) {
         parallelOperation?.add(operation: load)
     }

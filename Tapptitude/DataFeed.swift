@@ -8,13 +8,17 @@
 
 import Foundation
 
+/// allow an operation to be canceled at any time
 public protocol TTCancellable {
     func cancel()
 }
 
+/// used by data feed
 public typealias TTCallback<T> = (_ content: [T]?, _ error: Error?) -> ()
 
-public typealias TTCallbackNextOffset<T, OffsetType> = (_ content: [T]?, _ nextOffset: OffsetType?, _ error: Error?) -> () // next offset is given by backend
+/// used by paginated data feed
+/// - parameter nextOffset : is given by backend
+public typealias TTCallbackNextOffset<T, OffsetType> = (_ content: [T]?, _ nextOffset: OffsetType?, _ error: Error?) -> ()
 
 
 

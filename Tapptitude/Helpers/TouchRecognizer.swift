@@ -36,7 +36,7 @@ open class TouchRecognizer: UIGestureRecognizer {
         super.touchesBegan(touches, with: event)
         
         let touch = touches.first!
-        if ignoreFirstResponder && touch.view!.isFirstResponder {
+        if ignoreFirstResponder && touch.view?.isFirstResponder == true {
             return
         }
         
