@@ -206,15 +206,7 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
     }
     
     open func append(contentsOf newElements: [T]) {
-        editContent { (_content, delegate) -> Void in
-            let startIndex = _content.count
-            let indexPaths = newElements.enumerated().map({ (index, _) -> IndexPath in
-                return IndexPath(item: startIndex + index, section: 0)
-            })
-            
-            _content.append(contentsOf: newElements)
-            delegate?.dataSource(self, didInsertItemsAt: indexPaths)
-        }
+        insert(contentsOf: newElements, at: IndexPath(item: content.count, section: 0))
     }
     
     open func insert(_ newElement: T, at indexPath: IndexPath) {
@@ -225,14 +217,15 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
     }
     
     open func insert(contentsOf newElements: [T], at indexPath: IndexPath) {
-        var insertedIndexPaths:[IndexPath] = []
+        if newElements.isEmpty {
+            return
+        }
+        
         editContent { (_content, delegate) -> Void in
-            var counter = 0
-            for element in newElements {
-                _content.insert(element, at: indexPath.item + counter)
-                insertedIndexPaths.append(IndexPath(item: indexPath.item + counter, section: 0))
-                counter += 1
-            }
+            let startIndex = indexPath.item
+            let endIndex = startIndex + newElements.count - 1
+            _content.insert(contentsOf: newElements, at: startIndex)
+            let insertedIndexPaths = (startIndex...endIndex).map({ IndexPath(item: $0, section: 0) })
             delegate?.dataSource(self, didInsertItemsAt: insertedIndexPaths)
         }
     }

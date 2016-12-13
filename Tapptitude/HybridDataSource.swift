@@ -122,7 +122,7 @@ open class GroupCellController<ItemType>: MultiCollectionCellController, HybridC
         if let item = content as? ItemType {
             return acceptsContent(item)
         } else {
-            return false
+            return super.acceptsContent(content)
         }
     }
     

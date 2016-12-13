@@ -36,6 +36,15 @@ dataSource.last
 dataSource.remove ({ $0 == 2 })
 print(dataSource.content)
 
+dataSource.insert(contentsOf: [1, 2, 3, 4], at: IndexPath(item: 2, section: 0))
+print(dataSource.content)
+
+dataSource.insert(contentsOf: [], at: IndexPath(item: 2, section: 0))
+print(dataSource.content)
+
+dataSource.append(contentsOf: [123])
+print(dataSource.content)
+
 dataSource.remove({ _ in return true })
 print(dataSource.content)
 

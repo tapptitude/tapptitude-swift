@@ -125,13 +125,6 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         }
     }
     
-    open func remove(at indexPath: IndexPath) {
-        delegate?.dataSourceWillChangeContent(self)
-        _content[indexPath.section].remove(at: indexPath.item)
-        delegate?.dataSource(self, didDeleteItemsAt: [indexPath])
-        delegate?.dataSourceDidChangeContent(self)
-    }
-    
     open var dataSourceID : String?
     
     open func indexPath<S>(ofFirst filter: (_ item: S) -> Bool) -> IndexPath? {
@@ -153,6 +146,38 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         }
         
         return nil
+    }
+    
+    private func editContentWithBlock(editBlock: ( _ content: inout [[T]], _ delegate: TTDataSourceDelegate?) -> Void) {
+        delegate?.dataSourceWillChangeContent(self)
+        editBlock(&_content, delegate);
+        delegate?.dataSourceDidChangeContent(self)
+    }
+    
+    open func append(contentsOf newElements: [T]) {
+        let section = max(0, content.count - 1)
+        insert(contentsOf: newElements, at: IndexPath(item: content.count, section: section))
+    }
+    
+    open func insert(contentsOf newElements: [T], at indexPath: IndexPath) {
+        if newElements.isEmpty {
+            return
+        }
+        
+        editContentWithBlock { (_content, delegate) -> Void in
+            let startIndex = indexPath.item
+            let endIndex = startIndex + newElements.count - 1
+            _content[indexPath.section].insert(contentsOf: newElements, at: startIndex)
+            let insertedIndexPaths = (startIndex...endIndex).map({ IndexPath(item: $0, section: indexPath.section) })
+            delegate?.dataSource(self, didInsertItemsAt: insertedIndexPaths)
+        }
+    }
+    
+    open func remove(at indexPath: IndexPath) {
+        delegate?.dataSourceWillChangeContent(self)
+        _content[indexPath.section].remove(at: indexPath.item)
+        delegate?.dataSource(self, didDeleteItemsAt: [indexPath])
+        delegate?.dataSourceDidChangeContent(self)
     }
         
     //}

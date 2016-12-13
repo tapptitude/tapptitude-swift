@@ -52,10 +52,15 @@ class EditViewController: CollectionFeedController {
     }
     
     @IBAction func plusMoreAction(_ sender: AnyObject) {
-        for _ in 1...5 {
-            counter += 1
-            self.plusAction(self);
-        }
+//        for _ in 1...5 {
+//            counter += 1
+//            self.plusAction(self);
+//        }
+        
+        let content = [Int](counter...counter+400)
+        let position = dataSourceMutable.count
+        dataSourceMutable.insert(contentsOf: content, at: IndexPath(item: position, section: 0))
+        counter += 5
     }
     
     @IBAction func minusMoreAction(_ sender: AnyObject) {
