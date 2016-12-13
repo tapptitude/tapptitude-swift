@@ -13,7 +13,8 @@ open class TouchRecognizer: UIGestureRecognizer {
     open var callback: () -> Void
     open var ignoreViews: [UIView]?
     open var canPreventOtherGestureRecognizers: Bool = true
-    open var ignoreFirstResponder: Bool = false // enable touches on view with keboard
+    /// enable touches on view which is firstResponder
+    open var ignoreFirstResponder: Bool = false
     
     public init(callback: @escaping () -> Void, ignoreViews views: [UIView]?) {
         self.callback = callback

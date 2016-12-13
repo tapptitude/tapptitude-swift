@@ -9,7 +9,7 @@
 import Foundation
 
 /// Single section dataSource used by TTCollectionFeedController
-/// use feed property to fetch data from API
+/// - use feed property to fetch data from API
 open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable {
     public typealias Element = T
     

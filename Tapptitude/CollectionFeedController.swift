@@ -12,6 +12,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     
     public struct Options {
         public var emptyMessage = NSLocalizedString("No content", comment: "No content")
+        public var emptyMessageFont: UIFont?
         public var loadMoreIndicatorViewColor = UIColor.gray
     }
     
@@ -110,6 +111,9 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
             noContent.numberOfLines = 0
             noContent.textColor = UIColor(white: 0.4, alpha: 1.0)
             noContent.autoresizingMask = collectionView!.autoresizingMask
+            if let font = options.emptyMessageFont {
+                noContent.font = font
+            }
             
             return noContent;
         }
