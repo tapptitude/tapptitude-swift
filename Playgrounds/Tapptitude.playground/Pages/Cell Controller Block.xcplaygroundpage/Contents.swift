@@ -3,9 +3,25 @@
 import UIKit
 import Tapptitude
 
+class TextCellController: CollectionCellController<String, UICollectionViewCell> {
+    init() {
+        super.init(cellSize: CGSize(width: 50, height: 50))
+    }
+    
+    override func configureCell(_ cell: UICollectionViewCell, for content: String, at indexPath: IndexPath) {
+        cell.backgroundColor = UIColor.red
+        print("configure ", cell, "with: ", content)
+    }
+    
+    override func didSelectContent(_ content: String, at indexPath: IndexPath, in collectionView: UICollectionView) {
+        print("did select", content)
+        let cell = collectionView.cellForItem(at: indexPath)!
+        print("parent ", cell.parentViewController!)
+    }
+}
 
 let dataSource = DataSource(["test"])
-let cellController = CollectionCellController<String, UICollectionViewCell>(cellSize: CGSize(width: 50, height: 50))
+let cellController = TextCellController()
 cellController.acceptsContent("test")
 cellController.acceptsContent(1)
 cellController.acceptsContent("Maria" as AnyObject)
@@ -19,20 +35,8 @@ let feedController = CollectionFeedController()
 feedController.dataSource = dataSource
 feedController.cellController = cellController
 
-print(feedController.view)
+let _ = feedController.view // load it's view
 feedController.collectionView?.backgroundColor = UIColor.gray
-
-
-cellController.configureCell = { cell, content, indexPath in
-    cell.backgroundColor = UIColor.red
-    print(cell)
-}
-cellController.didSelectContent = { content, indexPath, collectionView in
-    print("did select", content)
-    let cell = collectionView.cellForItem(at: indexPath)
-    print(cellController.parentViewController!)
-}
-print(feedController.collectionView)
 
 import PlaygroundSupport
 PlaygroundPage.current.liveView = feedController.view

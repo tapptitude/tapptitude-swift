@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <playground version='6.0' target-platform='ios' executeOnSourceChanges='false' last-migration='0800'>
     <pages>
-        <page name='Cell Controller Block'/>
         <page name='DataSource'/>
+        <page name='Cell Controller Block'/>
         <page name='Mutable Data Source'/>
         <page name='DataSource + animations'/>
         <page name='Expand cell'/>
