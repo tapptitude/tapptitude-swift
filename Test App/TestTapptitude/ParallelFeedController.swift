@@ -12,8 +12,16 @@ import Tapptitude
 class ParallelFeedController: CollectionFeedController {
     override func viewDidLoad() {
         let dataSource = DataSource<Any>()
-        dataSource.addOperation(load: API.getBin)
-        dataSource.addOperation(load: API.getHackerNews)
+//        dataSource.addOperation(load: API.getBin)
+//        dataSource.addOperation(load: API.getHackerNews)
+        
+        let feed = ParallelDataFeed()
+        feed.reloadOperation.append(operation: API.getBin)
+        feed.reloadOperation.append(operation: API.getHackerNews(page:callback:))
+        
+        feed.loadMoreOperation.append(operation: API.getHackerNews(page:callback:))
+        dataSource.feed = feed
+        
         self.dataSource = dataSource
         
         self.cellController = TextItemCellController()
@@ -64,7 +72,7 @@ class API {
         return task
     }
     
-    static func getHackerNews(callback: @escaping (_ items: [String]?, _ error: Error?) -> ()) -> TTCancellable? {
+    static func getHackerNews1(callback: @escaping (_ items: [String]?, _ error: Error?) -> ()) -> TTCancellable? {
         let url = URL(string: "https://news.ycombinator.com/news")
         let url_request = URLRequest(url: url!)
         
@@ -75,6 +83,26 @@ class API {
             
             DispatchQueue.main.async {
                 callback(items, error)
+            }
+        }
+        task.resume()
+        
+        return task
+    }
+    
+    static func getHackerNews(page: Int?, callback: @escaping (_ items: [String]?, _ nextOffset: Int?, _ error: Error?) -> ()) -> TTCancellable? {
+        let newPage = page ?? 0
+        let url = URL(string: "https://news.ycombinator.com/news?p=\(newPage)")
+        let url_request = URLRequest(url: url!)
+        
+        let task = URLSession.shared.dataTask(with: url_request) { data , response , error  in
+            let stringResponse = data != nil ? String(data: data!, encoding: String.Encoding.utf8) : nil
+            let items: [String]? = stringResponse != nil ? [stringResponse!] : nil
+            print(error ?? "")
+            
+            DispatchQueue.main.async {
+                let nextPage = items?.isEmpty == false ? (newPage + 1) : nil
+                callback(items, nextPage, error)
             }
         }
         task.resume()
