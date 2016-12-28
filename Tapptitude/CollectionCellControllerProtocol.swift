@@ -61,17 +61,16 @@ public protocol TTCollectionCellController : TTCollectionCellControllerProtocol 
 public protocol TTCollectionCellControllerSize: TTCollectionCellController {
     var sizeCalculationCell: CellType! {get}
     
-    func cellSizeToFit(text: String, labelName: String, maxSize: CGSize) -> CGSize
-    func cellSizeToFit(text: String, labelName: String) -> CGSize // stretch height to max 2040 (label)
-    
-    func cellSizeToFit(attributedText: NSAttributedString, labelName: String, maxSize: CGSize) -> CGSize
-    func cellSizeToFit(attributedText: NSAttributedString, labelName: String) -> CGSize
+    /// pass label property from sizeCalculationCell. Ex: sizeCalculationCell.label
+    func cellSizeToFit(text: String, label: UILabel, maxSize: CGSize) -> CGSize
+    func cellSizeToFit(attributedText: NSAttributedString, label: UILabel, maxSize: CGSize) -> CGSize
 }
 
 extension TTCollectionCellControllerSize {
-    public func cellSizeToFit(text: String, labelName: String, maxSize: CGSize) -> CGSize {
+    /// returns cell size to fit text by using sizeCalculationCell property
+    /// - parameter label: Ex: sizeCalculationCell.textLabel
+    public func cellSizeToFit(text: String, label: UILabel, maxSize: CGSize = CGSize(width: -1, height: 2040)) -> CGSize {
         var size = sizeCalculationCell.bounds.size
-        let label: UILabel = sizeCalculationCell.value(forKey: labelName) as! UILabel
         var maxSize = maxSize
         
         label.text = text;
@@ -93,13 +92,8 @@ extension TTCollectionCellControllerSize {
         return size;
     }
     
-    public func cellSizeToFit(text: String, labelName: String) -> CGSize { // stretch height to max 2040 (label)
-        return cellSizeToFit(text: text, labelName: labelName, maxSize: CGSize(width: -1, height: 2040))
-    }
-    
-    public func cellSizeToFit(attributedText: NSAttributedString, labelName: String, maxSize: CGSize) -> CGSize {
+    public func cellSizeToFit(attributedText: NSAttributedString, label: UILabel, maxSize: CGSize = CGSize(width: -1, height: 2040)) -> CGSize {
         var size = sizeCalculationCell.bounds.size
-        let label: UILabel = sizeCalculationCell.value(forKey: labelName) as! UILabel
         var maxSize = maxSize
         
         label.attributedText = attributedText;
@@ -130,8 +124,34 @@ extension TTCollectionCellControllerSize {
         return size;
     }
     
-    public func cellSizeToFit(attributedText: NSAttributedString, labelName: String) -> CGSize {
-        return cellSizeToFit(attributedText: attributedText, labelName: labelName, maxSize: CGSize(width: -1, height: 2040))
+    public func cellSizeToFit(attributedText: NSAttributedString, textView: UITextView, maxSize: CGSize = CGSize(width: -1, height: 2040)) -> CGSize {
+        var size = sizeCalculationCell.bounds.size
+        var maxSize = maxSize
+        
+        textView.attributedText = attributedText;
+        
+        if (maxSize.width < 0) {
+            maxSize.width = textView.bounds.size.width
+            let newLabelSize = textView.sizeThatFits(maxSize)
+            size.height += newLabelSize.height - textView.bounds.size.height
+            size.width = cellSize.width
+        } else if (maxSize.height < 0) {
+            maxSize.height = textView.bounds.size.height
+            let newLabelSize = textView.sizeThatFits(maxSize)
+            size.width += newLabelSize.width - textView.bounds.size.width
+            size.height = cellSize.height;
+        } else {
+            var frame = sizeCalculationCell.frame
+            frame.size.width = maxSize.width
+            sizeCalculationCell.frame = frame
+            self.sizeCalculationCell.layoutSubviews()
+            maxSize.width = textView.bounds.size.width
+            let newLabelSize = textView.sizeThatFits(maxSize)
+            size.height += newLabelSize.height - textView.bounds.size.height
+            size.width = cellSize.width
+        }
+        
+        return size;
     }
 }
 

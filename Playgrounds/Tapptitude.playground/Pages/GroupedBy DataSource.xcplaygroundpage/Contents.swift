@@ -18,8 +18,8 @@ cellController.configureCell = { cell, content, indexPath in
     cell.backgroundColor = UIColor.red
     cell.label.text = content
 }
-cellController.cellSizeForContent = {[weak cellController] (content, _) in
-    return cellController!.cellSizeToFit(text: content, labelName: "label", maxSize: CGSize(width: 300, height: -1))
+cellController.cellSizeForContent = {[unowned cellController] (content, _) in
+    return cellController.cellSizeToFit(text: content, label: cellController.sizeCalculationCell.label, maxSize: CGSize(width: 300, height: -1))
 }
 
 let feedController = CollectionFeedController()
