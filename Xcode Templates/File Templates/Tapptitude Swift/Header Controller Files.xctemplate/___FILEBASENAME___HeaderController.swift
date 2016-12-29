@@ -10,10 +10,10 @@ import Tapptitude
 
 class ___FILEBASENAME___HeaderController: CollectionHeaderController<___VARIABLE_contentType___, ___FILEBASENAME___HeaderCell> {
     init() {
-        super.init(headerSize: CGSizeMake(-1, 30))
+        super.init(headerSize: CGSize(width: -1.0, height: <#height#>.0))
     }
     
-    override func configureHeader(header: ___FILEBASENAME___HeaderCell, forContent content: ___VARIABLE_contentType___, indexPath: NSIndexPath) {
-        header.titleLabel.text = content.dateAsString
+    override func configureHeader(_ header: ___FILEBASENAME___HeaderCell, for content: ___VARIABLE_contentType___, indexPath: IndexPath) {
+        header.titleLabel.text = <#code#>
     }
 }

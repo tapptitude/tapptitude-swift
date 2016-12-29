@@ -8,23 +8,40 @@
 
 import Foundation
 
+enum APIError: String {
+    case missingSession = "MissingSession"
+}
+
+func ==(lhs: APIError, rhs: Error) -> Bool {
+    let error = rhs as NSError
+    return error.domain == lhs.rawValue
+}
+
+func ==(lhs: Error, rhs: APIError) -> Bool {
+    let error = lhs as NSError
+    return error.domain == rhs.rawValue
+}
+
+
 class ErrorParser {
-    class func parseJSON(json:AnyObject?) -> NSError? {
+    class func parseJSON(_ json: Any?) -> Error? {
         guard let jsonDict = json as? NSDictionary else {
             return NSError(domain: "ErrorParserDomain", code: 1, userInfo: [NSLocalizedDescriptionKey : "Expected a dictionary"])
         }
         
-        if let errorMessage = jsonDict["error"] as? String {
-//            let invalidSession = code == "no_session"
-//            if invalidSession {
-//                Session.closeWithError(error)
-//            }
+        if let error = jsonDict["error"] as? [String: String] {
+            let errorMessage: String! = error["msg"]
+            let code: String! = error["code"]
+            let invalidSession = code == APIError.missingSession.rawValue
+            let error = NSError(domain: code, code: 2, userInfo: [NSLocalizedDescriptionKey : errorMessage])
+            if invalidSession {
+                DispatchQueue.main.sync(execute: {
+                    Session.close(error: error)
+                })
+            }
             
-            return NSError(domain: APISettings.errorDomain, code: 2, userInfo: [NSLocalizedDescriptionKey : errorMessage])
+            return error
         }
-        
-        
-        
         return nil
     }
 }

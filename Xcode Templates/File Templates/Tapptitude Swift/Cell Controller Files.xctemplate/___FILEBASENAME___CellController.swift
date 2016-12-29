@@ -20,10 +20,10 @@ class ___FILEBASENAME___CellController: CollectionCellController<___VARIABLE_con
 //        return <#code#>
 //    }
     
-    override func configureCell(cell: ___FILEBASENAME___Cell, for content: ___VARIABLE_contentType___, at indexPath: NSIndexPath!) {
+    override func configureCell(_ cell: ___FILEBASENAME___Cell, for content: ___VARIABLE_contentType___, at indexPath: IndexPath) {
     }
     
-    override func didSelectContent(content: ___VARIABLE_contentType___, at indexPath: NSIndexPath, in collectionView: UICollectionView) {
+    override func didSelectContent(_ content: ___VARIABLE_contentType___, at indexPath: IndexPath, in collectionView: UICollectionView) {
         
     }
 }

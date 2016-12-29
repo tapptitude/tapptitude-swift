@@ -9,15 +9,15 @@
 import UIKit
 
 extension UIBarButtonItem {
-    static func backButtonWithController(controller:UIViewController) -> UIBarButtonItem {
-        let image = UIImage(named:"back_arrow")?.imageWithRenderingMode(.AlwaysOriginal)
-        let barButton = UIBarButtonItem(image: image, landscapeImagePhone: nil, style: .Plain, target: controller, action: #selector(UIViewController.popViewController))
-        return barButton
+    static func backButtonWithController(_ controller:UIViewController) -> UIBarButtonItem {
+        let backButton = UIBarButtonItem(image: UIImage(named: "backArrow"), style: .plain, target: controller, action: #selector(UIViewController.popViewController))
+        backButton.tintColor = UIColorFromRGB(0x959697)
+        return backButton
     }
 }
 
 extension UIViewController {
     func popViewController() {
-        navigationController?.popViewControllerAnimated(true)
+        _ = navigationController?.popViewController(animated: true)
     }
 }

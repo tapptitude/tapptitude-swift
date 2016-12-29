@@ -52,8 +52,8 @@
 									<key>ShellScript</key>
 									<string>echo &quot;Natalie Generator: Determining if generated Swift file is up-to-date.&quot;
 
-#If you put natalie.swift on the project folder
-NATALIE_PATH=&quot;$PROJECT_DIR/bin/natalie.swift&quot;
+#If you put natalie on the project folder
+NATALIE_PATH=&quot;$PROJECT_DIR/bin/natalie&quot;
 
 echo $NATALIE_PATH
 
@@ -98,20 +98,18 @@ fi</string>
 					</array>
 					<key>Nodes</key>
 					<array>
-						<string>../fastlane/Fastfile</string>
-						<string>../fastlane/Appfile</string>
-						<string>../fastlane/s3_html_template.erb</string>
-						<string>../fastlane/actions/s3a.rb</string>
-						<string>../fastlane/actions/update_info_plist.rb</string>
 						<string>Screens</string>
 						<string>../Podfile</string>
 						<string>../.gitignore</string>
 						<string>Access/API.swift</string>
 						<string>Access/API+Config.swift</string>
+						<string>Access/API+Mapping.swift</string>
 						<string>Access/ErrorParser.swift</string>
 						<string>Access/FeedDataStore.swift</string>
 						<string>Access/Facebook.swift</string>
 						<string>Access/Session.swift</string>
+						<string>Access/JSONCache.swift</string>
+						<string>Access/MapperCaching.swift</string>
 						<string>Constants.swift</string>
 						<string>Model/User.swift</string>
 						<string>Helpers/ErrorDisplay.swift</string>
@@ -123,56 +121,11 @@ fi</string>
 						<string>Helpers/PlaceholderTextField.swift</string>
 						<string>Helpers/UILabel+TextAttributes.swift</string>
 						<string>Helpers/UIImageView+URL.swift</string>
-						<string>../bin/natalie.swift</string>
+						<string>../bin/natalie</string>
 						<string>Helpers/Storyboards.swift</string>
 					</array>
 					<key>Definitions</key>
 					<dict>
-						<key>../fastlane/actions/update_info_plist.rb</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>fastlane/actions/update_info_plist.rb</string>
-							<key>Group</key>
-							<string>To Remove from Xcode</string>
-						</dict>
-						<key>../fastlane/actions/s3a.rb</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>fastlane/actions/s3a.rb</string>
-							<key>Group</key>
-							<string>To Remove from Xcode</string>
-						</dict>
-						<key>../fastlane/s3_html_template.erb</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>fastlane/s3_html_template.erb</string>
-							<key>Group</key>
-							<string>To Remove from Xcode</string>
-						</dict>
-						<key>../fastlane/Appfile</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>fastlane/Appfile</string>
-							<key>Group</key>
-							<string>To Remove from Xcode</string>
-						</dict>
-						<key>../fastlane/Fastfile</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>fastlane/Fastfile</string>
-							<key>Group</key>
-							<string>To Remove from Xcode</string>
-						</dict>
 						<key>Helpers/ErrorDisplay.swift</key>
 						<dict>
 							<key>SortOrder</key>
@@ -315,12 +268,39 @@ fi</string>
 							<key>Group</key>
 							<string>Access</string>
 						</dict>
+						<key>Access/API+Mapping.swift</key>
+						<dict>
+							<key>SortOrder</key>
+							<integer>100</integer>
+							<key>Path</key>
+							<string>Access/API+Mapping.swift</string>
+							<key>Group</key>
+							<string>Access</string>
+						</dict>
 						<key>Access/API.swift</key>
 						<dict>
 							<key>SortOrder</key>
 							<integer>100</integer>
 							<key>Path</key>
 							<string>Access/API.swift</string>
+							<key>Group</key>
+							<string>Access</string>
+						</dict>
+						<key>Access/JSONCache.swift</key>
+						<dict>
+							<key>SortOrder</key>
+							<integer>100</integer>
+							<key>Path</key>
+							<string>Access/JSONCache.swift</string>
+							<key>Group</key>
+							<string>Access</string>
+						</dict>
+						<key>Access/MapperCaching.swift</key>
+						<dict>
+							<key>SortOrder</key>
+							<integer>100</integer>
+							<key>Path</key>
+							<string>Access/MapperCaching.swift</string>
 							<key>Group</key>
 							<string>Access</string>
 						</dict>
@@ -342,12 +322,12 @@ fi</string>
 							<key>Group</key>
 							<string>To Remove from Xcode</string>
 						</dict>
-						<key>../bin/natalie.swift</key>
+						<key>../bin/natalie</key>
 						<dict>
 							<key>SortOrder</key>
 							<integer>100</integer>
 							<key>Path</key>
-							<string>bin/natalie.swift</string>
+							<string>bin/natalie</string>
 							<key>Group</key>
 							<string>To Remove from Xcode</string>
 						</dict>
@@ -418,8 +398,8 @@ fi</string>
 									<key>ShellScript</key>
 									<string>echo &quot;Natalie Generator: Determining if generated Swift file is up-to-date.&quot;
 
-#If you put natalie.swift on the project folder
-NATALIE_PATH=&quot;$PROJECT_DIR/bin/natalie.swift&quot;
+#If you put natalie on the project folder
+NATALIE_PATH=&quot;$PROJECT_DIR/bin/natalie&quot;
 
 echo $NATALIE_PATH
 
@@ -464,20 +444,18 @@ fi</string>
 					</array>
 					<key>Nodes</key>
 					<array>
-						<string>../fastlane/Fastfile</string>
-						<string>../fastlane/Appfile</string>
-						<string>../fastlane/s3_html_template.erb</string>
-						<string>../fastlane/actions/s3a.rb</string>
-						<string>../fastlane/actions/update_info_plist.rb</string>
 						<string>Screens</string>
 						<string>../Podfile</string>
 						<string>../.gitignore</string>
 						<string>Access/API.swift</string>
 						<string>Access/API+Config.swift</string>
+						<string>Access/API+Mapping.swift</string>
 						<string>Access/ErrorParser.swift</string>
 						<string>Access/FeedDataStore.swift</string>
 						<string>Access/Facebook.swift</string>
 						<string>Access/Session.swift</string>
+						<string>Access/JSONCache.swift</string>
+						<string>Access/MapperCaching.swift</string>
 						<string>Constants.swift</string>
 						<string>Model/User.swift</string>
 						<string>Helpers/ErrorDisplay.swift</string>
@@ -489,56 +467,11 @@ fi</string>
 						<string>Helpers/PlaceholderTextField.swift</string>
 						<string>Helpers/UILabel+TextAttributes.swift</string>
 						<string>Helpers/UIImageView+URL.swift</string>
-						<string>../bin/natalie.swift</string>
+						<string>../bin/natalie</string>
 						<string>Helpers/Storyboards.swift</string>
 					</array>
 					<key>Definitions</key>
 					<dict>
-						<key>../fastlane/actions/update_info_plist.rb</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>fastlane/actions/update_info_plist.rb</string>
-							<key>Group</key>
-							<string>To Remove from Xcode</string>
-						</dict>
-						<key>../fastlane/actions/s3a.rb</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>fastlane/actions/s3a.rb</string>
-							<key>Group</key>
-							<string>To Remove from Xcode</string>
-						</dict>
-						<key>../fastlane/s3_html_template.erb</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>fastlane/s3_html_template.erb</string>
-							<key>Group</key>
-							<string>To Remove from Xcode</string>
-						</dict>
-						<key>../fastlane/Appfile</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>fastlane/Appfile</string>
-							<key>Group</key>
-							<string>To Remove from Xcode</string>
-						</dict>
-						<key>../fastlane/Fastfile</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>fastlane/Fastfile</string>
-							<key>Group</key>
-							<string>To Remove from Xcode</string>
-						</dict>
 						<key>Helpers/ErrorDisplay.swift</key>
 						<dict>
 							<key>SortOrder</key>
@@ -681,12 +614,39 @@ fi</string>
 							<key>Group</key>
 							<string>Access</string>
 						</dict>
+						<key>Access/API+Mapping.swift</key>
+						<dict>
+							<key>SortOrder</key>
+							<integer>100</integer>
+							<key>Path</key>
+							<string>Access/API+Mapping.swift</string>
+							<key>Group</key>
+							<string>Access</string>
+						</dict>
 						<key>Access/API.swift</key>
 						<dict>
 							<key>SortOrder</key>
 							<integer>100</integer>
 							<key>Path</key>
 							<string>Access/API.swift</string>
+							<key>Group</key>
+							<string>Access</string>
+						</dict>
+						<key>Access/JSONCache.swift</key>
+						<dict>
+							<key>SortOrder</key>
+							<integer>100</integer>
+							<key>Path</key>
+							<string>Access/JSONCache.swift</string>
+							<key>Group</key>
+							<string>Access</string>
+						</dict>
+						<key>Access/MapperCaching.swift</key>
+						<dict>
+							<key>SortOrder</key>
+							<integer>100</integer>
+							<key>Path</key>
+							<string>Access/MapperCaching.swift</string>
 							<key>Group</key>
 							<string>Access</string>
 						</dict>
@@ -708,12 +668,12 @@ fi</string>
 							<key>Group</key>
 							<string>To Remove from Xcode</string>
 						</dict>
-						<key>../bin/natalie.swift</key>
+						<key>../bin/natalie</key>
 						<dict>
 							<key>SortOrder</key>
 							<integer>100</integer>
 							<key>Path</key>
-							<string>bin/natalie.swift</string>
+							<string>bin/natalie</string>
 							<key>Group</key>
 							<string>To Remove from Xcode</string>
 						</dict>
@@ -784,8 +744,8 @@ fi</string>
 									<key>ShellScript</key>
 									<string>echo &quot;Natalie Generator: Determining if generated Swift file is up-to-date.&quot;
 
-#If you put natalie.swift on the project folder
-NATALIE_PATH=&quot;$PROJECT_DIR/bin/natalie.swift&quot;
+#If you put natalie on the project folder
+NATALIE_PATH=&quot;$PROJECT_DIR/bin/natalie&quot;
 
 echo $NATALIE_PATH
 
@@ -830,20 +790,18 @@ fi</string>
 					</array>
 					<key>Nodes</key>
 					<array>
-						<string>../fastlane/Fastfile</string>
-						<string>../fastlane/Appfile</string>
-						<string>../fastlane/s3_html_template.erb</string>
-						<string>../fastlane/actions/s3a.rb</string>
-						<string>../fastlane/actions/update_info_plist.rb</string>
 						<string>Screens</string>
 						<string>../Podfile</string>
 						<string>../.gitignore</string>
 						<string>Access/API.swift</string>
 						<string>Access/API+Config.swift</string>
+						<string>Access/API+Mapping.swift</string>
 						<string>Access/ErrorParser.swift</string>
 						<string>Access/FeedDataStore.swift</string>
 						<string>Access/Facebook.swift</string>
 						<string>Access/Session.swift</string>
+						<string>Access/JSONCache.swift</string>
+						<string>Access/MapperCaching.swift</string>
 						<string>Constants.swift</string>
 						<string>Model/User.swift</string>
 						<string>Helpers/ErrorDisplay.swift</string>
@@ -853,56 +811,13 @@ fi</string>
 						<string>Helpers/SeparatorView.swift</string>
 						<string>Helpers/RoundedButton.swift</string>
 						<string>Helpers/PlaceholderTextField.swift</string>
-						<string>../bin/natalie.swift</string>
+						<string>Helpers/UILabel+TextAttributes.swift</string>
+						<string>Helpers/UIImageView+URL.swift</string>
+						<string>../bin/natalie</string>
 						<string>Helpers/Storyboards.swift</string>
 					</array>
 					<key>Definitions</key>
 					<dict>
-						<key>../fastlane/actions/update_info_plist.rb</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>fastlane/actions/update_info_plist.rb</string>
-							<key>Group</key>
-							<string>To Remove from Xcode</string>
-						</dict>
-						<key>../fastlane/actions/s3a.rb</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>fastlane/actions/s3a.rb</string>
-							<key>Group</key>
-							<string>To Remove from Xcode</string>
-						</dict>
-						<key>../fastlane/s3_html_template.erb</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>fastlane/s3_html_template.erb</string>
-							<key>Group</key>
-							<string>To Remove from Xcode</string>
-						</dict>
-						<key>../fastlane/Appfile</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>fastlane/Appfile</string>
-							<key>Group</key>
-							<string>To Remove from Xcode</string>
-						</dict>
-						<key>../fastlane/Fastfile</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>fastlane/Fastfile</string>
-							<key>Group</key>
-							<string>To Remove from Xcode</string>
-						</dict>
 						<key>Helpers/ErrorDisplay.swift</key>
 						<dict>
 							<key>SortOrder</key>
@@ -1045,12 +960,39 @@ fi</string>
 							<key>Group</key>
 							<string>Access</string>
 						</dict>
+						<key>Access/API+Mapping.swift</key>
+						<dict>
+							<key>SortOrder</key>
+							<integer>100</integer>
+							<key>Path</key>
+							<string>Access/API+Mapping.swift</string>
+							<key>Group</key>
+							<string>Access</string>
+						</dict>
 						<key>Access/API.swift</key>
 						<dict>
 							<key>SortOrder</key>
 							<integer>100</integer>
 							<key>Path</key>
 							<string>Access/API.swift</string>
+							<key>Group</key>
+							<string>Access</string>
+						</dict>
+						<key>Access/JSONCache.swift</key>
+						<dict>
+							<key>SortOrder</key>
+							<integer>100</integer>
+							<key>Path</key>
+							<string>Access/JSONCache.swift</string>
+							<key>Group</key>
+							<string>Access</string>
+						</dict>
+						<key>Access/MapperCaching.swift</key>
+						<dict>
+							<key>SortOrder</key>
+							<integer>100</integer>
+							<key>Path</key>
+							<string>Access/MapperCaching.swift</string>
 							<key>Group</key>
 							<string>Access</string>
 						</dict>
@@ -1072,12 +1014,12 @@ fi</string>
 							<key>Group</key>
 							<string>To Remove from Xcode</string>
 						</dict>
-						<key>../bin/natalie.swift</key>
+						<key>../bin/natalie</key>
 						<dict>
 							<key>SortOrder</key>
 							<integer>100</integer>
 							<key>Path</key>
-							<string>bin/natalie.swift</string>
+							<string>bin/natalie</string>
 							<key>Group</key>
 							<string>To Remove from Xcode</string>
 						</dict>

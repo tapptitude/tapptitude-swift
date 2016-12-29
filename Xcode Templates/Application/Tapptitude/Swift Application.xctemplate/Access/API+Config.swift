@@ -11,10 +11,10 @@ import Alamofire
 
 extension API {
     /// apply custom API settings like URL, httpheaders
-    class func request(method: Alamofire.Method, path: String, parameters: [String : AnyObject]?, encoding: ParameterEncoding = .URL, headers: [String: String]? = nil) -> Request {
+    class func request(_ method: HTTPMethod, path: String, parameters: [String : Any]? = nil, encoding: Encoding = .url, headers: [String: String]? = nil) -> DataRequest {
         
-        let baseURL = NSURL(string: APISettings.serverURL)!
-        let url = baseURL.URLByAppendingPathComponent(path)!
+        let baseURL = URL(string: APISettings.serverURL)!
+        let url = baseURL.appendingPathComponent(path)
         
         // append http headers
         var mutableHeaders : [String : String] = [:]
@@ -29,106 +29,118 @@ extension API {
             }
         }
         
-        
-        
-        let mutableURLRequest = URLRequest(method, url, headers: mutableHeaders)
-        let encodedURLRequest = encoding.encode(mutableURLRequest, parameters: parameters).0
+        let mutableURLRequest = try! URLRequest(url: url, method: method, headers: mutableHeaders)
+        var encodedURLRequest = try! encoding.encoding.encode(mutableURLRequest, with: parameters)
         encodedURLRequest.timeoutInterval = 30.0;//seconds
         
         return Alamofire.request(encodedURLRequest)
     }
     
-    static func URLRequest(method: Alamofire.Method, _ URLString: URLStringConvertible, headers: [String: String]? = nil) -> NSMutableURLRequest {
-        let mutableURLRequest = NSMutableURLRequest(URL: NSURL(string: URLString.URLString)!)
-        mutableURLRequest.HTTPMethod = method.rawValue
+    enum Encoding {
+        case json
+        case url
         
-        if let headers = headers {
-            for (headerField, headerValue) in headers {
-                mutableURLRequest.setValue(headerValue, forHTTPHeaderField: headerField)
+        var encoding: ParameterEncoding {
+            switch self {
+            case .json:
+                #if DEBUG
+                    return JSONEncoding.prettyPrinted
+                #else
+                    return JSONEncoding.default
+                #endif
+            case .url: return URLEncoding.default
             }
-        }
-        
-        return mutableURLRequest
-    }
-    
-    static func JSONParams(params: [String : AnyObject]?) -> [String : String]? {
-        guard params != nil else {
-            return nil
-        }
-        
-        do {
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(params!, options: [])
-            let jsonString = NSString(data: jsonData, encoding: NSUTF8StringEncoding) as! String
-            
-            let jsonParams = ["json" : jsonString]
-            return jsonParams
-        } catch let error {
-            print("could not translate \(params) into JSON, \(error)")
-            return nil
         }
     }
 }
 
-extension Request {
+extension DataRequest {
     
-    public static func APIErrorResponseSerializer() -> ResponseSerializer<AnyObject, NSError> {
-        return ResponseSerializer { request, response, data, error in
+    public static func apiErrorResponseSerializer() -> DataResponseSerializer<NSDictionary> {
+        return DataResponseSerializer { request, response, data, error in
             
             guard error == nil else {
-                print("! Request failed:", request?.URLString ?? "")
+                print("! Request failed:", request?.url?.absoluteString ?? "")
+                
+                if let data = data, let json = try? JSONSerialization.jsonObject(with: data, options: []) {
+                    if let apiError = ErrorParser.parseJSON(json) {
+                        return .failure(apiError)
+                    }
+                }
                 
                 let accessDenied = response?.statusCode == 403 || response?.statusCode == 401
                 if accessDenied {
-                    dispatch_sync(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async {
                         Session.close(error: error)
-                    })
+                    }
                 }
                 
-                return .Failure(error!)
+                return .failure(error!)
             }
             
-            let jsonResponse = Request.JSONResponseSerializer().serializeResponse(request, response, data, error)
+            let jsonResponse = Request.serializeResponseJSON(options: [], response: response, data: data, error: error)
             switch jsonResponse {
-                case .Success(let value):
-                    if response != nil {
-                        let apiError = ErrorParser.parseJSON(value)
-                        guard apiError == nil else { return .Failure(apiError!) }
-                        
-                        return .Success(value)
-                    } else {
-                        let failureReason = "Response collection could not be serialized due to nil response"
-                        let error = Error.errorWithCode(.JSONSerializationFailed, failureReason: failureReason)
-                        return .Failure(error)
-                    }
-                case .Failure(let error):
-                    if let data = data {
-                        print("Request failed:", request?.URLString ?? "", "\nResponse:", String(data:data, encoding: NSUTF8StringEncoding) ?? "")
-                    }
+            case .success(let value):
+                if response != nil {
+                    let apiError = ErrorParser.parseJSON(value)
+                    guard apiError == nil else { return .failure(apiError!) }
                     
-                    return .Failure(error)
+                    return .success(value as! NSDictionary)
+                } else {
+                    let failureReason = "Response collection could not be serialized due to nil response"
+                    let error = NSError(domain: APISettings.errorDomain, code: 1, userInfo: [NSLocalizedDescriptionKey : failureReason])//Error.Code.JSONSerializationFailed.rawValue
+                    return .failure(error)
+                }
+            case .failure(let error):
+                if let data = data {
+                    print("Request failed:", request?.url?.absoluteString ?? "", "\nResponse:", String(data:data, encoding: String.Encoding.utf8) ?? "")
+                }
+                return .failure(error)
             }
         }
     }
     
-    public func responseAPI(completionHandler: Response<AnyObject, NSError> -> Void) -> Self {
-        return validate().response(responseSerializer: Request.APIErrorResponseSerializer(), completionHandler: { (response) -> Void in
-            var canceled = false
-            if let error = response.result.error {
-                canceled = error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled
-            }
-            
-            if !canceled {
+    func completionHanderCheckForCancel<T>(_ completionHandler: @escaping (DataResponse<T>) -> Void) -> ((DataResponse<T>) -> Void) {
+        let closure: ((DataResponse<T>) -> Void) = { (response) in
+            if !self.responseWasCanceled(response) {
                 completionHandler(response)
+            }
+        }
+        
+        return closure
+    }
+    
+    func responseWasCanceled<T>(_ response: DataResponse<T>) -> Bool {
+        var canceled = false
+        if let error = response.result.error as? NSError {
+            canceled = error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled
+        }
+        
+        if self.task?.state == .canceling {
+            canceled = true
+        }
+        
+        return canceled
+    }
+    
+    public func responseAPI(_ completion: @escaping (DataResponse<NSDictionary>) -> Void) -> Self {
+        return validate().response(queue: nil, responseSerializer: DataRequest.apiErrorResponseSerializer(), completionHandler: { response in
+            if !self.responseWasCanceled(response) {
+                completion(response)
             }
         })
     }
 }
 
-extension Response {
+import Tapptitude
+extension Alamofire.Request: TTCancellable {
+}
+
+extension Alamofire.DataResponse {
     /// helper method to show response data as string
-    var dataString : String? {
+    var dataAsString : String? {
         get {
-            return data != nil ? String(data: self.data!, encoding: NSUTF8StringEncoding) : nil
+            return data != nil ? String(data: self.data!, encoding: String.Encoding.utf8) : nil
         }
     }
 }

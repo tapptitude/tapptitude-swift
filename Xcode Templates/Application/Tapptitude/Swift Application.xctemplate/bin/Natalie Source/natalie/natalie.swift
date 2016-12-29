@@ -1,4 +1,4 @@
-#!/usr/bin/env xcrun -sdk macosx swift
+//#!/usr/bin/env xcrun -sdk macosx swift
 
 //
 // Natalie - Storyboard Generator Script
@@ -530,7 +530,7 @@ public class XMLElement {
      */
     func addElement(name: String, withAttributes attributes: NSDictionary) -> XMLElement {
         let element = XMLElement(name: name, index: count)
-        count += 1
+        count++
         
         children.append(element)
         
@@ -956,8 +956,8 @@ class Storyboard: XMLObject {
         for (signatureType, returnType) in os.storyboardInstantiationInfo {
             let cast = (returnType == os.storyboardControllerReturnType ? "" : " as! \(returnType)")
             print("")
-            print("        static func instantiate\(signatureType)WithIdentifier(identifier: String) -> \(returnType) {")
-            print("            return self.storyboard.instantiate\(signatureType)WithIdentifier(identifier)\(cast)")
+            print("        static func instantiate\(signatureType)(identifier: String) -> \(returnType) {")
+            print("            return self.storyboard.instantiate\(signatureType)(withIdentifier: identifier)\(cast)")
             print("        }")
             
 //            print("")
@@ -1191,7 +1191,7 @@ func processStoryboardInstantiation(storyboards: [StoryboardFile], os: OS) {
             if identifiers.count == 1 {
                 for storyboardIdentifier in identifiers {
                     print("    static func instantiateFrom\(storyboardName)Storyboard() -> \(controllerClass) {")
-                    print("        return Storyboards.\(storyboardName).storyboard.instantiateViewControllerWithIdentifier(\"\(storyboardIdentifier)\") as! \(controllerClass)")
+                    print("        return Storyboards.\(storyboardName).storyboard.instantiateViewController(withIdentifier: \"\(storyboardIdentifier)\") as! \(controllerClass)")
                     print("    }")
                 }
             } else {
@@ -1204,7 +1204,7 @@ func processStoryboardInstantiation(storyboards: [StoryboardFile], os: OS) {
                 
                 print("")
                 print("    static func instantiateFrom\(storyboardName)Storyboard(identifier: \(storyboardName)Storyboard) -> \(controllerClass) {")
-                print("        return Storyboards.\(storyboardName).storyboard.instantiateViewControllerWithIdentifier(identifier.rawValue) as! \(controllerClass)")
+                print("        return Storyboards.\(storyboardName).storyboard.instantiateViewController(withIdentifier: identifier.rawValue) as! \(controllerClass)")
                 print("    }")
             }
         }
@@ -1268,10 +1268,10 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     print("//")
     print("")
     print("import \(os.framework)")
-    let modules = storyboards.flatMap{ $0.storyboard.customModules }
-    for module in Set<String>(modules) {
-        print("import \(module)")
-    }
+//    let modules = storyboards.flatMap{ $0.storyboard.customModules }
+//    for module in Set<String>(modules) {
+//        print("import \(module)")
+//    }
     print("")
     
     print("//MARK: - Storyboards")
@@ -1279,10 +1279,10 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     print("")
     print("extension \(os.storyboardType) {")
     for (signatureType, returnType) in os.storyboardInstantiationInfo {
-        print("    func instantiateViewController<T: \(returnType) where T: IdentifiableProtocol>(type: T.Type) -> T? {")
+        print("    func instantiateViewController<T: \(returnType)>(type: T.Type) -> T? where T: IdentifiableProtocol {")
         print("        let instance = type.init()")
         print("        if let identifier = instance.storyboardIdentifier {")
-        print("            return self.instantiate\(signatureType)WithIdentifier(identifier) as? T")
+        print("            return self.instantiate\(signatureType)(withIdentifier: identifier) as? T")
         print("        }")
         print("        return nil")
         print("    }")
@@ -1388,7 +1388,7 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     if let reusableViews = os.resuableViews {
         for reusableView in reusableViews {
             print("extension \(reusableView): ReusableViewProtocol {")
-            print("    public var viewType: UIView.Type? { return self.dynamicType }")
+            print("    public var viewType: UIView.Type? { return type(of: self) }")
             print("    public var storyboardIdentifier: String? { return self.reuseIdentifier }")
             print("}")
             print("")
@@ -1398,9 +1398,9 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     for controllerType in os.storyboardControllerTypes {
         print("//MARK: - \(controllerType) extension")
         print("extension \(controllerType) {")
-        print("    func performSegue<T: SegueProtocol>(segue: T, sender: AnyObject?) {")
+        print("    func performSegue<T: SegueProtocol>(_ segue: T, sender: AnyObject?) {")
         print("        if let identifier = segue.identifier {")
-        print("            performSegueWithIdentifier(identifier, sender: sender)")
+        print("            performSegue(withIdentifier: identifier, sender: sender)")
         print("        }")
         print("    }")
         print("")
@@ -1484,35 +1484,4 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
 
 //MARK: MAIN()
 
-if Process.arguments.count == 1 {
-    print("Invalid usage. Missing path to storyboard.")
-    exit(1)
-}
 
-let argument = Process.arguments[1]
-var filePaths:[String] = []
-let storyboardSuffix = ".storyboard"
-if argument.hasSuffix(storyboardSuffix) {
-    filePaths = [argument]
-} else if let s = findStoryboards(argument, suffix: storyboardSuffix) {
-    filePaths = s
-}
-let storyboardFiles = filePaths.map { StoryboardFile(filePath: $0) }
-
-for os in OS.allValues {
-    let storyboardsForOS = storyboardFiles.filter({ $0.storyboard.os == os })
-    if !storyboardsForOS.isEmpty {
-        
-        if storyboardsForOS.count != storyboardFiles.count {
-            print("#if os(\(os.rawValue))")
-        }
-        
-        processStoryboards(storyboardsForOS, os: os)
-        
-        if storyboardsForOS.count != storyboardFiles.count {
-            print("#endif")
-        }
-    }
-}
-
-exit(0)

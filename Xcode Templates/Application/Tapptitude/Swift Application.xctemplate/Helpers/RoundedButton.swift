@@ -34,10 +34,10 @@ class RoundedButton: UIButton {
     
     @IBInspectable var borderColor: UIColor? {
         get {
-            return layer.borderColor != nil ? UIColor(CGColor:layer.borderColor!) : nil
+            return layer.borderColor != nil ? UIColor(cgColor:layer.borderColor!) : nil
         }
         set {
-            layer.borderColor = newValue?.CGColor
+            layer.borderColor = newValue?.cgColor
         }
     }
     

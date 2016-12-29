@@ -16,8 +16,7 @@ struct APISettings {
     
     var httpHeaders: [String: String]? {
         var headers =  [String:String]()
-        headers["Authorization"] = Session.accessToken() != nil ? ("Token " + Session.accessToken()!) : nil
-        headers["Identity"] = Session.currentUserID() != nil ? ("Email " + Session.currentUserID()!) : nil
+        headers["authorization"] = Session.accessToken
         headers["API_KEY"] = Constants.API_KEY
         return headers
     }
@@ -25,77 +24,46 @@ struct APISettings {
 
 
 class API {
-    //    static func getLandingIntro(callback:(pages:[IntroPage]?, error:NSError?)->()) -> Alamofire.Request {
-    //        let params = ["device_type" : UIDevice.currentDevice().model]
-    //
-    //        return self.request(.GET, path: "intro", parameters: JSONParams(params)).responseAPI({ response in
-    //            let parsedObject = Mapper<IntroPage>().mapArray(response.result.value?["data"])
-    //            callback(pages:parsedObject, error:response.result.error)
-    //        })
-    //    }
     
-    // MARK: - Login
-    
-    static func loginWithEmail(email:String, callback:(user:User?, message:String?, error:NSError?)->()) -> Alamofire.Request {
-        let params = ["email" : email]
+    @discardableResult
+    static func loginWithEmail(_ email:String, password:String, callback:@escaping (_ user:User?, _ error:Error?)->()) -> Alamofire.Request? {
+        let params : [String: Any] = [ "email":email, "password":password]
         
-        return self.request(.POST, path: "enter/", parameters: params).responseAPI({ response in
-            guard response.result.error == nil else {
-                callback(user:nil, message: nil, error: response.result.error)
-                return
+        return request(.post, path: "driver/users/login", parameters: params).responseAPIMap(keyPath: "data.driver") { (response, user: User?) in
+            if let dataDict = response.result.value, let user = user {
+                Session.accessToken = dataDict.value(forKeyPath: "data.auth_key") as? String
+                Session.currentUserID = user.userID
             }
             
-            //            let parseResponse = SessionParser.parseJSON(response.result.value)
-            //            if parseResponse.user != nil {
-            //                API.getUserProfileAfterLogin({ (error) -> () in
-            //                    callback(user:parseResponse.user, message: nil, error: error)
-            //                })
-            //            } else {
-            //                Session.saveUserID(email, accessToken: nil) // save user email
-            //
-            //                callback(user: parseResponse.user, message: parseResponse.message, error: parseResponse.error)
-            //            }
+            callback(user, response.result.error)
+        }
+    }
+    
+    @discardableResult
+    static func getCurrentUser(_ callback:@escaping (_ user:User?,_ error:Error?)->()) -> Alamofire.Request? {
+        return request(.get, path: "driver/users").responseAPIMap(keyPath: "data") { (response, user: User?) in
+            callback(user, response.result.error)
+        }
+    }
+    
+    @discardableResult
+    static func logout(_ callback:@escaping (_ error:Error?)->()) -> Alamofire.Request? {
+        return request(.post, path: "driver/users/logout").responseAPI({ response in
+            callback(response.result.error)
         })
     }
     
-    static func loginWithFacebook(fbAuthToken:String, callback:(user:User?, error:NSError?)->()) -> Alamofire.Request {
-        let headers = ["FACEBOOK" : "TOKEN \(fbAuthToken)"]
-        
-        return self.request(.POST, path: "enter/", parameters: nil, encoding: .URL, headers:headers).responseAPI({ response in
-            print(response.result.error)
-            guard response.result.error == nil else {
-                callback(user: nil, error: response.result.error)
-                return
-            }
-            
-            //            let parseResponse = SessionParser.parseJSON(response.result.value)
-            //            if parseResponse.user != nil {
-            //                API.getUserProfileAfterLogin({ (error) -> () in
-            //                    callback(user:parseResponse.user, error: error)
-            //                })
-            //            } else {
-            //                callback(user: parseResponse.user, error: parseResponse.error)
-            //            }
-        })
-    }
     
-    static func loginWithToken(token:String, callback:(user:User?, error:NSError?)->()) -> Alamofire.Request {
-        let headers = ["Authorization" : "Token \(token)"]
-        
-        return self.request(.POST, path: "enter/", parameters: nil, encoding: .URL, headers:headers).responseAPI({ response in
-            guard response.result.error == nil else {
-                callback(user: nil, error: response.result.error)
-                return
-            }
-            
-            //            let parseResponse = SessionParser.parseJSON(response.result.value)
-            //            if parseResponse.user != nil {
-            //                API.getUserProfileAfterLogin({ (error) -> () in
-            //                    callback(user:parseResponse.user, error: error)
-            //                })
-            //            } else {
-            //                callback(user: parseResponse.user, error: parseResponse.error)
-            //            }
-        })
-    }
+//    @discardableResult
+//    static func getBookingHistory(limit:Int, fromBookingId:String?, callback: @escaping (_ bookings: [Booking]?,  _ nextOffset: String?, _ error: Error?) ->()) -> Alamofire.Request?  {
+//        var params:[String:Any] = [:]
+//        params["limit"] = limit
+//        params["from_booking_id"] = fromBookingId
+//        params["statuses"] = []
+//        
+//        return request(.get, path: "driver/bookings", parameters: params, encoding: .url).responseAPIMap(keyPath: "data") { (response, bookings:[Booking]?) in
+//            let lastBookingId = bookings?.last?.id
+//            callback(bookings, lastBookingId,  response.result.error)
+//        }
+//    }
 }

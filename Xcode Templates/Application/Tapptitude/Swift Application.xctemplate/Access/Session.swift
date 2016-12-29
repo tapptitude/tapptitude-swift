@@ -17,16 +17,13 @@ struct SessionInfo {
     static let userID = "email"
     static let accessToken = "token"
     
-    static let sessionClosedNotificationKey = "sessionClosedNotification"
+    static let sessionClosedNotification = Notification.Name(rawValue: "sessionClosedNotification")
     static let sessionClosedNotificationErrorKey = "error"
 }
 
 class Session {
     static func isValidSession() -> Bool {
-        let userID = self.currentUserID() as NSString?
-        let accessToken = self.accessToken() as NSString?
-        
-        return userID?.length > 0 && accessToken?.length > 0
+        return currentUserID?.isEmpty == false && accessToken?.isEmpty == false
     }
     
     static func shouldRestoreUserSession () -> Bool {
@@ -35,10 +32,12 @@ class Session {
         return !isComplete
     }
     
-    static func close(error error: NSError? = nil) {
+    static func close(error: Error? = nil) {
         guard self.isValidSession() else {
             return
         }
+        
+        Facebook.logout()
         
         self.removeUserIDAndAccessToken()
         let shouldRemoveUserCredential = (error == nil);
@@ -46,26 +45,29 @@ class Session {
             Session.clearUserCredentials()
         }
         
-        UIApplication.sharedApplication().cancelAllLocalNotifications()
+        UIApplication.shared.cancelAllLocalNotifications()
         
-        var userInfo : [NSObject : AnyObject]? = nil
+        var userInfo : [AnyHashable: Any]? = nil
         if (error != nil) {
             userInfo = [SessionInfo.sessionClosedNotificationErrorKey : error!]
         }
         
-        NSNotificationCenter.defaultCenter().postNotificationName(SessionInfo.sessionClosedNotificationKey, object: self, userInfo: userInfo)
+        NotificationCenter.default.post(name: SessionInfo.sessionClosedNotification, object: self, userInfo: userInfo)
     }
     
     //MARK:User
-    class func accessToken () -> String? {
-        return keychainValueForKey(SessionInfo.accessToken)
+    static var accessToken: String? {
+        get { return UserDefaults.standard.string(forKey: SessionInfo.accessToken) }
+        set { UserDefaults.standard.setValue(newValue, forKey: SessionInfo.accessToken) }
     }
-    static func currentUserID () -> String? {
-        return keychainValueForKey(SessionInfo.userID)
+    
+    static var currentUserID: String? {
+        get { return UserDefaults.standard.string(forKey: SessionInfo.userID) }
+        set { UserDefaults.standard.setValue(newValue, forKey: SessionInfo.userID) }
     }
     
     static func currentUser () -> User? {
-        if let userID = currentUserID() {
+        if let userID = currentUserID {
             let user = User()
             user.userID = userID
             return user
@@ -76,50 +78,50 @@ class Session {
     
     static func saveUserID(userID:String, accessToken:String?) {
         // check for previous logged user, if is the case delete it's cached content
-        let previousUserID = NSUserDefaults.standardUserDefaults().stringForKey(SessionInfo.previouslyLoggedUser)
+        let previousUserID = UserDefaults.standard.string(forKey: SessionInfo.previouslyLoggedUser)
         if previousUserID != nil && userID != previousUserID {
             clearUserCredentials()
         }
-        NSUserDefaults.standardUserDefaults().setObject(userID, forKey: SessionInfo.previouslyLoggedUser)
-        NSUserDefaults.standardUserDefaults().synchronize()
+        UserDefaults.standard.set(userID, forKey: SessionInfo.previouslyLoggedUser)
+        UserDefaults.standard.synchronize()
         
         // save user credentials
-        setKeychainValue(userID, forKey: SessionInfo.userID)
-        setKeychainValue(accessToken, forKey: SessionInfo.accessToken)
+        Session.currentUserID = userID
+        Session.accessToken = accessToken
     }
     
     static func removeUserIDAndAccessToken() {
-        setKeychainValue(nil, forKey: SessionInfo.userID)
-        setKeychainValue(nil, forKey: SessionInfo.accessToken)
-        NSUserDefaults.standardUserDefaults().synchronize()
+        Session.currentUserID = nil
+        Session.accessToken = nil
+        UserDefaults.standard.synchronize()
     }
     
     static func setKeychainValue(value: String?, forKey key: String) {
         if let value = value {
             SAMKeychain.setPassword(value, forService: SessionInfo.keychainService, account: key)
         } else {
-            SAMKeychain.deletePasswordForService(SessionInfo.keychainService, account: key)
+            SAMKeychain.deletePassword(forService: SessionInfo.keychainService, account: key)
         }
     }
     
     static func keychainValueForKey(key: String) -> String? {
-        return SAMKeychain.passwordForService(SessionInfo.keychainService, account: key)
+        return SAMKeychain.password(forService: SessionInfo.keychainService, account: key)
     }
 }
 
 extension Session {
-    static private func clearUserCredentials() {
-        guard let savedUserID = NSUserDefaults.standardUserDefaults().objectForKey(SessionInfo.previouslyLoggedUser) as? String else {
+    static fileprivate func clearUserCredentials() {
+        guard let savedUserID = UserDefaults.standard.object(forKey: SessionInfo.previouslyLoggedUser) as? String else {
             return
         }
         
         // Delete login service token & username
         let loginService = SessionInfo.keychainService
-        let password = SAMKeychain.passwordForService(loginService, account: savedUserID)
+        let password = SAMKeychain.password(forService: loginService, account: savedUserID)
         if (password != nil) {
-            SAMKeychain.deletePasswordForService(loginService, account:savedUserID)
+            SAMKeychain.deletePassword(forService: loginService, account:savedUserID)
         }
         
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(SessionInfo.previouslyLoggedUser)
+        UserDefaults.standard.removeObject(forKey: SessionInfo.previouslyLoggedUser)
     }
 }

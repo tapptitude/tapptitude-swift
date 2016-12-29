@@ -2,17 +2,12 @@ UserInterfaceState.xcuserstate
 WorkspaceSettings.xcsettings
 *xcuserdata/
 *.ipa
-Podfile.lock
 Pods/
 *.pbxuser
 *.mode1v3
-Podfile.lock
-Pods/
 .DS_Store
-iOSInjectionProject/
 *.tmp
 build
-fastlane/
 xcuserdata
 timeline.xctimeline
 project.xcworkspace

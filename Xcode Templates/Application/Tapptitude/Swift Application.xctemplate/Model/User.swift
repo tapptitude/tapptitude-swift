@@ -7,14 +7,25 @@
 //
 
 import Foundation
+import ObjectMapper
 
 final class User {
-    var userID : NSString?
+    var userID : String!
     
     var firstName : String?
     var lastName : String?
     
-    func fullName() -> String? {
+    var fullName: String {
         return "\(firstName ?? "") \(lastName ?? "")"
+    }
+}
+
+extension User: Mappable {
+    convenience init?(map: Map) { self.init() }
+    
+    func mapping(map: Map) {
+        userID <- map["_id"]
+        lastName <- map["lastName"]
+        firstName <- map["firstName"]
     }
 }

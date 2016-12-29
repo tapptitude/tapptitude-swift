@@ -25,26 +25,26 @@ class SeparatorView : UIView {
             var yDeltaNew : CGFloat = 0.0
             
             if width == 1.0 {
-                width = width / UIScreen.mainScreen().scale
+                width = width / UIScreen.main.scale
                 xDeltaNew = width
             }
             
             if height == 0.0 {
-                height = 1 / UIScreen.mainScreen().scale
+                height = 1 / UIScreen.main.scale
             }
             
             if height == 1.0 {
-                height = height / UIScreen.mainScreen().scale
+                height = height / UIScreen.main.scale
                 yDeltaNew = height
             }
             
-            frame = CGRectMake(frame.origin.x + xDeltaNew - xDelta, frame.origin.y + yDeltaNew - yDelta, width, height);
+            frame = CGRect(x: frame.origin.x + xDeltaNew - xDelta, y: frame.origin.y + yDeltaNew - yDelta, width: width, height: height);
             xDelta = xDeltaNew
             yDelta = yDeltaNew
         } else {
             for constraint in constraints {
-                if (constraint.firstAttribute == .Width || constraint.firstAttribute == .Height) && constraint.constant == 1 {
-                    constraint.constant /= UIScreen.mainScreen().scale
+                if (constraint.firstAttribute == .width || constraint.firstAttribute == .height) && constraint.constant == 1 {
+                    constraint.constant /= UIScreen.main.scale
                 }
             }
         }
