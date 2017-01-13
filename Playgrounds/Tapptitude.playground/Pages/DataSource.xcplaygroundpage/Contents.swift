@@ -59,3 +59,7 @@ nilDataSource?.isEmpty == true
 nilDataSource?.isEmpty == false
 
 //: [Next](@next)
+
+let newDataSource = DataSource([1]).dropLast()
+ newDataSource.contains(1)
+let joined = DataSource(["12312", "ABCD"]).joined(separator: " ")

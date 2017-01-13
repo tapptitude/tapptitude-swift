@@ -354,8 +354,10 @@ extension SectionedDataSource : Collection {
     public func index(after i: Int) -> Int {
         return i + 1
     }
-    
-    public var last: [T]? {
-        return _content.last
+}
+
+extension SectionedDataSource: BidirectionalCollection {
+    public func index(before i: Int) -> Int {
+        return i - 1
     }
 }

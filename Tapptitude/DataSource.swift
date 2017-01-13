@@ -339,13 +339,11 @@ extension DataSource : Collection {
     public func index(after i: Int) -> Int {
         return i + 1
     }
-    
-    public var last: T? {
-        return _content.last
-    }
 }
 
 
-//extension DataSource: BidirectionalCollection {
-//    
-//}
+extension DataSource: BidirectionalCollection {
+    public func index(before i: Int) -> Int {
+        return i - 1
+    }
+}
