@@ -39,6 +39,7 @@ open class TextCellController : CollectionCellController<String, TextCell> {
     open override func configureCell(_ cell: TextCell, for content: String, at indexPath: IndexPath) {
         cell.backgroundColor = UIColor(white: 0.9, alpha: 1)
         cell.label.text = content
+        cell.label.textColor = UIColor.black
     }
     
     open override func cellSize(for content: String, in collectionView: UICollectionView) -> CGSize {
@@ -62,6 +63,7 @@ open class BrownTextCellController: CollectionCellController<String, TextCell> {
     override open func configureCell(_ cell: TextCell, for content: String, at indexPath: IndexPath) {
         cell.label.text = content
         cell.backgroundColor = .brown
+        cell.label.textColor = UIColor.black
     }
     
     override open func cellSize(for content: String, in collectionView: UICollectionView) -> CGSize {
@@ -87,6 +89,7 @@ open class IntCellController : CollectionCellController<Int, TextCell> {
     
     open override func configureCell(_ cell: TextCell, for content: Int, at indexPath: IndexPath) {
         cell.label.text = String(content)
+        cell.label.textColor = UIColor.brown
     }
     
     open override func didSelectContent(_ content: Int, at indexPath: IndexPath, in collectionView: UICollectionView) {

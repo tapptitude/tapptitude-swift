@@ -13,6 +13,10 @@ open class MultiCollectionCellController: TTCollectionCellControllerProtocol {
         self.cellControllers = cellControllers
     }
     
+    public init (_ cellControllers: TTCollectionCellControllerProtocol...) {
+        self.cellControllers = cellControllers
+    }
+    
     open var cellControllers: [TTCollectionCellControllerProtocol] = [] {
         willSet {
             for var cellController in cellControllers {

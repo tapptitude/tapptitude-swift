@@ -44,7 +44,7 @@ extension IntCellController: HybridCollectionCellController {
     }
 }
 
-let multiCellController = HybridCellController([TextCellController(), BrownTextCellController(), IntCellController()])
+let multiCellController = HybridCellController(TextCellController(), BrownTextCellController(), IntCellController())
 
 let feedController = CollectionFeedController()
 feedController.dataSource = HybridDataSource(content: [TestModel()], multiCellController: multiCellController)

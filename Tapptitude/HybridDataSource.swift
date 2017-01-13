@@ -158,6 +158,13 @@ open class GroupCellController<ItemType>: MultiCollectionCellController, HybridC
 }
 
 open class HybridCellController : MultiCollectionCellController {
+    public override init (_ cellControllers: [TTCollectionCellControllerProtocol]) {
+        super.init(cellControllers)
+    }
+    
+    public override init (_ cellControllers: TTCollectionCellControllerProtocol...) {
+        super.init(cellControllers)
+    }
     
     override open func controllerForContent(_ content: Any) -> TTCollectionCellControllerProtocol? {
         return (content is HybridItem) ? self : super.controllerForContent(content)
