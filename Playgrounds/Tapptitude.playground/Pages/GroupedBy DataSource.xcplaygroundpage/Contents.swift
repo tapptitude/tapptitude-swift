@@ -11,20 +11,10 @@ print(items.groupBy({ $0.characters.first!.debugDescription }))
 let dataSource = GroupedByDataSource(content: items, groupBy: { $0.characters.first!.debugDescription })
 dataSource.filter { $0.characters.count > 4 }
 
-let cellController = CollectionCellController<String, TextCell>(cellSize: CGSize(width: 50, height: 50))
-cellController.minimumInteritemSpacing = 10
-cellController.sectionInset = UIEdgeInsetsMake(0, 0, 10, 0)
-cellController.configureCell = { cell, content, indexPath in
-    cell.backgroundColor = UIColor.red
-    cell.label.text = content
-}
-cellController.cellSizeForContent = {[unowned cellController] (content, _) in
-    return cellController.cellSizeToFit(text: content, label: cellController.sizeCalculationCell.label, maxSize: CGSize(width: 300, height: -1))
-}
 
 let feedController = CollectionFeedController()
 feedController.dataSource = dataSource
-feedController.cellController = cellController
+feedController.cellController = TextCellController()
 
 dataSource.dataFeed(nil, didLoadMoreContent: ["Ion"])
 dataSource.filter(nil)

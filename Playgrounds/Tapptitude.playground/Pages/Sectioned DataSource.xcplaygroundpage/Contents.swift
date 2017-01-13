@@ -11,20 +11,10 @@ print(items.groupBy({ $0.characters.first!.debugDescription }))
 let dataSource = SectionedDataSource([["Test", "Ghita"], ["Maria"], ["Collection", "Cell", "Controller"]])
 dataSource.filter { $0.characters.count > 4 }
 
-let cellController = CollectionCellController<String, TextCell>(cellSize: CGSize(width: 50, height: 50))
-cellController.sectionInset = UIEdgeInsetsMake(0, 0, 10, 0)
-cellController.minimumInteritemSpacing = 10
-cellController.configureCell = { cell, content, indexPath in
-    cell.backgroundColor = UIColor.red
-    cell.label.text = content
-}
-cellController.cellSizeForContent = {[unowned cellController] (content, _) in
-    return cellController.cellSizeToFit(text: content, label: cellController.sizeCalculationCell.label, maxSize: CGSize(width: 300, height: -1))
-}
-
 let feedController = CollectionFeedController()
 feedController.dataSource = dataSource
-feedController.cellController = cellController
+feedController.cellController = TextCellController()
+feedController.animatedUpdates = true
 
 dataSource.dataFeed(nil, didLoadMoreContent: [["Nenea"]])
 dataSource[0, 0] = "Ion"
@@ -33,6 +23,10 @@ dataSource[indexPath] = "New Ion"
 
 print(dataSource.content)
 let testDataSource = SectionedDataSource<String>(NSArray(array: [["Test"]]))
+
+DispatchQueue.main.asyncAfter(deadline: .now() + 2) { 
+    dataSource[1] = ["Ioana Moldovan", "Maria"]
+}
 
 import PlaygroundSupport
 PlaygroundPage.current.liveView = feedController.view

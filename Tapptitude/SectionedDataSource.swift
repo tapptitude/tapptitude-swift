@@ -125,6 +125,16 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         }
     }
     
+    open subscript(section: Int) -> [T] {
+        get { return _content[section] }
+        set {
+            delegate?.dataSourceWillChangeContent(self)
+            _content[section] = newValue
+            delegate?.dataSource(self, didUpdateSections: IndexSet(integer: section))
+            delegate?.dataSourceDidChangeContent(self) // TODO: support incremental changes
+        }
+    }
+    
     open var dataSourceID : String?
     
     open func indexPath<S>(ofFirst filter: (_ item: S) -> Bool) -> IndexPath? {
@@ -155,8 +165,8 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
     }
     
     open func append(contentsOf newElements: [T]) {
-        let section = max(0, content.count - 1)
-        insert(contentsOf: newElements, at: IndexPath(item: content.count, section: section))
+        let section = Swift.max(0, _content.count - 1)
+        insert(contentsOf: newElements, at: IndexPath(item: _content.count, section: section))
     }
     
     open func insert(contentsOf newElements: [T], at indexPath: IndexPath) {
@@ -310,5 +320,42 @@ public extension Sequence {
         }
         
         return groupedItems
+    }
+}
+
+
+extension SectionedDataSource: Sequence {
+    public typealias Iterator = AnyIterator<[T]>
+    
+    public func makeIterator() -> Iterator {
+        var index = 0
+        return AnyIterator {
+            if index < self._content.count {
+                defer {index += 1}
+                return self._content[index]
+            }
+            return nil
+        }
+    }
+}
+
+
+extension SectionedDataSource : Collection {
+    public typealias Index = Int
+    
+    public var startIndex: Int {
+        return _content.startIndex
+    }
+    
+    public var endIndex: Int {
+        return _content.endIndex
+    }
+    
+    public func index(after i: Int) -> Int {
+        return i + 1
+    }
+    
+    public var last: [T]? {
+        return _content.last
     }
 }

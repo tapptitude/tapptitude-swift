@@ -3,25 +3,6 @@
 import UIKit
 import Tapptitude
 
-class TextCellController: CollectionCellController<String, TextCell> {
-    init() {
-        super.init(cellSize: CGSize(width: -1, height: 50))
-        minimumInteritemSpacing = 20
-        minimumLineSpacing = 10
-        sectionInset = UIEdgeInsetsMake(0, 0, 10, 0)
-    }
-    
-    override func configureCell(_ cell: TextCell, for content: String, at indexPath: IndexPath) {
-        cell.label.text = content
-    }
-    
-    override func cellSize(for content: String, in collectionView: UICollectionView) -> CGSize {
-        var size = cellSizeToFit(text: content, label: sizeCalculationCell.label , maxSize: CGSize(width: -1, height: 300))
-        size.height = min(size.height, 200)
-        return size
-    }
-}
-
 
 //============ API Mocks ==========
 class APIPaginatedMock: TTCancellable {
@@ -105,7 +86,7 @@ dataSource.feed = feed
 
 let feedController = CollectionFeedController()
 feedController.addPullToRefresh()
-feedController.cellController = TextCellController()
+feedController.cellController = BrownTextCellController()
 feedController.pullToRefreshAction(feedController)
 feedController.dataSource = dataSource
 

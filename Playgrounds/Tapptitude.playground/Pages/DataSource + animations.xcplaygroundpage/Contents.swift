@@ -8,23 +8,13 @@ import PlaygroundSupport
 
 var dataSource = DataSource([2, 4, 6])
 
-let cellController = CollectionCellController<Int, UICollectionViewCell>(cellSize: CGSize(width: 50, height: 50))
-cellController.configureCell = { cell, content, indexPath in
-    cell.backgroundColor = UIColor.red
-}
 let feedController = CollectionFeedController()
 feedController.dataSource = dataSource
-feedController.cellController = cellController
+feedController.cellController = IntCellController()
 feedController.animatedUpdates = true
 
 PlaygroundPage.current.liveView = feedController.view
 feedController.collectionView?.backgroundColor = UIColor.black
-
-
-func dispatch_after_on_main_queue (_ delayInSeconds: Double , closure: @escaping ()->()) {
-    let popTime = DispatchTime.now() + Double(Int64(delayInSeconds * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC);
-    DispatchQueue.main.asyncAfter(deadline: popTime, execute: closure);
-}
 
 
 dataSource.perfomBatchUpdates({ 
