@@ -38,8 +38,8 @@ extension TTCollectionHeaderController {
     }
     
     public func nibToInstantiate() -> UINib? {
-        if let _ = Bundle.main.path(forResource: reuseIdentifier, ofType: "nib") {
-            return UINib(nibName: reuseIdentifier, bundle: nil)
+        if let _ = Bundle(for: HeaderType.self).path(forResource: reuseIdentifier, ofType: "nib") {
+            return UINib(nibName: reuseIdentifier, bundle: Bundle(for: HeaderType.self))
         } else {
             return nil
         }

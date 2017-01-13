@@ -55,7 +55,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         updateEmptyViewAppearenceAnimated(false)
     }
     
-    internal var registeredCellIdentifiers : [String]?
+    internal var registeredCellIdentifiers : [String] = []
     internal var isScrollDirectionConfigured : Bool = false
     internal weak var previousCollectionView : UICollectionView! = nil
     
@@ -66,7 +66,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         }
         
         didSet {
-            registeredCellIdentifiers = nil
+            registeredCellIdentifiers = []
             
             if let collectionView = self.collectionView {
                 collectionView.delegate = self
@@ -502,7 +502,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         // register only once per collectionView
         if (previousCollectionView != collectionView) {
             previousCollectionView = collectionView
-            self.registeredCellIdentifiers = nil
+            self.registeredCellIdentifiers = []
         }
         
         return dataSource.numberOfSections()
@@ -516,11 +516,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         let content = dataSource![indexPath]
         let reuseIdentifier = cellController.reuseIdentifier(for: content)
         
-        if registeredCellIdentifiers == nil {
-            registeredCellIdentifiers = [String]()
-        }
-        
-        if registeredCellIdentifiers?.contains(reuseIdentifier) == false {
+        if registeredCellIdentifiers.contains(reuseIdentifier) == false {
             if let nib = cellController.nibToInstantiateCell(for: content) {
                 collectionView.register(nib, forCellWithReuseIdentifier: reuseIdentifier)
             } else {
@@ -528,7 +524,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
                 collectionView.register(cellClass, forCellWithReuseIdentifier: reuseIdentifier)
             }
             
-            registeredCellIdentifiers?.append(reuseIdentifier)
+            registeredCellIdentifiers.append(reuseIdentifier)
         }
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
@@ -581,11 +577,8 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         let showHeader = kind == UICollectionElementKindSectionHeader
         if showHeader, let headerController = headerController  {
             let reuseIdentifier = headerController.reuseIdentifier
-            if registeredCellIdentifiers == nil {
-                registeredCellIdentifiers = [String]()
-            }
             
-            if registeredCellIdentifiers?.contains(reuseIdentifier) == false {
+            if registeredCellIdentifiers.contains(reuseIdentifier) == false {
                 if let nib = headerController.nibToInstantiate() {
                     collectionView.register(nib, forSupplementaryViewOfKind: kind, withReuseIdentifier: reuseIdentifier)
                 } else {
@@ -593,7 +586,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
                     collectionView.register(headerClass, forSupplementaryViewOfKind: kind, withReuseIdentifier: reuseIdentifier)
                 }
                 
-                registeredCellIdentifiers?.append(reuseIdentifier)
+                registeredCellIdentifiers.append(reuseIdentifier)
             }
             
             let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: reuseIdentifier, for: indexPath)
