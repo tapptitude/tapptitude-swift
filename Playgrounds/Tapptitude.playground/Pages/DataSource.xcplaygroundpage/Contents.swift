@@ -48,4 +48,14 @@ print(dataSource.content)
 dataSource.remove({ _ in return true })
 print(dataSource.content)
 
+dataSource.isEmpty
+
+var nilDataSource: DataSource<Int>? = DataSource([1, 2, 3])
+nilDataSource?.isEmpty == true
+nilDataSource?.isEmpty == false
+
+nilDataSource = nil
+nilDataSource?.isEmpty == true
+nilDataSource?.isEmpty == false
+
 //: [Next](@next)

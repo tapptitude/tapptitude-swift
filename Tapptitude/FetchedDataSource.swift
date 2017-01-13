@@ -36,8 +36,8 @@ class FetchedDataSource<T: NSManagedObject>: NSObject, TTDataSource, NSFetchedRe
         self.feed?.delegate = nil
     }
     
-    open func hasContent() -> Bool {
-        return fetchController.fetchedObjects!.count > 0
+    open var isEmpty: Bool {
+        return fetchController.fetchedObjects!.isEmpty
     }
     
     open var content : [Any]  {

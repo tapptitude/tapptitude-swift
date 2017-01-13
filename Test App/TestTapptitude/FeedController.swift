@@ -98,7 +98,7 @@ class FeedController: CollectionFeedController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        let size: CGSize = dataSource!.hasContent() == true ? CGSize(width: 0, height: 30) : CGSize.zero
+        let size: CGSize = dataSource!.isEmpty == false ? CGSize(width: 0, height: 30) : CGSize.zero
         return size
     }
     

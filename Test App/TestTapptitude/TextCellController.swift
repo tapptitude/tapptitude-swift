@@ -23,6 +23,6 @@ class TextCellController : CollectionCellController<String, TextCell> {
     }
     
     override func cellSize(for content: ContentType, in collectionView: UICollectionView) -> CGSize {
-        return self.cellSizeToFit(text: content, labelName: "label")
+        return cellSizeToFit(text: content, label: sizeCalculationCell.label)
     }
 }

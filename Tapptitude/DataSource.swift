@@ -47,8 +47,8 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
         }
     }
     
-    open func hasContent() -> Bool {
-        return _content.isEmpty == false
+    open var isEmpty: Bool {
+        return _content.isEmpty
     }
     
     open func numberOfSections() -> Int {
@@ -92,10 +92,6 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
             _content[index] = newValue
             }}
     }
-    
-//    public subscript(index: Int) -> Any {
-//        get { return _content[index] }
-//    }
     
     open subscript(index: Int) -> T {
         get { return _content[index] }

@@ -71,8 +71,8 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         }
     }
     
-    open func hasContent() -> Bool {
-        return _content.isEmpty == false
+    open var isEmpty: Bool {
+        return _content.isEmpty
     }
     
     open func numberOfSections() -> Int {

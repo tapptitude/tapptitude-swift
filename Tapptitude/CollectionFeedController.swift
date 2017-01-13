@@ -209,7 +209,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     // UI appearence
     open func updateEmptyViewAppearenceAnimated(_ animated: Bool) {
         let feedIsLoading = (dataSource?.feed?.isReloading == true) || (dataSource?.feed?.isLoadingMore == true)
-        let hasContent = dataSource?.hasContent() == true
+        let hasContent = (dataSource != nil) && dataSource?.isEmpty == false
         
         if (feedIsLoading || hasContent) && displayedEmptyView != nil {
             if animated {
@@ -251,7 +251,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         }
         
         if dataSource.feed?.isReloading == true {
-            if hideReloadViewIfHasContent && dataSource.hasContent() {
+            if hideReloadViewIfHasContent && !dataSource.isEmpty {
                 
             } else {
                 if refreshControl == nil || (refreshControl?.isRefreshing == false) {
@@ -325,7 +325,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         if autoLoadMoreContent && supportsLoadMore && feed.canLoadMore == true {
             if let indexPath = collectionView.indexPathsForVisibleItems.last {
                 self.checkIfShouldLoadMoreContentForIndexPath(indexPath)
-            } else if dataSource?.hasContent() == false {
+            } else if dataSource?.isEmpty == true {
                 feed.loadMore()
             }
         }

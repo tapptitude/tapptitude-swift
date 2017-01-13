@@ -11,7 +11,7 @@ import Foundation
 public protocol TTDataSource : TTDataFeedDelegate, CustomStringConvertible {
     
     var content : [Any] { get }
-    func hasContent() -> Bool
+    var isEmpty: Bool { get }
     func numberOfSections() -> Int
     func numberOfItems(inSection section: Int) -> Int
     
