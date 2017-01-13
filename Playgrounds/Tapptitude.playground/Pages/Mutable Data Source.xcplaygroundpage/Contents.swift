@@ -11,15 +11,12 @@ class EditViewController: CollectionFeedController {
     convenience init() {
         self.init(nibName: "EditViewController", bundle: nil);
         
-        let cellController = CollectionCellController<Int, TextCell>(cellSize: CGSize(width:60, height:60))
+        let cellController = IntCellController(cellSize: CGSize(width:60, height:60))
         cellController.minimumLineSpacing = 20
         cellController.minimumInteritemSpacing = 20
         cellController.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-        cellController.configureCell = { cell, content, indexPath in
-            cell.label.text = "\(content)"
-        }
         
-        let headerController = CollectionHeaderController<Int, UICollectionReusableView>(headerSize: CGSize(width: 0, height: 30))
+        let headerController = CollectionHeaderController<[Int], UICollectionReusableView>(headerSize: CGSize(width: 0, height: 30))
         headerController.configureHeader = {(header, _, _) in
             header.backgroundColor = UIColor.darkGray
         }

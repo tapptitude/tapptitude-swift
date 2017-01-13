@@ -28,12 +28,6 @@ public protocol TTCollectionHeaderController: TTCollectionHeaderControllerProtoc
     associatedtype ContentType
     associatedtype HeaderType: UICollectionReusableView
     
-    func classToInstantiate() -> AnyClass?
-    func nibToInstantiate() -> UINib?
-    
-    var reuseIdentifier: String {get}
-    var headerSize: CGSize {get}
-    
     func headerSize(for content: ContentType, in collectionView: UICollectionView) -> CGSize
     func configureHeader(_ cell: HeaderType, for content: ContentType, at indexPath: IndexPath)
 }

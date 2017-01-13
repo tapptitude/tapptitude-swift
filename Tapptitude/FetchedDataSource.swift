@@ -107,6 +107,10 @@ class FetchedDataSource<T: NSManagedObject>: NSObject, TTDataSource, NSFetchedRe
         return sectionInfo.numberOfObjects
     }
     
+    public var sectionHeaders: [Any]?
+    open func sectionHeaderItem(at section: Int) -> Any? {
+        return sectionHeaders?[section] ?? self.fetchController.sections![section]
+    }
     
     //MARK: - NSFetchedResultsControllerDelegate
     open func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {

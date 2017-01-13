@@ -100,6 +100,17 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
             }}
     }
     
+    public var sectionHeaders: [Any]? {
+        didSet {
+            if let sectionHeaders = sectionHeaders {
+                assert(sectionHeaders.count == _content.count, "We should have same count for number of sections")
+            }
+        }
+    }
+    open func sectionHeaderItem(at section: Int) -> Any? {
+        return sectionHeaders?[section] ?? _content
+    }
+    
     open var dataSourceID : String?
     /// store/access any information here by using a unique key
     open var info: [String: Any] = [:]

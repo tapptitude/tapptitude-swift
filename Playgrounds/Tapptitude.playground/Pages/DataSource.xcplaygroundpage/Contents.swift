@@ -63,3 +63,7 @@ nilDataSource?.isEmpty == false
 let newDataSource = DataSource([1]).dropLast()
  newDataSource.contains(1)
 let joined = DataSource(["12312", "ABCD"]).joined(separator: " ")
+
+
+let sectionDataSource = SectionedDataSource([["Maria", "Ion"], ["Ghita"]])
+sectionDataSource.sectionHeaders = ["23", 323]

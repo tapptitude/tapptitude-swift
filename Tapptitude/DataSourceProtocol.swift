@@ -18,20 +18,14 @@ public protocol TTDataSource : TTDataFeedDelegate, CustomStringConvertible {
     subscript(indexPath: IndexPath) -> Any { get }
     subscript(section: Int, index: Int) -> Any { get }
     
-    func sectionItem(at section: Int) -> Any?
-    
     weak var delegate: TTDataSourceDelegate? { get set }
     var feed: TTDataFeed? { get set }
     
     var dataSourceID: String? { get set } //usefull information
     
     func indexPath<S>(ofFirst filter: (_ item: S) -> Bool) -> IndexPath?
-}
-
-public extension TTDataSource {
-    public func sectionItem(at section: Int) -> Any? {
-        return nil
-    }
+    
+    func sectionHeaderItem(at section: Int) -> Any?
 }
 
 public protocol TTDataSourceMutable {

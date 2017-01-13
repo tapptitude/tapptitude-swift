@@ -578,18 +578,18 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         }
         
         // header view
-        let showHeader = kind == UICollectionElementKindSectionHeader && headerController != nil
-        if showHeader {
-            let reuseIdentifier = headerController!.reuseIdentifier
+        let showHeader = kind == UICollectionElementKindSectionHeader
+        if showHeader, let headerController = headerController  {
+            let reuseIdentifier = headerController.reuseIdentifier
             if registeredCellIdentifiers == nil {
                 registeredCellIdentifiers = [String]()
             }
             
             if registeredCellIdentifiers?.contains(reuseIdentifier) == false {
-                if let nib = headerController!.nibToInstantiate() {
+                if let nib = headerController.nibToInstantiate() {
                     collectionView.register(nib, forSupplementaryViewOfKind: kind, withReuseIdentifier: reuseIdentifier)
                 } else {
-                    let headerClass: AnyClass? = headerController!.classToInstantiate()
+                    let headerClass: AnyClass? = headerController.classToInstantiate()
                     collectionView.register(headerClass, forSupplementaryViewOfKind: kind, withReuseIdentifier: reuseIdentifier)
                 }
                 
@@ -598,8 +598,8 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
             
             let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: reuseIdentifier, for: indexPath)
             headerView.parentViewController = self
-            let content = dataSource[indexPath]
-            headerController!.configureHeader(headerView, for: content, at: indexPath)
+            let content = dataSource.sectionHeaderItem(at: indexPath.section)!
+            headerController.configureHeader(headerView, for: content, at: indexPath)
             
             return headerView
         }
@@ -682,7 +682,9 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection  section: Int) -> CGSize {
         if let dataSource = dataSource, dataSource.numberOfItems(inSection: section) > 0,
-            let headerController = headerController, headerController.acceptsContent(dataSource[section, 0]) {
+            let headerController = headerController,
+            let item = dataSource.sectionHeaderItem(at: section), 
+            headerController.acceptsContent(item) {
             return headerController.headerSize
         } else {
             return CGSize.zero
