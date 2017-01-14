@@ -59,8 +59,6 @@ extension CollectionController where Self: UIViewController {
         collectionController.cellController = cellController
         cellController.parentViewController = self
         collectionController.dataSource = dataSource
-        
-        self.addChildViewController(collectionController)
     }
 }
 

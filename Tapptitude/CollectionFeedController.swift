@@ -18,14 +18,6 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     
     open var options = Options()
     
-    public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    }
-    
-    public required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
     deinit {
         collectionView?.delegate = nil;
         collectionView?.dataSource = nil;

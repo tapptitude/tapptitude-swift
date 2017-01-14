@@ -22,7 +22,7 @@
 		235500B01CA4569200D7B393 /* DataFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2355009F1CA4569200D7B393 /* DataFeed.swift */; };
 		235500B11CA4569200D7B393 /* SimpleDataFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235500A01CA4569200D7B393 /* SimpleDataFeed.swift */; };
 		235500B21CA4569200D7B393 /* DataFeedProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235500A11CA4569200D7B393 /* DataFeedProtocol.swift */; };
-		235500B31CA4569200D7B393 /* CollectionFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235500A21CA4569200D7B393 /* CollectionFeedViewController.swift */; };
+		235500B31CA4569200D7B393 /* TTCollectionFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235500A21CA4569200D7B393 /* TTCollectionFeedController.swift */; };
 		235500B41CA4569200D7B393 /* DataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235500A31CA4569200D7B393 /* DataSourceProtocol.swift */; };
 		235500B51CA4569200D7B393 /* CollectionViewAnimatedUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235500A41CA4569200D7B393 /* CollectionViewAnimatedUpdater.swift */; };
 		235500B61CA4569200D7B393 /* LoadMoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 235500A51CA4569200D7B393 /* LoadMoreView.xib */; };
@@ -53,7 +53,7 @@
 		2355009F1CA4569200D7B393 /* DataFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataFeed.swift; path = Tapptitude/DataFeed.swift; sourceTree = SOURCE_ROOT; };
 		235500A01CA4569200D7B393 /* SimpleDataFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SimpleDataFeed.swift; path = Tapptitude/SimpleDataFeed.swift; sourceTree = SOURCE_ROOT; };
 		235500A11CA4569200D7B393 /* DataFeedProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataFeedProtocol.swift; path = Tapptitude/DataFeedProtocol.swift; sourceTree = SOURCE_ROOT; };
-		235500A21CA4569200D7B393 /* CollectionFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionFeedViewController.swift; path = Tapptitude/CollectionFeedViewController.swift; sourceTree = SOURCE_ROOT; };
+		235500A21CA4569200D7B393 /* TTCollectionFeedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TTCollectionFeedController.swift; path = Tapptitude/TTCollectionFeedController.swift; sourceTree = SOURCE_ROOT; };
 		235500A31CA4569200D7B393 /* DataSourceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataSourceProtocol.swift; path = Tapptitude/DataSourceProtocol.swift; sourceTree = SOURCE_ROOT; };
 		235500A41CA4569200D7B393 /* CollectionViewAnimatedUpdater.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionViewAnimatedUpdater.swift; path = Tapptitude/CollectionViewAnimatedUpdater.swift; sourceTree = SOURCE_ROOT; };
 		235500A51CA4569200D7B393 /* LoadMoreView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoadMoreView.xib; path = Tapptitude/LoadMoreView.xib; sourceTree = SOURCE_ROOT; };
@@ -127,7 +127,7 @@
 				235500A01CA4569200D7B393 /* SimpleDataFeed.swift */,
 				2355009E1CA4569200D7B393 /* PaginatedDataFeed.swift */,
 				23670E661DF89EA10059D5AA /* ParallelOperations.swift */,
-				235500A21CA4569200D7B393 /* CollectionFeedViewController.swift */,
+				235500A21CA4569200D7B393 /* TTCollectionFeedController.swift */,
 				2355009B1CA4569200D7B393 /* CollectionFeedController.swift */,
 				235500A71CA4569200D7B393 /* CollectionFeedController.xib */,
 				235500A41CA4569200D7B393 /* CollectionViewAnimatedUpdater.swift */,
@@ -231,7 +231,7 @@
 				235500B21CA4569200D7B393 /* DataFeedProtocol.swift in Sources */,
 				235500AF1CA4569200D7B393 /* PaginatedDataFeed.swift in Sources */,
 				235500AE1CA4569200D7B393 /* CollectionCellController.swift in Sources */,
-				235500B31CA4569200D7B393 /* CollectionFeedViewController.swift in Sources */,
+				235500B31CA4569200D7B393 /* TTCollectionFeedController.swift in Sources */,
 				234BC72E1CDCF9A6004057D4 /* PanViewGestureRecognizer.swift in Sources */,
 				232575701D7868FD00FF23BC /* PageCachingFlowLayout.swift in Sources */,
 				235500AC1CA4569200D7B393 /* CollectionFeedController.swift in Sources */,
