@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<playground version='6.0' target-platform='ios' executeOnSourceChanges='false' last-migration='0800'>
+<playground version='6.0' target-platform='ios' last-migration='0800'>
     <pages>
         <page name='DataSource'/>
-        <page name='Cell Controller Block'/>
+        <page name='Cell Controller'/>
         <page name='Mutable Data Source'/>
         <page name='DataSource + animations'/>
         <page name='Expand cell'/>
         <page name='Multi Cell Controller'/>
         <page name='Hybrid Controller &amp; DataSource'/>
-        <page name='HybridCollectionCellController'/>
+        <page name='Hybrid CollectionCellController'/>
         <page name='Compile xibs - ToDo'/>
-        <page name='JSON DataSource'/>
         <page name='Filtered DataSource'/>
         <page name='CircularCollectionController'/>
         <page name='Sectioned DataSource'/>

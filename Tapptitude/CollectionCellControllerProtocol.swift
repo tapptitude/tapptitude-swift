@@ -61,7 +61,7 @@ public protocol TTCollectionCellController : TTCollectionCellControllerProtocol 
 public protocol TTCollectionCellControllerSize: TTCollectionCellController {
     var sizeCalculationCell: CellType! {get}
     
-    /// pass label property from sizeCalculationCell. Ex: sizeCalculationCell.label
+    /// pass label from sizeCalculationCell. Ex: sizeCalculationCell.label
     func cellSizeToFit(text: String, label: UILabel, maxSize: CGSize) -> CGSize
     func cellSizeToFit(attributedText: NSAttributedString, label: UILabel, maxSize: CGSize) -> CGSize
 }

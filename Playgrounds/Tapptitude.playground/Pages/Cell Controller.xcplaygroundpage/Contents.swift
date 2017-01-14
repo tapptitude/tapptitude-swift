@@ -28,12 +28,11 @@ cellController.acceptsContent("Maria" as AnyObject)
 let indexPath = IndexPath(item: 0, section: 0)
 let object = dataSource[indexPath]
 cellController.configureCell(UICollectionViewCell(), for: object, at: indexPath)
-cellController.parentViewController = nil
-cellController.parentViewController = UIViewController()
 
 let feedController = CollectionFeedController()
 feedController.dataSource = dataSource
 feedController.cellController = cellController
+print(cellController.parentViewController)
 
 let _ = feedController.view // load it's view
 feedController.collectionView?.backgroundColor = UIColor.gray
