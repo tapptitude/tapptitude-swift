@@ -14,101 +14,53 @@ extension URLSessionTask: TTCancellable {
 }
 
 
-class FeedController: CollectionFeedController {
+class TestViewController : UIViewController, CollectionController {
+    @IBOutlet weak var collectionView: UICollectionView?
+    @IBOutlet weak var reloadIndicatorView: UIActivityIndicatorView?
+    @IBOutlet var emptyView: UIView?
     
-    var dataSourceString: DataSource<String> {
-        return self.dataSource as! DataSource<String>
-    }
+    var cellController = TextItemCellController()
+    lazy var dataSource = DataSource<String>(load: API.getBin)
+    var collectionController = CollectionFeedController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        collectionView!.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "test")
+        setupCollectionController()
         
-        addPullToRefresh()
-        forceTouchPreviewEnabled = true
-        animatedUpdates = true
-        
-//        self.dataSource = DataSource(content: ["arra"])
-        let cellController = TextCellController()
-        cellController.didSelectContent = { [unowned self] _, indexPath, collectionView in
-            self.dataSourceString.replace(at: indexPath, newElement: "Ghita")
-        }
-        
-        let numberCellController = CollectionCellController<Int, UICollectionViewCell>(cellSize: CGSize(width: 100, height: 50))
-        numberCellController.configureCell = { cell, content, indexPath in
-            cell.backgroundColor = UIColor.blue
-        }
-        
-        self.cellController = MultiCollectionCellController([cellController, numberCellController])
-        
-//        let dataSource = DataSource<String> (load: { (callback: TTCallback<String>.Signature) -> TTCancellable? in
-//            return APIMock(callback: { (content, error) in
-//                var newContent : [String]? = content
-//                newContent?.append("2312")
-//                callback(content: newContent, error: error)
-//            })
-//        })
-        
-//        let dataSource = DataSource<String> { APIMock(callback: $0) }
-        
-        let dataSource = DataSource<String>(pageSize: 2, loadPage: { (offset, pageSize, callback) -> TTCancellable? in
-            return APIPaginatedMock(offset: offset, pageSize: pageSize, callback: { (content, error) in
-                callback(content, error)
-            })
-        })
-        
-//        let items = NSArray(arrayLiteral: "Why Algorithms as Microservices are Changing Software Development\n We recently wrote about how the Algorithm Economy and containers have created a fundamental shift in software development. Today, we want to look at the 10 ways algorithms as microservices change the way we build and deploy software.", 123)
-//        let dataSource = DataSource(items)
-//        dataSource.feed = PaginatedDataFeed(loadPage: { (offset, limit, callback) -> TTCancellable? in
-//            return APIPaginatedMock(offset: offset, limit: limit, callback: callback)
-//        })
-        
-//        let url = NSURL(string: "https://httpbin.org/get")
-//        var url_request = NSMutableURLRequest(URL: url!)
-//
-//        dataSource.feed = SimpleDataFeed<String> { (callback) -> TTCancellable? in
-//            let task = NSURLSession.sharedSession().dataTaskWithRequest(url_request) { data , response , error  in
-//                let stringResponse = data != nil ? String(data: data!, encoding: NSUTF8StringEncoding) : nil
-//                let items: [String]? = stringResponse != nil ? [stringResponse!] : nil
-//                print(error)
-//                
-//                dispatch_async(dispatch_get_main_queue()) {
-//                    callback(content: items, error: error)
-//                }
-//            }
-//            task.resume()
-//            
-//            return task
-//        }
-        
-//        dataSource.feed = PaginatedOffsetDataFeed<String, String>(loadPage: { (offset, callback) -> TTCancellable? in
-//            let alex = 3
-//            return APIPaginateOffsetdMock(offset: offset, limit: 10, callback: callback)
-//        })
-        
-//        let dataSource = DataSource { (offset:String?, callback: TTCallbackNextOffset<String, String>.Signature) -> TTCancellable? in
-//            return APIPaginateOffsetdMock(offset: offset, limit: 10, callback: callback)
-//        }
-        self.dataSource = dataSource
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        let size: CGSize = dataSource!.isEmpty == false ? CGSize(width: 0, height: 30) : CGSize.zero
-        return size
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        if kind == UICollectionElementKindSectionHeader {
-            let header: UICollectionReusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "test", for: indexPath);
-            header.backgroundColor = UIColor.darkGray;
-            return header;
-        } else {
-            return super.collectionView(collectionView, viewForSupplementaryElementOfKind: kind, at: indexPath)
-        }
+        dataSource.insert("Maria", at: IndexPath(item: 0, section: 0))
+        let _ = dataSource[0].appending("2323 ")
     }
 }
+
+
+protocol CollectionController: class {
+    associatedtype DataSourceType: TTDataSource
+    associatedtype CellControllerType: TTCollectionCellControllerProtocol
+    associatedtype CollectionControllerType: CollectionFeedController
+    
+    var dataSource: DataSourceType {get set}
+    var cellController: CellControllerType {get set}
+    var collectionController: CollectionControllerType {get set}
+    
+    weak var collectionView: UICollectionView? {get set}
+    
+    weak var reloadIndicatorView: UIActivityIndicatorView? {get set}
+    var emptyView: UIView? {get set} //set from XIB or overwrite
+}
+
+extension CollectionController where Self: UIViewController {
+    func setupCollectionController() {
+        collectionView?.dataSource = collectionController
+        collectionView?.delegate = collectionController
+        collectionController.reloadIndicatorView = reloadIndicatorView
+        collectionController.collectionView = collectionView
+        
+        collectionController.cellController = cellController
+        cellController.parentViewController = self
+        collectionController.dataSource = dataSource
+        
+        self.addChildViewController(collectionController)
+    }
+}
+

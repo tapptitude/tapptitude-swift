@@ -8,6 +8,8 @@
 
 import UIKit
 
+typealias MultiCellController = MultiCollectionCellController
+
 open class MultiCollectionCellController: TTCollectionCellControllerProtocol {
     public init (_ cellControllers: [TTCollectionCellControllerProtocol]) {
         self.cellControllers = cellControllers
