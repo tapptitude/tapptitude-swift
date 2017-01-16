@@ -15,7 +15,6 @@ open class CollectionCellController<ContentName, CellName: UICollectionViewCell>
     open var cellSizeForContent : ((_ content: ContentType, _ collectionView: UICollectionView) -> CGSize)?
     open var configureCell : ((_ cell: CellType, _ content: ContentType, _ indexPath: IndexPath) -> Void)?
     open var didSelectContent : ((_ content: ContentType, _ indexPath: IndexPath, _ collectionView: UICollectionView) -> Void)?
-    open var setPreferredSizeOfLabels: ((_ cell: CellType, _ laidOutCell: CellType) -> Void)?
     
     open var sectionInset = UIEdgeInsets.zero
     open var minimumLineSpacing: CGFloat = 0.0
@@ -36,14 +35,6 @@ open class CollectionCellController<ContentName, CellName: UICollectionViewCell>
     }
     
     open func configureCell(_ cell: CellType, for content: ContentType, at indexPath: IndexPath) {
-        if let parent = self.parentViewController as? CollectionFeedController {
-            if let layout = parent.collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
-                if layout.estimatedItemSize != CGSize.zero {
-                    assert(setPreferredSizeOfLabels != nil, "Implementation for setPrefferedSizeOfLabels is missing")
-                    self.setPreferredSizeOfLabels?(cell,self.sizeCalculationCell)
-                }
-            }
-        }
         configureCell?(cell, content, indexPath)
     }
     
@@ -92,6 +83,15 @@ open class CollectionCellController<ContentName, CellName: UICollectionViewCell>
     }
     
     open func nibToInstantiateCell() -> UINib? {
+        return nibToInstantiateCell(reuseIdentifier: reuseIdentifier)
+    }
+    
+    open func nibToInstantiateCell(for content: ContentType) -> UINib? {
+        let reuseIdentifier = self.reuseIdentifier(for: content)
+        return nibToInstantiateCell(reuseIdentifier: reuseIdentifier)
+    }
+    
+    open func nibToInstantiateCell(reuseIdentifier: String) -> UINib? {
         if let _ = Bundle(for: CellType.self).path(forResource: reuseIdentifier, ofType: "nib") {
             return UINib(nibName: reuseIdentifier, bundle: Bundle(for: CellType.self))
         } else {

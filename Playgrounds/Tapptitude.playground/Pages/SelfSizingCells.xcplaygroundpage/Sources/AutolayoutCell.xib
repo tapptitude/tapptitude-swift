@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AutolayoutCell"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="AutolayoutCell" id="9W7-Pl-svl" customClass="AutolayoutCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
+            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gg7-ca-imT">
+                        <rect key="frame" x="8" y="8" width="304" height="63.5"/>
+                        <color key="backgroundColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tEy-B7-ZWT">
+                        <rect key="frame" x="8" y="91.5" width="300" height="20.5"/>
+                        <color key="backgroundColor" red="0.47450980390000003" green="0.84313725490000002" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+            </view>
+            <color key="backgroundColor" red="0.60000002379999995" green="0.40000000600000002" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="Gg7-ca-imT" firstAttribute="width" secondItem="9W7-Pl-svl" secondAttribute="width" constant="-16" id="GlF-xh-hQD"/>
+                <constraint firstItem="Gg7-ca-imT" firstAttribute="leading" secondItem="9W7-Pl-svl" secondAttribute="leadingMargin" id="Mxk-qL-OGS"/>
+                <constraint firstItem="Gg7-ca-imT" firstAttribute="top" secondItem="9W7-Pl-svl" secondAttribute="topMargin" id="SH1-SC-5l4"/>
+                <constraint firstAttribute="leadingMargin" secondItem="tEy-B7-ZWT" secondAttribute="leading" id="Z3Z-DU-lY3"/>
+                <constraint firstItem="tEy-B7-ZWT" firstAttribute="top" secondItem="Gg7-ca-imT" secondAttribute="bottom" constant="20" id="e3b-AE-fcf"/>
+                <constraint firstAttribute="trailingMargin" secondItem="Gg7-ca-imT" secondAttribute="trailing" id="gwH-eY-hv1"/>
+                <constraint firstAttribute="bottomMargin" secondItem="tEy-B7-ZWT" secondAttribute="bottom" id="kRA-VA-vKI"/>
+                <constraint firstItem="tEy-B7-ZWT" firstAttribute="width" secondItem="9W7-Pl-svl" secondAttribute="width" constant="-20" id="yfe-7b-dKF"/>
+            </constraints>
+            <size key="customSize" width="320" height="120"/>
+            <connections>
+                <outlet property="subtitleLabel" destination="tEy-B7-ZWT" id="reY-Zs-Pih"/>
+                <outlet property="titleLabel" destination="Gg7-ca-imT" id="JTO-dO-t3U"/>
+            </connections>
+            <point key="canvasLocation" x="-4" y="-54"/>
+        </collectionViewCell>
+    </objects>
+</document>
