@@ -31,6 +31,9 @@ public protocol TTCollectionCellControllerProtocol {
     func sectionInset(for content: Any, in collectionView: UICollectionView) -> UIEdgeInsets
     func minimumLineSpacing(for content: Any, in collectionView: UICollectionView) -> CGFloat
     func minimumInteritemSpacing(for content: Any, in collectionView: UICollectionView) -> CGFloat
+    
+    // should expose all reuse identifiers that this cellController can configure
+    func allSupportedReuseIdentifiers() -> [String]
 }
 
 // TODO: implement as option protocol

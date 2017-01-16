@@ -102,4 +102,8 @@ open class CollectionCellController<ContentName, CellName: UICollectionViewCell>
     open func reuseIdentifier(for content: ContentType) -> String {
         return reuseIdentifier
     }
+    
+    open func allSupportedReuseIdentifiers() -> [String] {
+        return [reuseIdentifier]
+    }
 }

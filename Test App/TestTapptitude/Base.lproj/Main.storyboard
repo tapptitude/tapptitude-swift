@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -13,32 +14,97 @@
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="TestViewController" customModule="TestTapptitude" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="28S-Yb-HYB"/>
+                        <viewControllerLayoutGuide type="bottom" id="hNj-RO-CaR"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView autoresizesSubviews="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="39W-hS-AaC">
-                                <rect key="frame" x="0.0" y="0.0" width="368" height="667"/>
+                            <collectionView autoresizesSubviews="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="39W-hS-AaC">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="uRt-tK-FzA">
-                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="itemSize" width="320" height="79"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="TVv-l0-fRL">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="TextCell_Old" id="3N2-VX-TKJ" customClass="TextCell" customModule="TestTapptitude" customModuleProvider="target">
+                                        <rect key="frame" x="28" y="0.0" width="320" height="79"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="79"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dta-pc-l4Q">
+                                                    <rect key="frame" x="8" y="8" width="304" height="63"/>
+                                                    <color key="backgroundColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
                                         </view>
+                                        <color key="backgroundColor" red="0.60000002379999995" green="0.40000000600000002" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstItem="dta-pc-l4Q" firstAttribute="width" secondItem="3N2-VX-TKJ" secondAttribute="width" constant="-16" id="1rG-gc-E50"/>
+                                            <constraint firstItem="dta-pc-l4Q" firstAttribute="leading" secondItem="3N2-VX-TKJ" secondAttribute="leadingMargin" id="O7F-G4-jMc"/>
+                                            <constraint firstItem="dta-pc-l4Q" firstAttribute="bottom" secondItem="3N2-VX-TKJ" secondAttribute="bottomMargin" id="atc-JB-GlM"/>
+                                            <constraint firstItem="dta-pc-l4Q" firstAttribute="top" secondItem="3N2-VX-TKJ" secondAttribute="topMargin" id="jQw-2H-pXs"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="dta-pc-l4Q" secondAttribute="trailing" id="wqL-Lm-osR"/>
+                                        </constraints>
+                                        <size key="customSize" width="320" height="79"/>
+                                        <connections>
+                                            <outlet property="label" destination="dta-pc-l4Q" id="LgP-92-hwy"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="TextCell" id="hzK-5u-1zY" customClass="TextCell" customModule="TestTapptitude" customModuleProvider="target">
+                                        <rect key="frame" x="28" y="89" width="320" height="120"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nwa-ss-WCa">
+                                                    <rect key="frame" x="8" y="8" width="304" height="63.5"/>
+                                                    <color key="backgroundColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JHc-Ea-ffG">
+                                                    <rect key="frame" x="8" y="91.5" width="300" height="20.5"/>
+                                                    <color key="backgroundColor" red="0.47450980390000003" green="0.84313725490000002" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </view>
+                                        <color key="backgroundColor" red="0.60000002384185791" green="0.40000000596046448" blue="0.20000000298023224" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="leadingMargin" secondItem="JHc-Ea-ffG" secondAttribute="leading" id="4jK-Zl-ip0"/>
+                                            <constraint firstItem="JHc-Ea-ffG" firstAttribute="width" secondItem="hzK-5u-1zY" secondAttribute="width" constant="-20" id="GKu-Rq-C9o"/>
+                                            <constraint firstAttribute="bottomMargin" secondItem="JHc-Ea-ffG" secondAttribute="bottom" id="McD-3c-j6p"/>
+                                            <constraint firstItem="Nwa-ss-WCa" firstAttribute="top" secondItem="hzK-5u-1zY" secondAttribute="topMargin" id="Ox2-o8-mnB"/>
+                                            <constraint firstItem="Nwa-ss-WCa" firstAttribute="leading" secondItem="hzK-5u-1zY" secondAttribute="leadingMargin" id="SEf-fo-9Xy"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="Nwa-ss-WCa" secondAttribute="trailing" id="bGf-jH-GvR"/>
+                                            <constraint firstItem="Nwa-ss-WCa" firstAttribute="width" secondItem="hzK-5u-1zY" secondAttribute="width" constant="-16" id="cI4-bL-amJ"/>
+                                            <constraint firstItem="JHc-Ea-ffG" firstAttribute="top" secondItem="Nwa-ss-WCa" secondAttribute="bottom" constant="20" id="wPJ-xQ-ftE"/>
+                                        </constraints>
+                                        <size key="customSize" width="320" height="120"/>
+                                        <connections>
+                                            <outlet property="label" destination="Nwa-ss-WCa" id="BDd-Dd-uCp"/>
+                                            <outlet property="subtitleLabel" destination="JHc-Ea-ffG" id="Qnf-0P-LIH"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" id="EBt-pn-Fc3">
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="EBt-pn-Fc3">
                                 <rect key="frame" x="177" y="324" width="20" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                             </activityIndicatorView>
@@ -52,7 +118,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-56" y="45"/>
+            <point key="canvasLocation" x="-51.5" y="39.5"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

@@ -47,11 +47,26 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         }
     }
     
-    open override func awakeFromNib() {
-        super.awakeFromNib()
-        
-        updateReloadingIndicatorView()
-        updateEmptyViewAppearenceAnimated(false)
+    
+    /// pass all cellControllers, were cell are created in storyboard
+    open func cellsNibsAlreadyRegisteredInStoryboard(for cellControllers: TTCollectionCellControllerProtocol...) {
+        cellControllers.forEach{ registeredCellIdentifiers += $0.allSupportedReuseIdentifiers() }
+    }
+    
+    open var useAutoLayoutEstimatedSize: Bool = false {
+        didSet {
+            assert(collectionView != nil, "CollectionView should be loaded")
+            
+            if let layout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
+                if !useAutoLayoutEstimatedSize {
+                    layout.estimatedItemSize = CGSize.zero
+                } else if #available(iOS 10.0, *) {
+                    layout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
+                } else {
+                    layout.estimatedItemSize = self.cellController.cellSize
+                }
+            }
+        }
     }
     
     internal var registeredCellIdentifiers : [String] = []

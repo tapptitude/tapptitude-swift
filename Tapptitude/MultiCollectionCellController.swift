@@ -114,4 +114,10 @@ open class MultiCollectionCellController: TTCollectionCellControllerProtocol {
     open func minimumInteritemSpacing(for content: Any, in collectionView: UICollectionView) -> CGFloat {
         return controllerForContent(content)!.minimumInteritemSpacing(for: content, in: collectionView)
     }
+    
+    open func allSupportedReuseIdentifiers() -> [String] {
+        var allReuseIdentifiers: [String] = []
+        cellControllers.forEach{ allReuseIdentifiers += $0.allSupportedReuseIdentifiers() }
+        return allReuseIdentifiers
+    }
 }

@@ -30,6 +30,7 @@
 		235500B81CA4569200D7B393 /* CollectionFeedController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 235500A71CA4569200D7B393 /* CollectionFeedController.xib */; };
 		235500BA1CA4569200D7B393 /* tapptitude-swift.h in Headers */ = {isa = PBXBuildFile; fileRef = 235500A91CA4569200D7B393 /* tapptitude-swift.h */; };
 		23604B691DD216680085FD15 /* FetchedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23604B681DD216680085FD15 /* FetchedDataSource.swift */; };
+		2364D09F1E2CEF7F009DCA7E /* UICollectionViewCell+AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2364D09E1E2CEF7F009DCA7E /* UICollectionViewCell+AutoLayout.swift */; };
 		23670E671DF89EA10059D5AA /* ParallelOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23670E661DF89EA10059D5AA /* ParallelOperations.swift */; };
 		23C5A6F01CB82B6E00FE5152 /* FilteredDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C5A6EF1CB82B6E00FE5152 /* FilteredDataSource.swift */; };
 		23C8ADEE1CAC1D0600BC47E3 /* HybridDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C8ADED1CAC1D0600BC47E3 /* HybridDataSource.swift */; };
@@ -62,6 +63,7 @@
 		235500A81CA4569200D7B393 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Tapptitude/Info.plist; sourceTree = SOURCE_ROOT; };
 		235500A91CA4569200D7B393 /* tapptitude-swift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "tapptitude-swift.h"; path = "Tapptitude/tapptitude-swift.h"; sourceTree = SOURCE_ROOT; };
 		23604B681DD216680085FD15 /* FetchedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FetchedDataSource.swift; path = Tapptitude/FetchedDataSource.swift; sourceTree = SOURCE_ROOT; };
+		2364D09E1E2CEF7F009DCA7E /* UICollectionViewCell+AutoLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UICollectionViewCell+AutoLayout.swift"; path = "Tapptitude/UICollectionViewCell+AutoLayout.swift"; sourceTree = SOURCE_ROOT; };
 		23670E661DF89EA10059D5AA /* ParallelOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParallelOperations.swift; path = Tapptitude/ParallelOperations.swift; sourceTree = SOURCE_ROOT; };
 		23C5A6EF1CB82B6E00FE5152 /* FilteredDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilteredDataSource.swift; path = Tapptitude/FilteredDataSource.swift; sourceTree = SOURCE_ROOT; };
 		23C8ADED1CAC1D0600BC47E3 /* HybridDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HybridDataSource.swift; path = Tapptitude/HybridDataSource.swift; sourceTree = SOURCE_ROOT; };
@@ -119,6 +121,7 @@
 				23C8ADED1CAC1D0600BC47E3 /* HybridDataSource.swift */,
 				23604B681DD216680085FD15 /* FetchedDataSource.swift */,
 				2355009A1CA4569200D7B393 /* CollectionCellControllerProtocol.swift */,
+				2364D09E1E2CEF7F009DCA7E /* UICollectionViewCell+AutoLayout.swift */,
 				2355009D1CA4569200D7B393 /* CollectionCellController.swift */,
 				2355009C1CA4569200D7B393 /* MultiCollectionCellController.swift */,
 				23D6608B1CBF901C0005470F /* CollectionHeaderController.swift */,
@@ -222,6 +225,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2364D09F1E2CEF7F009DCA7E /* UICollectionViewCell+AutoLayout.swift in Sources */,
 				235500B41CA4569200D7B393 /* DataSourceProtocol.swift in Sources */,
 				235500AA1CA4569200D7B393 /* DataSource.swift in Sources */,
 				235500AD1CA4569200D7B393 /* MultiCollectionCellController.swift in Sources */,
