@@ -20,8 +20,8 @@ class TestViewController : UIViewController, CollectionController {
     @IBOutlet var emptyView: UIView?
     
     var cellController = ItemCellController()
-//    lazy var dataSource = DataSource<String>(loadPage: APIPaginateOffsetdSwiftMock.getResults(offset:callback:))
-    lazy var dataSource = DataSource(Example.allTest())
+    lazy var dataSource = DataSource<String>(loadPage: APIPaginateOffsetdSwiftMock.getResults(offset:callback:))
+//    lazy var dataSource = DataSource(Example.allTest())
     var collectionController = CollectionFeedController()
     
     override func viewDidLoad() {
@@ -33,7 +33,7 @@ class TestViewController : UIViewController, CollectionController {
 //        let _ = dataSource[0].appending("2323 ")
         
         collectionController.cellsNibsAlreadyRegisteredInStoryboard(for: cellController)
-        collectionController.useAutolayoutEstimatedSize = true
+        collectionController.useAutoLayoutEstimatedSize = true
     }
 }
 
@@ -49,12 +49,6 @@ class ItemCellController: CollectionCellController<String, TextCell> {
         cell.label.text = content
         cell.subtitleLabel?.text = content
     }
-    
-//    override func cellSize(for content: String, in collectionView: UICollectionView) -> CGSize {
-//        var size = cellSizeToFit(text: content, label: sizeCalculationCell.label, maxSize: CGSize(width:-1, height:500))
-//        size.height = min(size.height, 500)
-//        return size
-//    }
 }
 
 
