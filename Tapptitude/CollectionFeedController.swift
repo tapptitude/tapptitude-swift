@@ -25,6 +25,13 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         dataSource?.delegate = nil
     }
     
+    open override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        updateReloadingIndicatorView()
+        updateEmptyViewAppearenceAnimated(false)
+    }
+    
     open override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -49,7 +56,9 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     
     internal var registeredCellIdentifiers : [String] = []
     internal var isScrollDirectionConfigured : Bool = false
-    internal weak var previousCollectionView : UICollectionView! = nil
+    internal weak var previousCollectionView : UICollectionView! = nil { // we need this one to track when to clear registered cells
+        didSet { registeredCellIdentifiers = [] }
+    }
     
     @IBOutlet open weak var collectionView: UICollectionView? {
         willSet {
@@ -58,7 +67,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         }
         
         didSet {
-            registeredCellIdentifiers = []
+            previousCollectionView = collectionView
             
             if let collectionView = self.collectionView {
                 collectionView.delegate = self

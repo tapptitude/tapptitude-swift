@@ -41,7 +41,6 @@ class TextItemCellController: CollectionCellController<String, TextCell> {
     
     override func configureCell(_ cell: TextCell, for content: String, at indexPath: IndexPath) {
         cell.label.text = content
-        cell.backgroundColor = .brown
     }
     
     override func cellSize(for content: String, in collectionView: UICollectionView) -> CGSize {
