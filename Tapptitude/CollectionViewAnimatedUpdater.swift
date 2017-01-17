@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol TTCollectionViewAnimatedUpdater {
+protocol TTCollectionViewUpdater {
     func collectionViewWillChangeContent(_ collectionView: UICollectionView)
     func collectionViewDidChangeContent(_ collectionView: UICollectionView, animationCompletion: (() -> Void)?)
     
@@ -24,9 +24,15 @@ protocol TTCollectionViewAnimatedUpdater {
     func collectionView(_ collectionView: UICollectionView, didUpdateSections sections: IndexSet)
 }
 
-class CollectionViewAnimatedUpdater: TTCollectionViewAnimatedUpdater {
+class CollectionViewUpdater: TTCollectionViewUpdater {
     fileprivate var shouldReloadCollectionView = false
     fileprivate var batchOperation: [() -> Void]?
+    
+    var animatesUpdates: Bool = true
+    
+    init(animatesUpdates: Bool) {
+        self.animatesUpdates = animatesUpdates
+    }
     
     func collectionViewWillChangeContent(_ collectionView: UICollectionView) {
         shouldReloadCollectionView = false
@@ -36,19 +42,31 @@ class CollectionViewAnimatedUpdater: TTCollectionViewAnimatedUpdater {
     
     func collectionViewDidChangeContent(_ collectionView: UICollectionView, animationCompletion: (() -> Void)?) {
         // Checks if we should reload the collection view to fix a bug @ http://openradar.appspot.com/12954582
-        if (shouldReloadCollectionView) {
+        let noChanges = (batchOperation == nil || batchOperation?.isEmpty == true)
+        
+        if (shouldReloadCollectionView || noChanges) {
             collectionView.reloadData()
             animationCompletion?()
             self.batchOperation = nil
         } else {
-            collectionView.performBatchUpdates({
-                for block in self.batchOperation! {
-                    block()
+            if animatesUpdates {
+                collectionView.performBatchUpdates({
+                    for block in self.batchOperation! {
+                        block()
+                    }
+                    self.batchOperation = nil
+                }, completion: { finished in
+                    animationCompletion?()
+                })
+            } else {
+                UIView.performWithoutAnimation {
+                    for block in self.batchOperation! {
+                        block()
+                    }
+                    self.batchOperation = nil
+                    animationCompletion?()
                 }
-                self.batchOperation = nil
-            }, completion: { finished in
-                animationCompletion?()
-            })
+            }
         }
     }
     

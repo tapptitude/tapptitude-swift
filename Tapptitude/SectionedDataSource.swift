@@ -217,6 +217,8 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
             delegate.dataFeed(dataFeed, didReloadContent: content)
         }
         
+        delegate?.dataSourceWillChangeContent(self)
+        
         _unfilteredContent.removeAll()
         if let content = content {
             _unfilteredContent.append(contentsOf: content.map({$0 as! [T]}))
@@ -233,6 +235,7 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
             delegate.dataFeed(dataFeed, didLoadMoreContent: content)
         }
         
+        delegate?.dataSourceWillChangeContent(self)
         if let content = content {
             _unfilteredContent.append(contentsOf: content.map({$0 as! [T]}))
         }
@@ -275,6 +278,9 @@ open class GroupedByDataSource<T, U: Hashable> : SectionedDataSource<T> {
             delegate.dataFeed(dataFeed, didReloadContent: content)
         }
         
+        
+        delegate?.dataSourceWillChangeContent(self)
+        
         _unfilteredContent.removeAll()
         _ungroupedContent.removeAll()
         if let content = content {
@@ -296,6 +302,8 @@ open class GroupedByDataSource<T, U: Hashable> : SectionedDataSource<T> {
         if let delegate = delegate as? TTDataFeedDelegate {
             delegate.dataFeed(dataFeed, didLoadMoreContent: content)
         }
+        
+        delegate?.dataSourceWillChangeContent(self)
         
         if let content = content {
             if let groupBy = groupBy {

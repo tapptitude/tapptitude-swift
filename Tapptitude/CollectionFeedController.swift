@@ -416,7 +416,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     
     
     open var animatedUpdates = false
-    fileprivate var animatedUpdater: CollectionViewAnimatedUpdater?
+    fileprivate var animatedUpdater: CollectionViewUpdater?
 //}
 //
 //
@@ -454,7 +454,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
 //extension CollectionFeedController : TTDataSourceDelegate {
     open func dataSourceWillChangeContent(_ dataSource: TTDataSource) {
         if let collectionView = collectionView {
-            animatedUpdater = animatedUpdates ? CollectionViewAnimatedUpdater() : nil
+            animatedUpdater = CollectionViewUpdater(animatesUpdates: animatedUpdates)
             animatedUpdater?.collectionViewWillChangeContent(collectionView)
         } else {
             animatedUpdater = nil

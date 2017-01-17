@@ -46,7 +46,7 @@ feedController.dataSource = DataSource(content)
 feedController.cellController = TextCellController()
 
 let _ = feedController.view
-feedController.useAutoLayoutEstimatedSize = true // activate autolayout calculation
+feedController.useAutoLayoutEstimatedSize = true // activate autolayout adjustemnt based on cell content
 
 
 PlaygroundPage.current.liveView = feedController.view
