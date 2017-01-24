@@ -99,6 +99,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
                 }
                 updateCollectionViewScrollDirection()
                 updateCollectionViewLayoutAttributes()
+                updatePrefetcherController()
             }
         }
     }
@@ -159,6 +160,8 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         }
     }
     
+    var prefetchController: CollectionCellPrefetcherDelegate?
+    
     open var cellController: TTCollectionCellControllerProtocol! {
         willSet {
             cellController?.parentViewController = nil
@@ -166,6 +169,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         didSet {
             cellController.parentViewController = self
             updateCollectionViewLayoutAttributes()
+            updatePrefetcherController()
         }
     }
     
