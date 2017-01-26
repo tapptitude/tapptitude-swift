@@ -21,11 +21,11 @@ open class PaginatedDataFeed<ContentType, OffsetType> : DataFeed<ContentType> {
         return hasMorePages && super.canLoadMore
     }
     
-    open override func reloadOperationWithCallback(_ callback: @escaping TTCallback<ContentType>) -> TTCancellable? {
+    open override func reloadOperation(_ callback: @escaping TTCallback<ContentType>) -> TTCancellable? {
         return loadNextPage(nil, callback: callback)
     }
     
-    open override func loadMoreOperationWithCallback(_ callback: @escaping TTCallback<ContentType>) -> TTCancellable? {
+    open override func loadMoreOperation(_ callback: @escaping TTCallback<ContentType>) -> TTCancellable? {
         return loadNextPage(offset, callback: callback)
     }
     

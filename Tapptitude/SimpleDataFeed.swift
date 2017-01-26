@@ -17,7 +17,7 @@ open class SimpleDataFeed <T> : DataFeed <T> {
         super.init()
     }
     
-    open override func reloadOperationWithCallback(_ callback: @escaping TTCallback<T>) -> TTCancellable? {
+    open override func reloadOperation(_ callback: @escaping TTCallback<T>) -> TTCancellable? {
         return loadOperation(callback)
     }
     

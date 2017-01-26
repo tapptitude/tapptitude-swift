@@ -25,11 +25,11 @@ public typealias TTCallbackNextOffset<T, OffsetType> = (_ content: [T]?, _ nextO
 open class DataFeed<T>: TTDataFeed {
     open weak var delegate: TTDataFeedDelegate?
     
-    open func reloadOperationWithCallback(_ callback: @escaping TTCallback<T>) -> TTCancellable? {
+    open func reloadOperation(_ callback: @escaping TTCallback<T>) -> TTCancellable? {
         return nil
     }
     
-    open func loadMoreOperationWithCallback(_ callback: @escaping TTCallback<T>) -> TTCancellable? {
+    open func loadMoreOperation(_ callback: @escaping TTCallback<T>) -> TTCancellable? {
         return nil
     }
     
@@ -64,7 +64,7 @@ open class DataFeed<T>: TTDataFeed {
             }
             
             executingReloadOperation?.cancel()
-            executingReloadOperation = reloadOperationWithCallback({ [unowned self] (content, error) in
+            executingReloadOperation = reloadOperation({ [unowned self] (content, error) in
                 self.executingReloadOperation = nil
                 
                 if let error = error {
@@ -102,7 +102,7 @@ open class DataFeed<T>: TTDataFeed {
             isLoadingMore = true
             
             executingLoadMoreOperation?.cancel()
-            executingLoadMoreOperation = loadMoreOperationWithCallback({[unowned self] (content, error) in
+            executingLoadMoreOperation = loadMoreOperation({[unowned self] (content, error) in
                 self.executingLoadMoreOperation = nil
                 
                 if let error = error {

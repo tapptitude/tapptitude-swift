@@ -23,7 +23,7 @@ open class ParallelDataFeed: DataFeed<Any> {
         return hasMorePages && super.canLoadMore
     }
     
-    open override func reloadOperationWithCallback(_ callback: @escaping TTCallback<Any>) -> TTCancellable? {
+    open override func reloadOperation(_ callback: @escaping TTCallback<Any>) -> TTCancellable? {
         assert(reloadOperation.canExecute, "Please add operations to run")
         
         return reloadOperation.execute({ (content, nextOffset, error) in
@@ -35,7 +35,7 @@ open class ParallelDataFeed: DataFeed<Any> {
         })
     }
     
-    open override func loadMoreOperationWithCallback(_ callback: @escaping TTCallback<Any>) -> TTCancellable? {
+    open override func loadMoreOperation(_ callback: @escaping TTCallback<Any>) -> TTCancellable? {
         assert(loadMoreOperation.canExecute, "Please add operations to run")
         
         return loadMoreOperation.execute(offset: self.offset, { (content, nextOffset, error) in
