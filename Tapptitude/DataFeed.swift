@@ -33,12 +33,12 @@ open class DataFeed<T>: TTDataFeed {
         return nil
     }
     
-    internal var executingReload: (operation: TTCancellable?, operationID: String)?
-    internal var executingLoadMore: (operation: TTCancellable?, operationID: String)?
+    fileprivate var executingReloadOperation: RunningOperation?
+    fileprivate var executingLoadMoreOperation: RunningOperation?
     
     deinit {
-        executingReload?.operation?.cancel()
-        executingLoadMore?.operation?.cancel()
+        executingReloadOperation?.cancel()
+        executingLoadMoreOperation?.cancel()
     }
     
     //Mark: re-update content
@@ -61,19 +61,17 @@ open class DataFeed<T>: TTDataFeed {
             isReloading = true
             cancelLoadMore()
             
+            let runningOperation = RunningOperation()
+            executingReloadOperation?.cancel()
+            executingReloadOperation = runningOperation
             
-            executingReload?.operation?.cancel()
-            executingReload = nil
-            
-            let operationID = UUID().uuidString
-            executingReload = (operation: nil, operationID: operationID)
             let operation = reloadOperation({ [weak self] (content, error) in
-                let sameOperation = operationID == self?.executingReload?.operationID
+                let sameOperation = runningOperation === self?.executingReloadOperation
                 if !sameOperation {
                     return
                 }
                 
-                self?.executingReload = nil
+                self?.executingReloadOperation = nil
                 
                 if let error = error {
                     self?.delegate?.dataFeed(self, failedWithError: error)
@@ -86,13 +84,13 @@ open class DataFeed<T>: TTDataFeed {
                 self?.isReloading = false
             })
             
-            executingReload = (operation: operation, operationID: operationID)
+            runningOperation.operation = operation
         }
     }
     open func cancelReload() {
         if isReloading {
-            executingReload?.operation?.cancel()
-            executingReload = nil
+            executingReloadOperation?.cancel()
+            executingReloadOperation = nil
             
             isReloading = false
         }
@@ -111,18 +109,17 @@ open class DataFeed<T>: TTDataFeed {
             print("Loading more content...")
             isLoadingMore = true
             
-            executingLoadMore?.operation?.cancel()
-            executingLoadMore = nil
+            let runningOperation = RunningOperation()
+            executingLoadMoreOperation?.cancel()
+            executingLoadMoreOperation = runningOperation
             
-            let operationID = UUID().uuidString
-            executingLoadMore = (operation: nil, operationID: operationID)
             let operation = loadMoreOperation({[weak self] (content, error) in
-                let sameOperation = operationID == self?.executingLoadMore?.operationID
+                let sameOperation = runningOperation === self?.executingLoadMoreOperation
                 if !sameOperation {
                     return
                 }
                 
-                self?.executingLoadMore = nil
+                self?.executingLoadMoreOperation = nil
                 
                 if let error = error {
                     self?.delegate?.dataFeed(self, failedWithError: error)
@@ -134,13 +131,13 @@ open class DataFeed<T>: TTDataFeed {
                 self?.isLoadingMore = false
             })
             
-            executingLoadMore = (operation: operation, operationID: operationID)
+            executingLoadMoreOperation?.operation = operation
         }
     }
     open func cancelLoadMore() {
         if isLoadingMore {
-            executingLoadMore?.operation?.cancel()
-            executingLoadMore = nil
+            executingLoadMoreOperation?.cancel()
+            executingLoadMoreOperation = nil
             
             isLoadingMore = false
         }
@@ -159,4 +156,13 @@ open class DataFeed<T>: TTDataFeed {
     
     /// store/access any information here by using a unique key
     open var info: [String: Any] = [:]
+}
+
+
+fileprivate class RunningOperation: TTCancellable {
+    var operation: TTCancellable?
+    
+    func cancel() {
+        operation?.cancel()
+    }
 }
