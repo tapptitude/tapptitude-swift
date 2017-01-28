@@ -10,6 +10,7 @@ import XCTest
 import Tapptitude
 
 class DataFeedTests: XCTestCase {
+    static let delay = 0.0001
     
     override func setUp() {
         super.setUp()
@@ -28,12 +29,6 @@ class DataFeedTests: XCTestCase {
         return api
     }
     
-//    func mockSimpleAPI(_ callback: @escaping TTCallback<String>) -> TTCancellable? {
-//        
-//        
-//        return api
-//    }
-    
     func testSimpleDataFeedLoadDataImediatly() {
         let feed = SimpleDataFeed<String>(load: { callback in
             let api = self.mockSimpleAPI
@@ -50,42 +45,36 @@ class DataFeedTests: XCTestCase {
         XCTAssert(dataSource.content.map({$0 as! String}) == mockSimpleAPI.content!)
     }
     
-    func testSimpleDataFeedDelayed() {
-        let delay = 0.0001
-        let feed = SimpleDataFeed<String>(load: { callback in
+    var feedDelayed: SimpleDataFeed<String> {
+        return SimpleDataFeed<String>(load: { callback in
             let api = self.mockSimpleAPI
             api.callback = callback
-            api.delay = delay
+            api.delay = DataFeedTests.delay
             api.run()
             return api
         })
-        let dataSource = DataSource<String>(feed: feed)
+    }
+    
+    func testSimpleDataFeedDelayed() {
+        let dataSource = DataSource<String>(feed: feedDelayed)
         
         XCTAssert(dataSource.isEmpty)
         dataSource.feed?.reload()
         XCTAssert(dataSource.isEmpty)
         
         let asyncExpectation = expectation(description: "longRunningFunction")
-        DispatchQueue.main.asyncAfter(deadline: .now() + delay + 0.0001) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + DataFeedTests.delay + 0.0001) {
             XCTAssert(dataSource.isEmpty == false)
             XCTAssert(dataSource.content.map({$0 as! String}) == self.mockSimpleAPI.content!)
             asyncExpectation.fulfill()
         }
         
-        self.waitForExpectations(timeout: delay + 0.0001) { (error) in
+        self.waitForExpectations(timeout: DataFeedTests.delay + 0.0001) { (error) in
         }
     }
-    
+
     func testSimpleDataFeedCancelled() {
-        let delay = 0.0001
-        let feed = SimpleDataFeed<String>(load: { callback in
-            let api = self.mockSimpleAPI
-            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-                callback(api.content, api.error)
-            }
-            return api
-        })
-        let dataSource = DataSource<String>(feed: feed)
+        let dataSource = DataSource<String>(feed: feedDelayed)
         
         XCTAssert(dataSource.isEmpty)
         dataSource.feed?.reload()
@@ -93,27 +82,48 @@ class DataFeedTests: XCTestCase {
         XCTAssert(dataSource.isEmpty)
         
         let asyncExpectation = expectation(description: "longRunningFunction")
-        DispatchQueue.main.asyncAfter(deadline: .now() + delay + 0.0001) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + DataFeedTests.delay + 0.0001) {
             XCTAssert(dataSource.isEmpty == true)
             asyncExpectation.fulfill()
         }
         
-        self.waitForExpectations(timeout: delay + 0.0001) { (error) in
+        self.waitForExpectations(timeout: DataFeedTests.delay + 0.0001) { (error) in
+        }
+    }
+    
+    var feedIgnoringCancel: SimpleDataFeed<String> {
+        return SimpleDataFeed<String>(load: { callback in
+            let api = self.mockSimpleAPI
+            DispatchQueue.main.asyncAfter(deadline: .now() + DataFeedTests.delay) {
+                callback(api.content, api.error)
+            }
+            return api
+        })
+    }
+    
+    func testSimpleDataFeedCancelledIgnoreCancel() {
+        let dataSource = DataSource<String>(feed: feedIgnoringCancel)
+        
+        XCTAssert(dataSource.isEmpty)
+        dataSource.feed?.reload()
+        dataSource.feed?.cancelReload()
+        XCTAssert(dataSource.isEmpty)
+        
+        let asyncExpectation = expectation(description: "longRunningFunction")
+        DispatchQueue.main.asyncAfter(deadline: .now() + DataFeedTests.delay + 0.0001) {
+            XCTAssert(dataSource.isEmpty == true)
+            asyncExpectation.fulfill()
+        }
+        
+        self.waitForExpectations(timeout: DataFeedTests.delay + 0.0001) { (error) in
         }
     }
     
     func testSimpleDataFeedDealloc() {
         let delay = 0.0001
-        var feed: SimpleDataFeed<String>? = SimpleDataFeed<String>(load: { callback in
-            let api = self.mockSimpleAPI
-            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-                callback(api.content, api.error)
-            }
-            return api
-        })
+        var feed: SimpleDataFeed<String>? = feedIgnoringCancel
         let dataSource = DataSource<String>(feed: feed!)
         feed = nil
-        
         
         XCTAssert(dataSource.isEmpty)
         dataSource.feed?.reload()
