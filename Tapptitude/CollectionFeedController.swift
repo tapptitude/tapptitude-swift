@@ -622,8 +622,6 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         return UICollectionReusableView() // just to ingore compilation error
     }
     
-    // TODO: support for headerCellController
-    
     open func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         cell.parentViewController = nil
     }

@@ -9,7 +9,7 @@
 import Foundation
 
 /// allow an operation to be canceled at any time
-public protocol TTCancellable {
+public protocol TTCancellable: class {
     func cancel()
 }
 
@@ -33,12 +33,12 @@ open class DataFeed<T>: TTDataFeed {
         return nil
     }
     
-    internal var executingReloadOperation: TTCancellable?
-    internal var executingLoadMoreOperation: TTCancellable?
+    internal var executingReload: (operation: TTCancellable?, operationID: String)?
+    internal var executingLoadMore: (operation: TTCancellable?, operationID: String)?
     
     deinit {
-        executingReloadOperation?.cancel()
-        executingLoadMoreOperation?.cancel()
+        executingReload?.operation?.cancel()
+        executingLoadMore?.operation?.cancel()
     }
     
     //Mark: re-update content
@@ -53,36 +53,45 @@ open class DataFeed<T>: TTDataFeed {
     open var canReload: Bool {
         return !isReloading
     }
+    
     /// Will cancel any loadMore operation if any, or will do nothing if canReload is false
     open func reload() {
         if canReload {
             print("Reloading content...")
             isReloading = true
+            cancelLoadMore()
             
-            if isLoadingMore {
-                cancelLoadMore()
-            }
             
-            executingReloadOperation?.cancel()
-            executingReloadOperation = reloadOperation({ [unowned self] (content, error) in
-                self.executingReloadOperation = nil
-                
-                if let error = error {
-                    self.delegate?.dataFeed(self, failedWithError: error)
-                } else {
-                    self.lastReloadDate = Date()
-                    let castedContent = content?.map { $0 as Any }
-                    self.delegate?.dataFeed(self, didReloadContent: castedContent )
+            executingReload?.operation?.cancel()
+            executingReload = nil
+            
+            let operationID = UUID().uuidString
+            let operation = reloadOperation({ [weak self] (content, error) in
+                let sameOperation = operationID == self?.executingReload?.operationID
+                if !sameOperation {
+                    return
                 }
                 
-                self.isReloading = false
+                self?.executingReload = nil
+                
+                if let error = error {
+                    self?.delegate?.dataFeed(self, failedWithError: error)
+                } else {
+                    self?.lastReloadDate = Date()
+                    let castedContent = content?.map { $0 as Any }
+                    self?.delegate?.dataFeed(self, didReloadContent: castedContent )
+                }
+                
+                self?.isReloading = false
             })
+            
+            executingReload = (operation: operation, operationID: operationID)
         }
     }
     open func cancelReload() {
         if isReloading {
-            executingReloadOperation?.cancel()
-            executingReloadOperation = nil
+            executingReload?.operation?.cancel()
+            executingReload = nil
             
             isReloading = false
         }
@@ -101,25 +110,35 @@ open class DataFeed<T>: TTDataFeed {
             print("Loading more content...")
             isLoadingMore = true
             
-            executingLoadMoreOperation?.cancel()
-            executingLoadMoreOperation = loadMoreOperation({[unowned self] (content, error) in
-                self.executingLoadMoreOperation = nil
-                
-                if let error = error {
-                    self.delegate?.dataFeed(self, failedWithError: error)
-                } else {
-                    let castedContent = content?.map { $0 as Any }
-                    self.delegate?.dataFeed(self, didLoadMoreContent: castedContent)
+            executingLoadMore?.operation?.cancel()
+            executingLoadMore = nil
+            
+            let operationID = UUID().uuidString
+            let operation = loadMoreOperation({[weak self] (content, error) in
+                let sameOperation = operationID == self?.executingLoadMore?.operationID
+                if !sameOperation {
+                    return
                 }
                 
-                self.isLoadingMore = false
+                self?.executingLoadMore = nil
+                
+                if let error = error {
+                    self?.delegate?.dataFeed(self, failedWithError: error)
+                } else {
+                    let castedContent = content?.map { $0 as Any }
+                    self?.delegate?.dataFeed(self, didLoadMoreContent: castedContent)
+                }
+                
+                self?.isLoadingMore = false
             })
+            
+            executingLoadMore = (operation: operation, operationID: operationID)
         }
     }
     open func cancelLoadMore() {
         if isLoadingMore {
-            executingLoadMoreOperation?.cancel()
-            executingLoadMoreOperation = nil
+            executingLoadMore?.operation?.cancel()
+            executingLoadMore = nil
             
             isLoadingMore = false
         }

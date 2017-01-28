@@ -30,10 +30,10 @@ open class PaginatedDataFeed<ContentType, OffsetType> : DataFeed<ContentType> {
     }
     
     internal func loadNextPage(_ offset: OffsetType?, callback: @escaping TTCallback<ContentType>) -> TTCancellable? {
-        return loadPageNextOffsetOperation(offset) {[unowned self] content, nextOffset, error in
+        return loadPageNextOffsetOperation(offset) {[weak self] content, nextOffset, error in
             if error == nil {
-                self.offset = nextOffset
-                self.hasMorePages = (nextOffset != nil)
+                self?.offset = nextOffset
+                self?.hasMorePages = (nextOffset != nil)
             }
             
             callback(content, error)
