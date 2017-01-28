@@ -85,10 +85,12 @@ let feed = PaginatedDataFeed<String, Int>(pageSize: 2, loadPage: API.getPaginate
 dataSource.feed = feed
 
 let feedController = CollectionFeedController()
-feedController.addPullToRefresh()
+
 feedController.cellController = BrownTextCellController()
-feedController.pullToRefreshAction(feedController)
 feedController.dataSource = dataSource
+let _ = feedController.view
+feedController.addPullToRefresh()
+feedController.pullToRefreshAction(feedController)
 
 
 import PlaygroundSupport

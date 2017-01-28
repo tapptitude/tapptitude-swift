@@ -1,15 +1,5 @@
 //: [Previous](@previous)
 
-import Foundation
-
-//
-//  CircularCollectionController.swift
-//  Bildnytt
-//
-//  Created by Alexandru Tudose on 16/05/16.
-//  Copyright © 2016 Tapptitude. All rights reserved.
-//
-
 import Tapptitude
 import UIKit
 import PlaygroundSupport

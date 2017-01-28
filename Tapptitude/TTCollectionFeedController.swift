@@ -12,7 +12,7 @@ protocol TTCollectionFeedController : class, UICollectionViewDelegateFlowLayout,
     var dataSource: TTDataSource? {get set}
     var cellController: TTCollectionCellControllerProtocol! {get set}
     
-    weak var collectionView: UICollectionView? {get set}
+    weak var collectionView: UICollectionView! {get set}
 
     var scrollDirection: UICollectionViewScrollDirection {get set}
     

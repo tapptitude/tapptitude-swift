@@ -75,7 +75,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         didSet { registeredCellIdentifiers = [] }
     }
     
-    @IBOutlet open weak var collectionView: UICollectionView? {
+    @IBOutlet open weak var collectionView: UICollectionView! {
         willSet {
             collectionView?.dataSource = nil
             collectionView?.delegate = nil
@@ -123,11 +123,11 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
             let noContent = UILabel()
             noContent.backgroundColor = UIColor.clear
             noContent.text = options.emptyMessage
-            noContent.frame = collectionView!.frame.integral
+            noContent.frame = collectionView.frame.integral
             noContent.textAlignment = .center
             noContent.numberOfLines = 0
             noContent.textColor = UIColor(white: 0.4, alpha: 1.0)
-            noContent.autoresizingMask = collectionView!.autoresizingMask
+            noContent.autoresizingMask = collectionView.autoresizingMask
             if let font = options.emptyMessageFont {
                 noContent.font = font
             }
@@ -152,7 +152,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
             }
             
             dataSource?.delegate = self
-            reloadDataOnCollectionView()
+            collectionView?.reloadData()
             
             updateReloadingIndicatorView()
             updateEmptyViewAppearenceAnimated(false)
@@ -185,7 +185,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     open var headerIsSticky = false {
         didSet {
             if #available(iOS 9.0, *) {
-                (self.collectionView?.collectionViewLayout as! UICollectionViewFlowLayout).sectionHeadersPinToVisibleBounds = headerIsSticky
+                (self.collectionView!.collectionViewLayout as! UICollectionViewFlowLayout).sectionHeadersPinToVisibleBounds = headerIsSticky
             }
         }
     }
@@ -287,11 +287,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     
     
     open func scrollToElement<T>(ofFirst filter: (_ item: T) -> Bool, animated: Bool) {
-        guard let collectionView = self.collectionView, let dataSource = self.dataSource else {
-            return
-        }
-        
-        if let indexPath = dataSource.indexPath(ofFirst: filter) {
+        if let indexPath = dataSource!.indexPath(ofFirst: filter) {
             let layout = collectionView.collectionViewLayout
             var attribute = layout.layoutAttributesForItem(at: indexPath)
             if (attribute?.frame.size.width ?? 0.0) < 1.0 {
@@ -300,8 +296,8 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
                 collectionView.contentSize = layout.collectionViewContentSize
             }
             
-            if attribute != nil {
-                collectionView.scrollRectToVisible(attribute!.frame, animated: animated)
+            if let attribute = attribute {
+                collectionView.scrollRectToVisible(attribute.frame, animated: animated)
             }
         }
     }
@@ -398,26 +394,15 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     //MARK: Pull to Refresh -
     @IBOutlet open  weak var refreshControl: UIRefreshControl?
     open func pullToRefreshAction(_ sender: AnyObject!) {
-        dataSource?.feed?.reload()
+        dataSource!.feed!.reload()
     }
     open func addPullToRefresh() {
         let refreshControl = UIRefreshControl()
-        refreshControl.backgroundColor = collectionView?.backgroundColor
+        refreshControl.backgroundColor = collectionView.backgroundColor
         refreshControl.addTarget(self, action: #selector(CollectionFeedController.pullToRefreshAction(_:)), for: .valueChanged)
         self.refreshControl = refreshControl
-        collectionView?.addSubview(refreshControl)
+        collectionView.addSubview(refreshControl)
     }
-    
-    internal func reloadDataOnCollectionView() {
-        // apple bug, after reload, collectionview calls unhighlight on cells that where removed from superview.
-        let method = "_" + "unhighlightAllItems"
-        let selector = Selector(method)
-        if collectionView?.responds(to: selector) == true {
-            let _ = collectionView?.perform(selector)
-        }
-        collectionView?.reloadData()
-    }
-    
     
     open var animatedUpdates = false
     fileprivate var animatedUpdater: CollectionViewUpdater?
@@ -467,7 +452,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     
     open func dataSourceDidChangeContent(_ dataSource: TTDataSource, animationCompletion: (() -> Void)?) {
         if animatedUpdater == nil {
-            reloadDataOnCollectionView()
+            collectionView?.reloadData()
         } else {
             animatedUpdater?.collectionViewDidChangeContent(collectionView!, animationCompletion: animationCompletion)
         }
@@ -707,8 +692,8 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
 //extension CollectionFeedController : UIViewControllerPreviewingDelegate {
     @available(iOS 9.0, *)
     open func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        let point = collectionView!.convert(location, from: self.view)
-        guard let indexPath = collectionView!.indexPathForItem(at: point) else {
+        let point = collectionView.convert(location, from: self.view)
+        guard let indexPath = collectionView.indexPathForItem(at: point) else {
             return nil
         }
         
@@ -718,7 +703,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         let parentController = UIViewController()
         var dummyNavigationController: DummyNavigationController? = DummyNavigationController(rootViewController: parentController)
         cellController?.parentViewController = parentController
-        cellController?.didSelectContent(content, at: indexPath, in: collectionView!)
+        cellController?.didSelectContent(content, at: indexPath, in: collectionView)
         cellController?.parentViewController = previousParentController
         
         let controller = dummyNavigationController!.capturedViewController
@@ -726,7 +711,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         if let controller = controller {
             controller.preferredContentSize = CGSize.zero
             
-            let cell = collectionView!.cellForItem(at: indexPath)
+            let cell = collectionView.cellForItem(at: indexPath)
             previewingContext.sourceRect = cell!.convert(cell!.bounds, to:self.view)
         }
         

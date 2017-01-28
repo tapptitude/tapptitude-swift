@@ -14,7 +14,7 @@ feedController.cellController = IntCellController()
 feedController.animatedUpdates = true
 
 PlaygroundPage.current.liveView = feedController.view
-feedController.collectionView?.backgroundColor = UIColor.black
+feedController.collectionView.backgroundColor = UIColor.black
 
 
 dataSource.perfomBatchUpdates({ 

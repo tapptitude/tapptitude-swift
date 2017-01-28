@@ -12,7 +12,7 @@ public protocol SwipeToEditOnCollection : class {
     var panGestureRecognizer : SwipeToEditGesture? {get set}
     var tapGestureRecognizer : TouchRecognizer? {get set}
     
-    var collectionView : UICollectionView? {get}
+    var collectionView : UICollectionView! {get}
 }
 
 @objc public protocol SwipeToEditCell : class {
