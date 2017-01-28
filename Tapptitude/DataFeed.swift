@@ -66,6 +66,7 @@ open class DataFeed<T>: TTDataFeed {
             executingReload = nil
             
             let operationID = UUID().uuidString
+            executingReload = (operation: nil, operationID: operationID)
             let operation = reloadOperation({ [weak self] (content, error) in
                 let sameOperation = operationID == self?.executingReload?.operationID
                 if !sameOperation {
@@ -114,6 +115,7 @@ open class DataFeed<T>: TTDataFeed {
             executingLoadMore = nil
             
             let operationID = UUID().uuidString
+            executingLoadMore = (operation: nil, operationID: operationID)
             let operation = loadMoreOperation({[weak self] (content, error) in
                 let sameOperation = operationID == self?.executingLoadMore?.operationID
                 if !sameOperation {

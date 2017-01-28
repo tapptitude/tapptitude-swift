@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		23014FF41CBBC41B001F9DC6 /* SectionedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23014FF31CBBC41B001F9DC6 /* SectionedDataSource.swift */; };
 		232575701D7868FD00FF23BC /* PageCachingFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2325756F1D7868FD00FF23BC /* PageCachingFlowLayout.swift */; };
+		232CFBEB1E3CE93B00E1D60C /* TapptitudeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232CFBEA1E3CE93B00E1D60C /* TapptitudeTests.swift */; };
+		232CFBED1E3CE93B00E1D60C /* Tapptitude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 234ECBEF1C747FE800135CF9 /* Tapptitude.framework */; };
+		232CFBF41E3CE9AB00E1D60C /* DataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232CFBF31E3CE9AB00E1D60C /* DataSourceTests.swift */; };
+		232CFBF61E3CF4A400E1D60C /* DataFeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232CFBF51E3CF4A400E1D60C /* DataFeedTests.swift */; };
+		232CFBF91E3CF5E800E1D60C /* APIMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232CFBF81E3CF5E800E1D60C /* APIMock.swift */; };
 		234BC72D1CDCF9A6004057D4 /* KeyboardVisibilityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234BC7291CDCF9A6004057D4 /* KeyboardVisibilityController.swift */; };
 		234BC72E1CDCF9A6004057D4 /* PanViewGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234BC72A1CDCF9A6004057D4 /* PanViewGestureRecognizer.swift */; };
 		234BC72F1CDCF9A6004057D4 /* SwipeToEditOnCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234BC72B1CDCF9A6004057D4 /* SwipeToEditOnCollection.swift */; };
@@ -38,9 +43,25 @@
 		23D6608C1CBF901C0005470F /* CollectionHeaderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D6608B1CBF901C0005470F /* CollectionHeaderController.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		232CFBEE1E3CE93B00E1D60C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 234ECBE61C747FE800135CF9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 234ECBEE1C747FE800135CF9;
+			remoteInfo = Tapptitude;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		23014FF31CBBC41B001F9DC6 /* SectionedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SectionedDataSource.swift; path = Tapptitude/SectionedDataSource.swift; sourceTree = SOURCE_ROOT; };
 		2325756F1D7868FD00FF23BC /* PageCachingFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageCachingFlowLayout.swift; sourceTree = "<group>"; };
+		232CFBE81E3CE93B00E1D60C /* TapptitudeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TapptitudeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		232CFBEA1E3CE93B00E1D60C /* TapptitudeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapptitudeTests.swift; sourceTree = "<group>"; };
+		232CFBEC1E3CE93B00E1D60C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		232CFBF31E3CE9AB00E1D60C /* DataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceTests.swift; sourceTree = "<group>"; };
+		232CFBF51E3CF4A400E1D60C /* DataFeedTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataFeedTests.swift; sourceTree = "<group>"; };
+		232CFBF81E3CF5E800E1D60C /* APIMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIMock.swift; sourceTree = "<group>"; };
 		234BC7291CDCF9A6004057D4 /* KeyboardVisibilityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardVisibilityController.swift; sourceTree = "<group>"; };
 		234BC72A1CDCF9A6004057D4 /* PanViewGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanViewGestureRecognizer.swift; sourceTree = "<group>"; };
 		234BC72B1CDCF9A6004057D4 /* SwipeToEditOnCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeToEditOnCollection.swift; sourceTree = "<group>"; };
@@ -73,6 +94,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		232CFBE51E3CE93B00E1D60C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				232CFBED1E3CE93B00E1D60C /* Tapptitude.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		234ECBEB1C747FE800135CF9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -83,6 +112,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		232CFBE91E3CE93B00E1D60C /* TapptitudeTests */ = {
+			isa = PBXGroup;
+			children = (
+				232CFBEA1E3CE93B00E1D60C /* TapptitudeTests.swift */,
+				232CFBEC1E3CE93B00E1D60C /* Info.plist */,
+				232CFBF31E3CE9AB00E1D60C /* DataSourceTests.swift */,
+				232CFBF51E3CF4A400E1D60C /* DataFeedTests.swift */,
+				232CFBF81E3CF5E800E1D60C /* APIMock.swift */,
+			);
+			path = TapptitudeTests;
+			sourceTree = "<group>";
+		};
 		234BC7281CDCF9A6004057D4 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -100,6 +141,7 @@
 			isa = PBXGroup;
 			children = (
 				234ECBF11C747FE800135CF9 /* Tapptitude */,
+				232CFBE91E3CE93B00E1D60C /* TapptitudeTests */,
 				234ECBF01C747FE800135CF9 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -108,6 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				234ECBEF1C747FE800135CF9 /* Tapptitude.framework */,
+				232CFBE81E3CE93B00E1D60C /* TapptitudeTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -160,6 +203,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		232CFBE71E3CE93B00E1D60C /* TapptitudeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 232CFBF21E3CE93B00E1D60C /* Build configuration list for PBXNativeTarget "TapptitudeTests" */;
+			buildPhases = (
+				232CFBE41E3CE93B00E1D60C /* Sources */,
+				232CFBE51E3CE93B00E1D60C /* Frameworks */,
+				232CFBE61E3CE93B00E1D60C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				232CFBEF1E3CE93B00E1D60C /* PBXTargetDependency */,
+			);
+			name = TapptitudeTests;
+			productName = TapptitudeTests;
+			productReference = 232CFBE81E3CE93B00E1D60C /* TapptitudeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		234ECBEE1C747FE800135CF9 /* Tapptitude */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 234ECBF71C747FE800135CF9 /* Build configuration list for PBXNativeTarget "Tapptitude" */;
@@ -184,10 +245,14 @@
 		234ECBE61C747FE800135CF9 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0730;
+				LastSwiftUpdateCheck = 0820;
 				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = Tapptitude;
 				TargetAttributes = {
+					232CFBE71E3CE93B00E1D60C = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+					};
 					234ECBEE1C747FE800135CF9 = {
 						CreatedOnToolsVersion = 7.2;
 						LastSwiftMigration = 0800;
@@ -207,11 +272,19 @@
 			projectRoot = "";
 			targets = (
 				234ECBEE1C747FE800135CF9 /* Tapptitude */,
+				232CFBE71E3CE93B00E1D60C /* TapptitudeTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		232CFBE61E3CE93B00E1D60C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		234ECBED1C747FE800135CF9 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -224,6 +297,17 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		232CFBE41E3CE93B00E1D60C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				232CFBF91E3CF5E800E1D60C /* APIMock.swift in Sources */,
+				232CFBF61E3CF4A400E1D60C /* DataFeedTests.swift in Sources */,
+				232CFBF41E3CE9AB00E1D60C /* DataSourceTests.swift in Sources */,
+				232CFBEB1E3CE93B00E1D60C /* TapptitudeTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		234ECBEA1C747FE800135CF9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -259,7 +343,44 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		232CFBEF1E3CE93B00E1D60C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 234ECBEE1C747FE800135CF9 /* Tapptitude */;
+			targetProxy = 232CFBEE1E3CE93B00E1D60C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		232CFBF01E3CE93B00E1D60C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				INFOPLIST_FILE = TapptitudeTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tapptitude.TapptitudeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		232CFBF11E3CE93B00E1D60C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				INFOPLIST_FILE = TapptitudeTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tapptitude.TapptitudeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
 		234ECBF51C747FE800135CF9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -398,6 +519,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		232CFBF21E3CE93B00E1D60C /* Build configuration list for PBXNativeTarget "TapptitudeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				232CFBF01E3CE93B00E1D60C /* Debug */,
+				232CFBF11E3CE93B00E1D60C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		234ECBE91C747FE800135CF9 /* Build configuration list for PBXProject "Tapptitude" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
