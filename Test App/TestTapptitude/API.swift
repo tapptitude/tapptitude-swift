@@ -20,8 +20,7 @@ class APIMock: TTCancellable {
     init(callback: @escaping (_ content: [String]?, _ error: NSError?)->Void) {
         self.callback = callback
         
-        let delayTime = DispatchTime.now() + Double(Int64(5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-        DispatchQueue.main.asyncAfter(deadline: delayTime) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
             print("test")
             if !self.wasCancelled {
                 callback(["234"], nil)
@@ -42,8 +41,7 @@ class APIPaginatedMock: TTCancellable {
     init(offset:Int, pageSize:Int, callback: @escaping (_ content: [String]?, _ error: NSError?)->Void) {
         self.callback = callback
         
-        let delayTime = DispatchTime.now() + Double(Int64(3 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-        DispatchQueue.main.asyncAfter(deadline: delayTime) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
             if !self.wasCancelled {
                 if offset > 3 {
                     print("completed")
@@ -69,8 +67,7 @@ class APIPaginateOffsetdMock: TTCancellable {
     init(offset:String?, limit:Int, callback: @escaping (_ content: [String]?, _ nextOffset:String?, _ error: NSError?)->Void) {
         self.callback = callback
         
-        let delayTime = DispatchTime.now() + Double(Int64(0.1 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-        DispatchQueue.main.asyncAfter(deadline: delayTime) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             print("test")
             if !self.wasCancelled {
                 if offset == nil {
