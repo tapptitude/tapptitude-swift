@@ -194,6 +194,14 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         }
     }
     
+    open func insert(sections newSections: [[T]], at section: Int) {
+        editContentWithBlock { (_content, delegate) -> Void in
+            _content.insert(contentsOf: newSections, at: section)
+            let sections = IndexSet(section...(section+newSections.count))
+            delegate?.dataSource(self, didInsertSections: sections)
+        }
+    }
+    
     open func remove(at indexPath: IndexPath) {
         delegate?.dataSourceWillChangeContent(self)
         _content[indexPath.section].remove(at: indexPath.item)
