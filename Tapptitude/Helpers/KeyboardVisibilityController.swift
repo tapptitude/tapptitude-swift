@@ -152,9 +152,11 @@ public class KeyboardVisibilityController: NSObject {
                 if scrollView.layer.value(forKey: key) == nil {
                     scrollView.layer.setValue(inset.bottom, forKey: key)
                 }
-                inset.bottom = keyboardEndFrame!.size.height - diff;
+                inset.bottom = keyboardEndFrame!.size.height - diff
             } else {
-                inset.bottom = scrollView.layer.value(forKey: key) as! CGFloat
+                if let bottom = scrollView.layer.value(forKey: key) as? CGFloat {
+                    inset.bottom = bottom
+                }
             }
             
             scrollView.contentInset = inset
