@@ -63,7 +63,10 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
                 } else if #available(iOS 10.0, *) {
                     layout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
                 } else {
-                    layout.estimatedItemSize = self.cellController.cellSize
+                    var size = self.cellController.cellSize
+                    size.width = size.width < 0 ? collectionView.bounds.size.width : size.width
+                    size.height = size.height < 0 ? collectionView.bounds.size.height: size.height
+                    layout.estimatedItemSize = size
                 }
             }
         }
