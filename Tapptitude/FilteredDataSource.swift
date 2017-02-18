@@ -14,7 +14,8 @@ open class FilteredDataSource<T> : DataSource<T> {
         super.init(content)
     }
     
-    open func filter(_ filter: ((T) -> Bool)?) { //pass nil to reset filter
+    /// pass nil to reset filter
+    open func filter(by filter: ((T) -> Bool)?) {
         self.filterBy = filter
         
         if filterBy == nil {
