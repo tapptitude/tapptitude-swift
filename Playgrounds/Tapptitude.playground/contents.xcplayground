@@ -19,7 +19,6 @@
         <page name='Swipe to Delete'/>
         <page name='Keyboard Controller'/>
         <page name='Chat Controller'/>
-        <page name='Auto Expanded TextView'/>
         <page name='SelfSizingCells'/>
         <page name='ParalledDataFeed'/>
         <page name='Prefetch image in cell'/>
