@@ -44,8 +44,6 @@ public protocol TTDataSourceMutable {
     func remove(at indexPath: IndexPath)
     func remove(_ filter: (_ item: Element) -> Bool)
     
-    func replace(at indexPath: IndexPath, newElement: Element)
-    
     subscript(indexPath: IndexPath) -> Element { get set }
     subscript(section: Int, index: Int) -> Element { get set }
 }

@@ -79,6 +79,7 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
         get { return _content[indexPath.item] }
         set { editContent { (_content, delegate) in
             _content[indexPath.item] = newValue
+            delegate?.dataSource(self, didUpdateItemsAt: [indexPath])
             }}
     }
     
@@ -90,6 +91,8 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
         get { return _content[index] }
         set { editContent { (_content, delegate) in
             _content[index] = newValue
+            let indexPath = IndexPath(item: index, section: 0)
+            delegate?.dataSource(self, didUpdateItemsAt: [indexPath])
             }}
     }
     
@@ -97,6 +100,8 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
         get { return _content[index] }
         set { editContent { (_content, delegate) in
             _content[index] = newValue
+            let indexPath = IndexPath(item: index, section: 0)
+            delegate?.dataSource(self, didUpdateItemsAt: [indexPath])
             }}
     }
     
@@ -262,19 +267,14 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
     }
     
     open func remove(at indexPaths: [IndexPath]) {
-        if !indexPaths.isEmpty {
-            var indexPathsToRemove:[Int] = indexPaths.map { return $0.item }
-            editContent { (_content, delegate) -> Void in
-                for j in 0..<indexPathsToRemove.count   {
-                    _content.remove(at: indexPathsToRemove[j])
-                    for i in 0..<indexPathsToRemove.count{
-                        if indexPathsToRemove[i] > indexPathsToRemove[j] {
-                            indexPathsToRemove[i] -= 1
-                        }
-                    }
-                }
-                delegate?.dataSource(self, didDeleteItemsAt: indexPaths)
-            }
+        if indexPaths.isEmpty {
+            return
+        }
+        
+        let sortedIndexPath = indexPaths.sorted()
+        editContent { (_content, delegate) -> Void in
+            sortedIndexPath.reversed().forEach{ _content.remove(at: $0.item) }
+            delegate?.dataSource(self, didDeleteItemsAt: sortedIndexPath)
         }
     }
     
@@ -294,13 +294,6 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
                 collectionIndex += 1
             }
             delegate?.dataSource(self, didDeleteItemsAt: indexPaths)
-        }
-    }
-    
-    open func replace(at indexPath: IndexPath, newElement: T) {
-        editContent { (_content, delegate) -> Void in
-            _content[indexPath.item] = newElement
-            delegate?.dataSource(self, didUpdateItemsAt: [indexPath])
         }
     }
 }

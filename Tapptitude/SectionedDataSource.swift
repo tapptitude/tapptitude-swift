@@ -149,8 +149,7 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
     open var dataSourceID : String?
     
     open func indexPath<S>(ofFirst filter: (_ item: S) -> Bool) -> IndexPath? {
-        var i = 0
-        for subArray in _content {
+        for (section, subArray) in _content.enumerated() {
             let index = subArray.index(where: { (searchedItem) -> Bool in
                 if let item = searchedItem as? S {
                     return filter(item)
@@ -160,10 +159,8 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
             })
             
             if let index = index {
-                return IndexPath(item: index, section: 0)
+                return IndexPath(item: index, section: section)
             }
-            
-            i += 1
         }
         
         return nil
@@ -175,9 +172,15 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         delegate?.dataSourceDidChangeContent(self)
     }
     
-    open func append(contentsOf newElements: [T]) {
-        let section = Swift.max(0, _content.count - 1)
-        insert(contentsOf: newElements, at: IndexPath(item: _content.count, section: section))
+    open func append(sections newSections: [[T]]) {
+        insert(sections: newSections, at: _content.count)
+    }
+    
+    open func insert(_ element: T, at indexPath: IndexPath) {
+        editContentWithBlock { (_content, delegate) -> Void in
+            _content[indexPath.section].insert(element, at: indexPath.item)
+            delegate?.dataSource(self, didInsertItemsAt: [indexPath])
+        }
     }
     
     open func insert(contentsOf newElements: [T], at indexPath: IndexPath) {
@@ -202,11 +205,59 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         }
     }
     
+    open func moveElement(from fromIndexPath: IndexPath, to toIndexPath: IndexPath) {
+        editContentWithBlock { (_content, delegate) -> Void in
+            let item = _content[fromIndexPath.section][fromIndexPath.item]
+            _content[fromIndexPath.section].remove(at: fromIndexPath.item)
+            
+            var toIndex = toIndexPath.item
+            let sameSection = fromIndexPath.section == toIndexPath.section
+            if sameSection && toIndexPath.item > fromIndexPath.item {
+                toIndex -= 1
+            }
+            
+            _content[toIndexPath.section].insert(item, at: toIndex)
+            
+            delegate?.dataSource(self, didMoveItemsFrom: [fromIndexPath], to: [toIndexPath])
+        }
+    }
+    
     open func remove(at indexPath: IndexPath) {
-        delegate?.dataSourceWillChangeContent(self)
-        _content[indexPath.section].remove(at: indexPath.item)
-        delegate?.dataSource(self, didDeleteItemsAt: [indexPath])
-        delegate?.dataSourceDidChangeContent(self)
+        editContentWithBlock { (_content, delegate) -> Void in
+            _content[indexPath.section].remove(at: indexPath.item)
+            delegate?.dataSource(self, didDeleteItemsAt: [indexPath])
+        }
+    }
+    
+    open func remove(at indexPaths: [IndexPath]) {
+        if indexPaths.isEmpty {
+            return
+        }
+        
+        let sortedIndexPaths = indexPaths.sorted()
+        editContentWithBlock { (_content, delegate) -> Void in
+            sortedIndexPaths.reversed().forEach{ _content[$0.section].remove(at: $0.item) }
+            delegate?.dataSource(self, didDeleteItemsAt: indexPaths)
+        }
+    }
+    
+    open func remove(_ filter: (_ item: T) -> Bool) {
+        editContentWithBlock { (_content, delegate) -> Void in
+            var indexPaths: [IndexPath] = []
+            let sections = _content
+            for (section, content) in sections.enumerated() {
+                var removeIndex = 0
+                for (index, item) in content.enumerated() {
+                    if filter(item) {
+                        _content[section].remove(at: removeIndex)
+                        indexPaths.append(IndexPath(item: index, section: section))
+                    } else {
+                        removeIndex += 1
+                    }
+                }
+            }
+            delegate?.dataSource(self, didDeleteItemsAt: indexPaths)
+        }
     }
         
     //}
