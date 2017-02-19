@@ -145,7 +145,7 @@ class FetchedDataSource<T: NSManagedObject>: NSObject, TTDataSource, NSFetchedRe
     }
     
     open func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        delegate?.dataSourceDidChangeContent(self, animationCompletion: nil)
+        delegate?.dataSourceDidChangeContent(self)
     }
     
     
@@ -160,7 +160,7 @@ class FetchedDataSource<T: NSManagedObject>: NSObject, TTDataSource, NSFetchedRe
             // delegate will be notified trough insert/delete/move changes
         } else {
             performFetch()
-            delegate?.dataSourceDidChangeContent(self, animationCompletion: nil)
+            delegate?.dataSourceDidChangeContent(self)
         }
         
         let postToOtherDataSourcesWithSameID = self.dataSourceID != nil && dataFeed != nil
@@ -191,7 +191,7 @@ class FetchedDataSource<T: NSManagedObject>: NSObject, TTDataSource, NSFetchedRe
             // delegate will be notified trough insert/delete/move changes
         } else {
             performFetch()
-            delegate?.dataSourceDidChangeContent(self, animationCompletion: nil)
+            delegate?.dataSourceDidChangeContent(self)
         }
         
         let postToOtherDataSourcesWithSameID = self.dataSourceID != nil && dataFeed != nil
@@ -223,6 +223,6 @@ class FetchedDataSource<T: NSManagedObject>: NSObject, TTDataSource, NSFetchedRe
         }
         
         self.performFetch()
-        delegate?.dataSourceDidChangeContent(self, animationCompletion: nil)
+        delegate?.dataSourceDidChangeContent(self)
     }
 }

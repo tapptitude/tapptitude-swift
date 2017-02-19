@@ -43,7 +43,7 @@ let feedController = CollectionFeedController()
 feedController.dataSource = dataSource
 feedController.cellController = cellController
 feedController.collectionView?.backgroundColor = UIColor.white
-//feedController.animatedUpdates = true
+//feedController.animatedUpdates = false
 
 cellController.cellSizeForContent = { content, collectionView in
     return CGSize(width: content, height: content)
@@ -56,7 +56,7 @@ cellController.configureCell = { cell, content, indexPath in
 }
 cellController.didSelectContent = { content, indexPath, collectionView in
     print("did select", content)
-    collectionView .performBatchUpdates({
+    collectionView.performBatchUpdates({
         let newContent = content < 150 ? content + 30 : content - 30
         dataSource[indexPath] = newContent
         }, completion: nil)

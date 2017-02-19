@@ -188,23 +188,14 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
 //
 //
 //extension DataSource : TTDataSourceMutable {
-    open func perfomBatchUpdates(_ updates: (() -> Void), animationCompletion:(()->Void)?) {
-        assert(allowWillDidChangeContent, "perform batche updates called multiple times")
-        allowWillDidChangeContent = false
-        delegate?.dataSourceWillChangeContent(self)
-        updates()
-        delegate?.dataSourceDidChangeContent(self, animationCompletion: animationCompletion)
-        allowWillDidChangeContent = true
-    }
-    
-    fileprivate var allowWillDidChangeContent = true
+    public var propagateChangesToDelegate = true
     fileprivate func editContent(_ editBlock: ( _ content: inout [T], _ delegate: TTDataSourceDelegate?) -> Void) {
-        if allowWillDidChangeContent {
+        if propagateChangesToDelegate {
             delegate?.dataSourceWillChangeContent(self)
         }
         editBlock(&_content, delegate);
-        if allowWillDidChangeContent {
-            delegate?.dataSourceDidChangeContent(self, animationCompletion: nil)
+        if propagateChangesToDelegate {
+            delegate?.dataSourceDidChangeContent(self)
         }
     }
     

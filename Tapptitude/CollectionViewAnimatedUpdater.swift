@@ -41,29 +41,26 @@ class CollectionViewUpdater: TTCollectionViewUpdater {
     }
     
     func collectionViewDidChangeContent(_ collectionView: UICollectionView, animationCompletion: (() -> Void)?) {
+        defer {
+            self.batchOperation = nil
+        }
+        
         // Checks if we should reload the collection view to fix a bug @ http://openradar.appspot.com/12954582
         let noChanges = (batchOperation == nil || batchOperation?.isEmpty == true)
         
         if (shouldReloadCollectionView || noChanges) {
             collectionView.reloadData()
             animationCompletion?()
-            self.batchOperation = nil
         } else {
             if animatesUpdates {
                 collectionView.performBatchUpdates({
-                    for block in self.batchOperation! {
-                        block()
-                    }
-                    self.batchOperation = nil
+                    self.batchOperation?.forEach{ $0() }
                 }, completion: { finished in
                     animationCompletion?()
                 })
             } else {
                 UIView.performWithoutAnimation {
-                    for block in self.batchOperation! {
-                        block()
-                    }
-                    self.batchOperation = nil
+                    self.batchOperation?.forEach{ $0() }
                     animationCompletion?()
                 }
             }
@@ -98,6 +95,73 @@ class CollectionViewUpdater: TTCollectionViewUpdater {
         } else {
             shouldReloadCollectionView = true
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didMoveItemsFrom fromIndexPaths: [IndexPath], to toIndexPaths: [IndexPath]) {
+        batchOperation?.append({
+            fromIndexPaths.enumerated().forEach({ (index, indexPath) in
+                let toIndexPath = toIndexPaths[index]
+                collectionView.moveItem(at: indexPath, to:toIndexPath)
+            })
+        })
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didInsertSections sections: IndexSet) {
+        batchOperation?.append({
+            collectionView.insertSections(sections)
+        })
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeleteSections sections: IndexSet) {
+        batchOperation?.append({
+            collectionView.deleteSections(sections)
+        })
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didUpdateSections sections: IndexSet) {
+        batchOperation?.append({
+            collectionView.reloadSections(sections)
+        })
+    }
+}
+
+class BatchCollectionViewUpdater: TTCollectionViewUpdater {
+    
+    var batchOperation: [() -> Void]? = []
+    
+    var animatesUpdates: Bool = true
+    
+    init(animatesUpdates: Bool) {
+        self.animatesUpdates = animatesUpdates
+    }
+    
+    open func perfomBatchUpdates(_ updates: (() -> Void), animationCompletion:(()->Void)?) {
+        
+    }
+    
+    func collectionViewWillChangeContent(_ collectionView: UICollectionView) {
+    }
+    
+    func collectionViewDidChangeContent(_ collectionView: UICollectionView, animationCompletion: (() -> Void)?) {
+    }
+    
+    // MARK: - items operation
+    func collectionView(_ collectionView: UICollectionView, didUpdateItemsAt indexPaths: [IndexPath]) {
+        batchOperation?.append({
+            collectionView.reloadItems(at: indexPaths)
+        })
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeleteItemsAt indexPaths: [IndexPath]) {
+        batchOperation?.append({
+            collectionView.deleteItems(at: indexPaths)
+        })
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didInsertItemsAt indexPaths: [IndexPath]) {
+        batchOperation?.append({
+            collectionView.insertItems(at: indexPaths)
+        })
     }
     
     func collectionView(_ collectionView: UICollectionView, didMoveItemsFrom fromIndexPaths: [IndexPath], to toIndexPaths: [IndexPath]) {

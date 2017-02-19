@@ -31,8 +31,6 @@ public protocol TTDataSource : TTDataFeedDelegate, CustomStringConvertible {
 public protocol TTDataSourceMutable {
     associatedtype Element
     
-    func perfomBatchUpdates(_ updates: (() -> Void), animationCompletion:(()->Void)?);
-    
     func append(_ newElement: Element)
     func append(contentsOf newElements: [Element])
 
@@ -72,13 +70,7 @@ public protocol TTDataSourceDelegate: class {
     func dataSource(_ dataSource: TTDataSource, didDeleteSections deletedSections: IndexSet)
     func dataSource(_ dataSource: TTDataSource, didUpdateSections updatedSections: IndexSet)
     
-    func dataSourceDidChangeContent(_ dataSource: TTDataSource, animationCompletion:(() -> Void)?)
-}
-
-extension TTDataSourceDelegate {
-    func dataSourceDidChangeContent(_ dataSource: TTDataSource) {
-        dataSourceDidChangeContent(dataSource, animationCompletion: nil)
-    }
+    func dataSourceDidChangeContent(_ dataSource: TTDataSource)
 }
 
 

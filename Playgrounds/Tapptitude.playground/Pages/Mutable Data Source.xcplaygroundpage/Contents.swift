@@ -54,7 +54,7 @@ class EditViewController: CollectionFeedController {
 //            self.plusAction(self);
 //        }
         
-        let content = [Int](counter...counter+400)
+        let content = [Int](counter...counter+10)
         let position = dataSourceMutable.count
         dataSourceMutable.insert(contentsOf: content, at: IndexPath(item: position, section: 0))
         counter += 5

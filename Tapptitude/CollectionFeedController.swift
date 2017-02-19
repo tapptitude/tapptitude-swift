@@ -104,6 +104,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
                 updateCollectionViewLayoutAttributes()
                 updatePrefetcherController()
             }
+            updateCollectionViewAnimatedUpdater()
         }
     }
     
@@ -406,9 +407,6 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         self.refreshControl = refreshControl
         collectionView.addSubview(refreshControl)
     }
-    
-    open var animatedUpdates = false
-    fileprivate var animatedUpdater: CollectionViewUpdater?
 //}
 //
 //
@@ -444,31 +442,51 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
 //
 // MARK: Incremental Changes on Data source
 //extension CollectionFeedController : TTDataSourceDelegate {
-    open func dataSourceWillChangeContent(_ dataSource: TTDataSource) {
-        if let collectionView = collectionView {
-            animatedUpdater = CollectionViewUpdater(animatesUpdates: animatedUpdates)
-            animatedUpdater?.collectionViewWillChangeContent(collectionView)
-        } else {
+    open var animatedUpdates = false {
+        didSet { updateCollectionViewAnimatedUpdater() }
+    }
+    /// any changes in datasource will be passed to collectionView
+    public var propagateDataSourceChangesIntoCollectionView = true {
+        didSet { updateCollectionViewAnimatedUpdater() }
+    }
+    fileprivate var animatedUpdater: TTCollectionViewUpdater?
+    
+    func updateCollectionViewAnimatedUpdater() {
+        guard let _ = self.collectionView else {
             animatedUpdater = nil
+            return
+        }
+        
+        switch (propagateDataSourceChangesIntoCollectionView, animatedUpdates) {
+        case (false, _):
+            animatedUpdater = nil
+        case (true, _):
+            animatedUpdater = CollectionViewUpdater(animatesUpdates: animatedUpdates)
         }
     }
     
-    open func dataSourceDidChangeContent(_ dataSource: TTDataSource, animationCompletion: (() -> Void)?) {
-        if animatedUpdater == nil {
-            collectionView?.reloadData()
-        } else {
-            animatedUpdater?.collectionViewDidChangeContent(collectionView!, animationCompletion: animationCompletion)
+    open func perfomBatchUpdates(_ updates: @escaping (() -> Void), animationCompletion:(()->Void)?) {
+        let animatedUpdater = BatchCollectionViewUpdater(animatesUpdates: animatedUpdates)
+        self.animatedUpdater = animatedUpdater
+        collectionView.performBatchUpdates({ 
+            updates()
+            animatedUpdater.batchOperation?.forEach{ $0() }
+        }) { (completed) in
+            animationCompletion?()
         }
+        updateCollectionViewAnimatedUpdater()
+    }
+    
+    open func dataSourceWillChangeContent(_ dataSource: TTDataSource) {
+        animatedUpdater?.collectionViewWillChangeContent(collectionView!)
+    }
+    
+    open func dataSourceDidChangeContent(_ dataSource: TTDataSource) {
+        animatedUpdater?.collectionViewDidChangeContent(collectionView!, animationCompletion: nil)
         
         if dataSource.feed == nil || dataSource.feed!.isReloading == false { // check for the empty view
             updateEmptyViewAppearenceAnimated(true)
         }
-        
-        animatedUpdater = nil
-    }
-
-    open func dataSourceDidChangeContent(_ dataSource: TTDataSource) {
-        dataSourceDidChangeContent(dataSource, animationCompletion: nil)
     }
     
     open func dataSource(_ dataSource: TTDataSource, didUpdateItemsAt indexPaths: [IndexPath]) {
