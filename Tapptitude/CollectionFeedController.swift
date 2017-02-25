@@ -702,7 +702,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
             let headerController = headerController,
             let item = dataSource.sectionHeaderItem(at: section), 
             headerController.acceptsContent(item) {
-            return headerController.headerSize
+            return headerController.headerSize(for: item, in: collectionView)
         } else {
             return CGSize.zero
         }
