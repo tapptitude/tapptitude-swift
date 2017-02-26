@@ -1,7 +1,14 @@
-//: [Previous](@previous)
+//
+//  ChatFeedViewController.swift
+//  TestTapptitude
+//
+//  Created by Alexandru Tudose on 26/02/2017.
+//  Copyright © 2017 Tapptitude. All rights reserved.
+//
 
-import UIKit
 import Tapptitude
+import UIKit
+
 
 class ChatInputContainerView: UIView {
     let maxTextviewHeight: CGFloat = 90.0
@@ -69,11 +76,26 @@ extension ChatInputContainerView: UITextViewDelegate {
 }
 
 
-class ChatViewController : CollectionFeedController {
+class ChatFeedViewController : CollectionFeedController {
     @IBOutlet var inputContainerView: ChatInputContainerView!
     
-    convenience init() {
-        self.init(nibName: "ChatViewController", bundle: nil);
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.title = "Chat"
+        inputContainerView.removeFromSuperview()
+        
+        let keyboard = self.collectionView?.addKeyboardVisibilityController()
+        keyboard?.dismissKeyboardTouchRecognizer = nil
+        
+        let dataSource = DataSource<String>(loadPage: API.getHackerNews(page:callback:))
+        
+        self.dataSource = dataSource
+        self.cellController = MultiCollectionCellController(TextItemCellController())
+    }
+    
+    @IBAction func sendAction(_ sender: AnyObject) {
+        self.inputContainerView.text = ""
     }
     
     override var canBecomeFirstResponder: Bool {
@@ -85,11 +107,3 @@ class ChatViewController : CollectionFeedController {
     }
 }
 
-
-
-//import PlaygroundSupport
-//let controller = ChatViewController()
-//controller.dataSource = DataSource<String>()
-//controller.cellController = TextCellController()
-//PlaygroundPage.current.liveView = controller.view
-//: [Next](@next)

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2344DFEA1E62FBF700125C6A /* ChatFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2344DFE91E62FBF700125C6A /* ChatFeedViewController.swift */; };
 		2347DCB51D954D3200C311D8 /* Tapptitude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2347DCB41D954D2900C311D8 /* Tapptitude.framework */; };
 		2355FF9B1CA3350D00D7B393 /* TextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2355FF9A1CA3350D00D7B393 /* TextCell.xib */; };
 		2355FF9D1CA3355F00D7B393 /* TextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2355FF9C1CA3355F00D7B393 /* TextCell.swift */; };
@@ -24,6 +25,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		2344DFED1E62FBF800125C6A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2347DCAF1D954D2900C311D8 /* Tapptitude.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 232CFBE81E3CE93B00E1D60C;
+			remoteInfo = TapptitudeTests;
+		};
 		2347DCB31D954D2900C311D8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2347DCAF1D954D2900C311D8 /* Tapptitude.xcodeproj */;
@@ -34,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2344DFE91E62FBF700125C6A /* ChatFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedViewController.swift; sourceTree = "<group>"; };
 		2347DCAF1D954D2900C311D8 /* Tapptitude.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Tapptitude.xcodeproj; path = ../Tapptitude.xcodeproj; sourceTree = "<group>"; };
 		2355FF9A1CA3350D00D7B393 /* TextCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextCell.xib; sourceTree = "<group>"; };
 		2355FF9C1CA3355F00D7B393 /* TextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextCell.swift; sourceTree = "<group>"; };
@@ -69,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				2347DCB41D954D2900C311D8 /* Tapptitude.framework */,
+				2344DFEE1E62FBF800125C6A /* TapptitudeTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -110,6 +120,7 @@
 				23A551101C78A32300695BF3 /* FeedController.swift */,
 				23670E6B1DF95FDE0059D5AA /* ParallelFeedController.swift */,
 				2386882B1E2E6D3700521904 /* PrefetchFeedController.swift */,
+				2344DFE91E62FBF700125C6A /* ChatFeedViewController.swift */,
 				2393482B1CA5D268005EB280 /* API.swift */,
 				2393482A1CA5D236005EB280 /* Test Cell */,
 				23A550DD1C78A1BC00695BF3 /* Main.storyboard */,
@@ -191,6 +202,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		2344DFEE1E62FBF800125C6A /* TapptitudeTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = TapptitudeTests.xctest;
+			remoteRef = 2344DFED1E62FBF800125C6A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		2347DCB41D954D2900C311D8 /* Tapptitude.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -224,6 +242,7 @@
 				23670E6C1DF95FDE0059D5AA /* ParallelFeedController.swift in Sources */,
 				2355FF9D1CA3355F00D7B393 /* TextCell.swift in Sources */,
 				23A551111C78A32300695BF3 /* FeedController.swift in Sources */,
+				2344DFEA1E62FBF700125C6A /* ChatFeedViewController.swift in Sources */,
 				23A550DA1C78A1BC00695BF3 /* AppDelegate.swift in Sources */,
 				2355FF9F1CA3367900D7B393 /* TextCellController.swift in Sources */,
 				2393482C1CA5D268005EB280 /* API.swift in Sources */,
