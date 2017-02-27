@@ -154,22 +154,12 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
             delegate.dataFeed(dataFeed, didLoadMoreContent: content)
         }
         
-        var indexPaths = [IndexPath]();
-        
         if let content = content {
-            let startIndex = _content.count
-            _content.append(contentsOf: content.map({$0 as! Element}))
-            
-            indexPaths = content.enumerated().map({ (index, _) -> IndexPath in
-                return IndexPath(item: startIndex + index, section: 0)
-            })
+            let transformed = content.map {$0 as! Element}
+            append(contentsOf: transformed)
+//            insert(contentsOf: transformed, at: IndexPath(item: 0, section: 0))
         }
         
-        if !indexPaths.isEmpty {
-            delegate?.dataSourceWillChangeContent(self)
-            delegate?.dataSource(self, didInsertItemsAt: indexPaths)
-            delegate?.dataSourceDidChangeContent(self)
-        }
     }
     
     open func dataFeed(_ dataFeed: TTDataFeed?, isReloading: Bool) {
