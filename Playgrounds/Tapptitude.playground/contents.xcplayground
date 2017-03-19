@@ -22,5 +22,6 @@
         <page name='SelfSizingCells'/>
         <page name='ParalledDataFeed'/>
         <page name='Prefetch image in cell'/>
+        <page name='Paginated FeedController'/>
     </pages>
 </playground>
