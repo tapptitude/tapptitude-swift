@@ -11,11 +11,11 @@ let nr: Int = 12312
 testDataSource.append(nr)
 testDataSource.remove({$0 as? Int == nr})
 
-var dataSource = DataSource([2, 4, 6])
+var dataSource = DataSource([2, 4, 6, 12312])
 print(dataSource.content)
 dataSource[0]
 dataSource[2] = 8
-dataSource[1, 1]
+let item: Int = dataSource[0, 1]
 dataSource.remove({$0 == nr})
 print(dataSource)
 

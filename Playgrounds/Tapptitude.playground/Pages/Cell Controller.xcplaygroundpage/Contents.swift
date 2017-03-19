@@ -26,7 +26,7 @@ cellController.acceptsContent("test")
 cellController.acceptsContent(1)
 cellController.acceptsContent("Maria" as AnyObject)
 let indexPath = IndexPath(item: 0, section: 0)
-let object = dataSource[indexPath]
+let object: String = dataSource[indexPath]
 cellController.configureCell(UICollectionViewCell(), for: object, at: indexPath)
 
 let feedController = CollectionFeedController()
