@@ -20,14 +20,17 @@ open class FilteredDataSource<T> : DataSource<T> {
         
         if filterBy == nil {
             if originalContent != nil {
-                super.dataFeed(nil, didReloadContent: originalContent!.convertTo())
+                let filteredContent: [Any]? = originalContent!.convertTo()
+                let result = Result.success(filteredContent ?? [])
+                super.dataFeed(nil, didLoadResult: result, forState: .reloading)
                 originalContent = nil
             }
         } else {
             originalContent = originalContent ?? content.convertTo()
             
             let filteredContent: [Any]? = originalContent!.filter(filterBy!).convertTo()
-            super.dataFeed(nil, didReloadContent: filteredContent)
+            let result = Result.success(filteredContent ?? [])
+            super.dataFeed(nil, didLoadResult: result, forState: .reloading)
         }
     }
     
@@ -45,23 +48,23 @@ open class FilteredDataSource<T> : DataSource<T> {
 //}
 //
 //extension FilteredDataSource {
-    override open func dataFeed(_ dataFeed: TTDataFeed?, didReloadContent content: [Any]?) {
-        var content = content
+    override open func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState) {
+        var result = result
+        if let filterBy = filterBy {
+            let resultType = result.map(as: T.self)
+            
+            switch (forState) {
+            case .reloading:
+                originalContent = resultType.value ?? []
+            case .loadingMore:
+                originalContent?.append(contentsOf: resultType.value ?? [])
+            default:
+                break;
+            }
+            
+            result = resultType.map{ $0.filter(filterBy) }.map(as: Any.self)
+        }
         
-        if isFiltered {
-            originalContent = content?.convertTo()
-            content = originalContent?.filter(filterBy!).convertTo()
-        }
-        super.dataFeed(dataFeed, didReloadContent: content)
-    }
-    
-    override open func dataFeed(_ dataFeed: TTDataFeed?, didLoadMoreContent content: [Any]?) {
-        var content = content
-        if isFiltered {
-            let mappedContent: [T]? = content?.map({$0 as! T })
-            originalContent?.append(contentsOf: mappedContent ?? [])
-            content = content?.convertTo().filter(filterBy!).convertTo()
-        }
-        super.dataFeed(dataFeed, didLoadMoreContent: content)
+        super.dataFeed(dataFeed, didLoadResult: result, forState: forState)
     }
 }

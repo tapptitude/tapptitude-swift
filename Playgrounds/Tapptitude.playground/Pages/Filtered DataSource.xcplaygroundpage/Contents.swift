@@ -13,7 +13,8 @@ let feedController = CollectionFeedController()
 feedController.dataSource = dataSource
 feedController.cellController = TextCellController()
 
-dataSource.dataFeed(nil, didLoadMoreContent: ["Nenea"])
+let content = FeedResult<[Any]>.success(["Nenea"] as [Any])
+dataSource.dataFeed(nil, didLoadResult: content, forState: .loadingMore)
 dataSource.filter(by: nil)
 
 print(dataSource.content)

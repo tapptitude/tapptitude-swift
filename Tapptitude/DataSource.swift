@@ -123,54 +123,41 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
 //}
 //
 //extension DataSource : TTDataFeedDelegate {
-    
-    open func dataFeed(_ dataFeed: TTDataFeed?, failedWithError error: Error) {
-        if let delegate = delegate as? TTDataFeedDelegate {
-            delegate.dataFeed(dataFeed, failedWithError: error)
-        }
-    }
-    
-    open func dataFeed(_ dataFeed: TTDataFeed?, didReloadContent content: [Any]?) {
+    open func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState) {
         // pass delegate message
         if let delegate = delegate as? TTDataFeedDelegate {
-            delegate.dataFeed(dataFeed, didReloadContent: content)
+            delegate.dataFeed(dataFeed, didLoadResult: result, forState: forState)
         }
         
-        let wasEmpty = _content.isEmpty == true
-        _content = content?.convertTo() ?? []
-        let isEmpty = _content.isEmpty
+        guard result.isSuccess else {
+            return
+        }
+        let result = result.map(as: Element.self)
         
-        let ignore = wasEmpty && isEmpty
-        if !ignore {
-            delegate?.dataSourceWillChangeContent(self)
-            delegate?.dataSource(self, didUpdateSections: IndexSet(integer: 0))
-            delegate?.dataSourceDidChangeContent(self)
+        switch forState {
+        case .reloading:
+            let wasEmpty = _content.isEmpty == true
+            _content = result.value ?? []
+            let isEmpty = _content.isEmpty
+            
+            let ignore = wasEmpty && isEmpty
+            if !ignore {
+                delegate?.dataSourceWillChangeContent(self)
+                delegate?.dataSource(self, didUpdateSections: IndexSet(integer: 0))
+                delegate?.dataSourceDidChangeContent(self)
+            }
+        case .loadingMore:
+            if let content = result.value {
+                append(contentsOf: content)
+            }
+        case .idle:
+            assert(false, "what should we do in this case?")
         }
     }
     
-    open func dataFeed(_ dataFeed: TTDataFeed?, didLoadMoreContent content: [Any]?) {
-        // pass delegate message
+    open func dataFeed(_ dataFeed: TTDataFeed?, fromState: FeedState, toState: FeedState) {
         if let delegate = delegate as? TTDataFeedDelegate {
-            delegate.dataFeed(dataFeed, didLoadMoreContent: content)
-        }
-        
-        if let content = content {
-            let transformed = content.map {$0 as! Element}
-            append(contentsOf: transformed)
-//            insert(contentsOf: transformed, at: IndexPath(item: 0, section: 0))
-        }
-        
-    }
-    
-    open func dataFeed(_ dataFeed: TTDataFeed?, isReloading: Bool) {
-        if let delegate = delegate as? TTDataFeedDelegate {
-            delegate.dataFeed(dataFeed, isReloading: isReloading)
-        }
-    }
-    
-    open func dataFeed(_ dataFeed: TTDataFeed?, isLoadingMore: Bool) {
-        if let delegate = delegate as? TTDataFeedDelegate {
-            delegate.dataFeed(dataFeed, isLoadingMore: isLoadingMore)
+            delegate.dataFeed(dataFeed, fromState: fromState, toState: toState)
         }
     }
 //}

@@ -55,7 +55,7 @@ class TextItemCellController: CollectionCellController<String, TextCell> {
 
 
 class API {
-    static func getBin(callback: @escaping (_ items: [String]?, _ error: Error?) -> ()) -> TTCancellable? {
+    static func getBin(callback: @escaping TTCallback<[String]>) -> TTCancellable? {
         let url = URL(string: "https://httpbin.org/get")
         let url_request = URLRequest(url: url!)
         
@@ -63,9 +63,10 @@ class API {
             let stringResponse = data != nil ? String(data: data!, encoding: String.Encoding.utf8) : nil
             let items: [String]? = stringResponse != nil ? [stringResponse!] : nil
             print(error)
+            let result: Result<[String]> = error != nil ? .failure(error!) : .success(items ?? [])
             
             DispatchQueue.main.async {
-                callback(items, error)
+                callback(result)
             }
         }
         task.resume()
@@ -73,7 +74,7 @@ class API {
         return task
     }
     
-    static func getHackerNews1(callback: @escaping (_ items: [String]?, _ error: Error?) -> ()) -> TTCancellable? {
+    static func getHackerNews1(callback: @escaping (_ result: Result<[String]>) -> ()) -> TTCancellable? {
         let url = URL(string: "https://news.ycombinator.com/news")
         let url_request = URLRequest(url: url!)
         
@@ -81,9 +82,10 @@ class API {
             let stringResponse = data != nil ? String(data: data!, encoding: String.Encoding.utf8) : nil
             let items: [String]? = stringResponse != nil ? [stringResponse!] : nil
             print(error)
+            let result: Result<[String]> = error != nil ? .failure(error!) : .success(items ?? [])
             
             DispatchQueue.main.async {
-                callback(items, error)
+                callback(result)
             }
         }
         task.resume()
@@ -91,7 +93,7 @@ class API {
         return task
     }
     
-    static func getHackerNews(page: Int?, callback: @escaping (_ items: [String]?, _ nextOffset: Int?, _ error: Error?) -> ()) -> TTCancellable? {
+    static func getHackerNews(page: Int?, callback: @escaping TTCallback<([String], Int?)>) -> TTCancellable? {
         let newPage = page ?? 0
         let url = URL(string: "https://news.ycombinator.com/news?p=\(newPage)")
         let url_request = URLRequest(url: url!)
@@ -101,9 +103,11 @@ class API {
             let items: [String]? = stringResponse != nil ? [stringResponse!] : nil
             print(error ?? "")
             
+            let nextPage = items?.isEmpty == false ? (newPage + 1) : nil
+            let result: Result<([String], Int?)> = error != nil ? .failure(error!) : .success((items!, nextPage))
+            
             DispatchQueue.main.async {
-                let nextPage = items?.isEmpty == false ? (newPage + 1) : nil
-                callback(items, nextPage, error)
+                callback(result)
             }
         }
         task.resume()

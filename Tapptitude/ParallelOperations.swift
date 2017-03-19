@@ -10,145 +10,128 @@ import Foundation
 
 /// Allows multiple operation to be treated as a single reload operation,
 /// after that a load more operation is executed when offset != nil
-open class ParallelDataFeed: DataFeed<Any> {
-    
-    /// offset == nil --> reload operation, else load more operation
-    open var offset: Any?
-    
+open class ParallelDataFeed: DataFeed<Any, Any> {
+
     open var reloadOperation: ParallelOperations! = ParallelOperations()
     open var loadMoreOperation: ParallelOperations! = ParallelOperations()
     
-    open var hasMorePages: Bool = false
-    open override var canLoadMore: Bool {
-        return hasMorePages && super.canLoadMore
-    }
-    
-    open override func reloadOperation(_ callback: @escaping TTCallback<Any>) -> TTCancellable? {
-        assert(reloadOperation.canExecute, "Please add operations to run")
+    public init () {
+        super.init { (offset, callback) -> TTCancellable? in
+            return nil
+        }
         
-        return reloadOperation.execute({ (content, nextOffset, error) in
-            if error == nil {
-                self.offset = nextOffset
-                self.hasMorePages = (nextOffset != nil)
+        self.loadPageOperation = {[weak self] (offset, callback) -> TTCancellable? in
+            switch self!.state {
+            case .reloading:
+                return self!.reloadOperation.execute(offset: offset, callback)
+            case .loadingMore:
+                return self!.loadMoreOperation.execute(offset: offset, callback)
+            case .idle:
+                assert(false)
             }
-            callback(content, error)
-        })
-    }
-    
-    open override func loadMoreOperation(_ callback: @escaping TTCallback<Any>) -> TTCancellable? {
-        assert(loadMoreOperation.canExecute, "Please add operations to run")
-        
-        return loadMoreOperation.execute(offset: self.offset, { (content, nextOffset, error) in
-            if error == nil {
-                self.offset = nextOffset
-                self.hasMorePages = (nextOffset != nil)
-            }
-            callback(content, error)
-        })
-    }
-    
-    public override init () {
+        }
         
     }
 }
-
-
-extension DataSource where Element: Any {
-    fileprivate var parallelOperation: ParallelOperations? {
-        get { return info["ParallelOperation"] as? ParallelOperations }
-        set { info["ParallelOperation"] = parallelOperation }
-    }
-    
-    public func addOperation<T>(failOnError: Bool = true, load: @escaping (_ callback: @escaping TTCallback<T>) -> TTCancellable?) {
-        if self.feed == nil {
-            let feed = ParallelDataFeed()
-            feed.reloadOperation.append(failOnError: failOnError, operation: load)
-            self.feed = feed
-        } else if let feed = self.feed as? ParallelDataFeed {
-            feed.reloadOperation.append(failOnError: failOnError, operation: load)
-        } else {
-            assert(false, "Only ParallelDataFeed supports more parallel operations")
-        }
-    }
-    
-    public func addOperation<T>(failOnError: Bool = true, load: @escaping (_ callback: @escaping (_ content: T?, _ error: Error?) -> ()) -> TTCancellable?) {
-        if self.feed == nil {
-            let feed = ParallelDataFeed()
-            feed.reloadOperation.append(failOnError: failOnError, operation: load)
-            self.feed = feed
-        } else if let feed = self.feed as? ParallelDataFeed {
-            feed.reloadOperation.append(failOnError: failOnError, operation: load)
-        } else {
-            assert(false, "Only ParallelDataFeed supports more parallel operations")
-        }
-    }
-    
-    
-    public func addLoadMoreOperation<T, Offset>(failOnError: Bool = true, load: @escaping (_ offset: Offset?, _ callback: TTCallbackNextOffset<T, Offset>) -> TTCancellable?) {
-        if let feed = self.feed as? ParallelDataFeed {
-            feed.loadMoreOperation = ParallelOperations()
-            feed.loadMoreOperation.append(failOnError: failOnError, operation: load)
-        } else {
-            assert(false, "Only ParallelDataFeed supports more parallel operations")
-        }
-    }
-}
-
-
-
-
-
-
-
+//
+//
+//extension DataSource where Element: Any {
+//    fileprivate var parallelOperation: ParallelOperations? {
+//        get { return info["ParallelOperation"] as? ParallelOperations }
+//        set { info["ParallelOperation"] = parallelOperation }
+//    }
+//    
+//    public func addOperation<T>(failOnError: Bool = true, load: @escaping (_ callback: @escaping TTCallback<T>) -> TTCancellable?) {
+//        if self.feed == nil {
+//            let feed = ParallelDataFeed()
+//            feed.reloadOperation.append(failOnError: failOnError, operation: load)
+//            self.feed = feed
+//        } else if let feed = self.feed as? ParallelDataFeed {
+//            feed.reloadOperation.append(failOnError: failOnError, operation: load)
+//        } else {
+//            assert(false, "Only ParallelDataFeed supports more parallel operations")
+//        }
+//    }
+//    
+//    public func addOperation<T>(failOnError: Bool = true, load: @escaping (_ callback: @escaping (_ content: T?, _ error: Error?) -> ()) -> TTCancellable?) {
+//        if self.feed == nil {
+//            let feed = ParallelDataFeed()
+//            feed.reloadOperation.append(failOnError: failOnError, operation: load)
+//            self.feed = feed
+//        } else if let feed = self.feed as? ParallelDataFeed {
+//            feed.reloadOperation.append(failOnError: failOnError, operation: load)
+//        } else {
+//            assert(false, "Only ParallelDataFeed supports more parallel operations")
+//        }
+//    }
+//    
+//    
+//    public func addLoadMoreOperation<T, Offset>(failOnError: Bool = true, load: @escaping (_ offset: Offset?, _ callback: TTCallbackNextOffset<T, Offset>) -> TTCancellable?) {
+//        if let feed = self.feed as? ParallelDataFeed {
+//            feed.loadMoreOperation = ParallelOperations()
+//            feed.loadMoreOperation.append(failOnError: failOnError, operation: load)
+//        } else {
+//            assert(false, "Only ParallelDataFeed supports more parallel operations")
+//        }
+//    }
+//}
+//
+//
+//
+//
+//
+//
+//
 /// Construct an operation that containts multiple operations --> that will be run in parallel.
 /// this operation can be treated as a single operation
 /// In the end content from all operations are passed into a single array, in the order of the append
 open class ParallelOperations {
-    typealias Operation<T, Offset> = (_ offset: Offset?, _ callback: @escaping (_ content: [T]?, _ nextOffset: Offset?, _ error: Error?, _ failOnError: Bool) -> ()) -> TTCancellable?
-    private var toRunOperations: [Operation<Any, Any>] = []
+    private var toRunOperations: [TTLoadPageOperation<Any, Any>] = []
+    private var tofailOnErrors: [Bool] = []
     
-    public func append<T>(failOnError: Bool = true, operation: @escaping (_ callback: @escaping TTCallback<T>) -> TTCancellable?) {
+    public func append<T>(failOnError: Bool = true, operation: @escaping TTLoadOperation<T>) {
         toRunOperations.append({ (offset, newCallback) -> TTCancellable? in
-            return operation({ (content, error) in
-                newCallback(content?.map{ $0 as Any}, nil, error, failOnError)
+            return operation({ result in
+                newCallback(result.map({ ($0, nil) }))
             })
         })
+        tofailOnErrors.append(failOnError)
     }
     
-    public func append<T>(failOnError: Bool = true, operation: @escaping (_ callback: @escaping (_ content: T?, _ error: Error?) -> ()) -> TTCancellable?) {
+    public func append<T>(failOnError: Bool = true, operation: @escaping (_ callback: @escaping (_ result: Result<T>) -> ()) -> TTCancellable?) {
         toRunOperations.append { (offset, newCallback) -> TTCancellable? in
-            return operation({ (content, error) in
-                let newContent = content != nil ? [content! as Any] : nil
-                newCallback(newContent, error, nil, failOnError)
+            return operation({ (result) in
+                newCallback(result.map({ ([$0], nil) }))
             })
         }
+        tofailOnErrors.append(failOnError)
     }
     
-    public func append<T, Offset>(failOnError: Bool = true, operation: @escaping (_ offset: Offset?, _ callback: @escaping TTCallbackNextOffset<T, Offset>) -> TTCancellable?) {
+    public func append<T, Offset>(failOnError: Bool = true, operation: @escaping TTLoadPageOperation<T, Offset>) {
         
         toRunOperations.append { (offset, newCallback) -> TTCancellable? in
             
-            return operation(offset as? Offset, { (content, nextOffset, error) in
-                let newContent = content?.map{ $0 as Any}
-                let newOffset = nextOffset as Any
-                newCallback(newContent, newOffset, error, failOnError)
+            return operation(offset as? Offset, { result in
+                newCallback(result.map({ ($0.map{ $0 as Any}, $1 as Any) }))
             })
         }
+        tofailOnErrors.append(failOnError)
     }
     
     @discardableResult
-    public func execute(offset: Any? = nil, _ callback: @escaping TTCallbackNextOffset<Any, Any>) -> TTCancellable? {
+    public func execute(offset: Any? = nil, _ callback: @escaping TTCallback<([Any], Any?)>) -> TTCancellable? {
         let runningOperation = RunningOperation()
         runningOperation.completion = callback
         
         var index = 0
         for task in toRunOperations {
             let position = index
-            let operation = task(offset, {[unowned runningOperation] (content, nextOffset, error, failOnError) in
-                if failOnError, let error = error {
+            let failOnError = tofailOnErrors[index]
+            let operation = task(offset, {[unowned runningOperation] (result) in
+                if failOnError, let error = result.error {
                     runningOperation.failNow(error: error)
                 } else {
-                    runningOperation.addResponse((content, nextOffset, error, position))
+                    runningOperation.addResponse((result, position))
                 }
             })
             runningOperation.operations.append(operation!)
@@ -167,13 +150,13 @@ open class ParallelOperations {
 /// An operation that encapsulate all running operations
 /// only first error, and first offset are passed to completion
 fileprivate class RunningOperation: TTCancellable {
-    typealias Response<T, Offset> = (content: [T]?, nextOffset: Offset?, error: Error?, position: Int)
+    typealias Response<T, Offset> = (result: Result<([T], Offset?)>, position: Int)
     
     /// active operations
     var operations: [TTCancellable?] = []
     var responses: [Response<Any, Any>] = []
     
-    var completion: TTCallbackNextOffset<Any, Any>!
+    var completion: TTCallback<([Any], Any?)>!
     
     deinit {
         cancel()
@@ -192,23 +175,28 @@ fileprivate class RunningOperation: TTCancellable {
         var allContent: [Any] = []
         let sorted = responses.sorted(by: { $0.position < $1.position })
         for item in sorted {
-            allContent.append(contentsOf: item.content ?? [])
+            let content = item.result.value?.0
+            allContent.append(contentsOf: content ?? [])
         }
-        let error = responses.filter{ $0.error != nil }.first?.error
-        let nextOffset = responses.filter{ $0.nextOffset != nil }.first?.nextOffset
         
-        completion(allContent, nextOffset, error)
+        let nextOffset = responses.flatMap({ $0.result.value?.1 }).first
+        completion(.success( (allContent, nextOffset) ))
+        
+//        let error = responses.filter{ $0.error != nil }.first?.error
+//        let nextOffset = responses.filter{ $0.nextOffset != nil }.first?.nextOffset
+//        
+//        completion(allContent, nextOffset, error)
     }
     
     func addResponse(_ response: Response<Any, Any>) {
-        responses.append((response.content, response.nextOffset, response.error, response.position))
+        responses.append(response)
         operations[response.position] = nil
         checkIfCompleted()
     }
     
     func failNow(error: Error) {
         cancel()
-        completion(nil, nil, error)
+        completion(.failure(error))
     }
     
     public func cancel() {

@@ -19,7 +19,8 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
     }
     
     public init(_ content : NSArray) {
-        _content = content.map({ let item = $0 as! Array<T>
+        _content = content.map({
+            let item = $0 as! Array<T>
             return item.map({ $0 as T })
         })
         _unfilteredContent = _content
@@ -264,55 +265,37 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
     //
     //extension DataSource : TTDataFeedDelegate {
     
-    open func dataFeed(_ dataFeed: TTDataFeed?, failedWithError error: Error) {
-        if let delegate = delegate as? TTDataFeedDelegate {
-            delegate.dataFeed(dataFeed, failedWithError: error)
-        }
-    }
-    
-    open func dataFeed(_ dataFeed: TTDataFeed?, didReloadContent content: [Any]?) {
+    open func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState) {
         // pass delegate message
         if let delegate = delegate as? TTDataFeedDelegate {
-            delegate.dataFeed(dataFeed, didReloadContent: content)
+            delegate.dataFeed(dataFeed, didLoadResult: result, forState: forState)
         }
         
-        delegate?.dataSourceWillChangeContent(self)
-        
-        _unfilteredContent.removeAll()
-        if let content = content {
-            _unfilteredContent.append(contentsOf: content.map({$0 as! [T]}))
+        guard result.isSuccess else {
+            return
         }
         
-        filterContent()
-
-        delegate?.dataSourceDidChangeContent(self)
-    }
-    
-    open func dataFeed(_ dataFeed: TTDataFeed?, didLoadMoreContent content: [Any]?) {
-        // pass delegate message
-        if let delegate = delegate as? TTDataFeedDelegate {
-            delegate.dataFeed(dataFeed, didLoadMoreContent: content)
-        }
-        
-        delegate?.dataSourceWillChangeContent(self)
-        if let content = content {
-            _unfilteredContent.append(contentsOf: content.map({$0 as! [T]}))
-        }
-        
-        filterContent()
-        
-        delegate?.dataSourceDidChangeContent(self)
-    }
-    
-    open func dataFeed(_ dataFeed: TTDataFeed?, isReloading: Bool) {
-        if let delegate = delegate as? TTDataFeedDelegate {
-            delegate.dataFeed(dataFeed, isReloading: isReloading)
+        switch forState {
+        case .reloading:
+            _unfilteredContent.removeAll()
+            fallthrough
+        case .loadingMore:
+            delegate?.dataSourceWillChangeContent(self)
+            if let content = result.value {
+                _unfilteredContent.append(contentsOf: content.map({$0 as! [T]}))
+            }
+            
+            filterContent()
+            
+            delegate?.dataSourceDidChangeContent(self)
+        case .idle:
+            assert(false, "what should we do in this case?")
         }
     }
     
-    open func dataFeed(_ dataFeed: TTDataFeed?, isLoadingMore: Bool) {
+    open func dataFeed(_ dataFeed: TTDataFeed?, fromState: FeedState, toState: FeedState) {
         if let delegate = delegate as? TTDataFeedDelegate {
-            delegate.dataFeed(dataFeed, isLoadingMore: isLoadingMore)
+            delegate.dataFeed(dataFeed, fromState: fromState, toState: toState)
         }
     }
 }
@@ -331,51 +314,40 @@ open class GroupedByDataSource<T, U: Hashable> : SectionedDataSource<T> {
         self.groupBy = groupBy
     }
     
-    override open func dataFeed(_ dataFeed: TTDataFeed?, didReloadContent content: [Any]?) {
+    override open func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState) {
         // pass delegate message
         if let delegate = delegate as? TTDataFeedDelegate {
-            delegate.dataFeed(dataFeed, didReloadContent: content)
+            delegate.dataFeed(dataFeed, didLoadResult: result, forState: forState)
         }
         
+        guard result.isSuccess else {
+            return
+        }
         
-        delegate?.dataSourceWillChangeContent(self)
-        
-        _unfilteredContent.removeAll()
-        _ungroupedContent.removeAll()
-        if let content = content {
-            if let groupBy = groupBy {
-                _ungroupedContent.append(contentsOf: content.map({$0 as! T}))
-                _unfilteredContent = _ungroupedContent.groupBy(groupBy)
-            } else {
-                _unfilteredContent.append(contentsOf: content.map({$0 as! [T]}))
+        switch forState {
+        case .reloading:
+            _unfilteredContent.removeAll()
+            _ungroupedContent.removeAll()
+            fallthrough
+        case .loadingMore:
+            delegate?.dataSourceWillChangeContent(self)
+            
+            if let content = result.value {
+                if let groupBy = groupBy {
+                    _ungroupedContent.append(contentsOf: content.map({$0 as! T}))
+                    _unfilteredContent = _ungroupedContent.groupBy(groupBy)
+                } else {
+                    _unfilteredContent.append(contentsOf: content.map({$0 as! [T]}))
+                }
             }
+            
+            filterContent()
+            
+            delegate?.dataSourceDidChangeContent(self)
+        case .idle:
+            break;
         }
         
-        filterContent()
-        
-        delegate?.dataSourceDidChangeContent(self)
-    }
-    
-    override open func dataFeed(_ dataFeed: TTDataFeed?, didLoadMoreContent content: [Any]?) {
-        // pass delegate message
-        if let delegate = delegate as? TTDataFeedDelegate {
-            delegate.dataFeed(dataFeed, didLoadMoreContent: content)
-        }
-        
-        delegate?.dataSourceWillChangeContent(self)
-        
-        if let content = content {
-            if let groupBy = groupBy {
-                _ungroupedContent.append(contentsOf: content.map({$0 as! T}))
-                _unfilteredContent = _ungroupedContent.groupBy(groupBy)
-            } else {
-                _unfilteredContent.append(contentsOf: content.map({$0 as! [T]}))
-            }
-        }
-        
-        filterContent()
-        
-        delegate?.dataSourceDidChangeContent(self)
     }
 }
 

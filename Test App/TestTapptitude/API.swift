@@ -36,19 +36,19 @@ class APIPaginatedMock: TTCancellable {
     }
     
     var wasCancelled = false
-    var callback: (_ content: [String]?, _ error: NSError?)->Void
+    var callback: TTCallback<[String]>
     
-    init(offset:Int, pageSize:Int, callback: @escaping (_ content: [String]?, _ error: NSError?)->Void) {
+    init(offset:Int, pageSize:Int, callback: @escaping TTCallback<[String]>) {
         self.callback = callback
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
             if !self.wasCancelled {
                 if offset > 3 {
                     print("completed")
-                    callback(nil, nil)
+                    callback(.success([]))
                 } else {
                     print("loaded")
-                    callback(["Maria", "Ion"], nil)
+                    callback(.success(["Maria", "Ion"]))
                 }
             }
         }
@@ -62,26 +62,26 @@ class APIPaginateOffsetdMock: TTCancellable {
     }
     
     var wasCancelled = false
-    var callback: (_ content: [String]?, _ nextOffset:String?, _ error: NSError?)->Void
+    var callback: TTCallback<([String], String?)>
     
-    init(offset:String?, limit:Int, callback: @escaping (_ content: [String]?, _ nextOffset:String?, _ error: NSError?)->Void) {
+    init(offset:String?, limit:Int, callback: @escaping TTCallback<([String], String?)>) {
         self.callback = callback
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             print("test")
             if !self.wasCancelled {
                 if offset == nil {
-                    callback(nil, "1", nil)
+                    callback(.success(([], "1")))
                 } else if offset == "1" {
-                    callback([""], "2", nil)
+                    callback(.success(([""], "2")))
                 } else if offset == "2" {
-                    callback([""], "3", nil)
+                    callback(.success(([""], "3")))
                 } else if offset == "3" {
-                    callback(nil, "4", nil)
+                    callback(.success(([], "4")))
                 } else if offset == "4" {
-                    callback([""], "5", nil)
+                    callback(.success(([""], "5")))
                 } else if offset == "5" {
-                    callback([""], nil, nil)
+                    callback(.success(([""], nil)))
                 }
             }
         }
@@ -93,19 +93,19 @@ class APIPaginateOffsetdSwiftMock: TTCancellable {
     }
     
     
-    static func getResults(offset:String?, callback: @escaping (_ content: [String]?, _ nextOffset:String?, _ error: NSError?)->Void) -> TTCancellable? {
+    static func getResults(offset:String?, callback: @escaping TTCallback<([String], String?)> ) -> TTCancellable? {
     
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             if offset == nil {
-                callback([Example.text0], "1", nil)
+                callback(.success(([Example.text0], "1")))
             } else if offset == "1" {
-                callback([Example.text1], "2", nil)
+                callback(.success(([Example.text1], "2")))
             } else if offset == "2" {
-                callback([Example.text2], "3", nil)
+                callback(.success(([Example.text2], "3")))
             } else if offset == "3" {
-                callback([Example.text3], "4", nil)
+                callback(.success(([Example.text3], "4")))
             } else if offset == "4" {
-                callback([Example.text4], nil, nil)
+                callback(.success(([Example.text4], nil)))
             }
         }
         

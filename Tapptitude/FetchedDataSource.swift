@@ -150,59 +150,37 @@ class FetchedDataSource<T: NSManagedObject>: NSObject, TTDataSource, NSFetchedRe
     
     
     //MARK: - TTDataFeedDelegate
-    open func dataFeed(_ dataFeed: TTDataFeed?, didReloadContent content: [Any]?) {
+    open func dataFeed(_ dataFeed: TTDataFeed?, fromState: FeedState, toState: FeedState) {
+        if let delegate = delegate as? TTDataFeedDelegate {
+            delegate.dataFeed(dataFeed, fromState: fromState, toState: toState)
+        }
+    }
+    
+    open func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState) {
         // pass delegate message
         if let delegate = delegate as? TTDataFeedDelegate {
-            delegate.dataFeed(dataFeed, didReloadContent: content)
+            delegate.dataFeed(dataFeed, didLoadResult: result, forState: forState)
         }
         
-        if trackManagedObjectChanges {
-            // delegate will be notified trough insert/delete/move changes
-        } else {
-            performFetch()
-            delegate?.dataSourceDidChangeContent(self)
+        guard result.isSuccess else {
+            return
         }
         
-        let postToOtherDataSourcesWithSameID = self.dataSourceID != nil && dataFeed != nil
-        if postToOtherDataSourcesWithSameID {
-            NotificationCenter.default.post(name: FetchedDataSourceInfo.didReloadNotification, object: nil)
-        }
-    }
-    
-    open func dataFeed(_ dataFeed: TTDataFeed?, isReloading: Bool) {
-        if let delegate = delegate as? TTDataFeedDelegate {
-            delegate.dataFeed(dataFeed, isReloading: isReloading)
-        }
-    }
-    
-    open func dataFeed(_ dataFeed: TTDataFeed?, isLoadingMore: Bool) {
-        if let delegate = delegate as? TTDataFeedDelegate {
-            delegate.dataFeed(dataFeed, isLoadingMore: isLoadingMore)
-        }
-    }
-    
-    open func dataFeed(_ dataFeed: TTDataFeed?, didLoadMoreContent content: [Any]?) {
-        // pass delegate message
-        if let delegate = delegate as? TTDataFeedDelegate {
-            delegate.dataFeed(dataFeed, didLoadMoreContent: content)
-        }
-        
-        if trackManagedObjectChanges {
-            // delegate will be notified trough insert/delete/move changes
-        } else {
-            performFetch()
-            delegate?.dataSourceDidChangeContent(self)
-        }
-        
-        let postToOtherDataSourcesWithSameID = self.dataSourceID != nil && dataFeed != nil
-        if postToOtherDataSourcesWithSameID {
-            NotificationCenter.default.post(name: FetchedDataSourceInfo.didReloadNotification, object: nil)
-        }
-    }
-    
-    open func dataFeed(_ dataFeed: TTDataFeed?, failedWithError error: Error) {
-        if let delegate = delegate as? TTDataFeedDelegate {
-            delegate.dataFeed(dataFeed, failedWithError: error)
+        switch forState {
+        case .reloading, .loadingMore:
+            if trackManagedObjectChanges {
+                // delegate will be notified trough insert/delete/move changes
+            } else {
+                performFetch()
+                delegate?.dataSourceDidChangeContent(self)
+            }
+            
+            let postToOtherDataSourcesWithSameID = self.dataSourceID != nil && dataFeed != nil
+            if postToOtherDataSourcesWithSameID {
+                NotificationCenter.default.post(name: FetchedDataSourceInfo.didReloadNotification, object: nil)
+            }
+        case .idle:
+            assert(false, "what should we do in this case?")
         }
     }
     

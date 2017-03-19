@@ -13,33 +13,47 @@ public protocol TTCancellable: class {
     func cancel()
 }
 
-/// used by data feed
-public typealias TTCallback<T> = (_ content: [T]?, _ error: Error?) -> ()
+/// DataFeed expected closure callback
+public typealias TTCallback<T> = (_ result: Result<T>) -> ()
 
+public typealias TTLoadOperation<T> = (_ callback: @escaping TTCallback<[T]>) -> TTCancellable?
 /// used by paginated data feed
 /// - parameter nextOffset : is given by backend
-public typealias TTCallbackNextOffset<T, OffsetType> = (_ content: [T]?, _ nextOffset: OffsetType?, _ error: Error?) -> ()
+public typealias TTLoadPageOperation<T, OffsetType> = (_ offset: OffsetType?, _ callback: @escaping TTCallback<([T], OffsetType?)>) -> TTCancellable?
 
 
-
-open class DataFeed<T>: TTDataFeed {
+open class DataFeed<T, OffsetType>: TTDataFeed {
+    
     open weak var delegate: TTDataFeedDelegate?
     
-    open func reloadOperation(_ callback: @escaping TTCallback<T>) -> TTCancellable? {
-        return nil
-    }
-    
-    open func loadMoreOperation(_ callback: @escaping TTCallback<T>) -> TTCancellable? {
-        return nil
-    }
-    
-    fileprivate var executingReloadOperation: RunningOperation?
-    fileprivate var executingLoadMoreOperation: RunningOperation?
+    fileprivate var executingOperation: RunningOperation?
     
     deinit {
-        executingReloadOperation?.cancel()
-        executingLoadMoreOperation?.cancel()
+        executingOperation?.cancel()
     }
+    
+    open var state: FeedState = .idle {
+        didSet {
+            delegate?.dataFeed(self, fromState: oldValue, toState: state)
+        }
+    }
+    
+    public init(loadPage: @escaping TTLoadPageOperation<T, OffsetType>) {
+        self.loadPageOperation = loadPage
+    }
+    
+    public convenience init (load: @escaping (_ callback: @escaping TTCallback<[T]>) -> TTCancellable?) {
+        self.init(loadPage: {(offset, callback) in
+            return load({ result in
+                let offsetResult: Result<([T], OffsetType?)> = result.map { ($0, nil) }
+                callback(offsetResult)
+            })
+        })
+    }
+    
+    /// nextOffset == nil --> reload operation, else load more operation
+    open var nextOffset: OffsetType? // dependends on backend API
+    open var loadPageOperation: TTLoadPageOperation<T, OffsetType>! // next
     
     //Mark: re-update content
     open var enableReloadAfterXSeconds = 5 * 60.0
@@ -58,104 +72,97 @@ open class DataFeed<T>: TTDataFeed {
     open func reload() {
         if canReload {
             print("Reloading content...")
-            isReloading = true
             cancelLoadMore()
-            
-            let runningOperation = RunningOperation()
-            executingReloadOperation?.cancel()
-            executingReloadOperation = runningOperation
-            
-            let operation = reloadOperation({ [weak self] (content, error) in
-                let sameOperation = runningOperation === self?.executingReloadOperation
-                if !sameOperation {
-                    return
-                }
-                
-                self?.executingReloadOperation = nil
-                
-                if let error = error {
-                    self?.delegate?.dataFeed(self, failedWithError: error)
-                } else {
-                    self?.lastReloadDate = Date()
-                    let castedContent = content?.map { $0 as Any }
-                    self?.delegate?.dataFeed(self, didReloadContent: castedContent )
-                }
-                
-                self?.isReloading = false
-            })
-            
-            runningOperation.operation = operation
+            state = .reloading
+            hasMorePages = false
+            executeOperation()
         }
     }
     open func cancelReload() {
         if isReloading {
-            executingReloadOperation?.cancel()
-            executingReloadOperation = nil
+            executingOperation?.cancel()
+            executingOperation = nil
             
-            isReloading = false
+            self.state = .idle
         }
     }
     var didReloadContent: Bool {
         return (lastReloadDate != nil)
     }
-    
+    open var hasMorePages: Bool = false
     
     //MARK: Load More -
     open var canLoadMore: Bool {
-        return !isReloading && !isLoadingMore && didReloadContent
+        return !isReloading && !isLoadingMore && didReloadContent && hasMorePages
     }
     open func loadMore() {
         if canLoadMore {
             print("Loading more content...")
-            isLoadingMore = true
-            
-            let runningOperation = RunningOperation()
-            executingLoadMoreOperation?.cancel()
-            executingLoadMoreOperation = runningOperation
-            
-            let operation = loadMoreOperation({[weak self] (content, error) in
-                let sameOperation = runningOperation === self?.executingLoadMoreOperation
-                if !sameOperation {
-                    return
-                }
-                
-                self?.executingLoadMoreOperation = nil
-                
-                if let error = error {
-                    self?.delegate?.dataFeed(self, failedWithError: error)
-                } else {
-                    let castedContent = content?.map { $0 as Any }
-                    self?.delegate?.dataFeed(self, didLoadMoreContent: castedContent)
-                }
-                
-                self?.isLoadingMore = false
-            })
-            
-            executingLoadMoreOperation?.operation = operation
-        }
-    }
-    open func cancelLoadMore() {
-        if isLoadingMore {
-            executingLoadMoreOperation?.cancel()
-            executingLoadMoreOperation = nil
-            
-            isLoadingMore = false
+            state = .loadingMore
+            executeOperation()
         }
     }
     
-    open var isReloading: Bool = false {
-        didSet {
-            delegate?.dataFeed(self, isReloading: isReloading)
+    open func cancelLoadMore() {
+        if isLoadingMore {
+            executingOperation?.cancel()
+            executingOperation = nil
+            
+            self.state = .idle
         }
     }
-    open var isLoadingMore: Bool = false {
-        didSet {
-            delegate?.dataFeed(self, isLoadingMore: isLoadingMore)
-        }
+    
+    func executeOperation() {
+        let runningOperation = RunningOperation()
+        executingOperation?.cancel()
+        executingOperation = runningOperation
+        
+        let offset = isReloading ? nil : nextOffset
+        let operation = loadPageOperation(offset, {[weak self] result in
+            let sameOperation = runningOperation === self?.executingOperation
+            if !sameOperation {
+                return
+            }
+            
+            self?.executingOperation = nil
+            
+            switch result {
+            case .success(_):
+                self?.nextOffset = result.value?.1
+                self?.hasMorePages = (self?.nextOffset != nil)
+                
+                if self?.state == .reloading {
+                    self?.lastReloadDate = Date()
+                }
+            case .failure(_):
+                break
+            }
+            
+            let newResult = result.map{ $0.0.map{$0 as Any} }
+            self?.delegate?.dataFeed(self, didLoadResult: newResult, forState: self!.state)
+            self?.state = .idle
+        })
+        
+        runningOperation.operation = operation
     }
     
     /// store/access any information here by using a unique key
     open var info: [String: Any] = [:]
+}
+
+extension DataFeed {
+    
+}
+
+
+public class SimpleFeed<T>: DataFeed<T, Void> {
+    public init (load: @escaping (_ callback: @escaping TTCallback<[T]>) -> TTCancellable?) {
+        super.init(loadPage: {(offset, callback) in
+            return load({ result in
+                callback(result.map { ($0, nil) })
+            })
+        })
+    }
 }
 
 
@@ -165,4 +172,70 @@ fileprivate class RunningOperation: TTCancellable {
     func cancel() {
         operation?.cancel()
     }
+}
+
+
+public extension DataFeed where OffsetType: Integer {
+
+    convenience public init(pageSize: OffsetType,
+                            enableLoadMoreOnlyForCompletePage: Bool = true,
+                            loadPage: @escaping (_ offset:OffsetType, _ pageSize:Int, _ callback: @escaping TTCallback<[T]>) -> TTCancellable?) {
+        self.init { (offset, callback) -> TTCancellable? in
+            let pageSize = pageSize as! Int
+            return loadPage(offset ?? 0, pageSize, { result in
+                let contentCount = result.value?.count ?? 0
+                let loadMore = enableLoadMoreOnlyForCompletePage ? (contentCount == pageSize) : (contentCount > 0)
+                let nextOffset: OffsetType? = loadMore ? ((offset ?? 0) + (pageSize as! OffsetType)) : nil
+
+                let newResult = result.map{ ($0, nextOffset) }
+                callback(newResult)
+            })
+        }
+    }
+}
+
+extension DataSource {
+    public convenience init<T: TTDataFeed>(feed: T) {
+        self.init()
+        self.feed = feed
+        self.feed?.delegate = self
+    }
+    
+    public convenience init <T>(load: @escaping (_ callback: @escaping TTCallback<[T]>) -> TTCancellable?) {
+        self.init()
+        feed = SimpleFeed(load: load)
+        feed?.delegate = self
+    }
+    
+    public convenience init<T, OffsetType>(loadPage: @escaping (_ offset: OffsetType?, _ callback: @escaping TTCallback<([T], OffsetType?)>) -> TTCancellable?) {
+        self.init()
+        self.feed = DataFeed(loadPage: loadPage)
+        self.feed?.delegate = self // need to set otherwise is null in init
+    }
+
+    public convenience init<T>(pageSize:Int, loadPage: @escaping (_ offset:Int, _ pageSize:Int, _ callback: @escaping TTCallback<[T]>) -> TTCancellable?) {
+        self.init()
+        self.feed = DataFeed(pageSize: pageSize, loadPage: loadPage)
+        self.feed?.delegate = self // need to set otherwise is null in init
+    }
+}
+
+
+extension DataSource {
+//    public var loadOperation: ((_ callback: @escaping TTCallback<T>) -> TTCancellable?)? {
+//        get {
+//            if let feed = self.feed as? SimpleDataFeed<T> {
+//                return feed.loadOperation
+//            }
+//            return nil
+//        }
+//        set {
+//            if let function = newValue {
+//                self.feed = SimpleDataFeed(load: function)
+//                feed?.delegate = self
+//            } else {
+//                self.feed = nil
+//            }
+//        }
+//    }
 }

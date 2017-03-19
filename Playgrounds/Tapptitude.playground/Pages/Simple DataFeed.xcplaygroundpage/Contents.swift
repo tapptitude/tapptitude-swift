@@ -10,14 +10,20 @@ extension URLSessionTask: TTCancellable {
 let url = URL(string: "https://httpbin.org/get")
 var url_request = URLRequest(url: url!)
 
-let feed = SimpleDataFeed<String> { (callback) -> TTCancellable? in
+let feed = SimpleFeed<String> { (callback) -> TTCancellable? in
     let task = URLSession.shared.dataTask(with: url_request) { data , response , error  in
         let stringResponse = data != nil ? String(data: data!, encoding: String.Encoding.utf8) : nil
         let items: [String]? = stringResponse != nil ? [stringResponse!] : nil
-        print(error)
+        print(error as Any)
         
         DispatchQueue.main.async {
-            callback(items, error as? NSError)
+            if let items = items {
+                let result = Result.success(items)
+                callback(result)
+            } else {
+                let result = Result<[String]>.failure(error!)
+                callback(result)
+            }
         }
     }
     task.resume()

@@ -11,19 +11,19 @@ class APIPaginatedMock: TTCancellable {
     }
 
     var wasCancelled = false
-    var callback: ((_ content: [String]?, _ error: Error?) -> ())!
+    var callback: ((_ result: Result<[String]>) -> ())!
     
-    init(offset:Int, pageSize:Int, callback: @escaping ((_ content: [String]?, _ error: Error?)->())) {
+    init(offset:Int, pageSize:Int, callback: @escaping ((_ result: Result<[String]>)->())) {
         self.callback = callback
     
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
             if !self.wasCancelled {
                 if offset > 3 {
                     print("completed")
-                    callback(nil, nil)
+                    callback(.success([]))
                 } else {
                     print("loaded")
-                    callback(["Maria", "Ion"], nil)
+                    callback(.success(["Maria", "Ion"]))
                 }
             }
         }
@@ -37,27 +37,26 @@ class APIPaginateOffsetdMock: TTCancellable {
     }
     
     var wasCancelled = false
-    var callback: (_ content: [String]?, _ nextOffset:String?, _ error: Error?)->()
+    var callback: (_ result: Result<([String], String?)>) -> ()
     
-    init(offset:String?, callback: @escaping (_ content: [String]?, _ nextOffset:String?, _ error: Error?)->()) {
+    init(offset:String?, callback: @escaping TTCallback<([String], String?)>) {
         self.callback = callback
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
             print("test")
             if !self.wasCancelled {
-                if offset == nil {
-                    callback(nil, "1", nil)
-                } else if offset == "1" {
-                    callback(["Ion"], "2", nil)
-                } else if offset == "2" {
-                    callback([""], "3", nil)
-                } else if offset == "3" {
-                    callback(nil, "4", nil)
-                } else if offset == "4" {
-                    callback(["Maria"], "5", nil)
-                } else if offset == "5" {
-                    callback([""], nil, nil)
+                var touple: ([String], String?) = ([""], "1")
+                
+                switch offset {
+                    case nil:        touple = ([], "1")
+                    case .some("1"): touple = (["Ion"], "2")
+                    case .some("2"): touple = ([""], "3")
+                    case .some("3"): touple = ([], "4")
+                    case .some("4"): touple = (["Maria"], "5")
+                    case .some("5"): touple = ([""], nil)
+                    default: break
                 }
+                callback(.success(touple))
             }
         })
     }
@@ -65,12 +64,12 @@ class APIPaginateOffsetdMock: TTCancellable {
 
 class API {
     class func getPaginatedMock(offset:Int, pageSize:Int, callback:
-        @escaping (_ content: [String]?, _ error: Error?)->()) -> TTCancellable? {
+        @escaping TTCallback<[String]> ) -> TTCancellable? {
         return APIPaginatedMock(offset: offset, pageSize: pageSize, callback: callback)
     }
     
     class func getPaginatedOffsetMock(offset:String?, callback: @escaping
-        (_ content: [String]?, _ nextOffset: String?, _ error: Error?)->()) -> TTCancellable? {
+        TTCallback<([String], String?)>) -> TTCancellable? {
         return APIPaginateOffsetdMock(offset: offset, callback: callback)
     }
 }
@@ -79,8 +78,8 @@ class API {
 let items = NSArray(arrayLiteral: "Why Algorithms as Microservices are Changing Software Development\n We recently wrote about how the Algorithm Economy and containers have created a fundamental shift in software development. Today, we want to look at the 10 ways algorithms as microservices change the way we build and deploy software.")
 var dataSource = DataSource<String>(items)
 
-let feed = PaginatedDataFeed<String, Int>(pageSize: 2, loadPage: API.getPaginatedMock)
-//let feed = PaginatedDataFeed<String, String>(loadPage: API.getPaginatedOffsetMock)
+let feed = DataFeed<String, Int>(pageSize: 2, loadPage: API.getPaginatedMock)
+//let feed = DataFeed<String, String>(loadPage: API.getPaginatedOffsetMock)
 
 dataSource.feed = feed
 

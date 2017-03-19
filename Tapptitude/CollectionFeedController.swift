@@ -412,26 +412,24 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
 //
 ////MARK: Data Feed -
 //extension CollectionFeedController : TTDataFeedDelegate {
-    open func dataFeed(_ dataFeed: TTDataFeed?, failedWithError error: Error) {
-        refreshControl?.endRefreshing()
+    
+    open func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState) {
+        switch forState {
+        case .idle: break
+        case .reloading:
+            refreshControl?.endRefreshing()
+        case .loadingMore:
+            break
+        }
     }
     
-    open func dataFeed(_ dataFeed: TTDataFeed?, didReloadContent content: [Any]?) {
-        refreshControl?.endRefreshing()
-    }
-    
-    open func dataFeed(_ dataFeed: TTDataFeed?, didLoadMoreContent content: [Any]?) {
+    open func dataFeed(_ dataFeed: TTDataFeed?, fromState: FeedState, toState: FeedState) {
+        switch (fromState, toState) {
+        case (_, .reloading), (.reloading, _):
+            updateReloadingIndicatorView()
+        default: break
+        }
         
-    }
-    
-    open func dataFeed(_ dataFeed: TTDataFeed?, isReloading: Bool) {
-        checkIfShouldLoadMoreContent()
-        updateReloadingIndicatorView()
-        updateCanShowLoadMoreViewAnimated(true)
-        updateEmptyViewAppearenceAnimated(true)
-    }
-    
-    open func dataFeed(_ dataFeed: TTDataFeed?, isLoadingMore: Bool) {
         checkIfShouldLoadMoreContent()
         updateCanShowLoadMoreViewAnimated(true)
         updateEmptyViewAppearenceAnimated(true)
