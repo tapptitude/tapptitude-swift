@@ -47,6 +47,11 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
         }
     }
     
+//    open var transformOperation: (() -> ())?
+//    open func transform<NewType>(_ transform: (_ result: Result<T>) -> Result<NewType>, state: FeedState) {
+//        let tran
+//    }
+    
     open var isEmpty: Bool {
         return _content.isEmpty
     }

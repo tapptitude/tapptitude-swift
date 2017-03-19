@@ -16,8 +16,12 @@ let feedController = CollectionFeedController()
 feedController.dataSource = dataSource
 feedController.cellController = TextCellController()
 
-dataSource.dataFeed(nil, didLoadMoreContent: ["Ion"])
-dataSource.filter(nil)
+dataSource.dataFeed(nil, didLoadResult: .success(["Ion"]), forState: .loadingMore)
+
+
+DispatchQueue.main.asyncAfter(deadline: .now() + 3) { 
+    dataSource.filter(nil)
+}
 
 import PlaygroundSupport
 PlaygroundPage.current.liveView = feedController.view

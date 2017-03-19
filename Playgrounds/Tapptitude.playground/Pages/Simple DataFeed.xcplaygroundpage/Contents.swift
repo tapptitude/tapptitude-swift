@@ -18,11 +18,9 @@ let feed = SimpleFeed<String> { (callback) -> TTCancellable? in
         
         DispatchQueue.main.async {
             if let items = items {
-                let result = Result.success(items)
-                callback(result)
+                callback(.success(items))
             } else {
-                let result = Result<[String]>.failure(error!)
-                callback(result)
+                callback(.failure(error!))
             }
         }
     }

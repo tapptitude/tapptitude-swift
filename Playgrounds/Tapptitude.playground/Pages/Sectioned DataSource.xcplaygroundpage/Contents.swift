@@ -16,7 +16,7 @@ feedController.dataSource = dataSource
 feedController.cellController = TextCellController()
 feedController.animatedUpdates = true
 
-dataSource.dataFeed(nil, didLoadMoreContent: [["Nenea"]])
+dataSource.dataFeed(nil, didLoadResult: .success([["Nenea"]]), forState: .loadingMore)
 dataSource[0, 0] = "Ion"
 let indexPath = IndexPath(item: 0, section: 0)
 dataSource[indexPath] = "New Ion"
