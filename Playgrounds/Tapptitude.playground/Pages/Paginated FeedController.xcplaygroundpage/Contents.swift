@@ -3,6 +3,13 @@
 import UIKit
 import Tapptitude
 
+@objc public protocol PageControl: class {
+    var numberOfPages: Int { get set }
+    var currentPage: Int { get set }
+}
+extension UIPageControl: PageControl {
+}
+
 class PaginatedCollectionController: CollectionFeedController {
     let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -50,7 +57,7 @@ class PaginatedCollectionController: CollectionFeedController {
     override var dataSource: TTDataSource? {
         didSet {
             pageControl?.numberOfPages = content.count
-            pageControl?.isHidden = content.count < 2
+            (pageControl as? UIView)?.isHidden = content.count < 2
         }
     }
     private var toDisplayPage: Int = -1 //ingore
