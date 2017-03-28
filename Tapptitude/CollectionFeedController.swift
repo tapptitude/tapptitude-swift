@@ -552,7 +552,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
         assert(cellController.acceptsContent(content), "Can't produce cell for content \(content)")
-        assert(cell.reuseIdentifier == reuseIdentifier , "Cell returned from cell controller \(cellController) had reuseIdenfier \(cell.reuseIdentifier), which must be equal to the cell controller's reuseIdentifierForContent, which returned \(reuseIdentifier)")
+        assert(cell.reuseIdentifier == reuseIdentifier , "Cell returned from cell controller \(cellController) had reuseIdenfier \(cell.reuseIdentifier!), which must be equal to the cell controller's reuseIdentifierForContent, which returned \(reuseIdentifier)")
         
         // pass parentViewController
         cell.parentViewController = cellController.parentViewController;
