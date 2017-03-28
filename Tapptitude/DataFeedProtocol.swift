@@ -12,6 +12,21 @@ public enum FeedState {
     case idle
     case reloading
     case loadingMore
+    
+    public enum Load {
+        case reloading
+        case loadingMore
+    }
+}
+
+extension FeedState {
+    var loadState: Load? {
+        switch self {
+        case .idle: return nil
+        case .reloading: return Load.reloading
+        case .loadingMore: return Load.loadingMore
+        }
+    }
 }
 
 public protocol TTDataFeed: class {
@@ -47,7 +62,7 @@ extension TTDataFeed {
 
 public protocol TTDataFeedDelegate: class {    
     func dataFeed(_ dataFeed: TTDataFeed?, fromState: FeedState, toState: FeedState)
-    func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState)
+    func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState.Load)
 }
 
 //class TTAnyDataFeedDelegate<Element>: TTDataFeedDelegateAny {
@@ -122,7 +137,7 @@ class ProxyDataFeed<T>: TTDataFeed {
         feed.delegate = self
     }
     
-    var transform: ((_ state: FeedState, Result<[Any]>) -> (Result<[T]>))!
+    var transform: ((_ state: FeedState.Load, Result<[Any]>) -> (Result<[T]>))!
     
     weak var delegate: TTDataFeedDelegate?
     
@@ -166,7 +181,7 @@ extension ProxyDataFeed: TTDataFeedDelegate {
         delegate?.dataFeed(dataFeed, fromState: fromState, toState: toState)
     }
 
-    func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState) {
+    func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState.Load) {
         let mappedResult = transform(forState, result)
         let anyResult = mappedResult.map(as: Any.self)
         delegate?.dataFeed(dataFeed, didLoadResult: anyResult, forState: forState)
@@ -174,7 +189,7 @@ extension ProxyDataFeed: TTDataFeedDelegate {
 }
 
 extension DataFeed {
-    func transform<NewType>() -> ProxyDataFeed<NewType> {
+    func transformProxy<NewType>() -> ProxyDataFeed<NewType> {
         return ProxyDataFeed(feed: self)
     }
 }

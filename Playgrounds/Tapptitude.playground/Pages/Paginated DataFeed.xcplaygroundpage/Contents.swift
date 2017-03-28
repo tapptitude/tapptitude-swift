@@ -80,6 +80,7 @@ var dataSource = DataSource<String>(items)
 
 let feed = DataFeed<String, Int>(pageSize: 2, loadPage: API.getPaginatedMock)
 //let feed = DataFeed<String, String>(loadPage: API.getPaginatedOffsetMock)
+//dataSource.setLoadPageOperation(API.getPaginatedOffsetMock)
 
 dataSource.feed = feed
 

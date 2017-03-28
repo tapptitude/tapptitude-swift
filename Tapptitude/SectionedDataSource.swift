@@ -265,7 +265,7 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
     //
     //extension DataSource : TTDataFeedDelegate {
     
-    open func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState) {
+    open func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState.Load) {
         // pass delegate message
         if let delegate = delegate as? TTDataFeedDelegate {
             delegate.dataFeed(dataFeed, didLoadResult: result, forState: forState)
@@ -288,8 +288,6 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
             filterContent()
             
             delegate?.dataSourceDidChangeContent(self)
-        case .idle:
-            assert(false, "what should we do in this case?")
         }
     }
     
@@ -314,7 +312,7 @@ open class GroupedByDataSource<T, U: Hashable> : SectionedDataSource<T> {
         self.groupBy = groupBy
     }
     
-    override open func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState) {
+    override open func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState.Load) {
         // pass delegate message
         if let delegate = delegate as? TTDataFeedDelegate {
             delegate.dataFeed(dataFeed, didLoadResult: result, forState: forState)
@@ -344,8 +342,6 @@ open class GroupedByDataSource<T, U: Hashable> : SectionedDataSource<T> {
             filterContent()
             
             delegate?.dataSourceDidChangeContent(self)
-        case .idle:
-            break;
         }
         
     }

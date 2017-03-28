@@ -128,7 +128,7 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
 //}
 //
 //extension DataSource : TTDataFeedDelegate {
-    open func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState) {
+    open func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState.Load) {
         // pass delegate message
         if let delegate = delegate as? TTDataFeedDelegate {
             delegate.dataFeed(dataFeed, didLoadResult: result, forState: forState)
@@ -155,8 +155,6 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
             if let content = result.value {
                 append(contentsOf: content)
             }
-        case .idle:
-            assert(false, "what should we do in this case?")
         }
     }
     

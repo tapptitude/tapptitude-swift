@@ -22,7 +22,17 @@ class ParallelFeedController: CollectionFeedController {
         feed.reloadOperation.append(operation: API.getHackerNews(page:callback:))
         
         feed.loadMoreOperation.append(operation: API.getHackerNews(page:callback:))
-        dataSource.feed = feed
+        dataSource.setFeed(feed) { (content, offset, state) -> [Any] in
+            switch state {
+            case .reloading:
+                return content.map({ "From Reload...\n\n" + ($0 as! String) })
+            case .loadingMore:
+                let offset = offset as? Int
+                return content.map({ "From LoadMore (page \(offset ?? 10000)) ...\n\n" + ($0 as! String) })
+            }
+        }
+        
+        
         
         self.dataSource = dataSource
         

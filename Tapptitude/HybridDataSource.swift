@@ -41,7 +41,7 @@ open class HybridDataSource : SectionedDataSource<Any> {
         super.init(items)
     }
     
-    open override func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState) {
+    open override func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState.Load) {
         var result = result
         if let content = result.value {
             result = .success(transformContent(content))

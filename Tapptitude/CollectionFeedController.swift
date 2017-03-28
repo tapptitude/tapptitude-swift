@@ -413,9 +413,8 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
 ////MARK: Data Feed -
 //extension CollectionFeedController : TTDataFeedDelegate {
     
-    open func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState) {
+    open func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState.Load) {
         switch forState {
-        case .idle: break
         case .reloading:
             refreshControl?.endRefreshing()
         case .loadingMore:

@@ -156,7 +156,7 @@ class FetchedDataSource<T: NSManagedObject>: NSObject, TTDataSource, NSFetchedRe
         }
     }
     
-    open func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState) {
+    open func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState.Load) {
         // pass delegate message
         if let delegate = delegate as? TTDataFeedDelegate {
             delegate.dataFeed(dataFeed, didLoadResult: result, forState: forState)
@@ -179,8 +179,6 @@ class FetchedDataSource<T: NSManagedObject>: NSObject, TTDataSource, NSFetchedRe
             if postToOtherDataSourcesWithSameID {
                 NotificationCenter.default.post(name: FetchedDataSourceInfo.didReloadNotification, object: nil)
             }
-        case .idle:
-            assert(false, "what should we do in this case?")
         }
     }
     

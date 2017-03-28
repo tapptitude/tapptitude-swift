@@ -126,6 +126,9 @@ open class DataFeed<T, OffsetType>: TTDataFeed {
             
             self?.executingOperation = nil
             
+            let state = self!.state.loadState!
+            let result = self?.transform?(result, state) ?? result.map{ ($0.0.map{$0 as Any}, $0.1) }
+            
             switch result {
             case .success(_):
                 self?.nextOffset = result.value?.1
@@ -138,8 +141,8 @@ open class DataFeed<T, OffsetType>: TTDataFeed {
                 break
             }
             
-            let newResult = result.map{ $0.0.map{$0 as Any} }
-            self?.delegate?.dataFeed(self, didLoadResult: newResult, forState: self!.state)
+            let newResult = result.map{ $0.0 }
+            self?.delegate?.dataFeed(self, didLoadResult: newResult, forState: state)
             self?.state = .idle
         })
         
@@ -148,10 +151,16 @@ open class DataFeed<T, OffsetType>: TTDataFeed {
     
     /// store/access any information here by using a unique key
     open var info: [String: Any] = [:]
-}
-
-extension DataFeed {
     
+    open var transform: ((_ result: Result<([T], OffsetType?)>, _ state: FeedState.Load) -> Result<([Any], OffsetType?)>)?
+    
+    open func setTransform<V>(_ transform: @escaping (_ content: [T], _ offset: OffsetType?, _ state: FeedState.Load) -> [V]) {
+        self.transform = { result, state in
+            let ourResult: Result<[V]> = result.map{ transform($0, $1, state) }
+            let anyResult = ourResult.map(as: Any.self)
+            return result.map{( anyResult.value!, $1 )}
+        }
+    }
 }
 
 
@@ -195,7 +204,7 @@ public extension DataFeed where OffsetType: Integer {
 }
 
 extension DataSource {
-    public convenience init<T: TTDataFeed>(feed: T) {
+    public convenience init(feed: TTDataFeed) {
         self.init()
         self.feed = feed
         self.feed?.delegate = self
@@ -222,20 +231,26 @@ extension DataSource {
 
 
 extension DataSource {
-//    public var loadOperation: ((_ callback: @escaping TTCallback<T>) -> TTCancellable?)? {
-//        get {
-//            if let feed = self.feed as? SimpleDataFeed<T> {
-//                return feed.loadOperation
-//            }
-//            return nil
-//        }
-//        set {
-//            if let function = newValue {
-//                self.feed = SimpleDataFeed(load: function)
-//                feed?.delegate = self
-//            } else {
-//                self.feed = nil
-//            }
-//        }
-//    }
+    public var loadOperation: TTLoadOperation<T> {
+        get { fatalError() }
+        set { self.feed = DataFeed<T, Void>(load: newValue) }
+    }
+    
+    public var loadPageOperation: TTLoadPageOperation<T,String> {
+        get { fatalError() }
+        set { self.feed = DataFeed<T, String>(loadPage: newValue) }
+    }
+    
+    public func setLoadPage<Offset>(operation: @escaping TTLoadPageOperation<T,Offset>) {
+        self.feed = DataFeed<T, Offset>(loadPage: operation)
+    }
+    
+    public func setLoadPage<V, Offset>(operation: @escaping TTLoadPageOperation<V,Offset>) {
+        self.feed = DataFeed<V, Offset>(loadPage: operation)
+    }
+    
+    public func setFeed<V, Offset>(_ feed: DataFeed<V, Offset>, transform: @escaping (_ content: [V], _ offset: Offset?, _ state: FeedState.Load) -> [T]) {
+        feed.setTransform(transform)
+        self.feed = feed
+    }
 }

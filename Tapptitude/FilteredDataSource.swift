@@ -48,7 +48,7 @@ open class FilteredDataSource<T> : DataSource<T> {
 //}
 //
 //extension FilteredDataSource {
-    override open func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState) {
+    override open func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState.Load) {
         var result = result
         if let filterBy = filterBy {
             let resultType = result.map(as: T.self)
@@ -58,8 +58,6 @@ open class FilteredDataSource<T> : DataSource<T> {
                 originalContent = resultType.value ?? []
             case .loadingMore:
                 originalContent?.append(contentsOf: resultType.value ?? [])
-            default:
-                break;
             }
             
             result = resultType.map{ $0.filter(filterBy) }.map(as: Any.self)
