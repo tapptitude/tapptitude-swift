@@ -78,6 +78,7 @@ extension ChatInputContainerView: UITextViewDelegate {
 
 class ChatFeedViewController : CollectionFeedController {
     @IBOutlet var inputContainerView: ChatInputContainerView!
+    var _dataSource: DataSource<String>!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,10 +92,29 @@ class ChatFeedViewController : CollectionFeedController {
         let dataSource = DataSource<String>(loadPage: API.getHackerNews(page:callback:))
         
         self.dataSource = dataSource
+        self._dataSource = dataSource
         self.cellController = MultiCollectionCellController(TextItemCellController())
+        
+        self.edgesForExtendedLayout = []
+        
+        animatedUpdates = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { 
+            dataSource.insert("dasd", at: IndexPath(item: 0, section: 0))
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+            dataSource.remove(at: IndexPath(item: 1, section: 0))
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            dataSource[IndexPath(item: 1, section: 0)] = "maria \n\n"
+        }
     }
     
     @IBAction func sendAction(_ sender: AnyObject) {
+        let indexPath = IndexPath(item: 0, section: 0)
+        _dataSource.insert(self.inputContainerView.text, at: indexPath)
+        self.collectionView.scrollToItem(at: indexPath, at: .top, animated: true)
         self.inputContainerView.text = ""
     }
     

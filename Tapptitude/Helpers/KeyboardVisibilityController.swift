@@ -146,23 +146,24 @@ public class KeyboardVisibilityController: NSObject {
             let scrollWindowframe = scrollView.superview!.convert(scrollView.frame, to: window)
             let intersectKeyboardHeight = scrollWindowframe.intersection(keyboardEndFrame!).height
             let bottomInsetMoveUpValue = intersectKeyboardHeight - scrollViewPreviousBottomInset
-            let insetBottom = scrollView.contentInset.bottom + bottomInsetMoveUpValue
+            let insetBottom = scrollView.__contentInset.bottom + bottomInsetMoveUpValue
             scrollViewPreviousBottomInset = intersectKeyboardHeight
             
             
-            scrollView.contentInset.bottom = insetBottom
-            scrollView.scrollIndicatorInsets.bottom = insetBottom
+            scrollView.__contentInset.bottom = insetBottom
+            scrollView.__scrollIndicatorInsets.bottom = insetBottom
             
             let isInputAccessoryView = toBeVisibleView?.window == nil || toBeVisibleView?.window != scrollView.window
+            let reverse: CGFloat = scrollView.__isReversed ? -1.0 : 1.0
             
             // move up content offset - so they can be in sync
             if moveUpValue > 0 {
-                scrollView.contentOffset.y += moveUpValue
+                scrollView.contentOffset.y += (reverse * moveUpValue)
             } else if bottomInsetMoveUpValue > 0, isInputAccessoryView {
                 let availableYSpace = (scrollView.contentSize.height + scrollViewPreviousBottomInset) - scrollView.bounds.height
                 moveUpValue = min(bottomInsetMoveUpValue, max(0, availableYSpace))
                 moveUpValue += extraSpaceAboveKeyboard
-                scrollView.contentOffset.y += moveUpValue
+                scrollView.contentOffset.y += (reverse * moveUpValue)
             }
         } else {
             if applyTransformToVisibleView {
@@ -240,5 +241,32 @@ public extension UIView {
         }
         
         return nil
+    }
+}
+
+fileprivate extension UIScrollView {
+    var __isReversed: Bool {
+        return self.transform == CGAffineTransform(rotationAngle: .pi)
+    }
+    
+    func __contentInset(from inset: UIEdgeInsets) -> UIEdgeInsets {
+        if __isReversed {
+            var inset = inset
+            let topInset = inset.top
+            inset.top = inset.bottom
+            inset.bottom = topInset
+            return inset
+        } else {
+            return inset
+        }
+    }
+    var __contentInset: UIEdgeInsets {
+        get { return __contentInset(from: contentInset) }
+        set { contentInset = __contentInset(from: newValue) }
+    }
+    
+    var __scrollIndicatorInsets: UIEdgeInsets {
+        get { return __contentInset(from: scrollIndicatorInsets) }
+        set { scrollIndicatorInsets = __contentInset(from: newValue) }
     }
 }

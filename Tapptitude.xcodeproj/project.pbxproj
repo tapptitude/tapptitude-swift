@@ -23,9 +23,7 @@
 		235500AC1CA4569200D7B393 /* CollectionFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2355009B1CA4569200D7B393 /* CollectionFeedController.swift */; };
 		235500AD1CA4569200D7B393 /* MultiCollectionCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2355009C1CA4569200D7B393 /* MultiCollectionCellController.swift */; };
 		235500AE1CA4569200D7B393 /* CollectionCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2355009D1CA4569200D7B393 /* CollectionCellController.swift */; };
-		235500AF1CA4569200D7B393 /* PaginatedDataFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2355009E1CA4569200D7B393 /* PaginatedDataFeed.swift */; };
 		235500B01CA4569200D7B393 /* DataFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2355009F1CA4569200D7B393 /* DataFeed.swift */; };
-		235500B11CA4569200D7B393 /* SimpleDataFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235500A01CA4569200D7B393 /* SimpleDataFeed.swift */; };
 		235500B21CA4569200D7B393 /* DataFeedProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235500A11CA4569200D7B393 /* DataFeedProtocol.swift */; };
 		235500B31CA4569200D7B393 /* TTCollectionFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235500A21CA4569200D7B393 /* TTCollectionFeedController.swift */; };
 		235500B41CA4569200D7B393 /* DataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235500A31CA4569200D7B393 /* DataSourceProtocol.swift */; };
@@ -34,6 +32,7 @@
 		235500B71CA4569200D7B393 /* LoadMoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235500A61CA4569200D7B393 /* LoadMoreView.swift */; };
 		235500B81CA4569200D7B393 /* CollectionFeedController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 235500A71CA4569200D7B393 /* CollectionFeedController.xib */; };
 		235500BA1CA4569200D7B393 /* tapptitude-swift.h in Headers */ = {isa = PBXBuildFile; fileRef = 235500A91CA4569200D7B393 /* tapptitude-swift.h */; };
+		23567B631E8E5890002AF74D /* ReversedFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23567B621E8E5890002AF74D /* ReversedFlowLayout.swift */; };
 		23604B691DD216680085FD15 /* FetchedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23604B681DD216680085FD15 /* FetchedDataSource.swift */; };
 		2364D09F1E2CEF7F009DCA7E /* UICollectionViewCell+AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2364D09E1E2CEF7F009DCA7E /* UICollectionViewCell+AutoLayout.swift */; };
 		23670E671DF89EA10059D5AA /* ParallelOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23670E661DF89EA10059D5AA /* ParallelOperations.swift */; };
@@ -73,9 +72,7 @@
 		2355009B1CA4569200D7B393 /* CollectionFeedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionFeedController.swift; path = Tapptitude/CollectionFeedController.swift; sourceTree = SOURCE_ROOT; };
 		2355009C1CA4569200D7B393 /* MultiCollectionCellController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MultiCollectionCellController.swift; path = Tapptitude/MultiCollectionCellController.swift; sourceTree = SOURCE_ROOT; };
 		2355009D1CA4569200D7B393 /* CollectionCellController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionCellController.swift; path = Tapptitude/CollectionCellController.swift; sourceTree = SOURCE_ROOT; };
-		2355009E1CA4569200D7B393 /* PaginatedDataFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PaginatedDataFeed.swift; path = Tapptitude/PaginatedDataFeed.swift; sourceTree = SOURCE_ROOT; };
 		2355009F1CA4569200D7B393 /* DataFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataFeed.swift; path = Tapptitude/DataFeed.swift; sourceTree = SOURCE_ROOT; };
-		235500A01CA4569200D7B393 /* SimpleDataFeed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SimpleDataFeed.swift; path = Tapptitude/SimpleDataFeed.swift; sourceTree = SOURCE_ROOT; };
 		235500A11CA4569200D7B393 /* DataFeedProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataFeedProtocol.swift; path = Tapptitude/DataFeedProtocol.swift; sourceTree = SOURCE_ROOT; };
 		235500A21CA4569200D7B393 /* TTCollectionFeedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TTCollectionFeedController.swift; path = Tapptitude/TTCollectionFeedController.swift; sourceTree = SOURCE_ROOT; };
 		235500A31CA4569200D7B393 /* DataSourceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataSourceProtocol.swift; path = Tapptitude/DataSourceProtocol.swift; sourceTree = SOURCE_ROOT; };
@@ -85,6 +82,7 @@
 		235500A71CA4569200D7B393 /* CollectionFeedController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CollectionFeedController.xib; path = Tapptitude/CollectionFeedController.xib; sourceTree = SOURCE_ROOT; };
 		235500A81CA4569200D7B393 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Tapptitude/Info.plist; sourceTree = SOURCE_ROOT; };
 		235500A91CA4569200D7B393 /* tapptitude-swift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "tapptitude-swift.h"; path = "Tapptitude/tapptitude-swift.h"; sourceTree = SOURCE_ROOT; };
+		23567B621E8E5890002AF74D /* ReversedFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReversedFlowLayout.swift; sourceTree = "<group>"; };
 		23604B681DD216680085FD15 /* FetchedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FetchedDataSource.swift; path = Tapptitude/FetchedDataSource.swift; sourceTree = SOURCE_ROOT; };
 		2364D09E1E2CEF7F009DCA7E /* UICollectionViewCell+AutoLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UICollectionViewCell+AutoLayout.swift"; path = "Tapptitude/UICollectionViewCell+AutoLayout.swift"; sourceTree = SOURCE_ROOT; };
 		23670E661DF89EA10059D5AA /* ParallelOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParallelOperations.swift; path = Tapptitude/ParallelOperations.swift; sourceTree = SOURCE_ROOT; };
@@ -134,6 +132,7 @@
 				234BC72A1CDCF9A6004057D4 /* PanViewGestureRecognizer.swift */,
 				234BC72B1CDCF9A6004057D4 /* SwipeToEditOnCollection.swift */,
 				234BC72C1CDCF9A6004057D4 /* TouchRecognizer.swift */,
+				23567B621E8E5890002AF74D /* ReversedFlowLayout.swift */,
 			);
 			name = Helpers;
 			path = Tapptitude/Helpers;
@@ -176,8 +175,6 @@
 				238688281E2E618D00521904 /* CollectionCellPrefetcher.swift */,
 				2355009F1CA4569200D7B393 /* DataFeed.swift */,
 				237F27D61E6B408600F84BE2 /* Result.swift */,
-				235500A01CA4569200D7B393 /* SimpleDataFeed.swift */,
-				2355009E1CA4569200D7B393 /* PaginatedDataFeed.swift */,
 				23670E661DF89EA10059D5AA /* ParallelOperations.swift */,
 				235500A21CA4569200D7B393 /* TTCollectionFeedController.swift */,
 				2355009B1CA4569200D7B393 /* CollectionFeedController.swift */,
@@ -316,6 +313,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				237F27D71E6B408600F84BE2 /* Result.swift in Sources */,
+				23567B631E8E5890002AF74D /* ReversedFlowLayout.swift in Sources */,
 				2364D09F1E2CEF7F009DCA7E /* UICollectionViewCell+AutoLayout.swift in Sources */,
 				235500B41CA4569200D7B393 /* DataSourceProtocol.swift in Sources */,
 				235500AA1CA4569200D7B393 /* DataSource.swift in Sources */,
@@ -324,7 +322,6 @@
 				235500B71CA4569200D7B393 /* LoadMoreView.swift in Sources */,
 				23604B691DD216680085FD15 /* FetchedDataSource.swift in Sources */,
 				235500B21CA4569200D7B393 /* DataFeedProtocol.swift in Sources */,
-				235500AF1CA4569200D7B393 /* PaginatedDataFeed.swift in Sources */,
 				238688291E2E618D00521904 /* CollectionCellPrefetcher.swift in Sources */,
 				235500AE1CA4569200D7B393 /* CollectionCellController.swift in Sources */,
 				235500B31CA4569200D7B393 /* TTCollectionFeedController.swift in Sources */,
@@ -339,7 +336,6 @@
 				235500B01CA4569200D7B393 /* DataFeed.swift in Sources */,
 				23014FF41CBBC41B001F9DC6 /* SectionedDataSource.swift in Sources */,
 				234BC7301CDCF9A6004057D4 /* TouchRecognizer.swift in Sources */,
-				235500B11CA4569200D7B393 /* SimpleDataFeed.swift in Sources */,
 				234BC72D1CDCF9A6004057D4 /* KeyboardVisibilityController.swift in Sources */,
 				23C5A6F01CB82B6E00FE5152 /* FilteredDataSource.swift in Sources */,
 			);

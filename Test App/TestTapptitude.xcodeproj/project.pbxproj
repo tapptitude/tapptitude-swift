@@ -12,6 +12,7 @@
 		2355FF9B1CA3350D00D7B393 /* TextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2355FF9A1CA3350D00D7B393 /* TextCell.xib */; };
 		2355FF9D1CA3355F00D7B393 /* TextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2355FF9C1CA3355F00D7B393 /* TextCell.swift */; };
 		2355FF9F1CA3367900D7B393 /* TextCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2355FF9E1CA3367900D7B393 /* TextCellController.swift */; };
+		23567B531E8C40DD002AF74D /* DiffViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23567B521E8C40DD002AF74D /* DiffViewController.swift */; };
 		23670E6C1DF95FDE0059D5AA /* ParallelFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23670E6B1DF95FDE0059D5AA /* ParallelFeedController.swift */; };
 		2380FAC31E2CF908005D8897 /* AutolayoutCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2380FAC21E2CF908005D8897 /* AutolayoutCell.xib */; };
 		2380FAC51E2CF90E005D8897 /* AutolayoutCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2380FAC41E2CF90E005D8897 /* AutolayoutCell.swift */; };
@@ -47,6 +48,7 @@
 		2355FF9A1CA3350D00D7B393 /* TextCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextCell.xib; sourceTree = "<group>"; };
 		2355FF9C1CA3355F00D7B393 /* TextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextCell.swift; sourceTree = "<group>"; };
 		2355FF9E1CA3367900D7B393 /* TextCellController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextCellController.swift; sourceTree = "<group>"; };
+		23567B521E8C40DD002AF74D /* DiffViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiffViewController.swift; sourceTree = "<group>"; };
 		23670E6B1DF95FDE0059D5AA /* ParallelFeedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParallelFeedController.swift; sourceTree = "<group>"; };
 		2380FAC21E2CF908005D8897 /* AutolayoutCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AutolayoutCell.xib; sourceTree = "<group>"; };
 		2380FAC41E2CF90E005D8897 /* AutolayoutCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutolayoutCell.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				23670E6B1DF95FDE0059D5AA /* ParallelFeedController.swift */,
 				2386882B1E2E6D3700521904 /* PrefetchFeedController.swift */,
 				2344DFE91E62FBF700125C6A /* ChatFeedViewController.swift */,
+				23567B521E8C40DD002AF74D /* DiffViewController.swift */,
 				2393482B1CA5D268005EB280 /* API.swift */,
 				2393482A1CA5D236005EB280 /* Test Cell */,
 				23A550DD1C78A1BC00695BF3 /* Main.storyboard */,
@@ -244,6 +247,7 @@
 				23A551111C78A32300695BF3 /* FeedController.swift in Sources */,
 				2344DFEA1E62FBF700125C6A /* ChatFeedViewController.swift in Sources */,
 				23A550DA1C78A1BC00695BF3 /* AppDelegate.swift in Sources */,
+				23567B531E8C40DD002AF74D /* DiffViewController.swift in Sources */,
 				2355FF9F1CA3367900D7B393 /* TextCellController.swift in Sources */,
 				2393482C1CA5D268005EB280 /* API.swift in Sources */,
 				2380FAC51E2CF90E005D8897 /* AutolayoutCell.swift in Sources */,
