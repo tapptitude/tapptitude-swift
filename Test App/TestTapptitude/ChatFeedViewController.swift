@@ -90,25 +90,29 @@ class ChatFeedViewController : CollectionFeedController {
         keyboard?.dismissKeyboardTouchRecognizer = nil
         
         let dataSource = DataSource<String>(loadPage: API.getHackerNews(page:callback:))
-        
+//        let dataSource = DataSource<String>()
         self.dataSource = dataSource
         self._dataSource = dataSource
         self.cellController = MultiCollectionCellController(TextItemCellController())
+        self.loadMoreController?.loadMorePosition = .bottom
+        
+        self.collectionView.register(LoadMoreView.self, forSupplementaryViewOfKind: "test", withReuseIdentifier: "LoadMoreView")
         
         self.edgesForExtendedLayout = []
         
         animatedUpdates = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { 
-            dataSource.insert("dasd", at: IndexPath(item: 0, section: 0))
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-            dataSource.remove(at: IndexPath(item: 1, section: 0))
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            dataSource[IndexPath(item: 1, section: 0)] = "maria \n\n"
-        }
+        self.isReversed = true
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { 
+//            dataSource.insert("dasd", at: IndexPath(item: 0, section: 0))
+//        }
+//        
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+//            dataSource.remove(at: IndexPath(item: 1, section: 0))
+//        }
+//        
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+//            dataSource[IndexPath(item: 1, section: 0)] = "maria \n\n"
+//        }
     }
     
     @IBAction func sendAction(_ sender: AnyObject) {

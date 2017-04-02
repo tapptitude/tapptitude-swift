@@ -13,6 +13,7 @@
 		2355FF9D1CA3355F00D7B393 /* TextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2355FF9C1CA3355F00D7B393 /* TextCell.swift */; };
 		2355FF9F1CA3367900D7B393 /* TextCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2355FF9E1CA3367900D7B393 /* TextCellController.swift */; };
 		23567B531E8C40DD002AF74D /* DiffViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23567B521E8C40DD002AF74D /* DiffViewController.swift */; };
+		2362CBCF1E9001A200213918 /* Tapptitude.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2347DCB41D954D2900C311D8 /* Tapptitude.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		23670E6C1DF95FDE0059D5AA /* ParallelFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23670E6B1DF95FDE0059D5AA /* ParallelFeedController.swift */; };
 		2380FAC31E2CF908005D8897 /* AutolayoutCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2380FAC21E2CF908005D8897 /* AutolayoutCell.xib */; };
 		2380FAC51E2CF90E005D8897 /* AutolayoutCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2380FAC41E2CF90E005D8897 /* AutolayoutCell.swift */; };
@@ -41,6 +42,19 @@
 			remoteInfo = Tapptitude;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		2362CBCC1E90019800213918 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				2362CBCF1E9001A200213918 /* Tapptitude.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		2344DFE91E62FBF700125C6A /* ChatFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedViewController.swift; sourceTree = "<group>"; };
@@ -152,6 +166,7 @@
 				23A550D21C78A1BB00695BF3 /* Sources */,
 				23A550D31C78A1BB00695BF3 /* Frameworks */,
 				23A550D41C78A1BB00695BF3 /* Resources */,
+				2362CBCC1E90019800213918 /* CopyFiles */,
 			);
 			buildRules = (
 			);

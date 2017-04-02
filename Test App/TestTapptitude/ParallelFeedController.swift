@@ -13,6 +13,7 @@ class ParallelFeedController: CollectionFeedController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        animatedUpdates = true
         let dataSource = DataSource<Any>()
 //        dataSource.addOperation(load: API.getBin)
 //        dataSource.addOperation(load: API.getHackerNews)
@@ -109,15 +110,17 @@ class API {
         let url_request = URLRequest(url: url!)
         
         let task = URLSession.shared.dataTask(with: url_request) { data , response , error  in
-            let stringResponse = data != nil ? String(data: data!, encoding: String.Encoding.utf8) : nil
-            let items: [String]? = stringResponse != nil ? [stringResponse!] : nil
-            print(error ?? "")
-            
-            let nextPage = items?.isEmpty == false ? (newPage + 1) : nil
-            let result: Result<([String], Int?)> = error != nil ? .failure(error!) : .success((items!, nextPage))
-            
-            DispatchQueue.main.async {
-                callback(result)
+            DispatchQueue.global(qos: .background).async {
+                let stringResponse = data != nil ? String(data: data!, encoding: String.Encoding.utf8) : nil
+                let items: [String]? = stringResponse != nil ? [stringResponse!] : nil
+                print(error ?? "")
+                
+                let nextPage = items?.isEmpty == false ? (newPage + 1) : nil
+                let result: Result<([String], Int?)> = error != nil ? .failure(error!) : .success((items!, nextPage))
+                
+                DispatchQueue.main.async {
+                    callback(result)
+                }
             }
         }
         task.resume()

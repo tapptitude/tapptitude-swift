@@ -95,7 +95,7 @@ class APIPaginateOffsetdSwiftMock: TTCancellable {
     
     static func getResults(offset:String?, callback: @escaping TTCallback<([String], String?)> ) -> TTCancellable? {
     
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
             if offset == nil {
                 callback(.success(([Example.text0], "1")))
             } else if offset == "1" {
@@ -105,7 +105,7 @@ class APIPaginateOffsetdSwiftMock: TTCancellable {
             } else if offset == "3" {
                 callback(.success(([Example.text3], "4")))
             } else if offset == "4" {
-                callback(.success(([Example.text4], nil)))
+                callback(.success(([], nil)))
             }
         }
         

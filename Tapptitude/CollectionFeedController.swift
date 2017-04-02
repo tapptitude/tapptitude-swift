@@ -91,15 +91,14 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
                 collectionView.delegate = self
                 collectionView.dataSource = self
                 
-                let nib = UINib(nibName: loadMoreViewXIBName, bundle: Bundle(for: CollectionFeedController.self))
-                collectionView.register(nib, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: loadMoreViewXIBName)
-                
                 if !self.isScrollDirectionConfigured {
                     // fetch scrollDirection value from collectionView layout
                     if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
                         self.scrollDirection = layout.scrollDirection
                     }
                 }
+                
+                loadMoreController?.collectionView = collectionView
                 updateCollectionViewScrollDirection()
                 updateCollectionViewLayoutAttributes()
                 updatePrefetcherController()
@@ -211,6 +210,14 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         if let layout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.scrollDirection = self.scrollDirection
         }
+        
+        switch scrollDirection {
+        case .horizontal:
+            loadMoreController?.loadMorePosition = .right
+        case .vertical:
+            loadMoreController?.loadMorePosition = .bottom
+        }
+        
     }
     
     internal func updateCollectionViewLayoutAttributes() {
@@ -307,77 +314,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     }
     
     //MARK: Load More -
-    open var supportsLoadMore: Bool = true
-    open var autoLoadMoreContent: Bool = true
-    open var numberOfPagesToPreload: Int = 2 // load more content when last 2 pages are visible
-    open var canShowLoadMoreView : Bool = false
-    open func shouldShowLoadMore(section: Int) -> Bool { // default - YES only for last section
-        return (dataSource != nil && (section == dataSource!.numberOfSections() - 1))
-    }
-    
-    open var loadMoreViewXIBName: String! = "LoadMoreView" // Expected same methods as in LoadMoreView
-    internal func updateCanShowLoadMoreViewAnimated(_ animated:Bool) {
-        let feed = self.dataSource?.feed
-        let showLoadMore = supportsLoadMore && (feed?.canLoadMore == true || feed?.isLoadingMore == true)
-        
-        if feed != nil {
-            print("showLoadMore = \(showLoadMore)")
-        }
-        if canShowLoadMoreView != showLoadMore {
-            if animated == true, let collectionView = collectionView, collectionView.indexPathsForVisibleItems.count > 0 {
-                collectionView.performBatchUpdates({ () -> Void in
-                    self.canShowLoadMoreView = showLoadMore
-                    self.collectionView?.collectionViewLayout.invalidateLayout()
-                    }, completion: nil)
-            } else {
-                canShowLoadMoreView = showLoadMore
-                collectionView?.collectionViewLayout.invalidateLayout()
-            }
-            print("canShowLoadMoreView = \(canShowLoadMoreView)")
-        }
-    }
-    
-    open func checkIfShouldLoadMoreContent() {
-        guard let collectionView = collectionView, let feed = dataSource?.feed else {
-            return
-        }
-        
-        if autoLoadMoreContent && supportsLoadMore && feed.canLoadMore == true {
-            if let indexPath = collectionView.indexPathsForVisibleItems.last {
-                self.checkIfShouldLoadMoreContentForIndexPath(indexPath)
-            } else if dataSource?.isEmpty == true {
-                feed.loadMore()
-            }
-        }
-    }
-    
-    internal func checkIfShouldLoadMoreContentForIndexPath(_ indexPath: IndexPath?) {  //Future - indexPath used for identifying section
-        guard let feed = self.dataSource?.feed, let indexPath = indexPath, let collectionView = collectionView else {
-            return
-        }
-        
-        guard supportsLoadMore && feed.canLoadMore == true else {
-            return
-        }
-        
-        if shouldShowLoadMore(section: indexPath.section) {
-            var preloadMoreContent = false
-            let bounds = collectionView.bounds
-            let contentSize = collectionView.contentSize
-            let numberOfPagesToPreload = CGFloat(self.numberOfPagesToPreload)
-            
-            if scrollDirection == .vertical {
-                preloadMoreContent = (contentSize.height - bounds.maxY) < (numberOfPagesToPreload * bounds.size.height)
-            } else  {
-                preloadMoreContent = (contentSize.width - bounds.maxX) < (numberOfPagesToPreload * bounds.size.width)
-            }
-            
-            if preloadMoreContent {
-                feed.loadMore()
-            }
-        }
-    }
-    
+    open var loadMoreController: TTLoadMoreController? = LoadMoreController() //LoadMoreFooterController()
     
     //MARK: ForceTouch Preview -
     internal weak var forceTouchPreviewContext: UIViewControllerPreviewing?
@@ -432,6 +369,13 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         checkIfShouldLoadMoreContent()
         updateCanShowLoadMoreViewAnimated(true)
         updateEmptyViewAppearenceAnimated(true)
+    }
+    
+    func checkIfShouldLoadMoreContent() {
+        loadMoreController?.checkIfShouldLoadMoreContent(for: dataSource?.feed)
+    }
+    func updateCanShowLoadMoreViewAnimated(_ animated: Bool) {
+        loadMoreController?.updateCanShowLoadMoreView(for: dataSource?.feed, animated: animated)
     }
 //}
 //
@@ -565,14 +509,6 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
             cellController.configureCell(cell, for: content, at: indexPath, dataSourceCount: sectionCount)
         }
         
-        
-        if autoLoadMoreContent {
-            //schedule on next run loop
-            CFRunLoopPerformBlock(CFRunLoopGetMain(), CFRunLoopMode.commonModes as CFTypeRef!, {
-                self.checkIfShouldLoadMoreContentForIndexPath(indexPath)
-            })
-        }
-        
         return cell;
     }
     
@@ -581,19 +517,8 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
             return UICollectionReusableView()
         }
         
-        // load more
-        let showLoadMore = kind == UICollectionElementKindSectionFooter && canShowLoadMoreView
-        if showLoadMore {
-            let reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: loadMoreViewXIBName, for: indexPath)
-            if let loadMoreView = reusableView as? LoadMoreView {
-                loadMoreView.loadingView?.isHidden = false
-                loadMoreView.loadingView?.color = options.loadMoreIndicatorViewColor
-                loadMoreView.startAnimating()
-                
-                dataSource.feed?.loadMore()
-            }
-            
-            return reusableView
+        if kind == UICollectionElementKindSectionFooter {
+            return loadMoreController!.loadMoreView(in: collectionView, at: indexPath)!
         }
         
         // header view
@@ -627,10 +552,19 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     
     open func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         cell.parentViewController = nil
+        loadMoreController?.updateLoadMoreViewPosition(in: collectionView)
     }
     
     open func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         cell.parentViewController = cellController.parentViewController
+        
+        checkIfShouldLoadMoreContent()
+        loadMoreController?.updateLoadMoreViewPosition(in: collectionView)
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, targetContentOffsetForProposedContentOffset proposedContentOffset: CGPoint) -> CGPoint {
+        self.loadMoreController?.updateLoadMoreViewPosition(in: collectionView)
+        return proposedContentOffset
     }
 //}
 //
@@ -664,12 +598,17 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     }
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        var insets = UIEdgeInsets.zero
         if let dataSource = dataSource, dataSource.numberOfItems(inSection: section) > 0 {
             let content = dataSource[section, 0]
-            return cellController.sectionInset(for: content, in: collectionView)
-        } else {
-            return UIEdgeInsets.zero
+            insets = cellController.sectionInset(for: content, in: collectionView)
         }
+        
+        if let loadMore = loadMoreController {
+            insets = loadMore.adjustSectionInsetToShowLoadMoreView(sectionInset: insets, collectionView: collectionView, section: section)
+        }
+        
+        return insets
     }
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -691,7 +630,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     }
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        return ((canShowLoadMoreView && shouldShowLoadMore(section: section)) ? CGSize(width: 30, height: 40) : CGSize.zero)
+        return loadMoreController?.sizeForLoadMoreViewInSection(section, collectionView: collectionView) ?? CGSize.zero
     }
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection  section: Int) -> CGSize {
@@ -702,6 +641,14 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
             return headerController.headerSize(for: item, in: collectionView)
         } else {
             return CGSize.zero
+        }
+    }
+    
+    open var isReversed: Bool = false {
+        didSet {
+            if isReversed {
+                self.collectionView.collectionViewLayout = ChatFlowLayout()
+            }
         }
     }
 //}

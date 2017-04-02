@@ -34,10 +34,13 @@
 		235500BA1CA4569200D7B393 /* tapptitude-swift.h in Headers */ = {isa = PBXBuildFile; fileRef = 235500A91CA4569200D7B393 /* tapptitude-swift.h */; };
 		23567B631E8E5890002AF74D /* ReversedFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23567B621E8E5890002AF74D /* ReversedFlowLayout.swift */; };
 		23604B691DD216680085FD15 /* FetchedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23604B681DD216680085FD15 /* FetchedDataSource.swift */; };
+		2362CBD91E912B0400213918 /* LoadMoreController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2362CBD81E912B0400213918 /* LoadMoreController.swift */; };
 		2364D09F1E2CEF7F009DCA7E /* UICollectionViewCell+AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2364D09E1E2CEF7F009DCA7E /* UICollectionViewCell+AutoLayout.swift */; };
 		23670E671DF89EA10059D5AA /* ParallelOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23670E661DF89EA10059D5AA /* ParallelOperations.swift */; };
 		237F27D71E6B408600F84BE2 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237F27D61E6B408600F84BE2 /* Result.swift */; };
 		238688291E2E618D00521904 /* CollectionCellPrefetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238688281E2E618D00521904 /* CollectionCellPrefetcher.swift */; };
+		23C46B211E8EF1AD00DC9187 /* ChatCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C46B201E8EF1AD00DC9187 /* ChatCollectionViewFlowLayout.swift */; };
+		23C46B231E8FA8F100DC9187 /* ChatCollectionFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C46B221E8FA8F100DC9187 /* ChatCollectionFeedController.swift */; };
 		23C5A6F01CB82B6E00FE5152 /* FilteredDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C5A6EF1CB82B6E00FE5152 /* FilteredDataSource.swift */; };
 		23C8ADEE1CAC1D0600BC47E3 /* HybridDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C8ADED1CAC1D0600BC47E3 /* HybridDataSource.swift */; };
 		23D6608C1CBF901C0005470F /* CollectionHeaderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D6608B1CBF901C0005470F /* CollectionHeaderController.swift */; };
@@ -84,10 +87,13 @@
 		235500A91CA4569200D7B393 /* tapptitude-swift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "tapptitude-swift.h"; path = "Tapptitude/tapptitude-swift.h"; sourceTree = SOURCE_ROOT; };
 		23567B621E8E5890002AF74D /* ReversedFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReversedFlowLayout.swift; sourceTree = "<group>"; };
 		23604B681DD216680085FD15 /* FetchedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FetchedDataSource.swift; path = Tapptitude/FetchedDataSource.swift; sourceTree = SOURCE_ROOT; };
+		2362CBD81E912B0400213918 /* LoadMoreController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoadMoreController.swift; path = Tapptitude/LoadMoreController.swift; sourceTree = SOURCE_ROOT; };
 		2364D09E1E2CEF7F009DCA7E /* UICollectionViewCell+AutoLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UICollectionViewCell+AutoLayout.swift"; path = "Tapptitude/UICollectionViewCell+AutoLayout.swift"; sourceTree = SOURCE_ROOT; };
 		23670E661DF89EA10059D5AA /* ParallelOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParallelOperations.swift; path = Tapptitude/ParallelOperations.swift; sourceTree = SOURCE_ROOT; };
 		237F27D61E6B408600F84BE2 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Result.swift; path = Tapptitude/Result.swift; sourceTree = SOURCE_ROOT; };
 		238688281E2E618D00521904 /* CollectionCellPrefetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionCellPrefetcher.swift; path = Tapptitude/CollectionCellPrefetcher.swift; sourceTree = SOURCE_ROOT; };
+		23C46B201E8EF1AD00DC9187 /* ChatCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
+		23C46B221E8FA8F100DC9187 /* ChatCollectionFeedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChatCollectionFeedController.swift; path = Tapptitude/ChatCollectionFeedController.swift; sourceTree = SOURCE_ROOT; };
 		23C5A6EF1CB82B6E00FE5152 /* FilteredDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilteredDataSource.swift; path = Tapptitude/FilteredDataSource.swift; sourceTree = SOURCE_ROOT; };
 		23C8ADED1CAC1D0600BC47E3 /* HybridDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HybridDataSource.swift; path = Tapptitude/HybridDataSource.swift; sourceTree = SOURCE_ROOT; };
 		23D6608B1CBF901C0005470F /* CollectionHeaderController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionHeaderController.swift; path = Tapptitude/CollectionHeaderController.swift; sourceTree = SOURCE_ROOT; };
@@ -133,6 +139,7 @@
 				234BC72B1CDCF9A6004057D4 /* SwipeToEditOnCollection.swift */,
 				234BC72C1CDCF9A6004057D4 /* TouchRecognizer.swift */,
 				23567B621E8E5890002AF74D /* ReversedFlowLayout.swift */,
+				23C46B201E8EF1AD00DC9187 /* ChatCollectionViewFlowLayout.swift */,
 			);
 			name = Helpers;
 			path = Tapptitude/Helpers;
@@ -178,6 +185,8 @@
 				23670E661DF89EA10059D5AA /* ParallelOperations.swift */,
 				235500A21CA4569200D7B393 /* TTCollectionFeedController.swift */,
 				2355009B1CA4569200D7B393 /* CollectionFeedController.swift */,
+				2362CBD81E912B0400213918 /* LoadMoreController.swift */,
+				23C46B221E8FA8F100DC9187 /* ChatCollectionFeedController.swift */,
 				235500A71CA4569200D7B393 /* CollectionFeedController.xib */,
 				235500A41CA4569200D7B393 /* CollectionViewAnimatedUpdater.swift */,
 				235500A51CA4569200D7B393 /* LoadMoreView.xib */,
@@ -321,9 +330,11 @@
 				235500AB1CA4569200D7B393 /* CollectionCellControllerProtocol.swift in Sources */,
 				235500B71CA4569200D7B393 /* LoadMoreView.swift in Sources */,
 				23604B691DD216680085FD15 /* FetchedDataSource.swift in Sources */,
+				23C46B231E8FA8F100DC9187 /* ChatCollectionFeedController.swift in Sources */,
 				235500B21CA4569200D7B393 /* DataFeedProtocol.swift in Sources */,
 				238688291E2E618D00521904 /* CollectionCellPrefetcher.swift in Sources */,
 				235500AE1CA4569200D7B393 /* CollectionCellController.swift in Sources */,
+				2362CBD91E912B0400213918 /* LoadMoreController.swift in Sources */,
 				235500B31CA4569200D7B393 /* TTCollectionFeedController.swift in Sources */,
 				234BC72E1CDCF9A6004057D4 /* PanViewGestureRecognizer.swift in Sources */,
 				232575701D7868FD00FF23BC /* PageCachingFlowLayout.swift in Sources */,
@@ -337,6 +348,7 @@
 				23014FF41CBBC41B001F9DC6 /* SectionedDataSource.swift in Sources */,
 				234BC7301CDCF9A6004057D4 /* TouchRecognizer.swift in Sources */,
 				234BC72D1CDCF9A6004057D4 /* KeyboardVisibilityController.swift in Sources */,
+				23C46B211E8EF1AD00DC9187 /* ChatCollectionViewFlowLayout.swift in Sources */,
 				23C5A6F01CB82B6E00FE5152 /* FilteredDataSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

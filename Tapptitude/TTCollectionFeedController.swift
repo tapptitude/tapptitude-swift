@@ -19,15 +19,6 @@ protocol TTCollectionFeedController : class, UICollectionViewDelegateFlowLayout,
     weak var reloadIndicatorView: UIActivityIndicatorView? {get set}
     var emptyView: UIView? {get set} //set from XIB or overwrite
     
-
-    /* Load More */
-    var supportsLoadMore: Bool {get set}
-    var autoLoadMoreContent: Bool {get set}
-    var numberOfPagesToPreload: Int {get set}
-    var canShowLoadMoreView : Bool {get set}
-    func shouldShowLoadMore(section: Int) -> Bool
-    
-    var loadMoreViewXIBName: String! {get set}
     
     /* Pull to Refresh functionality */
     weak var refreshControl: UIRefreshControl? {get set}

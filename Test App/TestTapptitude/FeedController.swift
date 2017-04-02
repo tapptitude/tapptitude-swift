@@ -28,18 +28,19 @@ class TestViewController : UIViewController, CollectionController {
         super.viewDidLoad()
         
         setupCollectionController()
-        
+        collectionController.addPullToRefresh()
 //        dataSource.insert("Maria", at: IndexPath(item: 0, section: 0))
 //        let _ = dataSource[0].appending("2323 ")
         
         collectionController.cellsNibsAlreadyRegisteredInStoryboard(for: cellController)
         collectionController.useAutoLayoutEstimatedSize = true
+        collectionController.animatedUpdates = true
     }
 }
 
 class ItemCellController: CollectionCellController<String, TextCell> {
     init() {
-        super.init(cellSize: CGSize(width: -1, height: 50), reuseIdentifier: "TextCell")
+        super.init(cellSize: CGSize(width: -1, height: 400), reuseIdentifier: "TextCell")
         minimumInteritemSpacing = 10
         minimumLineSpacing = 20
         sectionInset = UIEdgeInsetsMake(0, 0, 10, 0)
