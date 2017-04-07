@@ -8,7 +8,7 @@
 
 import UIKit
 
-open class CollectionFeedController: UIViewController, TTCollectionFeedController, TTDataFeedDelegate, TTDataSourceDelegate, UIViewControllerPreviewingDelegate {
+open class CollectionFeedController: UIViewController, TTCollectionFeedController, TTDataFeedDelegate, TTDataSourceDelegate {
     
     public struct Options {
         public var emptyMessage = NSLocalizedString("No content", comment: "No content")
@@ -42,9 +42,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if forceTouchPreviewEnabled {
-            registerForceTouchPreview()
-        }
+        forceTouchPreview?.setupForceTouchPreview()
     }
     
     
@@ -314,21 +312,13 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     }
     
     //MARK: Load More -
-    open var loadMoreController: TTLoadMoreController? = LoadMoreController() //LoadMoreFooterController()
+    open var loadMoreController: TTLoadMoreController? = LoadMoreFooterController()// LoadMoreController() //
     
     //MARK: ForceTouch Preview -
-    internal weak var forceTouchPreviewContext: UIViewControllerPreviewing?
+    open var forceTouchPreview: ForceTouchPreview?
     open var forceTouchPreviewEnabled: Bool = false {
         didSet {
-            if !isViewLoaded {
-                return
-            }
-            
-            if forceTouchPreviewEnabled {
-                registerForceTouchPreview()
-            } else {
-                unregisterForceTouchPreview()
-            }
+            self.forceTouchPreview = forceTouchPreviewEnabled ? ForceTouchPreview(collectionController: self) : nil
         }
     }
     
@@ -651,76 +641,10 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
             }
         }
     }
-//}
-//
-//MARK: ForceTouch Delegate
-//extension CollectionFeedController : UIViewControllerPreviewingDelegate {
-    @available(iOS 9.0, *)
-    open func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        let point = collectionView.convert(location, from: self.view)
-        guard let indexPath = collectionView.indexPathForItem(at: point) else {
-            return nil
-        }
-        
-        let content = dataSource![indexPath]
-        var cellController = self.cellController
-        let previousParentController = cellController?.parentViewController
-        let parentController = UIViewController()
-        var dummyNavigationController: DummyNavigationController? = DummyNavigationController(rootViewController: parentController)
-        cellController?.parentViewController = parentController
-        cellController?.didSelectContent(content, at: indexPath, in: collectionView)
-        cellController?.parentViewController = previousParentController
-        
-        let controller = dummyNavigationController!.capturedViewController
-        dummyNavigationController = nil // destroy
-        if let controller = controller {
-            controller.preferredContentSize = CGSize.zero
-            
-            let cell = collectionView.cellForItem(at: indexPath)
-            previewingContext.sourceRect = cell!.convert(cell!.bounds, to:self.view)
-        }
-        
-        return controller
-    }
-    
-    open func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
-        show(viewControllerToCommit, sender: self)
-    }
-    
-    internal class DummyNavigationController : UINavigationController {
-        var capturedViewController: UIViewController?
-        override func pushViewController(_ viewController: UIViewController, animated: Bool) {
-            if !viewControllers.isEmpty {
-                capturedViewController = viewController
-            } else {
-                super.pushViewController(viewController, animated: animated)
-            }
-        }
-    }
-    
-    internal func registerForceTouchPreview() {
-        if #available(iOS 9, *) {
-            if traitCollection.forceTouchCapability == .available  && forceTouchPreviewContext == nil {
-                forceTouchPreviewContext = registerForPreviewing(with: self, sourceView: self.view!)
-            }
-        }
-    }
-    internal func unregisterForceTouchPreview() {
-        if #available(iOS 9, *) {
-            if traitCollection.forceTouchCapability == .available {
-                if forceTouchPreviewContext != nil {
-                    unregisterForPreviewing(withContext: forceTouchPreviewContext!)
-                    forceTouchPreviewContext = nil
-                }
-            }
-        }
-    }
     
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        
-        if forceTouchPreviewContext == nil && forceTouchPreviewEnabled {
-            registerForceTouchPreview()
-        }
+
+        forceTouchPreview?.setupForceTouchPreview()
     }
 }

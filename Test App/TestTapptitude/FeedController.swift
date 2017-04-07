@@ -23,6 +23,7 @@ class TestViewController : UIViewController, CollectionController {
     lazy var dataSource = DataSource<String>(loadPage: APIPaginateOffsetdSwiftMock.getResults(offset:callback:))
 //    lazy var dataSource = DataSource(Example.allTest())
     var collectionController = CollectionFeedController()
+    var forceTouchPreview: ForceTouchPreview!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,8 +34,13 @@ class TestViewController : UIViewController, CollectionController {
 //        let _ = dataSource[0].appending("2323 ")
         
         collectionController.cellsNibsAlreadyRegisteredInStoryboard(for: cellController)
-        collectionController.useAutoLayoutEstimatedSize = true
+//        collectionController.useAutoLayoutEstimatedSize = true
         collectionController.animatedUpdates = true
+        forceTouchPreview = ForceTouchPreview(collectionController: collectionController, in: self)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
     }
 }
 
@@ -49,6 +55,11 @@ class ItemCellController: CollectionCellController<String, TextCell> {
     override func configureCell(_ cell: TextCell, for content: String, at indexPath: IndexPath) {
         cell.label.text = content
         cell.subtitleLabel?.text = content
+    }
+    
+    override func didSelectContent(_ content: String, at indexPath: IndexPath, in collectionView: UICollectionView) {
+        let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TestViewController")
+        self.parentViewController?.navigationController?.pushViewController(controller, animated: true)
     }
 }
 

@@ -30,7 +30,7 @@
         <!--Test View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="TestViewController" customModule="TestTapptitude" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TestViewController" id="BYZ-38-t0r" customClass="TestViewController" customModule="TestTapptitude" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="28S-Yb-HYB"/>
                         <viewControllerLayoutGuide type="bottom" id="hNj-RO-CaR"/>
