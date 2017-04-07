@@ -30,3 +30,35 @@ public protocol TTCollectionFeedController : class, UICollectionViewDelegateFlow
     // helpers
     func scrollToElement<T>(ofFirst filter: (_ item: T) -> Bool, animated: Bool)
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+extension TTCollectionFeedController {
+    public func scrollToElement<T>(ofFirst filter: (_ item: T) -> Bool, animated: Bool) {
+        if let indexPath = dataSource!.indexPath(ofFirst: filter) {
+            let layout = collectionView.collectionViewLayout
+            var attribute = layout.layoutAttributesForItem(at: indexPath)
+            if (attribute?.frame.size.width ?? 0.0) < 1.0 {
+                layout.prepare()
+                attribute = layout.layoutAttributesForItem(at: indexPath)
+                collectionView.contentSize = layout.collectionViewContentSize
+            }
+            
+            if let attribute = attribute {
+                collectionView.scrollRectToVisible(attribute.frame, animated: animated)
+            }
+        }
+    }
+}

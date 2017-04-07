@@ -32,12 +32,12 @@ public protocol TTAnyCollectionCellController {
     func minimumLineSpacing(for content: Any, in collectionView: UICollectionView) -> CGFloat
     func minimumInteritemSpacing(for content: Any, in collectionView: UICollectionView) -> CGFloat
     
-    // should expose all reuse identifiers that this cellController can configure
+    /// should expose all reuse identifiers that this cellController can configure
     func allSupportedReuseIdentifiers() -> [String]
 }
 
 // TODO: implement as option protocol
-public protocol TTCollectionCellControllerProtocolExtended {
+public protocol TTCollectionCellControllerExtended {
     func configureCell(_ cell: UICollectionViewCell, for content: Any, at indexPath: IndexPath, dataSourceCount count: Int)
     func shouldHighlightContent(_ content: Any, atIndexPath indexPath: IndexPath) -> Bool
 }

@@ -289,24 +289,6 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     }
     open var hideReloadViewIfHasContent: Bool = true
     
-    
-    
-    open func scrollToElement<T>(ofFirst filter: (_ item: T) -> Bool, animated: Bool) {
-        if let indexPath = dataSource!.indexPath(ofFirst: filter) {
-            let layout = collectionView.collectionViewLayout
-            var attribute = layout.layoutAttributesForItem(at: indexPath)
-            if (attribute?.frame.size.width ?? 0.0) < 1.0 {
-                layout.prepare()
-                attribute = layout.layoutAttributesForItem(at: indexPath)
-                collectionView.contentSize = layout.collectionViewContentSize
-            }
-            
-            if let attribute = attribute {
-                collectionView.scrollRectToVisible(attribute.frame, animated: animated)
-            }
-        }
-    }
-    
     //MARK: Load More -
     open var loadMoreController: TTLoadMoreController? = LoadMoreFooterController()// LoadMoreController() //
     
@@ -490,7 +472,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         cellController.configureCell(cell, for: content, at: indexPath)
         
         // so
-        if let cellController = cellController as? TTCollectionCellControllerProtocolExtended {
+        if let cellController = cellController as? TTCollectionCellControllerExtended {
             let sectionCount = dataSource!.numberOfItems(inSection: indexPath.section)
             cellController.configureCell(cell, for: content, at: indexPath, dataSourceCount: sectionCount)
         }
