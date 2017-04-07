@@ -58,7 +58,7 @@ class CollectionCellPrefetcherDelegate: NSObject, UICollectionViewDataSourcePref
 }
 
 
-public extension TTCollectionCellControllerProtocol {
+public extension TTAnyCollectionCellController {
     func supportsDataSourcePrefetching() -> Bool {
         return self is TTCollectionCellPrefetcher
     }

@@ -10,16 +10,16 @@ import UIKit
 
 typealias MultiCellController = MultiCollectionCellController
 
-open class MultiCollectionCellController: TTCollectionCellControllerProtocol {
-    public init (_ cellControllers: [TTCollectionCellControllerProtocol]) {
+open class MultiCollectionCellController: TTAnyCollectionCellController {
+    public init (_ cellControllers: [TTAnyCollectionCellController]) {
         self.cellControllers = cellControllers
     }
     
-    public init (_ cellControllers: TTCollectionCellControllerProtocol...) {
+    public init (_ cellControllers: TTAnyCollectionCellController...) {
         self.cellControllers = cellControllers
     }
     
-    open var cellControllers: [TTCollectionCellControllerProtocol] = [] {
+    open var cellControllers: [TTAnyCollectionCellController] = [] {
         willSet {
             for var cellController in cellControllers {
                 cellController.parentViewController = nil
@@ -34,10 +34,10 @@ open class MultiCollectionCellController: TTCollectionCellControllerProtocol {
         }
     }
     
-    fileprivate var previousCellController: TTCollectionCellControllerProtocol? // TODO: check if we should use weak
+    fileprivate var previousCellController: TTAnyCollectionCellController? // TODO: check if we should use weak
     
     
-    open func controllerForContent(_ content: Any) -> TTCollectionCellControllerProtocol? {
+    open func controllerForContent(_ content: Any) -> TTAnyCollectionCellController? {
         if previousCellController?.acceptsContent(content) == true { // for performance update
             return previousCellController
         }

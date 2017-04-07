@@ -8,7 +8,7 @@
 
 import UIKit
 
-public protocol TTCollectionCellControllerProtocol {
+public protocol TTAnyCollectionCellController {
     func acceptsContent(_ content: Any) -> Bool
     
     func classToInstantiateCell(for content: Any) -> AnyClass?
@@ -42,7 +42,7 @@ public protocol TTCollectionCellControllerProtocolExtended {
     func shouldHighlightContent(_ content: Any, atIndexPath indexPath: IndexPath) -> Bool
 }
 
-public protocol TTCollectionCellController : TTCollectionCellControllerProtocol {
+public protocol TTCollectionCellController : TTAnyCollectionCellController {
     associatedtype ContentType
     associatedtype CellType: UICollectionViewCell
     
@@ -68,6 +68,10 @@ public protocol TTCollectionCellControllerSize: TTCollectionCellController {
     func cellSizeToFit(text: String, label: UILabel, maxSize: CGSize) -> CGSize
     func cellSizeToFit(attributedText: NSAttributedString, label: UILabel, maxSize: CGSize) -> CGSize
 }
+
+
+
+
 
 extension TTCollectionCellControllerSize {
     /// returns cell size to fit text by using sizeCalculationCell property

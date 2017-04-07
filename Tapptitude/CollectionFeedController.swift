@@ -47,7 +47,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     
     
     /// pass all cellControllers, were cell are created in storyboard
-    open func cellsNibsAlreadyRegisteredInStoryboard(for cellControllers: TTCollectionCellControllerProtocol...) {
+    open func cellsNibsAlreadyRegisteredInStoryboard(for cellControllers: TTAnyCollectionCellController...) {
         cellControllers.forEach{ registeredCellIdentifiers += $0.allSupportedReuseIdentifiers() }
     }
     
@@ -163,7 +163,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     
     var prefetchController: CollectionCellPrefetcherDelegate?
     
-    open var cellController: TTCollectionCellControllerProtocol! {
+    open var cellController: TTAnyCollectionCellController! {
         willSet {
             cellController?.parentViewController = nil
         }
@@ -174,13 +174,9 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         }
     }
     
-    open var headerController: TTCollectionHeaderControllerProtocol? {
-        willSet {
-            headerController?.parentViewController = nil
-        }
-        didSet {
-            headerController?.parentViewController = self
-        }
+    open var headerController: TTAnyCollectionHeaderController? {
+        willSet { headerController?.parentViewController = nil }
+        didSet { headerController?.parentViewController = self }
     }
     
     open var headerIsSticky = false {

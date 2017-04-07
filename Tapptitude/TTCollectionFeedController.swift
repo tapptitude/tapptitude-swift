@@ -10,7 +10,7 @@ import UIKit
 
 public protocol TTCollectionFeedController : class, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     var dataSource: TTDataSource? {get set}
-    var cellController: TTCollectionCellControllerProtocol! {get set}
+    var cellController: TTAnyCollectionCellController! {get set}
     
     weak var collectionView: UICollectionView! {get set}
 
@@ -24,6 +24,8 @@ public protocol TTCollectionFeedController : class, UICollectionViewDelegateFlow
     weak var refreshControl: UIRefreshControl? {get set}
     func pullToRefreshAction(_ sender: AnyObject!)
     func addPullToRefresh()
+    
+    var loadMoreController: TTLoadMoreController? { get set }
     
     // helpers
     func scrollToElement<T>(ofFirst filter: (_ item: T) -> Bool, animated: Bool)

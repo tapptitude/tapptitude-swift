@@ -8,7 +8,7 @@
 
 import UIKit
 
-public protocol TTCollectionHeaderControllerProtocol {
+public protocol TTAnyCollectionHeaderController {
     func classToInstantiate() -> AnyClass?
     func nibToInstantiate() -> UINib?
     
@@ -24,7 +24,7 @@ public protocol TTCollectionHeaderControllerProtocol {
     func configureHeader(_ header: UICollectionReusableView, for content: Any, at indexPath: IndexPath)
 }
 
-public protocol TTCollectionHeaderController: TTCollectionHeaderControllerProtocol {
+public protocol TTCollectionHeaderController: TTAnyCollectionHeaderController {
     associatedtype ContentType
     associatedtype HeaderType: UICollectionReusableView
     

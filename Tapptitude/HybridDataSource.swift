@@ -14,10 +14,10 @@ public protocol RequireNewSection {
 
 public struct HybridItem {
     var element: Any
-    var cellController: TTCollectionCellControllerProtocol
+    var cellController: TTAnyCollectionCellController
 }
 
-public protocol HybridCollectionCellController: TTCollectionCellControllerProtocol {
+public protocol HybridCollectionCellController: TTAnyCollectionCellController {
     func mapItem(_ item: Any) -> [Any]
 }
 
@@ -49,11 +49,11 @@ open class HybridDataSource : SectionedDataSource<Any> {
         super.dataFeed(dataFeed, didLoadResult: result, forState: forState)
     }
     
-    static func transformContent(_ content: [Any], cellControllers: [TTCollectionCellControllerProtocol]) -> [[HybridItem]] {
+    static func transformContent(_ content: [Any], cellControllers: [TTAnyCollectionCellController]) -> [[HybridItem]] {
         var allItems = [[HybridItem]]()
         var items = [HybridItem]()
         
-        let addNewSectionIfRequired = {(cellController: TTCollectionCellControllerProtocol) in
+        let addNewSectionIfRequired = {(cellController: TTAnyCollectionCellController) in
             if cellController is RequireNewSection {
                 allItems.append(items)
                 
@@ -100,11 +100,11 @@ open class HybridDataSource : SectionedDataSource<Any> {
 }
 
 open class GroupCellController<ItemType>: MultiCollectionCellController, HybridCollectionCellController {
-    public override init (_ cellControllers: [TTCollectionCellControllerProtocol]) {
+    public override init (_ cellControllers: [TTAnyCollectionCellController]) {
         super.init(cellControllers)
     }
     
-    public init (_ cellControllers: [TTCollectionCellControllerProtocol], acceptsContent: @escaping ((_ content: ItemType) -> Bool)) {
+    public init (_ cellControllers: [TTAnyCollectionCellController], acceptsContent: @escaping ((_ content: ItemType) -> Bool)) {
         super.init(cellControllers)
         self.acceptsContent = acceptsContent
     }
@@ -149,15 +149,15 @@ open class GroupCellController<ItemType>: MultiCollectionCellController, HybridC
 }
 
 open class HybridCellController : MultiCollectionCellController {
-    public override init (_ cellControllers: [TTCollectionCellControllerProtocol]) {
+    public override init (_ cellControllers: [TTAnyCollectionCellController]) {
         super.init(cellControllers)
     }
     
-    public override init (_ cellControllers: TTCollectionCellControllerProtocol...) {
+    public override init (_ cellControllers: TTAnyCollectionCellController...) {
         super.init(cellControllers)
     }
     
-    override open func controllerForContent(_ content: Any) -> TTCollectionCellControllerProtocol? {
+    override open func controllerForContent(_ content: Any) -> TTAnyCollectionCellController? {
         return (content is HybridItem) ? self : super.controllerForContent(content)
     }
     

@@ -5,7 +5,7 @@ import Tapptitude
 
 extension TextCellController: CollectionCellPrefetcher {
     public func prefetchItems(_ items: [String], at indexPaths: [IndexPath], in collectionView: UICollectionView) {
-        
+        print("prefetch", items)
     }
     
     public func cancelPrefetchItems(_ items: [String], at indexPaths: [IndexPath], in collectionView: UICollectionView) {
