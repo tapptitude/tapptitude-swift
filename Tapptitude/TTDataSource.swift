@@ -51,12 +51,11 @@ public protocol TTDataSourceMutable {
 
 extension TTDataSourceMutable where Element == Any {
     public func append<S>(contentsOf newElements: [S]) {
-        let items: [Any] = newElements.map{$0 as Any}
-        append(contentsOf: items)
+        append(contentsOf: newElements.map{$0 as Any})
     }
     
     public func insert<S>(contentsOf newElements: [S], at indexPath: IndexPath) {
-        self.insert(contentsOf: newElements.map({$0 as Any}), at: indexPath)
+        insert(contentsOf: newElements.map({$0 as Any}), at: indexPath)
     }
 }
 

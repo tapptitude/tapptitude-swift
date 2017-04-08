@@ -429,7 +429,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
 //extension CollectionFeedController : UICollectionViewDataSource {
     
     open func numberOfSections(in collectionView: UICollectionView) -> Int {
-        assert(cellController != nil, "cellController is nil, please do self.cellController = ...")
+        assert(cellController != nil, "cellController is nil, please set self.cellController = ...(YourCellController)")
         guard let dataSource = self.dataSource else {
             return 0
         }
@@ -470,12 +470,6 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         cell.parentViewController = cellController.parentViewController;
         
         cellController.configureCell(cell, for: content, at: indexPath)
-        
-        // so
-        if let cellController = cellController as? TTCollectionCellControllerExtended {
-            let sectionCount = dataSource!.numberOfItems(inSection: indexPath.section)
-            cellController.configureCell(cell, for: content, at: indexPath, dataSourceCount: sectionCount)
-        }
         
         return cell;
     }
@@ -530,7 +524,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         loadMoreController?.updateLoadMoreViewPosition(in: collectionView)
     }
     
-    public func collectionView(_ collectionView: UICollectionView, targetContentOffsetForProposedContentOffset proposedContentOffset: CGPoint) -> CGPoint {
+    open func collectionView(_ collectionView: UICollectionView, targetContentOffsetForProposedContentOffset proposedContentOffset: CGPoint) -> CGPoint {
         self.loadMoreController?.updateLoadMoreViewPosition(in: collectionView)
         return proposedContentOffset
     }
@@ -545,17 +539,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         cellController.didSelectContent(content, at: indexPath, in: collectionView)
     }
 
-//    TODO: Fix should highlight
-//    func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: IndexPath) -> Bool {
-//        if cellController.respondsToSelector(Selector("shouldHighlightContent:atIndexPath:")) {
-//            let content = dataSource.objectAtIndexPath(indexPath)
-//            return cellController.shouldHighlightContent!(content, atIndexPath: indexPath)
-//        }
-//
-//        return true
-//    }
-//}
-//
+
 // MARK: Layout Size -
 //extension CollectionFeedController {
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

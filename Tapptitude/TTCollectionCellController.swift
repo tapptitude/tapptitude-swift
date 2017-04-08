@@ -36,11 +36,7 @@ public protocol TTAnyCollectionCellController {
     func allSupportedReuseIdentifiers() -> [String]
 }
 
-// TODO: implement as option protocol
-public protocol TTCollectionCellControllerExtended {
-    func configureCell(_ cell: UICollectionViewCell, for content: Any, at indexPath: IndexPath, dataSourceCount count: Int)
-    func shouldHighlightContent(_ content: Any, atIndexPath indexPath: IndexPath) -> Bool
-}
+
 
 public protocol TTCollectionCellController : TTAnyCollectionCellController {
     associatedtype ContentType
@@ -242,8 +238,8 @@ extension TTCollectionCellController {
 }
 
 extension TTCollectionCellController {
-    var dataSource: TTDataSource? {
-        return (self.parentViewController as? CollectionFeedController)?.dataSource
+    public var dataSource: TTDataSource? {
+        return (self.parentViewController as? TTCollectionFeedController)?.dataSource
     }
 }
 
