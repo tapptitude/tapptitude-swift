@@ -36,6 +36,11 @@ public protocol TTAnyCollectionCellController {
     func allSupportedReuseIdentifiers() -> [String]
 }
 
+extension TTCollectionCellController {
+    public var dataSource: TTDataSource? {
+        return (self.parentViewController as? TTCollectionFeedController)?.dataSource
+    }
+}
 
 
 public protocol TTCollectionCellController : TTAnyCollectionCellController {
@@ -234,12 +239,6 @@ extension TTCollectionCellController {
     }
     public func minimumInteritemSpacing(for content: Any, in collectionView: UICollectionView) -> CGFloat {
         return minimumInteritemSpacing(for: content as! ContentType, in: collectionView)
-    }
-}
-
-extension TTCollectionCellController {
-    public var dataSource: TTDataSource? {
-        return (self.parentViewController as? TTCollectionFeedController)?.dataSource
     }
 }
 

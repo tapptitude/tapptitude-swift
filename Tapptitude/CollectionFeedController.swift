@@ -327,7 +327,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         }
     }
     
-    open func dataFeed(_ dataFeed: TTDataFeed?, fromState: FeedState, toState: FeedState) {
+    open func dataFeed(_ dataFeed: TTDataFeed?, stateChangedFrom fromState: FeedState, toState: FeedState) {
         switch (fromState, toState) {
         case (_, .reloading), (.reloading, _):
             updateReloadingIndicatorView()
@@ -552,8 +552,10 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         var insets = UIEdgeInsets.zero
         if let dataSource = dataSource, dataSource.numberOfItems(inSection: section) > 0 {
-            let content = dataSource[section, 0]
-            insets = cellController.sectionInset(for: content, in: collectionView)
+            let first = dataSource[section, 0]
+            insets = cellController.sectionInset(for: first, in: collectionView)
+//            let last = dataSource[section, dataSource.numberOfItems(inSection: section) - 1]
+//            insets.bottom = cellController.sectionInset(for: last, in: collectionView).bottom
         }
         
         if let loadMore = loadMoreController {

@@ -158,9 +158,9 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
         }
     }
     
-    open func dataFeed(_ dataFeed: TTDataFeed?, fromState: FeedState, toState: FeedState) {
+    open func dataFeed(_ dataFeed: TTDataFeed?, stateChangedFrom fromState: FeedState, toState: FeedState) {
         if let delegate = delegate as? TTDataFeedDelegate {
-            delegate.dataFeed(dataFeed, fromState: fromState, toState: toState)
+            delegate.dataFeed(dataFeed, stateChangedFrom: fromState, toState: toState)
         }
     }
 //}

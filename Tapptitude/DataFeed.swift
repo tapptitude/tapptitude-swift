@@ -34,7 +34,7 @@ open class DataFeed<T, OffsetType>: TTDataFeed {
     
     open var state: FeedState = .idle {
         didSet {
-            delegate?.dataFeed(self, fromState: oldValue, toState: state)
+            delegate?.dataFeed(self, stateChangedFrom: oldValue, toState: state)
         }
     }
     
