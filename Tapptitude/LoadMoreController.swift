@@ -19,7 +19,7 @@ extension TTLoadMoreController {
         }
         
         var preloadMoreContent = false
-        let numberOfPagesToPreload = CGFloat(self.numberOfPagesToPreload)
+        let numberOfPagesToPreload = self.numberOfPagesToPreload
         let bounds = collectionView.bounds
         let contentSize = collectionView.contentSize
         
@@ -49,7 +49,7 @@ extension TTLoadMoreController {
 
 open class LoadMoreFooterController: NSObject, TTLoadMoreController {
     open var autoLoadMoreContent: Bool = true
-    open var numberOfPagesToPreload: Int = 2 // load more content when last 2 pages are visible
+    open var numberOfPagesToPreload: CGFloat = 2 // load more content when last 2 pages are visible
     open var canShowLoadMoreView : Bool = false
     open var loadMorePosition = LoadMoreController.Position.bottom
     
@@ -150,7 +150,7 @@ open class LoadMoreController: NSObject, TTLoadMoreController {
     
     open var loadMorePosition = Position.bottom
     open var autoLoadMoreContent: Bool = true
-    open var numberOfPagesToPreload: Int = 2 // load more content when last 2 pages are visible
+    open var numberOfPagesToPreload: CGFloat = 2 // load more content when last 2 pages are visible
     open var canShowLoadMoreView : Bool = false
     
     open func updateCanShowLoadMoreView(for feed: TTDataFeed?,  animated: Bool) {

@@ -206,10 +206,8 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         }
         
         switch scrollDirection {
-        case .horizontal:
-            loadMoreController?.loadMorePosition = .right
-        case .vertical:
-            loadMoreController?.loadMorePosition = .bottom
+        case .horizontal: loadMoreController?.loadMorePosition = .right
+        case .vertical: loadMoreController?.loadMorePosition = .bottom
         }
         
     }

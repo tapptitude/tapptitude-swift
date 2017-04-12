@@ -52,10 +52,6 @@ extension TTCollectionHeaderController {
     public func configureHeader(_ header: UICollectionReusableView, for content: Any, at indexPath: IndexPath) {
         configureHeader(header as! HeaderType, for: content as! ContentType, at: indexPath)
     }
-    
-    public func acceptsContent(_ content: Any) -> Bool {
-        return content is ContentType
-    }
 }
 
 open class CollectionHeaderController<ItemType, HeaderName: UICollectionReusableView> : TTCollectionHeaderController {
@@ -83,5 +79,9 @@ open class CollectionHeaderController<ItemType, HeaderName: UICollectionReusable
     
     open func configureHeader(_ header: HeaderType, for content: ContentType, at indexPath: IndexPath) {
         self.configureHeader?(header, content, indexPath)
+    }
+    
+    open func acceptsContent(_ content: Any) -> Bool {
+        return content is ContentType
     }
 }

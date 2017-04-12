@@ -12,7 +12,7 @@ public protocol TTLoadMoreController {
     var collectionView: UICollectionView? {get set}
     var loadMorePosition: LoadMoreController.Position {get set}
     var autoLoadMoreContent: Bool {get set}
-    var numberOfPagesToPreload: Int {get set} // load more content when last 2 pages are visible
+    var numberOfPagesToPreload: CGFloat {get set} // load more content when last 2 pages are visible
     var canShowLoadMoreView : Bool {get set}
     
     func updateCanShowLoadMoreView(for feed: TTDataFeed?,  animated: Bool)

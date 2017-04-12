@@ -184,6 +184,10 @@ fileprivate class RunningOperation: TTCancellable {
 }
 
 
+
+
+
+
 public extension DataFeed where OffsetType: Integer {
 
     convenience public init(pageSize: OffsetType,
@@ -202,6 +206,13 @@ public extension DataFeed where OffsetType: Integer {
         }
     }
 }
+
+
+
+
+
+
+
 
 extension DataSource {
     public convenience init(feed: TTDataFeed) {
@@ -228,6 +239,11 @@ extension DataSource {
         self.feed?.delegate = self // need to set otherwise is null in init
     }
 }
+
+
+
+
+
 
 
 extension DataSource {
