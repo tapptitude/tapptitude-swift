@@ -82,6 +82,14 @@ open class CollectionHeaderController<ItemType, HeaderName: UICollectionReusable
     }
     
     open func acceptsContent(_ content: Any) -> Bool {
-        return content is ContentType
+        if let content = content as? ContentType {
+            return acceptsContent(content)
+        } else {
+            return false
+        }
+    }
+    
+    open func acceptsContent(_ content: ContentType) -> Bool {
+        return true
     }
 }
