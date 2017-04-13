@@ -316,12 +316,20 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
 ////MARK: Data Feed -
 //extension CollectionFeedController : TTDataFeedDelegate {
     
+    /// last error, if any, that we got from feed reload/loadMore operation
+    var lastFeedError: Error?
+    
     open func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState.Load) {
         switch forState {
         case .reloading:
             refreshControl?.endRefreshing()
         case .loadingMore:
             break
+        }
+        
+        self.lastFeedError = result.error
+        if let error = lastFeedError {
+            checkAndShow(error: error)
         }
     }
     
@@ -338,7 +346,9 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     }
     
     func checkIfShouldLoadMoreContent() {
-        loadMoreController?.checkIfShouldLoadMoreContent(for: dataSource?.feed)
+        if lastFeedError == nil {
+            loadMoreController?.checkIfShouldLoadMoreContent(for: dataSource?.feed)
+        }
     }
     func updateCanShowLoadMoreViewAnimated(_ animated: Bool) {
         loadMoreController?.updateCanShowLoadMoreView(for: dataSource?.feed, animated: animated)

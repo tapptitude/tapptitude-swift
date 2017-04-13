@@ -18,6 +18,7 @@
 		2380FAC31E2CF908005D8897 /* AutolayoutCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2380FAC21E2CF908005D8897 /* AutolayoutCell.xib */; };
 		2380FAC51E2CF90E005D8897 /* AutolayoutCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2380FAC41E2CF90E005D8897 /* AutolayoutCell.swift */; };
 		2386882C1E2E6D3700521904 /* PrefetchFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2386882B1E2E6D3700521904 /* PrefetchFeedController.swift */; };
+		238BCFCE1E9E24BA006A869E /* ErrorDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238BCFCD1E9E24BA006A869E /* ErrorDisplay.swift */; };
 		2393482C1CA5D268005EB280 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2393482B1CA5D268005EB280 /* API.swift */; };
 		23A550DA1C78A1BC00695BF3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A550D91C78A1BC00695BF3 /* AppDelegate.swift */; };
 		23A550DF1C78A1BC00695BF3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23A550DD1C78A1BC00695BF3 /* Main.storyboard */; };
@@ -67,6 +68,7 @@
 		2380FAC21E2CF908005D8897 /* AutolayoutCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AutolayoutCell.xib; sourceTree = "<group>"; };
 		2380FAC41E2CF90E005D8897 /* AutolayoutCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutolayoutCell.swift; sourceTree = "<group>"; };
 		2386882B1E2E6D3700521904 /* PrefetchFeedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrefetchFeedController.swift; sourceTree = "<group>"; };
+		238BCFCD1E9E24BA006A869E /* ErrorDisplay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorDisplay.swift; sourceTree = "<group>"; };
 		2393482B1CA5D268005EB280 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		23A550D61C78A1BB00695BF3 /* TestTapptitude.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestTapptitude.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		23A550D91C78A1BC00695BF3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 				23A550E01C78A1BC00695BF3 /* Assets.xcassets */,
 				23A550E21C78A1BC00695BF3 /* LaunchScreen.storyboard */,
 				23A550E51C78A1BC00695BF3 /* Info.plist */,
+				238BCFCD1E9E24BA006A869E /* ErrorDisplay.swift */,
 			);
 			path = TestTapptitude;
 			sourceTree = "<group>";
@@ -259,6 +262,7 @@
 				2386882C1E2E6D3700521904 /* PrefetchFeedController.swift in Sources */,
 				23670E6C1DF95FDE0059D5AA /* ParallelFeedController.swift in Sources */,
 				2355FF9D1CA3355F00D7B393 /* TextCell.swift in Sources */,
+				238BCFCE1E9E24BA006A869E /* ErrorDisplay.swift in Sources */,
 				23A551111C78A32300695BF3 /* FeedController.swift in Sources */,
 				2344DFEA1E62FBF700125C6A /* ChatFeedViewController.swift in Sources */,
 				23A550DA1C78A1BC00695BF3 /* AppDelegate.swift in Sources */,

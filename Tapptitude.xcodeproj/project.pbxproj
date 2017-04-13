@@ -40,6 +40,7 @@
 		23670E671DF89EA10059D5AA /* ParallelOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23670E661DF89EA10059D5AA /* ParallelOperations.swift */; };
 		237F27D71E6B408600F84BE2 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237F27D61E6B408600F84BE2 /* Result.swift */; };
 		238688291E2E618D00521904 /* CollectionCellPrefetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238688281E2E618D00521904 /* CollectionCellPrefetcher.swift */; };
+		238BCFCB1E9E1DF3006A869E /* ErrorDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238BCFCA1E9E1DF3006A869E /* ErrorDisplay.swift */; };
 		23C46B211E8EF1AD00DC9187 /* ChatCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C46B201E8EF1AD00DC9187 /* ChatCollectionViewFlowLayout.swift */; };
 		23C46B231E8FA8F100DC9187 /* ChatCollectionFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C46B221E8FA8F100DC9187 /* ChatCollectionFeedController.swift */; };
 		23C5A6F01CB82B6E00FE5152 /* FilteredDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C5A6EF1CB82B6E00FE5152 /* FilteredDataSource.swift */; };
@@ -95,6 +96,7 @@
 		23670E661DF89EA10059D5AA /* ParallelOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParallelOperations.swift; path = Tapptitude/ParallelOperations.swift; sourceTree = SOURCE_ROOT; };
 		237F27D61E6B408600F84BE2 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Result.swift; path = Tapptitude/Result.swift; sourceTree = SOURCE_ROOT; };
 		238688281E2E618D00521904 /* CollectionCellPrefetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionCellPrefetcher.swift; path = Tapptitude/CollectionCellPrefetcher.swift; sourceTree = SOURCE_ROOT; };
+		238BCFCA1E9E1DF3006A869E /* ErrorDisplay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ErrorDisplay.swift; path = Tapptitude/ErrorDisplay.swift; sourceTree = SOURCE_ROOT; };
 		23C46B201E8EF1AD00DC9187 /* ChatCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		23C46B221E8FA8F100DC9187 /* ChatCollectionFeedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChatCollectionFeedController.swift; path = Tapptitude/ChatCollectionFeedController.swift; sourceTree = SOURCE_ROOT; };
 		23C5A6EF1CB82B6E00FE5152 /* FilteredDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilteredDataSource.swift; path = Tapptitude/FilteredDataSource.swift; sourceTree = SOURCE_ROOT; };
@@ -188,6 +190,7 @@
 				235500A71CA4569200D7B393 /* CollectionFeedController.xib */,
 				23EFA9EC1E981D370051C4DD /* TTLoadMore.swift */,
 				23EFA9EB1E981C4A0051C4DD /* LoadMore */,
+				238BCFCA1E9E1DF3006A869E /* ErrorDisplay.swift */,
 				234BC7281CDCF9A6004057D4 /* Helpers */,
 				235500A81CA4569200D7B393 /* Info.plist */,
 				235500A91CA4569200D7B393 /* tapptitude-swift.h */,
@@ -364,6 +367,7 @@
 				2364D09F1E2CEF7F009DCA7E /* UICollectionViewCell+AutoLayout.swift in Sources */,
 				235500B41CA4569200D7B393 /* TTDataSource.swift in Sources */,
 				235500AA1CA4569200D7B393 /* DataSource.swift in Sources */,
+				238BCFCB1E9E1DF3006A869E /* ErrorDisplay.swift in Sources */,
 				235500AD1CA4569200D7B393 /* MultiCollectionCellController.swift in Sources */,
 				235500AB1CA4569200D7B393 /* TTCollectionCellController.swift in Sources */,
 				235500B71CA4569200D7B393 /* LoadMoreView.swift in Sources */,

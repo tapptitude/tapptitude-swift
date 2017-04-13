@@ -66,7 +66,7 @@ class ItemCellController: CollectionCellController<String, TextCell> {
 
 protocol CollectionController: class {
     associatedtype DataSourceType: TTDataSource
-    associatedtype CellControllerType: TTCollectionCellControllerProtocol
+    associatedtype CellControllerType: TTAnyCollectionCellController
     associatedtype CollectionControllerType: CollectionFeedController
     
     var dataSource: DataSourceType {get set}

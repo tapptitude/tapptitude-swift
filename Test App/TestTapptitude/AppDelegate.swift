@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Tapptitude
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
