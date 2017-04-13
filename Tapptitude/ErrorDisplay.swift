@@ -9,11 +9,13 @@
 import UIKit
 
 public protocol TTErrorDisplay: class {
+    /// implement a custom way to show errors
     static func showError(_ error: NSError, fromViewController: UIViewController)
 }
 
 extension TTErrorDisplay {
     
+    /// Errors aren't displayed when viewController is not visible
     public static func checkAndShowError(_ error: Error?, fromViewController: UIViewController) {
         guard let error = error as NSError? else {
             return
@@ -76,10 +78,6 @@ public class ErrorDisplay: NSObject, TTErrorDisplay {
     public class func showError(_ error: NSError, fromViewController: UIViewController) {
         showError(title: "Error", message: error.localizedDescription, fromViewController: fromViewController)
     }
-    
-    public class func checkAndShowError(_ error: Error?, fromViewController: UIViewController?) {
-        
-    }
 }
 
 
@@ -88,6 +86,7 @@ extension UIViewController {
     /// replace default error display class with a custom one
     public static var TTErrorDisplayClass: TTErrorDisplay.Type = ErrorDisplay.self
     
+    /// will display errors when viewController is visible
     open func checkAndShow(error: Error?) {
         UIViewController.TTErrorDisplayClass.checkAndShowError(error, fromViewController:self)
     }
