@@ -43,16 +43,16 @@ import Foundation
 
 private extension String {
     func trimAllWhitespacesAndSpecialCharacters() -> String {
-        let invalidCharacters = NSCharacterSet.alphanumericCharacterSet().invertedSet
-        let x = self.componentsSeparatedByCharactersInSet(invalidCharacters)
-        return x.joinWithSeparator("")
+        let invalidCharacters = CharacterSet.alphanumerics.inverted
+        let x = self.components(separatedBy: invalidCharacters)
+        return x.joined(separator: "")
     }
 }
 
-private func SwiftRepresentationForString(string: String, capitalizeFirstLetter: Bool = false, doNotShadow: String? = nil) -> String {
+private func SwiftRepresentationForString(_ string: String, capitalizeFirstLetter: Bool = false, doNotShadow: String? = nil) -> String {
     var str =  string.trimAllWhitespacesAndSpecialCharacters()
     if capitalizeFirstLetter {
-        str = String(str.uppercaseString.unicodeScalars.prefix(1) + str.unicodeScalars.suffix(str.unicodeScalars.count - 1))
+        str = String(str.uppercased().unicodeScalars.prefix(1) + str.unicodeScalars.suffix(str.unicodeScalars.count - 1))
     }
     if str == doNotShadow {
         str = str + "_"
@@ -65,7 +65,7 @@ private func SwiftRepresentationForString(string: String, capitalizeFirstLetter:
 let rootElementName = "SWXMLHash_Root_Element"
 
 /// Simple XML parser.
-public class SWXMLHash {
+open class SWXMLHash {
     /**
      Method to parse XML passed in as a string.
      
@@ -73,8 +73,8 @@ public class SWXMLHash {
      
      - returns: An XMLIndexer instance that is used to look up elements in the XML
      */
-    class public func parse(xml: String) -> XMLIndexer {
-        return parse((xml as NSString).dataUsingEncoding(NSUTF8StringEncoding)!)
+    class open func parse(_ xml: String) -> XMLIndexer {
+        return parse((xml as NSString).data(using: String.Encoding.utf8.rawValue)!)
     }
     
     /**
@@ -84,16 +84,16 @@ public class SWXMLHash {
      
      - returns: An XMLIndexer instance that is used to look up elements in the XML
      */
-    class public func parse(data: NSData) -> XMLIndexer {
+    class open func parse(_ data: Data) -> XMLIndexer {
         let parser = XMLParser()
         return parser.parse(data)
     }
     
-    class public func lazy(xml: String) -> XMLIndexer {
-        return lazy((xml as NSString).dataUsingEncoding(NSUTF8StringEncoding)!)
+    class open func lazy(_ xml: String) -> XMLIndexer {
+        return lazy((xml as NSString).data(using: String.Encoding.utf8.rawValue)!)
     }
     
-    class public func lazy(data: NSData) -> XMLIndexer {
+    class open func lazy(_ data: Data) -> XMLIndexer {
         let parser = LazyXMLParser()
         return parser.parse(data)
     }
@@ -101,21 +101,21 @@ public class SWXMLHash {
 
 struct Stack<T> {
     var items = [T]()
-    mutating func push(item: T) {
+    mutating func push(_ item: T) {
         items.append(item)
     }
     mutating func pop() -> T {
         return items.removeLast()
     }
     mutating func removeAll() {
-        items.removeAll(keepCapacity: false)
+        items.removeAll(keepingCapacity: false)
     }
     func top() -> T {
         return items[items.count - 1]
     }
 }
 
-class LazyXMLParser: NSObject, NSXMLParserDelegate {
+class LazyXMLParser: NSObject, XMLParserDelegate {
     override init() {
         super.init()
     }
@@ -124,38 +124,38 @@ class LazyXMLParser: NSObject, NSXMLParserDelegate {
     var parentStack = Stack<XMLElement>()
     var elementStack = Stack<String>()
     
-    var data: NSData?
+    var data: Data?
     var ops: [IndexOp] = []
     
-    func parse(data: NSData) -> XMLIndexer {
+    func parse(_ data: Data) -> XMLIndexer {
         self.data = data
         return XMLIndexer(self)
     }
     
-    func startParsing(ops: [IndexOp]) {
+    func startParsing(_ ops: [IndexOp]) {
         // clear any prior runs of parse... expected that this won't be necessary, but you never know
         parentStack.removeAll()
         root = XMLElement(name: rootElementName)
         parentStack.push(root)
         
         self.ops = ops
-        let parser = NSXMLParser(data: data!)
+        let parser = Foundation.XMLParser(data: data!)
         parser.delegate = self
         parser.parse()
     }
     
-    func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String: String]) {
+    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String: String]) {
         
         elementStack.push(elementName)
         
         if !onMatch() {
             return
         }
-        let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict)
+        let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict as NSDictionary)
         parentStack.push(currentNode)
     }
     
-    func parser(parser: NSXMLParser, foundCharacters string: String) {
+    func parser(_ parser: XMLParser, foundCharacters string: String) {
         if !onMatch() {
             return
         }
@@ -168,7 +168,7 @@ class LazyXMLParser: NSObject, NSXMLParserDelegate {
         parentStack.top().text! += string
     }
     
-    func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
+    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
         let match = onMatch()
         
         elementStack.pop()
@@ -182,16 +182,16 @@ class LazyXMLParser: NSObject, NSXMLParserDelegate {
         // we typically want to compare against the elementStack to see if it matches ops, *but*
         // if we're on the first element, we'll instead compare the other direction.
         if elementStack.items.count > ops.count {
-            return elementStack.items.startsWith(ops.map { $0.key })
+            return elementStack.items.starts(with: ops.map { $0.key })
         }
         else {
-            return ops.map { $0.key }.startsWith(elementStack.items)
+            return ops.map { $0.key }.starts(with: elementStack.items)
         }
     }
 }
 
 /// The implementation of NSXMLParserDelegate and where the parsing actually happens.
-class XMLParser: NSObject, NSXMLParserDelegate {
+class XMLParser: NSObject, XMLParserDelegate {
     override init() {
         super.init()
     }
@@ -199,26 +199,26 @@ class XMLParser: NSObject, NSXMLParserDelegate {
     var root = XMLElement(name: rootElementName)
     var parentStack = Stack<XMLElement>()
     
-    func parse(data: NSData) -> XMLIndexer {
+    func parse(_ data: Data) -> XMLIndexer {
         // clear any prior runs of parse... expected that this won't be necessary, but you never know
         parentStack.removeAll()
         
         parentStack.push(root)
         
-        let parser = NSXMLParser(data: data)
+        let parser = Foundation.XMLParser(data: data)
         parser.delegate = self
         parser.parse()
         
         return XMLIndexer(root)
     }
     
-    func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String: String]) {
+    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String: String]) {
         
-        let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict)
+        let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict as NSDictionary)
         parentStack.push(currentNode)
     }
     
-    func parser(parser: NSXMLParser, foundCharacters string: String) {
+    func parser(_ parser: XMLParser, foundCharacters string: String) {
         let current = parentStack.top()
         if current.text == nil {
             current.text = ""
@@ -227,12 +227,12 @@ class XMLParser: NSObject, NSXMLParserDelegate {
         parentStack.top().text! += string
     }
     
-    func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
+    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
         parentStack.pop()
     }
 }
 
-public class IndexOp {
+open class IndexOp {
     var index: Int
     let key: String
     
@@ -250,7 +250,7 @@ public class IndexOp {
     }
 }
 
-public class IndexOps {
+open class IndexOps {
     var ops: [IndexOp] = []
     
     let parser: LazyXMLParser
@@ -269,7 +269,7 @@ public class IndexOps {
                 childIndex = childIndex[op.index]
             }
         }
-        ops.removeAll(keepCapacity: false)
+        ops.removeAll(keepingCapacity: false)
         return childIndex
     }
     
@@ -283,11 +283,11 @@ public class IndexOps {
 }
 
 /// Returned from SWXMLHash, allows easy element lookup into XML data.
-public enum XMLIndexer: SequenceType {
+public enum XMLIndexer: Sequence {
     case Element(XMLElement)
-    case List([XMLElement])
-    case Stream(IndexOps)
-    case Error(NSError)
+    case list([XMLElement])
+    case stream(IndexOps)
+    case error(NSError)
     
     /// The underlying XMLElement at the currently indexed level of XML.
     public var element: XMLElement? {
@@ -295,7 +295,7 @@ public enum XMLIndexer: SequenceType {
             switch self {
             case .Element(let elem):
                 return elem
-            case .Stream(let ops):
+            case .stream(let ops):
                 let list = ops.findElements()
                 return list.element
             default:
@@ -308,7 +308,7 @@ public enum XMLIndexer: SequenceType {
     public var all: [XMLIndexer] {
         get {
             switch self {
-            case .List(let list):
+            case .list(let list):
                 var xmlList = [XMLIndexer]()
                 for elem in list {
                     xmlList.append(XMLIndexer(elem))
@@ -316,7 +316,7 @@ public enum XMLIndexer: SequenceType {
                 return xmlList
             case .Element(let elem):
                 return [XMLIndexer(elem)]
-            case .Stream(let ops):
+            case .stream(let ops):
                 let list = ops.findElements()
                 return list.all
             default:
@@ -346,29 +346,29 @@ public enum XMLIndexer: SequenceType {
      
      - returns: instance of XMLIndexer
      */
-    public func withAttr(attr: String, _ value: String) -> XMLIndexer {
+    public func withAttr(_ attr: String, _ value: String) -> XMLIndexer {
         let attrUserInfo = [NSLocalizedDescriptionKey: "XML Attribute Error: Missing attribute [\"\(attr)\"]"]
         let valueUserInfo = [NSLocalizedDescriptionKey: "XML Attribute Error: Missing attribute [\"\(attr)\"] with value [\"\(value)\"]"]
         switch self {
-        case .Stream(let opStream):
+        case .stream(let opStream):
             opStream.stringify()
             let match = opStream.findElements()
             return match.withAttr(attr, value)
-        case .List(let list):
+        case .list(let list):
             if let elem = list.filter({ $0.attributes[attr] == value }).first {
                 return .Element(elem)
             }
-            return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: valueUserInfo))
+            return .error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: valueUserInfo))
         case .Element(let elem):
             if let attr = elem.attributes[attr] {
                 if attr == value {
                     return .Element(elem)
                 }
-                return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: valueUserInfo))
+                return .error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: valueUserInfo))
             }
-            return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: attrUserInfo))
+            return .error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: attrUserInfo))
         default:
-            return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: attrUserInfo))
+            return .error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: attrUserInfo))
         }
     }
     
@@ -384,9 +384,9 @@ public enum XMLIndexer: SequenceType {
         case let value as XMLElement:
             self = .Element(value)
         case let value as LazyXMLParser:
-            self = .Stream(IndexOps(parser: value))
+            self = .stream(IndexOps(parser: value))
         default:
-            self = .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: nil))
+            self = .error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: nil))
         }
     }
     
@@ -401,10 +401,10 @@ public enum XMLIndexer: SequenceType {
         get {
             let userInfo = [NSLocalizedDescriptionKey: "XML Element Error: Incorrect key [\"\(key)\"]"]
             switch self {
-            case .Stream(let opStream):
+            case .stream(let opStream):
                 let op = IndexOp(key)
                 opStream.ops.append(op)
-                return .Stream(opStream)
+                return .stream(opStream)
             case .Element(let elem):
                 let match = elem.children.filter({ $0.name == key })
                 if match.count > 0 {
@@ -412,12 +412,12 @@ public enum XMLIndexer: SequenceType {
                         return .Element(match[0])
                     }
                     else {
-                        return .List(match)
+                        return .list(match)
                     }
                 }
-                return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
+                return .error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
             default:
-                return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
+                return .error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
             }
         }
     }
@@ -433,41 +433,41 @@ public enum XMLIndexer: SequenceType {
         get {
             let userInfo = [NSLocalizedDescriptionKey: "XML Element Error: Incorrect index [\"\(index)\"]"]
             switch self {
-            case .Stream(let opStream):
+            case .stream(let opStream):
                 opStream.ops[opStream.ops.count - 1].index = index
-                return .Stream(opStream)
-            case .List(let list):
+                return .stream(opStream)
+            case .list(let list):
                 if index <= list.count {
                     return .Element(list[index])
                 }
-                return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
+                return .error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
             case .Element(let elem):
                 if index == 0 {
                     return .Element(elem)
                 }
                 else {
-                    return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
+                    return .error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
                 }
             default:
-                return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
+                return .error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
             }
         }
     }
     
     typealias GeneratorType = XMLIndexer
     
-    public func generate() -> IndexingGenerator<[XMLIndexer]> {
-        return all.generate()
+    public func makeIterator() -> IndexingIterator<[XMLIndexer]> {
+        return all.makeIterator()
     }
 }
 
 /// XMLIndexer extensions
-extension XMLIndexer: BooleanType {
+extension XMLIndexer {
     /// True if a valid XMLIndexer, false if an error type
     public var boolValue: Bool {
         get {
             switch self {
-            case .Error:
+            case .error:
                 return false
             default:
                 return true
@@ -480,11 +480,11 @@ extension XMLIndexer: CustomStringConvertible {
     public var description: String {
         get {
             switch self {
-            case .List(let list):
-                return list.map { $0.description }.joinWithSeparator("\n")
+            case .list(let list):
+                return list.map { $0.description }.joined(separator: "\n")
             case .Element(let elem):
                 if elem.name == rootElementName {
-                    return elem.children.map { $0.description }.joinWithSeparator("\n")
+                    return elem.children.map { $0.description }.joined(separator: "\n")
                 }
                 
                 return elem.description
@@ -496,13 +496,13 @@ extension XMLIndexer: CustomStringConvertible {
 }
 
 /// Models an XML element, including name, text and attributes
-public class XMLElement {
+open class XMLElement {
     /// The name of the element
-    public let name: String
+    open let name: String
     /// The inner text of the element, if it exists
-    public var text: String?
+    open var text: String?
     /// The attributes of the element
-    public var attributes = [String:String]()
+    open var attributes = [String:String]()
     
     var children = [XMLElement]()
     var count: Int = 0
@@ -528,9 +528,9 @@ public class XMLElement {
      
      - returns: The XMLElement that has now been added
      */
-    func addElement(name: String, withAttributes attributes: NSDictionary) -> XMLElement {
+    func addElement(_ name: String, withAttributes attributes: NSDictionary) -> XMLElement {
         let element = XMLElement(name: name, index: count)
-        count++
+        count += 1
         
         children.append(element)
         
@@ -554,7 +554,7 @@ extension XMLElement: CustomStringConvertible {
                 }
             }
             
-            var attributesString = attributesStringList.joinWithSeparator(" ")
+            var attributesString = attributesStringList.joined(separator: " ")
             if (!attributesString.isEmpty) {
                 attributesString = " " + attributesString
             }
@@ -566,7 +566,7 @@ extension XMLElement: CustomStringConvertible {
                     xmlReturn.append(child.description)
                 }
                 xmlReturn.append("</\(name)>")
-                return xmlReturn.joinWithSeparator("\n")
+                return xmlReturn.joined(separator: "\n")
             }
             
             if text != nil {
@@ -622,7 +622,7 @@ enum OS: String, CustomStringConvertible {
         case Runtime.MacOSXCocoa.rawValue:
             self = .OSX
         case "iOS.CocoaTouch.iPad":
-            self = iOS
+            self = .iOS
         default:
             fatalError("Unsupported")
         }
@@ -642,79 +642,79 @@ enum OS: String, CustomStringConvertible {
     
     var storyboardType: String {
         switch self {
-        case iOS:
+        case .iOS:
             return "UIStoryboard"
-        case OSX:
+        case .OSX:
             return "NSStoryboard"
         }
     }
     
     var storyboardSegueType: String {
         switch self {
-        case iOS:
+        case .iOS:
             return "UIStoryboardSegue"
-        case OSX:
+        case .OSX:
             return "NSStoryboardSegue"
         }
     }
     
     var storyboardControllerTypes: [String] {
         switch self {
-        case iOS:
+        case .iOS:
             return ["UIViewController"]
-        case OSX:
+        case .OSX:
             return ["NSViewController", "NSWindowController"]
         }
     }
     
     var storyboardControllerReturnType: String {
         switch self {
-        case iOS:
+        case .iOS:
             return "UIViewController"
-        case OSX:
+        case .OSX:
             return "AnyObject" // NSViewController or NSWindowController
         }
     }
     
     var storyboardControllerSignatureType: String {
         switch self {
-        case iOS:
+        case .iOS:
             return "ViewController"
-        case OSX:
+        case .OSX:
             return "Controller" // NSViewController or NSWindowController
         }
     }
     
     var storyboardInstantiationInfo: [(String /* Signature type */, String /* Return type */)] {
         switch self {
-        case iOS:
+        case .iOS:
             return [("ViewController", "UIViewController")]
-        case OSX:
+        case .OSX:
             return [("WindowController", "NSWindowController"), ("ViewController", "NSViewController")]
         }
     }
     
     var viewType: String {
         switch self {
-        case iOS:
+        case .iOS:
             return "UIView"
-        case OSX:
+        case .OSX:
             return "NSView"
         }
     }
     
     var resuableViews: [String]? {
         switch self {
-        case iOS:
+        case .iOS:
             return ["UICollectionReusableView", "UITableViewCell"]
-        case OSX:
+        case .OSX:
             return nil
         }
     }
     
-    func controllerTypeForElementName(name: String) -> String? {
+    func controllerTypeForElementName(_ name: String) -> String? {
         switch self {
-        case iOS:
+        case .iOS:
             switch name {
             case "viewController":
                 return "UIViewController"
@@ -736,7 +736,7 @@ enum OS: String, CustomStringConvertible {
                 assertionFailure("Unknown controller element: \(name)")
                 return nil
             }
-        case OSX:
+        case .OSX:
             switch name {
             case "viewController":
                 return "NSViewController"
@@ -769,20 +769,20 @@ class XMLObject {
         self.name = xml.element!.name
     }
     
-    func searchAll(attributeKey: String, attributeValue: String? = nil) -> [XMLIndexer]? {
+    func searchAll(_ attributeKey: String, attributeValue: String? = nil) -> [XMLIndexer]? {
         return searchAll(self.xml, attributeKey: attributeKey, attributeValue: attributeValue)
     }
     
-    func searchAll(root: XMLIndexer, attributeKey: String, attributeValue: String? = nil) -> [XMLIndexer]? {
+    func searchAll(_ root: XMLIndexer, attributeKey: String, attributeValue: String? = nil) -> [XMLIndexer]? {
         var result = Array<XMLIndexer>()
         for child in root.children {
             
             for childAtLevel in child.all {
                 if let attributeValue = attributeValue {
-                    if let element = childAtLevel.element where element.attributes[attributeKey] == attributeValue {
+                    if let element = childAtLevel.element, element.attributes[attributeKey] == attributeValue {
                         result += [childAtLevel]
                     }
-                } else if let element = childAtLevel.element where element.attributes[attributeKey] != nil {
+                } else if let element = childAtLevel.element, element.attributes[attributeKey] != nil {
                     result += [childAtLevel]
                 }
                 
@@ -794,16 +794,16 @@ class XMLObject {
         return result.count > 0 ? result : nil
     }
     
-    func searchNamed(name: String) -> [XMLIndexer]? {
+    func searchNamed(_ name: String) -> [XMLIndexer]? {
         return self.searchNamed(self.xml, name: name)
     }
     
-    func searchNamed(root: XMLIndexer, name: String) -> [XMLIndexer]? {
+    func searchNamed(_ root: XMLIndexer, name: String) -> [XMLIndexer]? {
         var result = Array<XMLIndexer>()
         for child in root.children {
             
             for childAtLevel in child.all {
-                if let elementName = childAtLevel.element?.name where elementName == name {
+                if let elementName = childAtLevel.element?.name, elementName == name {
                     result += [child]
                 }
                 if let found = searchNamed(childAtLevel, name: name) {
@@ -814,7 +814,7 @@ class XMLObject {
         return result.count > 0 ? result : nil
     }
     
-    func searchById(id: String) -> XMLIndexer? {
+    func searchById(_ id: String) -> XMLIndexer? {
         return searchAll("id", attributeValue: id)?.first
     }
 }
@@ -822,7 +822,7 @@ class XMLObject {
 class Scene: XMLObject {
     
     lazy var viewController: ViewController? = {
-        if let vcs = self.searchAll("sceneMemberID", attributeValue: "viewController"), vc = vcs.first {
+        if let vcs = self.searchAll("sceneMemberID", attributeValue: "viewController"), let vc = vcs.first {
             return ViewController(xml: vc)
         }
         return nil
@@ -858,7 +858,7 @@ class Segue: XMLObject {
     
     override init(xml: XMLIndexer) {
         self.kind = xml.element!.attributes["kind"]!
-        if let id = xml.element?.attributes["identifier"] where id.characters.count > 0 {self.identifier = id}
+        if let id = xml.element?.attributes["identifier"], id.characters.count > 0 {self.identifier = id}
         else                                                                            {self.identifier = nil}
         super.init(xml: xml)
     }
@@ -920,7 +920,7 @@ class Storyboard: XMLObject {
         super.init(xml: xml)
     }
     
-    func processStoryboard(storyboardName: String, os: OS) {
+    func processStoryboard(_ storyboardName: String, os: OS) {
         print("")
         print("    struct \(storyboardName): Storyboard {")
         print("")
@@ -936,7 +936,7 @@ class Storyboard: XMLObject {
             print("")
             print("        enum \(storyboardName)Identifier: String {")
             for scene in self.scenes {
-                if let viewController = scene.viewController, storyboardIdentifier = viewController.storyboardIdentifier {
+                if let viewController = scene.viewController, let storyboardIdentifier = viewController.storyboardIdentifier {
                     let controllerClass = (viewController.customClass ?? os.controllerTypeForElementName(viewController.name)!)
             print("            case \(storyboardIdentifier) = \"\(storyboardIdentifier)\"")
                 }
@@ -995,8 +995,7 @@ class Storyboard: XMLObject {
                     print("")
                     print("//MARK: - \(customClass)")
                     
-                    if let segues = scene.segues?.filter({ return $0.identifier != nil })
-                        where segues.count > 0 {
+                    if let segues = scene.segues?.filter({ return $0.identifier != nil }), segues.count > 0 {
                         print("extension \(os.storyboardSegueType) {")
                         print("    func selection() -> \(customClass).Segue? {")
                         print("        if let identifier = self.identifier {")
@@ -1020,8 +1019,7 @@ class Storyboard: XMLObject {
                     //                        print("")
                     //                    }
                     
-                    if let segues = scene.segues?.filter({ return $0.identifier != nil })
-                        where segues.count > 0 {
+                    if let segues = scene.segues?.filter({ return $0.identifier != nil }), segues.count > 0 {
                         print("extension \(customClass) { ")
                         print("")
                         print("    enum Segue: String, CustomStringConvertible, SegueProtocol {")
@@ -1037,7 +1035,7 @@ class Storyboard: XMLObject {
                         var needDefaultSegue = false
                         for segue in segues {
                             if let identifier = segue.identifier {
-                                print("            case \(SwiftRepresentationForString(identifier)):")
+                                print("            case .\(SwiftRepresentationForString(identifier)):")
                                 print("                return SegueKind(rawValue: \"\(segue.kind)\")")
                             } else {
                                 needDefaultSegue = true
@@ -1055,11 +1053,11 @@ class Storyboard: XMLObject {
                         print("            switch (self) {")
                         var needDefaultDestination = false
                         for segue in segues {
-                            if let identifier = segue.identifier, destination = segue.destination,
-                                destinationElement = searchById(destination)?.element,
-                                destinationClass = (destinationElement.attributes["customClass"] ?? os.controllerTypeForElementName(destinationElement.name))
+                            if let identifier = segue.identifier, let destination = segue.destination,
+                                let destinationElement = searchById(destination)?.element,
+                                let destinationClass = (destinationElement.attributes["customClass"] ?? os.controllerTypeForElementName(destinationElement.name))
                             {
-                                print("            case \(SwiftRepresentationForString(identifier)):")
+                                print("            case .\(SwiftRepresentationForString(identifier)):")
                                 print("                return \(destinationClass).self")
                             } else {
                                 needDefaultDestination = true
@@ -1080,8 +1078,7 @@ class Storyboard: XMLObject {
                         print("}")
                     }
                     
-                    if let reusables = viewController.reusables?.filter({ return $0.reuseIdentifier != nil })
-                        where reusables.count > 0 {
+                    if let reusables = viewController.reusables?.filter({ return $0.reuseIdentifier != nil }), reusables.count > 0 {
                         
                         print("extension \(customClass) { ")
                         print("")
@@ -1097,7 +1094,7 @@ class Storyboard: XMLObject {
                         var needDefault = false
                         for reusable in reusables {
                             if let identifier = reusable.reuseIdentifier {
-                                print("            case \(SwiftRepresentationForString(identifier, doNotShadow: reusable.customClass)):")
+                                print("            case .\(SwiftRepresentationForString(identifier, doNotShadow: reusable.customClass)):")
                                 print("                return ReusableKind(rawValue: \"\(reusable.kind)\")")
                             } else {
                                 needDefault = true
@@ -1115,8 +1112,8 @@ class Storyboard: XMLObject {
                         print("            switch (self) {")
                         needDefault = false
                         for reusable in reusables {
-                            if let identifier = reusable.reuseIdentifier, customClass = reusable.customClass {
-                                print("            case \(SwiftRepresentationForString(identifier, doNotShadow: reusable.customClass)):")
+                            if let identifier = reusable.reuseIdentifier, let customClass = reusable.customClass {
+                                print("            case .\(SwiftRepresentationForString(identifier, doNotShadow: reusable.customClass)):")
                                 print("                return \(customClass).self")
                             } else {
                                 needDefault = true
@@ -1155,14 +1152,14 @@ class StoryboardInstantion {
     var isOverriding = false
 }
 
-func processStoryboardInstantiation(storyboards: [StoryboardFile], os: OS) {
+func processStoryboardInstantiation(_ storyboards: [StoryboardFile], os: OS) {
     var instaDict = [String: StoryboardInstantion]()
     
     for file in storyboards {
         let storyboardName = file.storyboardName
         
         for scene in file.storyboard.scenes {
-            if let viewController = scene.viewController, storyboardIdentifier = viewController.storyboardIdentifier {
+            if let viewController = scene.viewController, let storyboardIdentifier = viewController.storyboardIdentifier {
                 let controllerClass = (viewController.customClass ?? os.controllerTypeForElementName(viewController.name)!)
                 
                 var item = instaDict[controllerClass]
@@ -1182,7 +1179,7 @@ func processStoryboardInstantiation(storyboards: [StoryboardFile], os: OS) {
     }
     
     for (_, value) in instaDict {
-        let controllerClass = value.controllerClass
+        let controllerClass = value.controllerClass!
         
         print("")
         print("extension \(controllerClass) { ")
@@ -1233,13 +1230,13 @@ func processStoryboardInstantiation(storyboards: [StoryboardFile], os: OS) {
 }
 
 class StoryboardFile {
-    let data: NSData
+    let data: Data
     let storyboardName: String
     let storyboard: Storyboard
     
     init(filePath: String) {
-        self.data = NSData(contentsOfFile: filePath)!
-        self.storyboardName = ((filePath as NSString).lastPathComponent as NSString).stringByDeletingPathExtension
+        self.data = try! Data(contentsOf: URL(fileURLWithPath: filePath))
+        self.storyboardName = ((filePath as NSString).lastPathComponent as NSString).deletingPathExtension
         self.storyboard = Storyboard(xml:SWXMLHash.parse(self.data))
     }
 }
@@ -1247,20 +1244,20 @@ class StoryboardFile {
 
 //MARK: Functions
 
-func findStoryboards(rootPath: String, suffix: String) -> [String]? {
+func findStoryboards(_ rootPath: String, suffix: String) -> [String]? {
     var result = Array<String>()
-    let fm = NSFileManager.defaultManager()
-    if let paths = fm.subpathsAtPath(rootPath) {
+    let fm = FileManager.default
+    if let paths = fm.subpaths(atPath: rootPath) {
         let storyboardPaths = paths.filter({ return $0.hasSuffix(suffix)})
         // result = storyboardPaths
         for p in storyboardPaths {
-            result.append((rootPath as NSString).stringByAppendingPathComponent(p))
+            result.append((rootPath as NSString).appendingPathComponent(p))
         }
     }
     return result.count > 0 ? result : nil
 }
 
-func processStoryboards(storyboards: [StoryboardFile], os: OS) {
+func processStoryboards(_ storyboards: [StoryboardFile], os: OS) {
     
     print("//")
     print("// Autogenerated by Natalie - Storyboard Generator Script.")

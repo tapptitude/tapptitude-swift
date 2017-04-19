@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'Tapptitude'
-  s.version      = '2.0'
+  s.version      = '2.1'
   s.summary      = 'A library to speed up development.'
   s.author       = { 'Alexandru Tudose' => 'alextud@gmail.com' }
   s.homepage     = 'http://tapptitude.com/'
