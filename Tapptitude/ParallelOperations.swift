@@ -27,7 +27,7 @@ open class ParallelDataFeed: DataFeed<Any, Any> {
             case .loadingMore:
                 return self!.loadMoreOperation.execute(offset: offset, callback)
             case .idle:
-                assert(false)
+                abort()
             }
         }
         

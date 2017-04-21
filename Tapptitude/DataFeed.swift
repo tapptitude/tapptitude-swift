@@ -265,6 +265,20 @@ extension DataSource {
         self.feed = DataFeed<V, Offset>(loadPage: operation)
     }
     
+    public func loadOperation<V>(_ operation: @escaping TTLoadOperation<V>, transform: @escaping (_ content: [V]) -> [T]) {
+        let feed = DataFeed<V, Void>(load: operation)
+        feed.setTransform { (content, _, _) -> [T] in
+            return transform(content)
+        }
+        self.feed = feed
+    }
+    
+    public func setLoadPage<V, Offset>(_ operation: @escaping TTLoadPageOperation<V,Offset>, transform: @escaping (_ content: [V], _ offset: Offset?, _ state: FeedState.Load) -> [T]) {
+        let feed = DataFeed<V, Offset>(loadPage: operation)
+        feed.setTransform(transform)
+        self.feed = feed
+    }
+    
     public func setFeed<V, Offset>(_ feed: DataFeed<V, Offset>, transform: @escaping (_ content: [V], _ offset: Offset?, _ state: FeedState.Load) -> [T]) {
         feed.setTransform(transform)
         self.feed = feed
