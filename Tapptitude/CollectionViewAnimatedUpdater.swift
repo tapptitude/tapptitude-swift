@@ -76,7 +76,9 @@ class CollectionViewUpdater: TTCollectionViewUpdater {
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeleteItemsAt indexPaths: [IndexPath]) {
-        let indexPath = indexPaths.last!
+        guard let indexPath = indexPaths.last else {
+            return
+        }
         
         if collectionView.numberOfItems(inSection: indexPath.section) == 1 {
             shouldReloadCollectionView = true
