@@ -67,8 +67,8 @@ class DataSourceTests: XCTestCase {
         
         let fromIndexPath = IndexPath(item:1, section:0)
         let toIndexPath = IndexPath(item:0, section:0)
-        let fromItem = dataSource[fromIndexPath]
-        let toItem = dataSource[toIndexPath]
+        let fromItem: String = dataSource[fromIndexPath]
+        let toItem: String = dataSource[toIndexPath]
         XCTAssert(fromItem != toItem, "should be different")
         dataSource.moveElement(from:fromIndexPath, to: toIndexPath)
         XCTAssert(dataSource[fromIndexPath] == toItem, "should be different")
@@ -76,14 +76,14 @@ class DataSourceTests: XCTestCase {
         
         
         let removeIndexPath = IndexPath(item:1, section:0)
-        let removedItem = dataSource[removeIndexPath]
+        let removedItem: String = dataSource[removeIndexPath]
         dataSource.remove(at: removeIndexPath)
         XCTAssert(dataSource[removeIndexPath] != removedItem, "remove(at: not working")
         
         let removeIndexPath1 = IndexPath(item:1, section:0)
         let removeIndexPath2 = IndexPath(item:2, section:0)
-        let removedItem1 = dataSource[removeIndexPath1]
-        let removedItem2 = dataSource[removeIndexPath2]
+        let removedItem1: String = dataSource[removeIndexPath1]
+        let removedItem2: String = dataSource[removeIndexPath2]
         dataSource.remove(at: [removeIndexPath2, removeIndexPath1])
         XCTAssert(dataSource[removeIndexPath1] != removedItem1, "remove(at: not working")
         XCTAssert(dataSource[removeIndexPath2] != removedItem2, "remove(at: not working")
@@ -132,8 +132,8 @@ class DataSourceTests: XCTestCase {
         
         let fromIndexPath = IndexPath(item:1, section:1)
         let toIndexPath = IndexPath(item:0, section:0)
-        let fromItem = dataSource[fromIndexPath]
-        let nextItem = dataSource[IndexPath(item:2, section:1)]
+        let fromItem: String = dataSource[fromIndexPath]
+        let nextItem: String = dataSource[IndexPath(item:2, section:1)]
         XCTAssert(fromItem != nextItem, "should be different")
         dataSource.moveElement(from:fromIndexPath, to: toIndexPath)
         XCTAssert(dataSource[fromIndexPath] == nextItem, "should be different")
@@ -141,14 +141,14 @@ class DataSourceTests: XCTestCase {
         
         
         let removeIndexPath = IndexPath(item:1, section:1)
-        let removedItem = dataSource[removeIndexPath]
+        let removedItem: String = dataSource[removeIndexPath]
         dataSource.remove(at: removeIndexPath)
         XCTAssert(dataSource[removeIndexPath] != removedItem, "remove(at: not working")
         
         let removeIndexPath1 = IndexPath(item:1, section:1)
         let removeIndexPath2 = IndexPath(item:2, section:1)
-        let removedItem1 = dataSource[removeIndexPath1]
-        let removedItem2 = dataSource[removeIndexPath2]
+        let removedItem1: String = dataSource[removeIndexPath1]
+        let removedItem2: String = dataSource[removeIndexPath2]
         dataSource.remove(at: [removeIndexPath2, removeIndexPath1])
         XCTAssert(dataSource[removeIndexPath1] != removedItem1, "remove(at: not working")
         XCTAssert(dataSource[removeIndexPath2] != removedItem2, "remove(at: not working")
