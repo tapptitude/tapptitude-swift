@@ -13,7 +13,7 @@ import Dispatch
 class APIMock: TTCancellable {
     
     var wasCancelled = false
-    var callback: ((_ content: [String]?, _ error: Error?)->Void)!
+    var callback: ((_ result: Result<[String]>)->Void)!
     var content: [String]?
     var error: Error?
     
@@ -30,13 +30,21 @@ class APIMock: TTCancellable {
     func run() {
         if delay > 0 {
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-                if !self.wasCancelled {
-                    self.callback(self.content, self.error)
-                }
+                self.runCallback()
             }
         } else {
-            if !self.wasCancelled {
-                self.callback(self.content, self.error)
+            runCallback()
+        }
+    }
+    
+    func runCallback() {
+        if !self.wasCancelled {
+            if let content = self.content {
+                self.callback(Result.success(content))
+            } else if let error = self.error {
+                self.callback(Result.failure(error))
+            } else {
+                abort()
             }
         }
     }
