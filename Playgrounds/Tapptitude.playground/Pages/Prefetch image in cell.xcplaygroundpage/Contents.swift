@@ -26,4 +26,15 @@ print(dataSource.content)
 import PlaygroundSupport
 PlaygroundPage.current.liveView = feedController.view
 
+
+
+// testing if multi cellcontroller supports prefetching
+print(feedController.cellController.supportsDataSourcePrefetching())
+let multiCellController = MultiCollectionCellController(feedController.cellController)
+let anyCellController = multiCellController as TTAnyCollectionCellController
+print(multiCellController.supportsDataSourcePrefetching())
+print(anyCellController.supportsDataSourcePrefetching())
+let wCellController = MultiCollectionCellController() as TTAnyCollectionCellController
+print(wCellController.supportsDataSourcePrefetching())
+
 //: [Next](@next)

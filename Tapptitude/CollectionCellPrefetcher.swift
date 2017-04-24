@@ -60,7 +60,14 @@ class CollectionCellPrefetcherDelegate: NSObject, UICollectionViewDataSourcePref
 
 public extension TTAnyCollectionCellController {
     func supportsDataSourcePrefetching() -> Bool {
-        return self is TTCollectionCellPrefetcher
+        switch self {
+        case let cellController as MultiCellController:
+            return cellController.supportsDataSourcePrefetching()
+        case is TTCollectionCellPrefetcher:
+            return true
+        default:
+            return false
+        }
     }
 }
 
