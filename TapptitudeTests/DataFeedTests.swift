@@ -10,7 +10,7 @@ import XCTest
 import Tapptitude
 
 class DataFeedTests: XCTestCase {
-    static let delay = 0.0001
+    static let delay = 0.001
     
     override func setUp() {
         super.setUp()
