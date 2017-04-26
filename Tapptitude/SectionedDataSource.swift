@@ -257,7 +257,10 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
                     }
                 }
             }
-            delegate?.dataSource(self, didDeleteItemsAt: indexPaths)
+            
+            if !indexPaths.isEmpty {
+                delegate?.dataSource(self, didDeleteItemsAt: indexPaths)
+            }
         }
     }
         
