@@ -76,6 +76,31 @@ public protocol TTDataSourceDelegate: class {
 }
 
 
+public enum CellPositionInSection {
+    case top
+    case middle
+    case bottom
+    case single
+}
+
+extension TTDataSource {
+    public  func itemPositionInSection(for indexPath: IndexPath) -> CellPositionInSection {
+        let count = numberOfItems(inSection: indexPath.section)
+        
+        switch (count, indexPath.item) {
+        case (1, _):
+            return .single
+        case (_, 0):
+            return .top
+        case (_, count-1):
+            return .bottom
+        default:
+            return .middle
+        }
+    }
+}
+
+
 extension TTDataSource {
     public var description: String {
         return String(describing: type(of: self)) + ": " + content.description
