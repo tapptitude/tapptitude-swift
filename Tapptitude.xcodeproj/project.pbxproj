@@ -14,6 +14,7 @@
 		232CFBF41E3CE9AB00E1D60C /* DataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232CFBF31E3CE9AB00E1D60C /* DataSourceTests.swift */; };
 		232CFBF61E3CF4A400E1D60C /* DataFeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232CFBF51E3CF4A400E1D60C /* DataFeedTests.swift */; };
 		232CFBF91E3CF5E800E1D60C /* APIMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232CFBF81E3CF5E800E1D60C /* APIMock.swift */; };
+		233475F21ECB898700DDB0C2 /* EmptyViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233475F11ECB898700DDB0C2 /* EmptyViewTests.swift */; };
 		234BC72D1CDCF9A6004057D4 /* KeyboardVisibilityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234BC7291CDCF9A6004057D4 /* KeyboardVisibilityController.swift */; };
 		234BC72E1CDCF9A6004057D4 /* PanViewGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234BC72A1CDCF9A6004057D4 /* PanViewGestureRecognizer.swift */; };
 		234BC72F1CDCF9A6004057D4 /* SwipeToEditOnCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234BC72B1CDCF9A6004057D4 /* SwipeToEditOnCollection.swift */; };
@@ -69,6 +70,7 @@
 		232CFBF31E3CE9AB00E1D60C /* DataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceTests.swift; sourceTree = "<group>"; };
 		232CFBF51E3CF4A400E1D60C /* DataFeedTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataFeedTests.swift; sourceTree = "<group>"; };
 		232CFBF81E3CF5E800E1D60C /* APIMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIMock.swift; sourceTree = "<group>"; };
+		233475F11ECB898700DDB0C2 /* EmptyViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyViewTests.swift; sourceTree = "<group>"; };
 		234BC7291CDCF9A6004057D4 /* KeyboardVisibilityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardVisibilityController.swift; sourceTree = "<group>"; };
 		234BC72A1CDCF9A6004057D4 /* PanViewGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanViewGestureRecognizer.swift; sourceTree = "<group>"; };
 		234BC72B1CDCF9A6004057D4 /* SwipeToEditOnCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeToEditOnCollection.swift; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 				232CFBF31E3CE9AB00E1D60C /* DataSourceTests.swift */,
 				232CFBF51E3CF4A400E1D60C /* DataFeedTests.swift */,
 				237DF4BE1EAE8AFB00EB627F /* CellControllerTests.swift */,
+				233475F11ECB898700DDB0C2 /* EmptyViewTests.swift */,
 				232CFBF81E3CF5E800E1D60C /* APIMock.swift */,
 			);
 			path = TapptitudeTests;
@@ -356,6 +359,7 @@
 			files = (
 				232CFBF91E3CF5E800E1D60C /* APIMock.swift in Sources */,
 				232CFBF61E3CF4A400E1D60C /* DataFeedTests.swift in Sources */,
+				233475F21ECB898700DDB0C2 /* EmptyViewTests.swift in Sources */,
 				232CFBF41E3CE9AB00E1D60C /* DataSourceTests.swift in Sources */,
 				237DF4BF1EAE8AFB00EB627F /* CellControllerTests.swift in Sources */,
 				232CFBEB1E3CE93B00E1D60C /* TapptitudeTests.swift in Sources */,

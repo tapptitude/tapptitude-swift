@@ -11,8 +11,6 @@ import UIKit
 open class CollectionFeedController: UIViewController, TTCollectionFeedController, TTDataFeedDelegate, TTDataSourceDelegate {
     
     public struct Options {
-        public var emptyMessage = NSLocalizedString("No content", comment: "No content")
-        public var emptyMessageFont: UIFont?
         public var loadMoreIndicatorViewColor = UIColor.gray
     }
     
@@ -21,7 +19,9 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     deinit {
         collectionView?.delegate = nil;
         collectionView?.dataSource = nil;
-        displayedEmptyView?.removeFromSuperview()
+        if emptyViewWasInsertedIntoHierarchy {
+            emptyView?.removeFromSuperview()
+        }
         dataSource?.delegate = nil
     }
     
@@ -29,14 +29,14 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         super.awakeFromNib()
         
         updateReloadingIndicatorView()
-        updateEmptyViewAppearenceAnimated(false)
+        updateEmptyViewAppearence(animated: false)
     }
     
     open override func viewDidLoad() {
         super.viewDidLoad()
         
         updateReloadingIndicatorView()
-        updateEmptyViewAppearenceAnimated(false)
+        updateEmptyViewAppearence(animated: false)
     }
     
     open override func viewDidAppear(_ animated: Bool) {
@@ -106,41 +106,34 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     }
     
     @IBOutlet open weak var reloadIndicatorView: UIActivityIndicatorView?
-    internal var _emptyView: UIView?
-    @IBOutlet open var emptyView: UIView? { //set from XIB or overwrite
+    
+    internal lazy var _emptyView: UIView? = {
+        let emptyView = UILabel()
+        emptyView.backgroundColor = UIColor.clear
+        emptyView.text = NSLocalizedString("No content", comment: "No content")
+        emptyView.textAlignment = .center
+        emptyView.numberOfLines = 0
+        emptyView.textColor = UIColor(white: 0.4, alpha: 1.0)
+        emptyView.translatesAutoresizingMaskIntoConstraints = false
+        return emptyView
+    }()
+    
+    /// set from XIB or replace with your view,
+    /// set to nil in order to not show emptyView
+    @IBOutlet open var emptyView: UIView? {
         set {
+            if emptyViewWasInsertedIntoHierarchy {
+                _emptyView?.removeFromSuperview()
+                emptyViewWasInsertedIntoHierarchy = false
+            }
             _emptyView = newValue
-            _emptyView?.removeFromSuperview()
         }
-        get {
-            if collectionView == nil || dataSource == nil {
-                return nil
-            }
-            
-            if _emptyView != nil {
-                return _emptyView
-            }
-            
-            let noContent = UILabel()
-            noContent.backgroundColor = UIColor.clear
-            noContent.text = options.emptyMessage
-            noContent.frame = collectionView.frame.integral
-            noContent.textAlignment = .center
-            noContent.numberOfLines = 0
-            noContent.textColor = UIColor(white: 0.4, alpha: 1.0)
-            noContent.autoresizingMask = collectionView.autoresizingMask
-            if let font = options.emptyMessageFont {
-                noContent.font = font
-            }
-            
-            return noContent;
-        }
+        get { return _emptyView }
     }
+       
     
     open var dataSource: TTDataSource? {
         willSet {
-            displayedEmptyView?.removeFromSuperview()
-            displayedEmptyView = nil
             if self == (dataSource?.delegate as? CollectionFeedController) {
                 dataSource?.delegate = nil
             }
@@ -156,7 +149,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
             collectionView?.reloadData()
             
             updateReloadingIndicatorView()
-            updateEmptyViewAppearenceAnimated(false)
+            updateEmptyViewAppearence(animated: false)
             updateCanShowLoadMoreViewAnimated(false)
         }
     }
@@ -228,41 +221,56 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     }
     
     
-    internal var displayedEmptyView : UIView?
     // UI appearence
-    open func updateEmptyViewAppearenceAnimated(_ animated: Bool) {
-        let feedIsLoading = (dataSource?.feed?.isReloading == true) || (dataSource?.feed?.isLoadingMore == true)
-        let hasContent = (dataSource != nil) && dataSource?.isEmpty == false
+    internal var emptyViewWasInsertedIntoHierarchy = false
+    open func updateEmptyViewAppearence(animated: Bool) {
+        guard let emptyView = self.emptyView else {
+            return
+        }
         
-        if (feedIsLoading || hasContent) && displayedEmptyView != nil {
+        let feedIsLoading = (dataSource?.feed?.isReloading == true) || (dataSource?.feed?.isLoadingMore == true)
+        let hasContent = dataSource?.isEmpty == false
+        
+        if (feedIsLoading || hasContent || dataSource == nil) {
             if animated {
-                let emptyView = displayedEmptyView
-                displayedEmptyView = nil
                 UIView.animate(withDuration: 0.3, animations: { () -> Void in
-                    emptyView?.alpha = 0
-                    }, completion: { (_) -> Void in
-                        if emptyView != self.emptyView {
-                            emptyView?.removeFromSuperview()
-                        }
+                    emptyView.alpha = 0
+                    }, completion: { (completed) -> Void in
+                        emptyView.isHidden = emptyView.alpha == 0
                 })
             } else {
-                displayedEmptyView?.removeFromSuperview()
-                displayedEmptyView = nil
+                emptyView.isHidden = true
             }
-        } else if !hasContent && !feedIsLoading {
-            if displayedEmptyView == nil {
-                if let newEmptyView = emptyView { // get new empty view
-                    newEmptyView.alpha = 1.0
-                    collectionView?.superview?.insertSubview(newEmptyView, aboveSubview: collectionView!)
-                    displayedEmptyView = newEmptyView
-                }
+        } else {
+            if let collectionView = collectionView {
+                insertEmptyView(emptyView: emptyView, above: collectionView)
             }
             
+            emptyView.isHidden = false
+            
             if animated {
-                displayedEmptyView?.alpha = 0.0
+                emptyView.alpha = 0.0
                 UIView.animate(withDuration: 0.3, animations: { () -> Void in
-                    self.displayedEmptyView?.alpha = 1.0
+                    emptyView.alpha = 1.0
                 })
+            } else {
+                emptyView.alpha = 1.0
+            }
+        }
+    }
+    
+    internal func insertEmptyView(emptyView: UIView,  above view: UIView) {
+        if emptyView.superview == nil && view.superview != nil {
+            self.emptyViewWasInsertedIntoHierarchy = true
+            view.superview?.insertSubview(emptyView, aboveSubview: view)
+            
+            // keep same size / position as view
+            if emptyView.constraints.isEmpty {
+                [ NSLayoutConstraint(item: emptyView, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 1.0, constant: 0.0),
+                  NSLayoutConstraint(item: emptyView, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 1.0, constant: 0.0),
+                  NSLayoutConstraint(item: emptyView, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1.0, constant: 0.0),
+                  NSLayoutConstraint(item: emptyView, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1.0, constant: 0.0)
+                    ].forEach({ $0.isActive = true })
             }
         }
     }
@@ -342,7 +350,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         
         checkIfShouldLoadMoreContent()
         updateCanShowLoadMoreViewAnimated(true)
-        updateEmptyViewAppearenceAnimated(true)
+        updateEmptyViewAppearence(animated: true)
     }
     
     func checkIfShouldLoadMoreContent() {
@@ -402,7 +410,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         animatedUpdater?.collectionViewDidChangeContent(collectionView!, animationCompletion: nil)
         
         if dataSource.feed == nil || dataSource.feed!.isReloading == false { // check for the empty view
-            updateEmptyViewAppearenceAnimated(true)
+            updateEmptyViewAppearence(animated: true)
         }
     }
     

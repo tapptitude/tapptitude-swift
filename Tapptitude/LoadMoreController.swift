@@ -47,6 +47,13 @@ extension TTLoadMoreController {
     }
 }
 
+
+
+
+
+
+
+
 open class LoadMoreFooterController: NSObject, TTLoadMoreController {
     open var autoLoadMoreContent: Bool = true
     open var numberOfPagesToPreload: CGFloat = 2 // load more content when last 2 pages are visible
@@ -121,6 +128,9 @@ open class LoadMoreFooterController: NSObject, TTLoadMoreController {
     }
 }
 
+
+
+
 open class LoadMoreController: NSObject, TTLoadMoreController {
     public enum Position {
         case top
@@ -135,6 +145,7 @@ open class LoadMoreController: NSObject, TTLoadMoreController {
         spinner.frame.size = CGSize(width: 30, height: 40)
         return spinner
     }()
+    
     @IBOutlet open var collectionView: UICollectionView? {
         willSet {
             if canShowLoadMoreView {
