@@ -26,23 +26,23 @@ struct APISettings {
 class API {
     
     @discardableResult
-    static func loginWithEmail(_ email:String, password:String, callback:@escaping (_ user:User?, _ error:Error?)->()) -> Alamofire.Request? {
+    static func loginWithEmail(_ email:String, password:String, callback:@escaping (_ result: Result<User>)->()) -> Alamofire.Request? {
         let params : [String: Any] = [ "email":email, "password":password]
         
-        return request(.post, path: "driver/users/login", parameters: params).responseAPIMap(keyPath: "data.driver") { (response, user: User?) in
-            if let dataDict = response.result.value, let user = user {
+        return request(.post, path: "driver/users/login", parameters: params).responseAPIMap(keyPath: "data.driver") { (response, result: Result<User>) in
+            if let dataDict = response.result.value, let user = result.value {
                 Session.accessToken = dataDict.value(forKeyPath: "data.auth_key") as? String
                 Session.currentUserID = user.userID
             }
             
-            callback(user, response.result.error)
+            callback(result)
         }
     }
     
     @discardableResult
-    static func getCurrentUser(_ callback:@escaping (_ user:User?,_ error:Error?)->()) -> Alamofire.Request? {
-        return request(.get, path: "driver/users").responseAPIMap(keyPath: "data") { (response, user: User?) in
-            callback(user, response.result.error)
+    static func getCurrentUser(_ callback:@escaping (_ result: Result<User>)->()) -> Alamofire.Request? {
+        return request(.get, path: "driver/users").responseAPIMap(keyPath: "data") { (response, result) in
+            callback(result)
         }
     }
     
