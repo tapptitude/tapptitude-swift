@@ -77,7 +77,7 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
     
     open subscript(indexPath: IndexPath) -> T {
         get { return _content[indexPath.item] }
-        set { editContent { (_content, delegate) in
+        set { editContent { delegate in
             _content[indexPath.item] = newValue
             delegate?.dataSource(self, didUpdateItemsAt: [indexPath])
             }}
@@ -89,7 +89,7 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
     
     open subscript(section: Int, index: Int) -> T {
         get { return _content[index] }
-        set { editContent { (_content, delegate) in
+        set { editContent { delegate in
             _content[index] = newValue
             let indexPath = IndexPath(item: index, section: 0)
             delegate?.dataSource(self, didUpdateItemsAt: [indexPath])
@@ -98,7 +98,7 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
     
     open subscript(index: Int) -> T {
         get { return _content[index] }
-        set { editContent { (_content, delegate) in
+        set { editContent { delegate in
             _content[index] = newValue
             let indexPath = IndexPath(item: index, section: 0)
             delegate?.dataSource(self, didUpdateItemsAt: [indexPath])
@@ -164,18 +164,15 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
 //
 //extension DataSource : TTDataSourceMutable {
     public var propagateChangesToDelegate = true
-    fileprivate func editContent(_ editBlock: ( _ content: inout [T], _ delegate: TTDataSourceDelegate?) -> Void) {
-        if propagateChangesToDelegate {
-            delegate?.dataSourceWillChangeContent(self)
-        }
-        editBlock(&_content, delegate);
-        if propagateChangesToDelegate {
-            delegate?.dataSourceDidChangeContent(self)
-        }
+    fileprivate func editContent(_ editBlock: (_ delegate: TTDataSourceDelegate?) -> Void) {
+        let currenDelegate = propagateChangesToDelegate ? delegate : nil
+        currenDelegate?.dataSourceWillChangeContent(self)
+        editBlock(currenDelegate);
+        currenDelegate?.dataSourceDidChangeContent(self)
     }
     
     open func append(_ newElement: T) {
-        editContent { (_content, delegate) -> Void in
+        editContent { delegate -> Void in
             _content.append(newElement)
             let maxCount = _content.count - 1
             let indexPath = IndexPath(item: maxCount > 0 ? maxCount : 0, section: 0)
@@ -188,7 +185,7 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
     }
     
     open func insert(_ newElement: T, at indexPath: IndexPath) {
-        editContent { (_content, delegate) -> Void in
+        editContent { delegate in
             _content.insert(newElement, at: indexPath.item)
             delegate?.dataSource(self, didInsertItemsAt: [indexPath])
         }
@@ -199,7 +196,7 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
             return
         }
         
-        editContent { (_content, delegate) -> Void in
+        editContent { delegate in
             let startIndex = indexPath.item
             let endIndex = startIndex + newElements.count - 1
             _content.insert(contentsOf: newElements, at: startIndex)
@@ -210,7 +207,7 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
 
     
     open func moveElement(from fromIndexPath: IndexPath, to toIndexPath: IndexPath) {
-        editContent { (_content, delegate) -> Void in
+        editContent { delegate in
             let item = _content[fromIndexPath.item]
             _content.remove(at: fromIndexPath.item)
             
@@ -226,7 +223,7 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
     }
     
     open func remove(at indexPath: IndexPath) {
-        editContent { (_content, delegate) -> Void in
+        editContent { delegate in
             _content.remove(at: indexPath.item)
             delegate?.dataSource(self, didDeleteItemsAt: [indexPath])
         }
@@ -238,14 +235,14 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
         }
         
         let sortedIndexPath = indexPaths.sorted()
-        editContent { (_content, delegate) -> Void in
+        editContent { delegate in
             sortedIndexPath.reversed().forEach{ _content.remove(at: $0.item) }
             delegate?.dataSource(self, didDeleteItemsAt: sortedIndexPath)
         }
     }
     
     open func remove(_ filter: (_ item: T) -> Bool) {
-        editContent { (_content, delegate) -> Void in
+        editContent { delegate in
             var indexPaths: [IndexPath] = []
             let content = _content
             var index = 0

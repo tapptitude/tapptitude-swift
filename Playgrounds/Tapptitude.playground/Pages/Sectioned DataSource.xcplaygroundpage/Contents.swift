@@ -28,6 +28,18 @@ DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
     dataSource[1] = ["Ioana Moldovan", "Maria"]
 }
 
+DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+    dataSource.insert(sections: [["Lol"]], at: 0)
+}
+
+DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+    dataSource.insert(sections: [["Test1"],  ["Test 2"]], at: 1)
+}
+
+DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+    dataSource.insert(sections: [[]], at: 0)
+}
+
 import PlaygroundSupport
 PlaygroundPage.current.liveView = feedController.view
 //: [Next](@next)

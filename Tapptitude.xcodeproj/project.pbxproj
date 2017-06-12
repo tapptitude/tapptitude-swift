@@ -39,7 +39,7 @@
 		2362CBDB1E917BE900213918 /* ForceTouchPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2362CBDA1E917BE900213918 /* ForceTouchPreview.swift */; };
 		2364D09F1E2CEF7F009DCA7E /* UICollectionViewCell+AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2364D09E1E2CEF7F009DCA7E /* UICollectionViewCell+AutoLayout.swift */; };
 		23670E671DF89EA10059D5AA /* ParallelOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23670E661DF89EA10059D5AA /* ParallelOperations.swift */; };
-		237DF4BF1EAE8AFB00EB627F /* CellControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237DF4BE1EAE8AFB00EB627F /* CellControllerTests.swift */; };
+		237DF4BF1EAE8AFB00EB627F /* PrefetcherCellControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237DF4BE1EAE8AFB00EB627F /* PrefetcherCellControllerTests.swift */; };
 		237F27D71E6B408600F84BE2 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237F27D61E6B408600F84BE2 /* Result.swift */; };
 		238688291E2E618D00521904 /* CollectionCellPrefetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238688281E2E618D00521904 /* CollectionCellPrefetcher.swift */; };
 		238BCFCB1E9E1DF3006A869E /* ErrorDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238BCFCA1E9E1DF3006A869E /* ErrorDisplay.swift */; };
@@ -97,7 +97,7 @@
 		2362CBDA1E917BE900213918 /* ForceTouchPreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ForceTouchPreview.swift; path = Tapptitude/ForceTouchPreview.swift; sourceTree = SOURCE_ROOT; };
 		2364D09E1E2CEF7F009DCA7E /* UICollectionViewCell+AutoLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UICollectionViewCell+AutoLayout.swift"; path = "Tapptitude/UICollectionViewCell+AutoLayout.swift"; sourceTree = SOURCE_ROOT; };
 		23670E661DF89EA10059D5AA /* ParallelOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ParallelOperations.swift; path = Tapptitude/ParallelOperations.swift; sourceTree = SOURCE_ROOT; };
-		237DF4BE1EAE8AFB00EB627F /* CellControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellControllerTests.swift; sourceTree = "<group>"; };
+		237DF4BE1EAE8AFB00EB627F /* PrefetcherCellControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrefetcherCellControllerTests.swift; sourceTree = "<group>"; };
 		237F27D61E6B408600F84BE2 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Result.swift; path = Tapptitude/Result.swift; sourceTree = SOURCE_ROOT; };
 		238688281E2E618D00521904 /* CollectionCellPrefetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollectionCellPrefetcher.swift; path = Tapptitude/CollectionCellPrefetcher.swift; sourceTree = SOURCE_ROOT; };
 		238BCFCA1E9E1DF3006A869E /* ErrorDisplay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ErrorDisplay.swift; path = Tapptitude/ErrorDisplay.swift; sourceTree = SOURCE_ROOT; };
@@ -135,7 +135,7 @@
 				232CFBEC1E3CE93B00E1D60C /* Info.plist */,
 				232CFBF31E3CE9AB00E1D60C /* DataSourceTests.swift */,
 				232CFBF51E3CF4A400E1D60C /* DataFeedTests.swift */,
-				237DF4BE1EAE8AFB00EB627F /* CellControllerTests.swift */,
+				237DF4BE1EAE8AFB00EB627F /* PrefetcherCellControllerTests.swift */,
 				233475F11ECB898700DDB0C2 /* EmptyViewTests.swift */,
 				232CFBF81E3CF5E800E1D60C /* APIMock.swift */,
 			);
@@ -361,7 +361,7 @@
 				232CFBF61E3CF4A400E1D60C /* DataFeedTests.swift in Sources */,
 				233475F21ECB898700DDB0C2 /* EmptyViewTests.swift in Sources */,
 				232CFBF41E3CE9AB00E1D60C /* DataSourceTests.swift in Sources */,
-				237DF4BF1EAE8AFB00EB627F /* CellControllerTests.swift in Sources */,
+				237DF4BF1EAE8AFB00EB627F /* PrefetcherCellControllerTests.swift in Sources */,
 				232CFBEB1E3CE93B00E1D60C /* TapptitudeTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -154,4 +154,31 @@ class DataSourceTests: XCTestCase {
         XCTAssert(dataSource[removeIndexPath2] != removedItem2, "remove(at: not working")
     }
     
+    
+    func testHeaderSectionedDataSource() {
+        let content = [[], ["1", "2", "3"]]
+        
+        // test headers
+        let dataSource = SectionedDataSource(content)
+        let firstSection = dataSource.sectionHeaderItem(at: 0) as! [Any]
+        XCTAssert(firstSection.count == content[0].count, "should be the same")
+        let secondSection = dataSource.sectionHeaderItem(at: 1) as! [String]
+        XCTAssert(secondSection == content[1], "should be the same")
+        
+        
+        // test custom headers
+        let customHeaders: [Any] = ["123", 2]
+        dataSource.sectionHeaders = customHeaders
+        XCTAssert(dataSource.sectionHeaderItem(at: 0) as! String == customHeaders[0] as! String, "should be the same")
+        XCTAssert(dataSource.sectionHeaderItem(at: 1) as! Int == customHeaders[1] as! Int, "should be the same")
+        
+        
+        // test custom headers
+        dataSource.append(sections: [[]], headers: ["124"])
+        XCTAssert(dataSource.sectionHeaderItem(at: 2) as! String == "124", "should be the same")
+        
+        dataSource.insert(sections: [["421"]], at: 1, headers: ["421"])
+        XCTAssert(dataSource.sectionHeaderItem(at: 1) as! String == "421", "should be the same")
+    }
+    
 }

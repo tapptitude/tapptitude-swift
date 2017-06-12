@@ -87,52 +87,52 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
     open subscript(indexPath: IndexPath) -> T {
         get { return _content[indexPath.section][indexPath.item] }
         set {
-            delegate?.dataSourceWillChangeContent(self)
-            _content[indexPath.section][indexPath.item] = newValue
-            delegate?.dataSource(self, didUpdateItemsAt: [indexPath])
-            delegate?.dataSourceDidChangeContent(self) // TODO: support incremental changes
+            editContent { (delegate) in
+                _content[indexPath.section][indexPath.item] = newValue
+                delegate?.dataSource(self, didUpdateItemsAt: [indexPath])
+            }
         }
     }
     
     open subscript(indexPath: IndexPath) -> Any {
         get { return _content[indexPath.section][indexPath.item] }
         set {
-            delegate?.dataSourceWillChangeContent(self)
-            _content[indexPath.section][indexPath.item] = (newValue as! T)
-            delegate?.dataSource(self, didUpdateItemsAt: [indexPath])
-            delegate?.dataSourceDidChangeContent(self) // TODO: support incremental changes
+            editContent { (delegate) in
+                _content[indexPath.section][indexPath.item] = (newValue as! T)
+                delegate?.dataSource(self, didUpdateItemsAt: [indexPath])
+            }
         }
     }
     
     open subscript(section: Int, index: Int) -> T {
         get { return _content[section][index] }
         set {
-            delegate?.dataSourceWillChangeContent(self)
-            _content[section][index] = newValue
-            let indexPath = IndexPath(item: index, section: section)
-            delegate?.dataSource(self, didUpdateItemsAt: [indexPath])
-            delegate?.dataSourceDidChangeContent(self)
+            editContent { (delegate) in
+                _content[section][index] = newValue
+                let indexPath = IndexPath(item: index, section: section)
+                delegate?.dataSource(self, didUpdateItemsAt: [indexPath])
+            }
         }
     }
     
     open subscript(section: Int, index: Int) -> Any {
         get { return _content[section][index] }
         set {
-            delegate?.dataSourceWillChangeContent(self)
-            _content[section][index] = (newValue as! T)
-            let indexPath = IndexPath(item: index, section: section)
-            delegate?.dataSource(self, didUpdateItemsAt: [indexPath])
-            delegate?.dataSourceDidChangeContent(self)
+            editContent { (delegate) in
+                _content[section][index] = (newValue as! T)
+                let indexPath = IndexPath(item: index, section: section)
+                delegate?.dataSource(self, didUpdateItemsAt: [indexPath])
+            }
         }
     }
     
     open subscript(section: Int) -> [T] {
         get { return _content[section] }
         set {
-            delegate?.dataSourceWillChangeContent(self)
-            _content[section] = newValue
-            delegate?.dataSource(self, didUpdateSections: IndexSet(integer: section))
-            delegate?.dataSourceDidChangeContent(self) // TODO: support incremental changes
+            editContent { (delegate) in
+                _content[section] = newValue
+                delegate?.dataSource(self, didUpdateSections: IndexSet(integer: section))
+            }
         }
     }
     
@@ -167,18 +167,20 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         return nil
     }
     
-    private func editContentWithBlock(editBlock: ( _ content: inout [[T]], _ delegate: TTDataSourceDelegate?) -> Void) {
-        delegate?.dataSourceWillChangeContent(self)
-        editBlock(&_content, delegate);
-        delegate?.dataSourceDidChangeContent(self)
+    public var propagateChangesToDelegate = true
+    fileprivate func editContent(_ editBlock: (_ delegate: TTDataSourceDelegate?) -> Void) {
+        let currenDelegate = propagateChangesToDelegate ? delegate : nil
+        currenDelegate?.dataSourceWillChangeContent(self)
+        editBlock(currenDelegate);
+        currenDelegate?.dataSourceDidChangeContent(self)
     }
     
-    open func append(sections newSections: [[T]]) {
-        insert(sections: newSections, at: _content.count)
+    open func append(sections newSections: [[T]], headers: [Any]? = nil) {
+        insert(sections: newSections, at: _content.count, headers: headers)
     }
     
     open func insert(_ element: T, at indexPath: IndexPath) {
-        editContentWithBlock { (_content, delegate) -> Void in
+        editContent { (delegate) -> Void in
             _content[indexPath.section].insert(element, at: indexPath.item)
             delegate?.dataSource(self, didInsertItemsAt: [indexPath])
         }
@@ -189,7 +191,7 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
             return
         }
         
-        editContentWithBlock { (_content, delegate) -> Void in
+        editContent { (delegate) -> Void in
             let startIndex = indexPath.item
             let endIndex = startIndex + newElements.count - 1
             _content[indexPath.section].insert(contentsOf: newElements, at: startIndex)
@@ -198,16 +200,22 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         }
     }
     
-    open func insert(sections newSections: [[T]], at section: Int) {
-        editContentWithBlock { (_content, delegate) -> Void in
+    open func insert(sections newSections: [[T]], at section: Int, headers: [Any]? = nil) {
+        if newSections.isEmpty {
+            return
+        }
+        
+        editContent { (delegate) -> Void in
             _content.insert(contentsOf: newSections, at: section)
-            let sections = IndexSet(section...(section+newSections.count))
+            sectionHeaders?.insert(contentsOf: headers ?? [], at: section)
+            let count = Swift.max(0, (newSections.count - 1))
+            let sections = IndexSet(section...(section+count))
             delegate?.dataSource(self, didInsertSections: sections)
         }
     }
     
     open func moveElement(from fromIndexPath: IndexPath, to toIndexPath: IndexPath) {
-        editContentWithBlock { (_content, delegate) -> Void in
+        editContent { (delegate) -> Void in
             let item = _content[fromIndexPath.section][fromIndexPath.item]
             _content[fromIndexPath.section].remove(at: fromIndexPath.item)
             
@@ -224,7 +232,7 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
     }
     
     open func remove(at indexPath: IndexPath) {
-        editContentWithBlock { (_content, delegate) -> Void in
+        editContent { (delegate) -> Void in
             _content[indexPath.section].remove(at: indexPath.item)
             delegate?.dataSource(self, didDeleteItemsAt: [indexPath])
         }
@@ -236,14 +244,14 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         }
         
         let sortedIndexPaths = indexPaths.sorted()
-        editContentWithBlock { (_content, delegate) -> Void in
+        editContent { (delegate) -> Void in
             sortedIndexPaths.reversed().forEach{ _content[$0.section].remove(at: $0.item) }
             delegate?.dataSource(self, didDeleteItemsAt: indexPaths)
         }
     }
     
     open func remove(_ filter: (_ item: T) -> Bool) {
-        editContentWithBlock { (_content, delegate) -> Void in
+        editContent { (delegate) -> Void in
             var indexPaths: [IndexPath] = []
             let sections = _content
             for (section, content) in sections.enumerated() {
