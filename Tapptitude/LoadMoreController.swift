@@ -71,10 +71,18 @@ open class LoadMoreFooterController: NSObject, TTLoadMoreController {
     public func sizeForLoadMoreViewInSection(_ section: Int, collectionView: UICollectionView) -> CGSize {
         return shouldShowLoadMoreViewInSection(section, collectionView: collectionView) ? CGSize(width: 30, height: 40) : CGSize.zero
     }
-
-    open var loadMoreViewXIBName: String! = "LoadMoreView" // Expected same methods as in LoadMoreView
+    
+    open var loadMoreViewXIBName: String! = "LoadMoreView" { // Expected same methods as in LoadMoreView
+        didSet {
+            if let collectionView = collectionView {
+                self.registLoadMoreView(in: collectionView)
+            }
+        }
+    }
     open func registLoadMoreView(in collectionView: UICollectionView) {
-        let nib = UINib(nibName: loadMoreViewXIBName, bundle: Bundle(for: CollectionFeedController.self))
+        let isInTappLibrary = Bundle(for: CollectionFeedController.self).path(forResource: loadMoreViewXIBName, ofType: "nib") != nil
+        let bundle: Bundle? = isInTappLibrary ? Bundle(for: CollectionFeedController.self) : nil
+        let nib = UINib(nibName: loadMoreViewXIBName, bundle: bundle)
         collectionView.register(nib, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: loadMoreViewXIBName)
     }
 
