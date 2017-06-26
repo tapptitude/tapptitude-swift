@@ -105,7 +105,12 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         }
     }
     
-    @IBOutlet open weak var reloadIndicatorView: UIActivityIndicatorView?
+    /// proxy for spinnerView in order to have an UIActivityIndicatorView
+    @IBOutlet open weak var reloadIndicatorView: UIActivityIndicatorView? {
+        didSet { reloadSpinnerView = reloadIndicatorView }
+    }
+    /// any view that conforms to <TTSpinnerView> protocol { startAnimating | stopAnimating }
+    @IBOutlet open weak var reloadSpinnerView: UIView?
     
     internal lazy var _emptyView: UIView? = {
         let emptyView = UILabel()
@@ -276,8 +281,10 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     }
     
     open func updateReloadingIndicatorView() {
+        let spinner = reloadSpinnerView as? TTSpinnerView
+        
         guard let dataSource = self.dataSource else {
-            reloadIndicatorView?.stopAnimating()
+            spinner?.stopAnimating()
             return
         }
         
@@ -286,11 +293,11 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
                 
             } else {
                 if refreshControl == nil || (refreshControl?.isRefreshing == false) {
-                    reloadIndicatorView?.startAnimating()
+                    spinner?.startAnimating()
                 }
             }
         } else {
-            reloadIndicatorView?.stopAnimating()
+            spinner?.stopAnimating()
         }
     }
     open var hideReloadViewIfHasContent: Bool = true
