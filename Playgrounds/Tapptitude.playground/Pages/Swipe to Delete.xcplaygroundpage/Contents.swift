@@ -56,7 +56,7 @@ class SwipeCell : TextCell, SwipeToEditCell {
 }
 
 class SwipeController: CollectionFeedController, SwipeToEditOnCollection {
-    var panGestureRecognizer : SwipeToEditGesture?
+    var panGestureRecognizer : PanViewGestureRecognizer?
     var tapGestureRecognizer : TouchRecognizer?
     
     override func viewDidLoad() {

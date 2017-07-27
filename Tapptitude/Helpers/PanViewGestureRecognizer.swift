@@ -70,19 +70,22 @@ open class PanViewGestureRecognizer: UIPanGestureRecognizer, UIGestureRecognizer
     
     open var willEndPaning: ((_ canceled: Bool) -> ())? // was cancelled or not, you can change the targetTranslation
     
+    open weak var targetPanView: UIView?
+    
+    open var shouldBeginBlock : ((_ gesture: PanViewGestureRecognizer) -> Bool)?
+    
+    var _targetPanView: UIView? {
+        return self.targetPanView ?? self.view
+    }
+    
     public init () {
         super.init(target: nil, action: nil)
         addTarget(self, action: #selector(PanViewGestureRecognizer.moveView(_:)))
         self.delegate = self
     }
     
-    open weak var targetPanView: UIView?
     
-    var _targetPanView: UIView? {
-        return self.targetPanView ?? self.view
-    }
-    
-    func translateAnimated(_ animated: Bool) {
+    open func translateAnimated(_ animated: Bool) {
         let areAnimationsEnabled = UIView.areAnimationsEnabled
         if !animated {
             UIView.setAnimationsEnabled(false)
@@ -95,7 +98,7 @@ open class PanViewGestureRecognizer: UIPanGestureRecognizer, UIGestureRecognizer
         }
     }
     
-    func resetTranslationAnimated(_ animated: Bool) {
+    open func resetTranslationAnimated(_ animated: Bool) {
         let areAnimationsEnabled = UIView.areAnimationsEnabled
         if !animated {
             UIView.setAnimationsEnabled(false)
@@ -108,12 +111,15 @@ open class PanViewGestureRecognizer: UIPanGestureRecognizer, UIGestureRecognizer
         }
     }
     
-    var isTranslated: Bool {
-        let targetPanView = self.targetPanView!
-        return targetPanView.transform.tx != 0.0 || targetPanView.transform.ty != 0.0
+    open var isTranslated: Bool {
+        if let transform = self.targetPanView?.transform {
+            return transform.tx != 0.0 || transform.ty != 0.0
+        } else {
+            return false
+        }
     }
     
-    func toggleTranslatedState() {
+    public func toggleTranslatedState() {
         if isTranslated {
             resetTranslationAnimated(true)
         } else {
@@ -121,14 +127,14 @@ open class PanViewGestureRecognizer: UIPanGestureRecognizer, UIGestureRecognizer
         }
     }
     
-    func setTranslateAnimation(_ translateAnimation: @escaping () -> (), completion:@escaping (_ finished: Bool) -> ()) {
-        self.translateAnimation = translateAnimation;
-        self.translateCompletion = completion;
+    public func setTranslateAnimation(_ translateAnimation: @escaping () -> (), completion:@escaping (_ finished: Bool) -> ()) {
+        self.translateAnimation = translateAnimation
+        self.translateCompletion = completion
     }
     
-    func setResetTranslateAnimation(_ resetAnimation: @escaping () -> (), completion:@escaping (_ finished: Bool) -> ()) {
-        self.resetTranslationAnimation = resetAnimation;
-        self.resetTranslationCompletion = completion;
+    public func setResetTranslateAnimation(_ resetAnimation: @escaping () -> (), completion:@escaping (_ finished: Bool) -> ()) {
+        self.resetTranslationAnimation = resetAnimation
+        self.resetTranslationCompletion = completion
     }
     
     //MARK - Animations
@@ -139,7 +145,7 @@ open class PanViewGestureRecognizer: UIPanGestureRecognizer, UIGestureRecognizer
     
         UIView.animate(withDuration: duration, delay: 0, options: [options, .beginFromCurrentState], animations: { 
             self.targetPanView?.transform = CGAffineTransform(translationX: self.targetTranslation.x, y: self.targetTranslation.y)
-            translateAnimation?();
+            translateAnimation?()
             }) { (finished) in
             translateCompletion?(finished)
         }
@@ -151,7 +157,7 @@ open class PanViewGestureRecognizer: UIPanGestureRecognizer, UIGestureRecognizer
         
         UIView.animate(withDuration: duration, delay: 0, options: [options, .beginFromCurrentState], animations: {
             self.targetPanView?.transform = CGAffineTransform.identity
-            resetTranslationAnimation?();
+            resetTranslationAnimation?()
         }) { (finished) in
             resetTranslationCompletion?(finished)
         }
@@ -193,20 +199,20 @@ open class PanViewGestureRecognizer: UIPanGestureRecognizer, UIGestureRecognizer
             transform.ty += translation.y
             transform.tx += translation.x
             
-            let insets = self.allowedTranslationEdgeInsets
+            let insets = self.allowedTranslationEdgeInsets!
             
-            transform.tx = max(transform.tx, (insets?.left)!);
-            transform.tx = min(transform.tx, (insets?.right)!);
-            transform.ty = max(transform.ty, (insets?.top)!);
-            transform.ty = min(transform.ty, (insets?.bottom)!);
+            transform.tx = max(transform.tx, insets.left)
+            transform.tx = min(transform.tx, insets.right)
+            transform.ty = max(transform.ty, insets.top)
+            transform.ty = min(transform.ty, insets.bottom)
             
             targetPanView.transform = transform;
             
             if let moveView = self.moveView {
-                let translationPercentInsets = UIEdgeInsetsMake(insets?.top != 0.0 ? (transform.ty / (insets?.top)!) : 0.0,
-                insets?.left != 0.0 ? (transform.tx / (insets?.left)!) : 0.0,
-                insets?.bottom != 0.0 ? (transform.ty / (insets?.bottom)!) : 0.0,
-                insets?.right != 0.0 ? (transform.tx / (insets?.right)!) : 0.0);
+                let translationPercentInsets = UIEdgeInsetsMake(insets.top != 0.0 ? (transform.ty / insets.top) : 0.0,
+                insets.left != 0.0 ? (transform.tx / insets.left) : 0.0,
+                insets.bottom != 0.0 ? (transform.ty / insets.bottom) : 0.0,
+                insets.right != 0.0 ? (transform.tx / insets.right) : 0.0)
                 moveView(transform, translationPercentInsets)
             }
             
@@ -222,18 +228,18 @@ open class PanViewGestureRecognizer: UIPanGestureRecognizer, UIGestureRecognizer
             }
         
             let transform = targetPanView.transform
-            let insets = self.allowedTranslationEdgeInsets
+            let insets = self.allowedTranslationEdgeInsets!
             
             var passedTippingPoint = false
             let tippingPercentageInsets = self.tippingPercentageEdgeInsets
             if (tippingPercentageInsets.top != 0.0 && transform.ty < 0.0) {
-                passedTippingPoint = (transform.ty + velocity.y) < ((insets?.top)! * tippingPercentageInsets.top);
+                passedTippingPoint = (transform.ty + velocity.y) < (insets.top * tippingPercentageInsets.top)
             } else if (tippingPercentageInsets.left != 0.0  && transform.tx < 0.0) {
-                passedTippingPoint = (transform.tx + velocity.x) < ((insets?.left)! * tippingPercentageInsets.left);
+                passedTippingPoint = (transform.tx + velocity.x) < (insets.left * tippingPercentageInsets.left)
             } else if (tippingPercentageInsets.bottom != 0.0 && transform.ty > 0.0) {
-                passedTippingPoint = (transform.ty + velocity.y) > ((insets?.bottom)! * tippingPercentageInsets.bottom);
+                passedTippingPoint = (transform.ty + velocity.y) > (insets.bottom * tippingPercentageInsets.bottom)
             } else if (tippingPercentageInsets.right != 0.0 && transform.tx > 0.0) {
-                passedTippingPoint = (transform.tx + velocity.x) > ((insets?.right)! * tippingPercentageInsets.right);
+                passedTippingPoint = (transform.tx + velocity.x) > (insets.right * tippingPercentageInsets.right)
             }
         
             self.willEndPaning?(!passedTippingPoint)
@@ -245,7 +251,7 @@ open class PanViewGestureRecognizer: UIPanGestureRecognizer, UIGestureRecognizer
             }
         }
         
-        if (panRecognizer.state == .cancelled) {
+        if panRecognizer.state == .cancelled {
             self.willEndPaning?(true)
         
             let velocity = panRecognizer.velocity(in: targetPanView)
@@ -256,20 +262,24 @@ open class PanViewGestureRecognizer: UIPanGestureRecognizer, UIGestureRecognizer
     }
     
     open func gestureRecognizerShouldBegin(_ recognizer: UIGestureRecognizer) -> Bool {
+        if let shouldBeginBlock = self.shouldBeginBlock {
+            let shouldBegin = shouldBeginBlock(self)
+            if !shouldBegin {
+                return false
+            }
+        }
+        
         let panRecognizer = recognizer as! UIPanGestureRecognizer
         let velocity = panRecognizer.velocity(in: self.targetPanView)
         if ((self.tippingPercentageEdgeInsets.left != 0.0 || self.tippingPercentageEdgeInsets.right != 0.0)
         && (self.tippingPercentageEdgeInsets.top != 0.0 || self.tippingPercentageEdgeInsets.bottom != 0.0)) {
-        return true;
+            return true
         } else if (self.tippingPercentageEdgeInsets.left != 0.0 || self.tippingPercentageEdgeInsets.right != 0.0) {
-        return abs(velocity.x) > abs(velocity.y); // Horizontal panning
+            return abs(velocity.x) > abs(velocity.y) // Horizontal panning
         } else if (self.tippingPercentageEdgeInsets.top != 0.0 || self.tippingPercentageEdgeInsets.bottom != 0.0) {
-        return abs(velocity.x) < abs(velocity.y); // Vertical panning
+            return abs(velocity.x) < abs(velocity.y) // Vertical panning
         }
         
-        return false;
+        return false
     }
-    
-    //- (BOOL)canBePreventedByGestureRecognizer:(UIGestureRecognizer *)preventingGestureRecognizer {
-    //}
 }
