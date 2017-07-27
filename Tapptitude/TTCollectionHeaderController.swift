@@ -9,10 +9,10 @@
 import UIKit
 
 public protocol TTAnyCollectionHeaderController {
-    func classToInstantiate() -> AnyClass?
-    func nibToInstantiate() -> UINib?
+    func classToInstantiate(for content: Any) -> AnyClass?
+    func nibToInstantiate(for content: Any) -> UINib?
+    func reuseIdentifier(for content: Any) -> String
     
-    var reuseIdentifier: String {get}
     var headerSize: CGSize {get}
     
     weak var parentViewController : UIViewController? {get set}
@@ -33,11 +33,12 @@ public protocol TTCollectionHeaderController: TTAnyCollectionHeaderController {
 }
 
 extension TTCollectionHeaderController {
-    public func classToInstantiate() -> AnyClass? {
+    public func classToInstantiate(for content: Any) -> AnyClass? {
         return HeaderType.self
     }
     
-    public func nibToInstantiate() -> UINib? {
+    public func nibToInstantiate(for content: Any) -> UINib? {
+        let reuseIdentifier = self.reuseIdentifier(for: content)
         if let _ = Bundle(for: HeaderType.self).path(forResource: reuseIdentifier, ofType: "nib") {
             return UINib(nibName: reuseIdentifier, bundle: Bundle(for: HeaderType.self))
         } else {
@@ -70,6 +71,14 @@ open class CollectionHeaderController<ItemType, HeaderName: UICollectionReusable
     public init(headerSize : CGSize, reuseIdentifier:String? = nil) {
         self.headerSize = headerSize
         self.reuseIdentifier = reuseIdentifier ?? String(describing: HeaderType.self)
+    }
+    
+    open func reuseIdentifier(for content: ContentType) -> String {
+        return reuseIdentifier
+    }
+    
+    public func reuseIdentifier(for content: Any) -> String {
+        return reuseIdentifier(for: content as! ContentType)
     }
     
     open func headerSize(for content: ContentType, in collectionView: UICollectionView) -> CGSize {

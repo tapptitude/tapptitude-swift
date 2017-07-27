@@ -96,3 +96,28 @@ open class IntCellController : CollectionCellController<Int, TextCell> {
         print("did select", content)
     }
 }
+
+
+
+open class IntHeaderCellController : CollectionHeaderController<[Int], TextCell> {
+    public init() {
+        super.init(headerSize: CGSize(width: 30, height: 50))
+    }
+    
+    open override func configureHeader(_ header: TextCell, for content: [Int], at indexPath: IndexPath) {
+        header.label.text = content.map({ String($0) }).joined(separator: ", ")
+        header.label.textColor = .white
+    }
+}
+
+
+open class StringHeaderCellController : CollectionHeaderController<[String], TextCell> {
+    public init() {
+        super.init(headerSize: CGSize(width: 30, height: 20))
+    }
+    
+    open override func configureHeader(_ header: TextCell, for content: [String], at indexPath: IndexPath) {
+        header.label.text = content.joined(separator: ", ")
+        header.label.textColor = .gray
+    }
+}

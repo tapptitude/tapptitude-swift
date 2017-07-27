@@ -509,22 +509,22 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         // header view
         let showHeader = kind == UICollectionElementKindSectionHeader
         if showHeader, let headerController = headerController  {
-            let reuseIdentifier = headerController.reuseIdentifier
+            let content = dataSource.sectionHeaderItem(at: indexPath.section)!
+            let reuseIdentifier = headerController.reuseIdentifier(for: content)
             
-            if registeredCellIdentifiers.contains(reuseIdentifier) == false {
-                if let nib = headerController.nibToInstantiate() {
+            if registeredCellIdentifiers.contains(kind + reuseIdentifier) == false {
+                if let nib = headerController.nibToInstantiate(for: content) {
                     collectionView.register(nib, forSupplementaryViewOfKind: kind, withReuseIdentifier: reuseIdentifier)
                 } else {
-                    let headerClass: AnyClass? = headerController.classToInstantiate()
+                    let headerClass: AnyClass? = headerController.classToInstantiate(for: content)
                     collectionView.register(headerClass, forSupplementaryViewOfKind: kind, withReuseIdentifier: reuseIdentifier)
                 }
                 
-                registeredCellIdentifiers.append(reuseIdentifier)
+                registeredCellIdentifiers.append(kind + reuseIdentifier)
             }
             
             let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: reuseIdentifier, for: indexPath)
             headerView.parentViewController = self
-            let content = dataSource.sectionHeaderItem(at: indexPath.section)!
             headerController.configureHeader(headerView, for: content, at: indexPath)
             
             return headerView
