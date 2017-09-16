@@ -105,7 +105,7 @@ public extension SwipeToEditOnCollection {
             editCell?.didTranslate(transform, translationPercentInsets: translationPercentInsets)
         }
         
-        gesture.setResetTranslateAnimation({ _ in
+        gesture.setResetTranslateAnimation({
                 editCell?.didTranslate(.identity, translationPercentInsets: .zero)
             }, completion: {[weak self] _ in
                 if let wself = self {
@@ -115,7 +115,7 @@ public extension SwipeToEditOnCollection {
         })
 
         let transform = CGAffineTransform(translationX: gesture.targetTranslation.x, y: gesture.targetTranslation.y)
-        gesture.setTranslateAnimation({ _ in
+        gesture.setTranslateAnimation({
                 editCell?.didTranslate(transform, translationPercentInsets: UIEdgeInsetsMake(0, 1.0, 0, 0))
             }, completion: {[weak self] _ in
                 if let wself = self {

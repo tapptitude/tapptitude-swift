@@ -74,21 +74,21 @@ public class KeyboardVisibilityController: NSObject {
     
     //MARK: - keyboard events
     fileprivate var scrollViewPreviousBottomInset: CGFloat = 0
-    func keyboardWillAppear(notification: Notification) {
+    @objc func keyboardWillAppear(notification: Notification) {
         self.isKeyboardVisible = true
         self.dismissKeyboardTouchRecognizer?.isEnabled = true
     }
     
-    func keyboardWillDisappear(notification: Notification) {
+    @objc func keyboardWillDisappear(notification: Notification) {
         self.isKeyboardVisible = false
         self.dismissKeyboardTouchRecognizer?.isEnabled = false
     }
     
-    func applicationWillResign(notification: Notification) {
+    @objc func applicationWillResign(notification: Notification) {
         self.view?.endEditing(true)
     }
     
-    func keyboardWillChangeFrame(notification: Notification) {
+    @objc func keyboardWillChangeFrame(notification: Notification) {
         let keyboardEndFrame = (notification.userInfo![UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
         let goingUp = (keyboardEndFrame?.origin.y ?? 0) < UIScreen.main.bounds.height
         self.moveViewUp(up: goingUp, usingKeyboardNotification: notification)
@@ -178,7 +178,7 @@ public class KeyboardVisibilityController: NSObject {
         }
     }
     
-    func dismissFirstResponder(sender: AnyObject) {
+    @objc func dismissFirstResponder(sender: AnyObject) {
         self.view?.findFirstResponder()?.resignFirstResponder()
     }
 }

@@ -188,7 +188,7 @@ fileprivate class RunningOperation: TTCancellable {
 
 
 
-public extension DataFeed where OffsetType: Integer {
+public extension DataFeed where OffsetType: BinaryInteger {
 
     convenience public init(pageSize: OffsetType,
                             enableLoadMoreOnlyForCompletePage: Bool = true,

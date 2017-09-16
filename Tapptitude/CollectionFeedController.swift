@@ -315,7 +315,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     
     //MARK: Pull to Refresh -
     @IBOutlet open  weak var refreshControl: UIRefreshControl?
-    open func pullToRefreshAction(_ sender: AnyObject!) {
+    @objc open func pullToRefreshAction(_ sender: AnyObject!) {
         dataSource!.feed!.reload()
     }
     open func addPullToRefresh() {

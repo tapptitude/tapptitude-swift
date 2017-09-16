@@ -29,7 +29,7 @@ open class TouchRecognizer: UIGestureRecognizer {
         super.init(target: target, action: action)
     }
     
-    func touchRecongized(_ sender: UIGestureRecognizer) {
+    @objc func touchRecongized(_ sender: UIGestureRecognizer) {
         callback()
     }
     

@@ -189,7 +189,7 @@ open class PanViewGestureRecognizer: UIPanGestureRecognizer, UIGestureRecognizer
     //MARK: - Gestures
     fileprivate var lastMoveTime: TimeInterval = 0.0
     
-    func moveView(_ panRecognizer: UIPanGestureRecognizer) {
+    @objc func moveView(_ panRecognizer: UIPanGestureRecognizer) {
         let targetPanView = self.targetPanView!
         
         let translation = panRecognizer.translation(in: self.view)
