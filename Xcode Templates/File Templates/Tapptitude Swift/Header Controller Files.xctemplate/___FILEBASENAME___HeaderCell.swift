@@ -8,7 +8,7 @@
 
 import Tapptitude
 
-class ___FILEBASENAME___HeaderCell: UICollectionReusableView {
+class ___VARIABLE_productName___HeaderCell: UICollectionReusableView {
     @IBOutlet weak var titleLabel: UILabel!
     
 }

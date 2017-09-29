@@ -9,7 +9,7 @@
 import UIKit
 import Tapptitude
 
-class ___FILEBASENAME___CellController: CollectionCellController<___VARIABLE_contentType___, ___FILEBASENAME___Cell> {
+class ___VARIABLE_productName___CellController: CollectionCellController<___VARIABLE_contentType___, ___VARIABLE_productName___Cell> {
     
     init() {
         super.init(cellSize: CGSize(width: -1.0, height: <#height#>.0))
@@ -20,7 +20,7 @@ class ___FILEBASENAME___CellController: CollectionCellController<___VARIABLE_con
 //        return <#code#>
 //    }
     
-    override func configureCell(_ cell: ___FILEBASENAME___Cell, for content: ___VARIABLE_contentType___, at indexPath: IndexPath) {
+    override func configureCell(_ cell: ___VARIABLE_productName___Cell, for content: ___VARIABLE_contentType___, at indexPath: IndexPath) {
     }
     
     override func didSelectContent(_ content: ___VARIABLE_contentType___, at indexPath: IndexPath, in collectionView: UICollectionView) {

@@ -8,12 +8,12 @@
 
 import Tapptitude
 
-class ___FILEBASENAME___HeaderController: CollectionHeaderController<___VARIABLE_contentType___, ___FILEBASENAME___HeaderCell> {
+class ___VARIABLE_productName___HeaderController: CollectionHeaderController<___VARIABLE_contentType___, ___VARIABLE_productName___HeaderCell> {
     init() {
         super.init(headerSize: CGSize(width: -1.0, height: <#height#>.0))
     }
     
-    override func configureHeader(_ header: ___FILEBASENAME___HeaderCell, for content: ___VARIABLE_contentType___, indexPath: IndexPath) {
+    override func configureHeader(_ header: ___VARIABLE_productName___HeaderCell, for content: ___VARIABLE_contentType___, indexPath: IndexPath) {
         header.titleLabel.text = <#code#>
     }
 }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ___FILEBASENAME___Cell: UICollectionViewCell {
+class ___VARIABLE_productName___Cell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var dividerImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!

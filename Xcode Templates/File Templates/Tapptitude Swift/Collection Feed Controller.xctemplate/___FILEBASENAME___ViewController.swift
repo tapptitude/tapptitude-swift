@@ -9,10 +9,10 @@
 import UIKit
 import Tapptitude
 
-class ___FILEBASENAME___ViewController : CollectionFeedController {
+class ___VARIABLE_productName___ViewController : CollectionFeedController {
 
     init() {
-        super.init(nibName: "___FILEBASENAME___ViewController", bundle: nil)
+        super.init(nibName: "___VARIABLE_productName___ViewController", bundle: nil)
         
         self.cellController = ___VARIABLE_ColectionCellController___CellController()
         self.dataSource = DataSource(["Test content"])
