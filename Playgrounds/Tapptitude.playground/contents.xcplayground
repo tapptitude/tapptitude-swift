@@ -24,5 +24,6 @@
         <page name='ParalledDataFeed'/>
         <page name='Prefetch image in cell'/>
         <page name='Paginated FeedController'/>
+        <page name='Transform DataFeed'/>
     </pages>
 </playground>
