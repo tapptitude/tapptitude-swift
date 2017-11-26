@@ -17,7 +17,7 @@ extension UIBarButtonItem {
 }
 
 extension UIViewController {
-    func popViewController() {
+    @objc func popViewController() {
         _ = navigationController?.popViewController(animated: true)
     }
 }

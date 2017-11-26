@@ -284,7 +284,7 @@ open class IndexOps {
 
 /// Returned from SWXMLHash, allows easy element lookup into XML data.
 public enum XMLIndexer: Sequence {
-    case Element(XMLElement)
+    case element_(XMLElement)
     case list([XMLElement])
     case stream(IndexOps)
     case error(NSError)
@@ -293,7 +293,7 @@ public enum XMLIndexer: Sequence {
     public var element: XMLElement? {
         get {
             switch self {
-            case .Element(let elem):
+            case .element_(let elem):
                 return elem
             case .stream(let ops):
                 let list = ops.findElements()
@@ -314,7 +314,7 @@ public enum XMLIndexer: Sequence {
                     xmlList.append(XMLIndexer(elem))
                 }
                 return xmlList
-            case .Element(let elem):
+            case .element_(let elem):
                 return [XMLIndexer(elem)]
             case .stream(let ops):
                 let list = ops.findElements()
@@ -356,13 +356,13 @@ public enum XMLIndexer: Sequence {
             return match.withAttr(attr, value)
         case .list(let list):
             if let elem = list.filter({ $0.attributes[attr] == value }).first {
-                return .Element(elem)
+                return .element_(elem)
             }
             return .error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: valueUserInfo))
-        case .Element(let elem):
+        case .element_(let elem):
             if let attr = elem.attributes[attr] {
                 if attr == value {
-                    return .Element(elem)
+                    return .element_(elem)
                 }
                 return .error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: valueUserInfo))
             }
@@ -382,7 +382,7 @@ public enum XMLIndexer: Sequence {
     public init(_ rawObject: AnyObject) {
         switch rawObject {
         case let value as XMLElement:
-            self = .Element(value)
+            self = .element_(value)
         case let value as LazyXMLParser:
             self = .stream(IndexOps(parser: value))
         default:
@@ -405,11 +405,11 @@ public enum XMLIndexer: Sequence {
                 let op = IndexOp(key)
                 opStream.ops.append(op)
                 return .stream(opStream)
-            case .Element(let elem):
+            case .element_(let elem):
                 let match = elem.children.filter({ $0.name == key })
                 if match.count > 0 {
                     if match.count == 1 {
-                        return .Element(match[0])
+                        return .element_(match[0])
                     }
                     else {
                         return .list(match)
@@ -438,12 +438,12 @@ public enum XMLIndexer: Sequence {
                 return .stream(opStream)
             case .list(let list):
                 if index <= list.count {
-                    return .Element(list[index])
+                    return .element_(list[index])
                 }
                 return .error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
-            case .Element(let elem):
+            case .element_(let elem):
                 if index == 0 {
-                    return .Element(elem)
+                    return .element_(elem)
                 }
                 else {
                     return .error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: userInfo))
@@ -482,7 +482,7 @@ extension XMLIndexer: CustomStringConvertible {
             switch self {
             case .list(let list):
                 return list.map { $0.description }.joined(separator: "\n")
-            case .Element(let elem):
+            case .element_(let elem):
                 if elem.name == rootElementName {
                     return elem.children.map { $0.description }.joined(separator: "\n")
                 }
@@ -936,8 +936,8 @@ class Storyboard: XMLObject {
             print("")
             print("        enum \(storyboardName)Identifier: String {")
             for scene in self.scenes {
-                if let viewController = scene.viewController, let storyboardIdentifier = viewController.storyboardIdentifier {
-                    let controllerClass = (viewController.customClass ?? os.controllerTypeForElementName(viewController.name)!)
+                if let viewController = scene.viewController, let storyboardIdentifier = viewController.storyboardIdentifier,
+                    let controllerClass = (viewController.customClass ?? os.controllerTypeForElementName(viewController.name)) {
             print("            case \(storyboardIdentifier) = \"\(storyboardIdentifier)\"")
                 }
             }
@@ -1159,8 +1159,8 @@ func processStoryboardInstantiation(_ storyboards: [StoryboardFile], os: OS) {
         let storyboardName = file.storyboardName
         
         for scene in file.storyboard.scenes {
-            if let viewController = scene.viewController, let storyboardIdentifier = viewController.storyboardIdentifier {
-                let controllerClass = (viewController.customClass ?? os.controllerTypeForElementName(viewController.name)!)
+            if let viewController = scene.viewController, let storyboardIdentifier = viewController.storyboardIdentifier,
+                let controllerClass = (viewController.customClass ?? os.controllerTypeForElementName(viewController.name)) {
                 
                 var item = instaDict[controllerClass]
                 if item == nil {

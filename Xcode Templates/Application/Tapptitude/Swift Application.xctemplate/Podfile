@@ -1,4 +1,4 @@
-platform :ios, '8.0'
+platform :ios, '10.0'
 use_frameworks!
 
 target '___PROJECTNAME___' do
@@ -13,4 +13,14 @@ target '___PROJECTNAME___' do
     pod 'Crashlytics'
     pod 'SwiftMessages'
     pod 'TextAttributes'
+end
+
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        if ['TextAttributes'].include? target.name
+            target.build_configurations.each do |config|
+                config.build_settings['SWIFT_VERSION'] = '3.2'
+            end
+        end
+    end
 end

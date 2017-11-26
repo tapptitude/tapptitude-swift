@@ -2,13 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Ancestors</key>
-	<array>
-		<string>com.apple.dt.unit.base</string>
-		<string>com.apple.dt.unit.tapptitude.coreDataCocoaTouchApplication</string>
-	</array>
 	<key>Concrete</key>
 	<true/>
+	<key>Ancestors</key>
+	<array>
+		<string>com.apple.dt.unit.storyboardApplication</string>
+		<string>com.apple.dt.unit.coreDataCocoaTouchApplication</string>
+	</array>
 	<key>Description</key>
 	<string>This template provides a starting point for an application that uses a single view. It provides a view controller to manage the view, and a storyboard or nib file that contains the view.</string>
 	<key>Identifier</key>
@@ -16,1072 +16,383 @@
 	<key>Kind</key>
 	<string>Xcode.Xcode3.ProjectTemplateUnitKind</string>
 	<key>Options</key>
-	<array>
-		<dict>
-			<key>Identifier</key>
-			<string>universalDeviceFamily</string>
-			<key>Units</key>
-			<dict>
-				<key>iPhone</key>
-				<dict>
-					<key>Targets</key>
-					<array>
-						<dict>
-							<key>Configurations</key>
-							<dict>
-								<key>Debug</key>
-								<dict>
-									<key>OTHER_SWIFT_FLAGS</key>
-									<string>$(inherited) -DDEV -DDEBUG</string>
-								</dict>
-								<key>Release</key>
-								<dict>
-									<key>OTHER_SWIFT_FLAGS</key>
-									<string>$(inherited) -DAPPSTORE</string>
-								</dict>
-							</dict>
-							<key>BuildPhases</key>
-							<array>
-								<dict>
-									<key>Name</key>
-									<string>Update Storyboards identifiers</string>
-									<key>Class</key>
-									<string>ShellScript</string>
-									<key>ShellPath</key>
-									<string>/bin/sh</string>
-									<key>ShellScript</key>
-									<string>echo &quot;Natalie Generator: Determining if generated Swift file is up-to-date.&quot;
-
-#If you put natalie on the project folder
-NATALIE_PATH=&quot;$PROJECT_DIR/bin/natalie&quot;
-
-echo $NATALIE_PATH
-
-if [ -f $NATALIE_PATH ]; then
-BASE_PATH=&quot;$PROJECT_DIR/$PROJECT_NAME&quot;
-//
-OUTPUT_PATH=&quot;$BASE_PATH/Helpers/Storyboards.swift&quot;
-
-if [ ! -e &quot;$OUTPUT_PATH&quot; ] || [ -n &quot;$(find &quot;$BASE_PATH&quot; -type f -name &quot;*.storyboard&quot; -newer &quot;$OUTPUT_PATH&quot; -print -quit)&quot; ]; then
-echo &quot;Natalie Generator: Generated Swift is out-of-date; re-generating...&quot;
-
-/usr/bin/chflags nouchg &quot;$OUTPUT_PATH&quot;
-&quot;$NATALIE_PATH&quot; &quot;$BASE_PATH&quot; &gt; &quot;$OUTPUT_PATH&quot;
-#        /usr/bin/chflags uchg &quot;$OUTPUT_PATH&quot;
-
-echo &quot;Natalie Generator: Done.&quot;
-else
-echo &quot;Natalie Generator: Generated Swift is up-to-date; skipping re-generation.&quot;
-fi
-fi</string>
-								</dict>
-								<dict>
-									<key>Name</key>
-									<string>Increment Build Number</string>
-									<key>Class</key>
-									<string>ShellScript</string>
-									<key>ShellPath</key>
-									<string>/bin/sh</string>
-									<key>ShellScript</key>
-									<string>if [[ &quot;${CONFIGURATION}&quot; =~ ^Release ]]; then
-buildNumber=$(/usr/libexec/PlistBuddy -c &quot;Print CFBundleVersion&quot; &quot;${TARGET_BUILD_DIR}/${INFOPLIST_PATH}&quot;)
-buildNumber=$(($buildNumber + 1))
-
-echo &quot;Increasing build number to $buildNumber&quot;
-
-/usr/libexec/PlistBuddy -c &quot;Set :CFBundleVersion $buildNumber&quot; &quot;$INFOPLIST_FILE&quot;
-/usr/libexec/PlistBuddy -c &quot;Set :CFBundleVersion $buildNumber&quot; &quot;${TARGET_BUILD_DIR}/${INFOPLIST_PATH}&quot;
-fi</string>
-								</dict>
-							</array>
-						</dict>
-					</array>
-					<key>Nodes</key>
-					<array>
-						<string>Screens</string>
-						<string>../Podfile</string>
-						<string>../.gitignore</string>
-						<string>Access/API.swift</string>
-						<string>Access/API+Config.swift</string>
-						<string>Access/API+Mapping.swift</string>
-						<string>Access/ErrorParser.swift</string>
-						<string>Access/FeedDataStore.swift</string>
-						<string>Access/Facebook.swift</string>
-						<string>Access/Session.swift</string>
-						<string>Access/JSONCache.swift</string>
-						<string>Access/MapperCaching.swift</string>
-						<string>Constants.swift</string>
-						<string>Model/User.swift</string>
-						<string>Helpers/ErrorDisplay.swift</string>
-						<string>Helpers/Utils.swift</string>
-						<string>Helpers/UIBarButton+Helpers.swift</string>
-						<string>Helpers/String+Email.swift</string>
-						<string>Helpers/SeparatorView.swift</string>
-						<string>Helpers/RoundedButton.swift</string>
-						<string>Helpers/PlaceholderTextField.swift</string>
-						<string>Helpers/UILabel+TextAttributes.swift</string>
-						<string>Helpers/UIImageView+URL.swift</string>
-						<string>../bin/natalie</string>
-						<string>Helpers/Storyboards.swift</string>
-					</array>
-					<key>Definitions</key>
-					<dict>
-						<key>Helpers/ErrorDisplay.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/ErrorDisplay.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Helpers/Utils.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/Utils.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Helpers/UIBarButton+Helpers.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/UIBarButton+Helpers.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Helpers/String+Email.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/String+Email.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Helpers/SeparatorView.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/SeparatorView.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Helpers/RoundedButton.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/RoundedButton.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Helpers/PlaceholderTextField.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/PlaceholderTextField.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Helpers/UIImageView+URL.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/UIImageView+URL.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Helpers/UILabel+TextAttributes.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/UILabel+TextAttributes.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Model/User.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Model/User.swift</string>
-							<key>Group</key>
-							<string>Model</string>
-						</dict>
-						<key>Constants.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Constants.swift</string>
-						</dict>
-						<key>Access/Session.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Access/Session.swift</string>
-							<key>Group</key>
-							<string>Access</string>
-						</dict>
-						<key>Access/FeedDataStore.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Access/FeedDataStore.swift</string>
-							<key>Group</key>
-							<string>Access</string>
-						</dict>
-						<key>Access/Facebook.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Access/Facebook.swift</string>
-							<key>Group</key>
-							<string>Access</string>
-						</dict>
-						<key>Access/ErrorParser.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Access/ErrorParser.swift</string>
-							<key>Group</key>
-							<string>Access</string>
-						</dict>
-						<key>Access/API+Config.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Access/API+Config.swift</string>
-							<key>Group</key>
-							<string>Access</string>
-						</dict>
-						<key>Access/API+Mapping.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Access/API+Mapping.swift</string>
-							<key>Group</key>
-							<string>Access</string>
-						</dict>
-						<key>Access/API.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Access/API.swift</string>
-							<key>Group</key>
-							<string>Access</string>
-						</dict>
-						<key>Access/JSONCache.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Access/JSONCache.swift</string>
-							<key>Group</key>
-							<string>Access</string>
-						</dict>
-						<key>Access/MapperCaching.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Access/MapperCaching.swift</string>
-							<key>Group</key>
-							<string>Access</string>
-						</dict>
-						<key>../.gitignore</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>.gitignore</string>
-							<key>Group</key>
-							<string>To Remove from Xcode</string>
-						</dict>
-						<key>../Podfile</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Podfile</string>
-							<key>Group</key>
-							<string>To Remove from Xcode</string>
-						</dict>
-						<key>../bin/natalie</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>bin/natalie</string>
-							<key>Group</key>
-							<string>To Remove from Xcode</string>
-						</dict>
-						<key>Helpers/Storyboards.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/Storyboards.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Screens</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>120</integer>
-							<key>Path</key>
-							<string>Screens</string>
-						</dict>
-						<key>Helpers</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>117</integer>
-							<key>Path</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Model</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>119</integer>
-							<key>Path</key>
-							<string>Model</string>
-						</dict>
-						<key>Access</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>118</integer>
-						</dict>
-					</dict>
-				</dict>
-				<key>iPad</key>
-				<dict>
-					<key>Targets</key>
-					<array>
-						<dict>
-							<key>Configurations</key>
-							<dict>
-								<key>Debug</key>
-								<dict>
-									<key>OTHER_SWIFT_FLAGS</key>
-									<string>$(inherited) -DDEBUG</string>
-								</dict>
-								<key>Release</key>
-								<dict>
-									<key>OTHER_SWIFT_FLAGS</key>
-									<string>$(inherited) -DRELEASE</string>
-								</dict>
-							</dict>
-							<key>BuildPhases</key>
-							<array>
-								<dict>
-									<key>Name</key>
-									<string>Update Storyboards identifiers</string>
-									<key>Class</key>
-									<string>ShellScript</string>
-									<key>ShellPath</key>
-									<string>/bin/sh</string>
-									<key>ShellScript</key>
-									<string>echo &quot;Natalie Generator: Determining if generated Swift file is up-to-date.&quot;
-
-#If you put natalie on the project folder
-NATALIE_PATH=&quot;$PROJECT_DIR/bin/natalie&quot;
-
-echo $NATALIE_PATH
-
-if [ -f $NATALIE_PATH ]; then
-BASE_PATH=&quot;$PROJECT_DIR/$PROJECT_NAME&quot;
-//
-OUTPUT_PATH=&quot;$BASE_PATH/Helpers/Storyboards.swift&quot;
-
-if [ ! -e &quot;$OUTPUT_PATH&quot; ] || [ -n &quot;$(find &quot;$BASE_PATH&quot; -type f -name &quot;*.storyboard&quot; -newer &quot;$OUTPUT_PATH&quot; -print -quit)&quot; ]; then
-echo &quot;Natalie Generator: Generated Swift is out-of-date; re-generating...&quot;
-
-/usr/bin/chflags nouchg &quot;$OUTPUT_PATH&quot;
-&quot;$NATALIE_PATH&quot; &quot;$BASE_PATH&quot; &gt; &quot;$OUTPUT_PATH&quot;
-#        /usr/bin/chflags uchg &quot;$OUTPUT_PATH&quot;
-
-echo &quot;Natalie Generator: Done.&quot;
-else
-echo &quot;Natalie Generator: Generated Swift is up-to-date; skipping re-generation.&quot;
-fi
-fi</string>
-								</dict>
-								<dict>
-									<key>Name</key>
-									<string>Increment Build Number</string>
-									<key>Class</key>
-									<string>ShellScript</string>
-									<key>ShellPath</key>
-									<string>/bin/sh</string>
-									<key>ShellScript</key>
-									<string>if [[ &quot;${CONFIGURATION}&quot; =~ ^Release ]]; then
-buildNumber=$(/usr/libexec/PlistBuddy -c &quot;Print CFBundleVersion&quot; &quot;${TARGET_BUILD_DIR}/${INFOPLIST_PATH}&quot;)
-buildNumber=$(($buildNumber + 1))
-
-echo &quot;Increasing build number to $buildNumber&quot;
-
-/usr/libexec/PlistBuddy -c &quot;Set :CFBundleVersion $buildNumber&quot; &quot;$INFOPLIST_FILE&quot;
-/usr/libexec/PlistBuddy -c &quot;Set :CFBundleVersion $buildNumber&quot; &quot;${TARGET_BUILD_DIR}/${INFOPLIST_PATH}&quot;
-fi</string>
-								</dict>
-							</array>
-						</dict>
-					</array>
-					<key>Nodes</key>
-					<array>
-						<string>Screens</string>
-						<string>../Podfile</string>
-						<string>../.gitignore</string>
-						<string>Access/API.swift</string>
-						<string>Access/API+Config.swift</string>
-						<string>Access/API+Mapping.swift</string>
-						<string>Access/ErrorParser.swift</string>
-						<string>Access/FeedDataStore.swift</string>
-						<string>Access/Facebook.swift</string>
-						<string>Access/Session.swift</string>
-						<string>Access/JSONCache.swift</string>
-						<string>Access/MapperCaching.swift</string>
-						<string>Constants.swift</string>
-						<string>Model/User.swift</string>
-						<string>Helpers/ErrorDisplay.swift</string>
-						<string>Helpers/Utils.swift</string>
-						<string>Helpers/UIBarButton+Helpers.swift</string>
-						<string>Helpers/String+Email.swift</string>
-						<string>Helpers/SeparatorView.swift</string>
-						<string>Helpers/RoundedButton.swift</string>
-						<string>Helpers/PlaceholderTextField.swift</string>
-						<string>Helpers/UILabel+TextAttributes.swift</string>
-						<string>Helpers/UIImageView+URL.swift</string>
-						<string>../bin/natalie</string>
-						<string>Helpers/Storyboards.swift</string>
-					</array>
-					<key>Definitions</key>
-					<dict>
-						<key>Helpers/ErrorDisplay.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/ErrorDisplay.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Helpers/Utils.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/Utils.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Helpers/UIBarButton+Helpers.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/UIBarButton+Helpers.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Helpers/String+Email.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/String+Email.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Helpers/SeparatorView.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/SeparatorView.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Helpers/RoundedButton.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/RoundedButton.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Helpers/PlaceholderTextField.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/PlaceholderTextField.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Helpers/UIImageView+URL.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/UIImageView+URL.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Helpers/UILabel+TextAttributes.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/UILabel+TextAttributes.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Model/User.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Model/User.swift</string>
-							<key>Group</key>
-							<string>Model</string>
-						</dict>
-						<key>Constants.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Constants.swift</string>
-						</dict>
-						<key>Access/Session.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Access/Session.swift</string>
-							<key>Group</key>
-							<string>Access</string>
-						</dict>
-						<key>Access/FeedDataStore.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Access/FeedDataStore.swift</string>
-							<key>Group</key>
-							<string>Access</string>
-						</dict>
-						<key>Access/Facebook.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Access/Facebook.swift</string>
-							<key>Group</key>
-							<string>Access</string>
-						</dict>
-						<key>Access/ErrorParser.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Access/ErrorParser.swift</string>
-							<key>Group</key>
-							<string>Access</string>
-						</dict>
-						<key>Access/API+Config.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Access/API+Config.swift</string>
-							<key>Group</key>
-							<string>Access</string>
-						</dict>
-						<key>Access/API+Mapping.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Access/API+Mapping.swift</string>
-							<key>Group</key>
-							<string>Access</string>
-						</dict>
-						<key>Access/API.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Access/API.swift</string>
-							<key>Group</key>
-							<string>Access</string>
-						</dict>
-						<key>Access/JSONCache.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Access/JSONCache.swift</string>
-							<key>Group</key>
-							<string>Access</string>
-						</dict>
-						<key>Access/MapperCaching.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Access/MapperCaching.swift</string>
-							<key>Group</key>
-							<string>Access</string>
-						</dict>
-						<key>../.gitignore</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>.gitignore</string>
-							<key>Group</key>
-							<string>To Remove from Xcode</string>
-						</dict>
-						<key>../Podfile</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Podfile</string>
-							<key>Group</key>
-							<string>To Remove from Xcode</string>
-						</dict>
-						<key>../bin/natalie</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>bin/natalie</string>
-							<key>Group</key>
-							<string>To Remove from Xcode</string>
-						</dict>
-						<key>Helpers/Storyboards.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/Storyboards.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Screens</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>120</integer>
-							<key>Path</key>
-							<string>Screens</string>
-						</dict>
-						<key>Helpers</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>117</integer>
-							<key>Path</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Model</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>119</integer>
-							<key>Path</key>
-							<string>Model</string>
-						</dict>
-						<key>Access</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>118</integer>
-						</dict>
-					</dict>
-				</dict>
-				<key>Universal</key>
-				<dict>
-					<key>Targets</key>
-					<array>
-						<dict>
-							<key>Configurations</key>
-							<dict>
-								<key>Debug</key>
-								<dict>
-									<key>OTHER_SWIFT_FLAGS</key>
-									<string>$(inherited) -DDEBUG</string>
-								</dict>
-								<key>Release</key>
-								<dict>
-									<key>OTHER_SWIFT_FLAGS</key>
-									<string>$(inherited) -DRELEASE</string>
-								</dict>
-							</dict>
-							<key>BuildPhases</key>
-							<array>
-								<dict>
-									<key>Name</key>
-									<string>Update Storyboards identifiers</string>
-									<key>Class</key>
-									<string>ShellScript</string>
-									<key>ShellPath</key>
-									<string>/bin/sh</string>
-									<key>ShellScript</key>
-									<string>echo &quot;Natalie Generator: Determining if generated Swift file is up-to-date.&quot;
-
-#If you put natalie on the project folder
-NATALIE_PATH=&quot;$PROJECT_DIR/bin/natalie&quot;
-
-echo $NATALIE_PATH
-
-if [ -f $NATALIE_PATH ]; then
-BASE_PATH=&quot;$PROJECT_DIR/$PROJECT_NAME&quot;
-//
-OUTPUT_PATH=&quot;$BASE_PATH/Helpers/Storyboards.swift&quot;
-
-if [ ! -e &quot;$OUTPUT_PATH&quot; ] || [ -n &quot;$(find &quot;$BASE_PATH&quot; -type f -name &quot;*.storyboard&quot; -newer &quot;$OUTPUT_PATH&quot; -print -quit)&quot; ]; then
-echo &quot;Natalie Generator: Generated Swift is out-of-date; re-generating...&quot;
-
-/usr/bin/chflags nouchg &quot;$OUTPUT_PATH&quot;
-&quot;$NATALIE_PATH&quot; &quot;$BASE_PATH&quot; &gt; &quot;$OUTPUT_PATH&quot;
-#        /usr/bin/chflags uchg &quot;$OUTPUT_PATH&quot;
-
-echo &quot;Natalie Generator: Done.&quot;
-else
-echo &quot;Natalie Generator: Generated Swift is up-to-date; skipping re-generation.&quot;
-fi
-fi</string>
-								</dict>
-								<dict>
-									<key>Name</key>
-									<string>Increment Build Number</string>
-									<key>Class</key>
-									<string>ShellScript</string>
-									<key>ShellPath</key>
-									<string>/bin/sh</string>
-									<key>ShellScript</key>
-									<string>if [[ &quot;${CONFIGURATION}&quot; =~ ^Release ]]; then
-buildNumber=$(/usr/libexec/PlistBuddy -c &quot;Print CFBundleVersion&quot; &quot;${TARGET_BUILD_DIR}/${INFOPLIST_PATH}&quot;)
-buildNumber=$(($buildNumber + 1))
-
-echo &quot;Increasing build number to $buildNumber&quot;
-
-/usr/libexec/PlistBuddy -c &quot;Set :CFBundleVersion $buildNumber&quot; &quot;$INFOPLIST_FILE&quot;
-/usr/libexec/PlistBuddy -c &quot;Set :CFBundleVersion $buildNumber&quot; &quot;${TARGET_BUILD_DIR}/${INFOPLIST_PATH}&quot;
-fi</string>
-								</dict>
-							</array>
-						</dict>
-					</array>
-					<key>Nodes</key>
-					<array>
-						<string>Screens</string>
-						<string>../Podfile</string>
-						<string>../.gitignore</string>
-						<string>Access/API.swift</string>
-						<string>Access/API+Config.swift</string>
-						<string>Access/API+Mapping.swift</string>
-						<string>Access/ErrorParser.swift</string>
-						<string>Access/FeedDataStore.swift</string>
-						<string>Access/Facebook.swift</string>
-						<string>Access/Session.swift</string>
-						<string>Access/JSONCache.swift</string>
-						<string>Access/MapperCaching.swift</string>
-						<string>Constants.swift</string>
-						<string>Model/User.swift</string>
-						<string>Helpers/ErrorDisplay.swift</string>
-						<string>Helpers/Utils.swift</string>
-						<string>Helpers/UIBarButton+Helpers.swift</string>
-						<string>Helpers/String+Email.swift</string>
-						<string>Helpers/SeparatorView.swift</string>
-						<string>Helpers/RoundedButton.swift</string>
-						<string>Helpers/PlaceholderTextField.swift</string>
-						<string>Helpers/UILabel+TextAttributes.swift</string>
-						<string>Helpers/UIImageView+URL.swift</string>
-						<string>../bin/natalie</string>
-						<string>Helpers/Storyboards.swift</string>
-					</array>
-					<key>Definitions</key>
-					<dict>
-						<key>Helpers/ErrorDisplay.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/ErrorDisplay.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Helpers/Utils.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/Utils.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Helpers/UIBarButton+Helpers.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/UIBarButton+Helpers.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Helpers/String+Email.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/String+Email.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Helpers/SeparatorView.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/SeparatorView.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Helpers/RoundedButton.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/RoundedButton.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Helpers/PlaceholderTextField.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/PlaceholderTextField.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Helpers/UIImageView+URL.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/UIImageView+URL.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Helpers/UILabel+TextAttributes.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/UILabel+TextAttributes.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Model/User.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Model/User.swift</string>
-							<key>Group</key>
-							<string>Model</string>
-						</dict>
-						<key>Constants.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Constants.swift</string>
-						</dict>
-						<key>Access/Session.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Access/Session.swift</string>
-							<key>Group</key>
-							<string>Access</string>
-						</dict>
-						<key>Access/FeedDataStore.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Access/FeedDataStore.swift</string>
-							<key>Group</key>
-							<string>Access</string>
-						</dict>
-						<key>Access/Facebook.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Access/Facebook.swift</string>
-							<key>Group</key>
-							<string>Access</string>
-						</dict>
-						<key>Access/ErrorParser.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Access/ErrorParser.swift</string>
-							<key>Group</key>
-							<string>Access</string>
-						</dict>
-						<key>Access/API+Config.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Access/API+Config.swift</string>
-							<key>Group</key>
-							<string>Access</string>
-						</dict>
-						<key>Access/API+Mapping.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Access/API+Mapping.swift</string>
-							<key>Group</key>
-							<string>Access</string>
-						</dict>
-						<key>Access/API.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Access/API.swift</string>
-							<key>Group</key>
-							<string>Access</string>
-						</dict>
-						<key>Access/JSONCache.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Access/JSONCache.swift</string>
-							<key>Group</key>
-							<string>Access</string>
-						</dict>
-						<key>Access/MapperCaching.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Access/MapperCaching.swift</string>
-							<key>Group</key>
-							<string>Access</string>
-						</dict>
-						<key>../.gitignore</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>.gitignore</string>
-							<key>Group</key>
-							<string>To Remove from Xcode</string>
-						</dict>
-						<key>../Podfile</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Podfile</string>
-							<key>Group</key>
-							<string>To Remove from Xcode</string>
-						</dict>
-						<key>../bin/natalie</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>bin/natalie</string>
-							<key>Group</key>
-							<string>To Remove from Xcode</string>
-						</dict>
-						<key>Helpers/Storyboards.swift</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>100</integer>
-							<key>Path</key>
-							<string>Helpers/Storyboards.swift</string>
-							<key>Group</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Screens</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>120</integer>
-							<key>Path</key>
-							<string>Screens</string>
-						</dict>
-						<key>Helpers</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>117</integer>
-							<key>Path</key>
-							<string>Helpers</string>
-						</dict>
-						<key>Model</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>119</integer>
-							<key>Path</key>
-							<string>Model</string>
-						</dict>
-						<key>Access</key>
-						<dict>
-							<key>SortOrder</key>
-							<integer>118</integer>
-						</dict>
-					</dict>
-				</dict>
-			</dict>
-		</dict>
-		<dict>
-			<key>Identifier</key>
-			<string>languageChoice</string>
-			<key>Units</key>
-			<dict>
-				<key>Swift</key>
-				<dict>
-					<key>Nodes</key>
-					<array>
-						<string>Screens/ViewController.swift:comments</string>
-						<string>Screens/ViewController.swift:imports:importCocoa</string>
-						<string>Screens/ViewController.swift:implementation(___FILEBASENAME___: UIViewController)</string>
-						<string>Screens/ViewController.swift:implementation:methods:viewDidLoad(override func viewDidLoad(\))</string>
-						<string>Screens/ViewController.swift:implementation:methods:viewDidLoad:super</string>
-					</array>
-				</dict>
-			</dict>
-		</dict>
-	</array>
+	<array/>
 	<key>SortOrder</key>
 	<integer>1</integer>
+	<key>Targets</key>
+	<array>
+		<dict>
+			<key>Configurations</key>
+			<dict>
+				<key>Debug</key>
+				<dict>
+					<key>OTHER_SWIFT_FLAGS</key>
+					<string>$(inherited) -DDEV -DDEBUG</string>
+				</dict>
+				<key>Release</key>
+				<dict>
+					<key>OTHER_SWIFT_FLAGS</key>
+					<string>$(inherited) -DAPPSTORE</string>
+				</dict>
+			</dict>
+			<key>BuildPhases</key>
+			<array>
+				<dict>
+					<key>Name</key>
+					<string>Update Storyboards identifiers</string>
+					<key>Class</key>
+					<string>ShellScript</string>
+					<key>ShellPath</key>
+					<string>/bin/sh</string>
+					<key>ShellScript</key>
+					<string>echo &quot;Natalie Generator: Determining if generated Swift file is up-to-date.&quot;
+
+#If you put natalie on the project folder
+NATALIE_PATH=&quot;$PROJECT_DIR/bin/natalie&quot;
+
+echo $NATALIE_PATH
+
+if [ -f $NATALIE_PATH ]; then
+BASE_PATH=&quot;$PROJECT_DIR/$PROJECT_NAME&quot;
+//
+OUTPUT_PATH=&quot;$BASE_PATH/Helpers/Storyboards.swift&quot;
+
+if [ ! -e &quot;$OUTPUT_PATH&quot; ] || [ -n &quot;$(find &quot;$BASE_PATH&quot; -type f -name &quot;*.storyboard&quot; -newer &quot;$OUTPUT_PATH&quot; -print -quit)&quot; ]; then
+echo &quot;Natalie Generator: Generated Swift is out-of-date; re-generating...&quot;
+
+/usr/bin/chflags nouchg &quot;$OUTPUT_PATH&quot;
+&quot;$NATALIE_PATH&quot; &quot;$BASE_PATH&quot; &gt; &quot;$OUTPUT_PATH&quot;
+#        /usr/bin/chflags uchg &quot;$OUTPUT_PATH&quot;
+
+echo &quot;Natalie Generator: Done.&quot;
+else
+echo &quot;Natalie Generator: Generated Swift is up-to-date; skipping re-generation.&quot;
+fi
+fi</string>
+				</dict>
+				<dict>
+					<key>Name</key>
+					<string>Increment Build Number</string>
+					<key>Class</key>
+					<string>ShellScript</string>
+					<key>ShellPath</key>
+					<string>/bin/sh</string>
+					<key>ShellScript</key>
+					<string>if [[ &quot;${CONFIGURATION}&quot; =~ ^Release ]]; then
+buildNumber=$(/usr/libexec/PlistBuddy -c &quot;Print CFBundleVersion&quot; &quot;${TARGET_BUILD_DIR}/${INFOPLIST_PATH}&quot;)
+buildNumber=$(($buildNumber + 1))
+
+echo &quot;Increasing build number to $buildNumber&quot;
+
+/usr/libexec/PlistBuddy -c &quot;Set :CFBundleVersion $buildNumber&quot; &quot;$INFOPLIST_FILE&quot;
+/usr/libexec/PlistBuddy -c &quot;Set :CFBundleVersion $buildNumber&quot; &quot;${TARGET_BUILD_DIR}/${INFOPLIST_PATH}&quot;
+fi</string>
+				</dict>
+			</array>
+		</dict>
+	</array>
+	<key>Nodes</key>
+	<array>
+		<string>Screens/Main.storyboard</string>
+		<string>../Podfile</string>
+		<string>../.gitignore</string>
+		<string>../bin/natalie</string>
+		<string>../bin/Natalie Source.zip</string>
+		<string>Access/API.swift</string>
+		<string>Access/API+Config.swift</string>
+		<string>Access/API+Mapping.swift</string>
+		<string>Access/ErrorParser.swift</string>
+		<string>Access/FeedDataStore.swift</string>
+		<string>Access/Facebook.swift</string>
+		<string>Access/Session.swift</string>
+		<string>Access/JSONCache.swift</string>
+		<string>Access/MapperCaching.swift</string>
+		<string>Constants.swift</string>
+		<string>Model/User.swift</string>
+		<string>Helpers/ErrorDisplay.swift</string>
+		<string>Helpers/Utils.swift</string>
+		<string>Helpers/UIBarButton+Helpers.swift</string>
+		<string>Helpers/String+Email.swift</string>
+		<string>Helpers/SeparatorView.swift</string>
+		<string>Helpers/RoundedButton.swift</string>
+		<string>Helpers/PlaceholderTextField.swift</string>
+		<string>Helpers/UILabel+TextAttributes.swift</string>
+		<string>Helpers/UIImageView+URL.swift</string>
+		<string>Helpers/Storyboards.swift</string>
+	</array>
+	<key>Definitions</key>
+	<dict>
+		<key>Helpers/ErrorDisplay.swift</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>100</integer>
+			<key>Path</key>
+			<string>Helpers/ErrorDisplay.swift</string>
+			<key>Group</key>
+			<string>Helpers</string>
+		</dict>
+		<key>Helpers/Utils.swift</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>100</integer>
+			<key>Path</key>
+			<string>Helpers/Utils.swift</string>
+			<key>Group</key>
+			<string>Helpers</string>
+		</dict>
+		<key>Helpers/UIBarButton+Helpers.swift</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>100</integer>
+			<key>Path</key>
+			<string>Helpers/UIBarButton+Helpers.swift</string>
+			<key>Group</key>
+			<string>Helpers</string>
+		</dict>
+		<key>Helpers/String+Email.swift</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>100</integer>
+			<key>Path</key>
+			<string>Helpers/String+Email.swift</string>
+			<key>Group</key>
+			<string>Helpers</string>
+		</dict>
+		<key>Helpers/SeparatorView.swift</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>100</integer>
+			<key>Path</key>
+			<string>Helpers/SeparatorView.swift</string>
+			<key>Group</key>
+			<string>Helpers</string>
+		</dict>
+		<key>Helpers/RoundedButton.swift</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>100</integer>
+			<key>Path</key>
+			<string>Helpers/RoundedButton.swift</string>
+			<key>Group</key>
+			<string>Helpers</string>
+		</dict>
+		<key>Helpers/PlaceholderTextField.swift</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>100</integer>
+			<key>Path</key>
+			<string>Helpers/PlaceholderTextField.swift</string>
+			<key>Group</key>
+			<string>Helpers</string>
+		</dict>
+		<key>Helpers/UIImageView+URL.swift</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>100</integer>
+			<key>Path</key>
+			<string>Helpers/UIImageView+URL.swift</string>
+			<key>Group</key>
+			<string>Helpers</string>
+		</dict>
+		<key>Helpers/UILabel+TextAttributes.swift</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>100</integer>
+			<key>Path</key>
+			<string>Helpers/UILabel+TextAttributes.swift</string>
+			<key>Group</key>
+			<string>Helpers</string>
+		</dict>
+		<key>Helpers/Storyboards.swift</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>100</integer>
+			<key>Path</key>
+			<string>Helpers/Storyboards.swift</string>
+			<key>Group</key>
+			<string>Helpers</string>
+		</dict>
+		<key>Model/User.swift</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>100</integer>
+			<key>Path</key>
+			<string>Model/User.swift</string>
+			<key>Group</key>
+			<string>Model</string>
+		</dict>
+		<key>Constants.swift</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>100</integer>
+			<key>Path</key>
+			<string>Constants.swift</string>
+		</dict>
+		<key>Access/Session.swift</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>100</integer>
+			<key>Path</key>
+			<string>Access/Session.swift</string>
+			<key>Group</key>
+			<string>Access</string>
+		</dict>
+		<key>Access/FeedDataStore.swift</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>100</integer>
+			<key>Path</key>
+			<string>Access/FeedDataStore.swift</string>
+			<key>Group</key>
+			<string>Access</string>
+		</dict>
+		<key>Access/Facebook.swift</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>100</integer>
+			<key>Path</key>
+			<string>Access/Facebook.swift</string>
+			<key>Group</key>
+			<string>Access</string>
+		</dict>
+		<key>Access/ErrorParser.swift</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>100</integer>
+			<key>Path</key>
+			<string>Access/ErrorParser.swift</string>
+			<key>Group</key>
+			<string>Access</string>
+		</dict>
+		<key>Access/API+Config.swift</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>100</integer>
+			<key>Path</key>
+			<string>Access/API+Config.swift</string>
+			<key>Group</key>
+			<string>Access</string>
+		</dict>
+		<key>Access/API+Mapping.swift</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>100</integer>
+			<key>Path</key>
+			<string>Access/API+Mapping.swift</string>
+			<key>Group</key>
+			<string>Access</string>
+		</dict>
+		<key>Access/API.swift</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>100</integer>
+			<key>Path</key>
+			<string>Access/API.swift</string>
+			<key>Group</key>
+			<string>Access</string>
+		</dict>
+		<key>Access/JSONCache.swift</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>100</integer>
+			<key>Path</key>
+			<string>Access/JSONCache.swift</string>
+			<key>Group</key>
+			<string>Access</string>
+		</dict>
+		<key>Access/MapperCaching.swift</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>100</integer>
+			<key>Path</key>
+			<string>Access/MapperCaching.swift</string>
+			<key>Group</key>
+			<string>Access</string>
+		</dict>
+		<key>../.gitignore</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>100</integer>
+			<key>Path</key>
+			<string>.gitignore</string>
+			<key>Group</key>
+			<string>To Remove from Xcode</string>
+		</dict>
+		<key>../Podfile</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>100</integer>
+			<key>Path</key>
+			<string>Podfile</string>
+			<key>Group</key>
+			<string>To Remove from Xcode</string>
+		</dict>
+		<key>../bin/natalie</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>100</integer>
+			<key>Path</key>
+			<string>bin/natalie</string>
+			<key>Group</key>
+			<string>To Remove from Xcode</string>
+		</dict>
+		<key>../bin/Natalie Source.zip</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>100</integer>
+			<key>Path</key>
+			<string>bin/Natalie Source.zip</string>
+			<key>Group</key>
+			<string>To Remove from Xcode</string>
+		</dict>
+		<key>Screens/Main.storyboard</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>100</integer>
+			<key>Path</key>
+			<string>Screens/Main.storyboard</string>
+			<key>Group</key>
+			<string>Screens</string>
+		</dict>
+		<key>Base.lproj/Main.storyboard</key>
+		<dict>
+			<key>Path</key>
+			<string>Screens/Main.storyboard</string>
+			<key>SortOrder</key>
+			<integer>99</integer>
+			<key>Group</key>
+			<string>Screens</string>
+		</dict>
+		<key>Screens</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>116</integer>
+			<key>Group</key>
+			<string>Screens</string>
+			<key>Path</key>
+			<string>Screens</string>
+		</dict>
+		<key>Helpers</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>117</integer>
+			<key>Path</key>
+			<string>Helpers</string>
+		</dict>
+		<key>Model</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>119</integer>
+			<key>Path</key>
+			<string>Model</string>
+		</dict>
+		<key>Access</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>118</integer>
+			<key>Path</key>
+			<string>Access</string>
+		</dict>
+	</dict>
 </dict>
 </plist>

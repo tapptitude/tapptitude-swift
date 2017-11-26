@@ -41,9 +41,9 @@ class ErrorDisplay {
     static func showSuccesWith(title:String, andMessage message:String, fromViewController:UIViewController) {
         var view:MessageView!
         if #available(iOS 9.0, *) {
-            view = MessageView.viewFromNib(layout: .CardView)
+            view = MessageView.viewFromNib(layout: .cardView)
         } else {
-            view = MessageView.viewFromNib(layout: .MessageViewIOS8)
+            view = MessageView.viewFromNib(layout: .messageViewIOS8)
         }
         view.configureTheme(.success)
         view.configureContent(title: title, body: message)
@@ -56,9 +56,9 @@ class ErrorDisplay {
     static func showErrorWithTitle(_ title:String, message:String, fromViewController:UIViewController?) {
         var view:MessageView!
         if #available(iOS 9.0, *) {
-            view = MessageView.viewFromNib(layout: .CardView)
+            view = MessageView.viewFromNib(layout: .cardView)
         } else {
-            view = MessageView.viewFromNib(layout: .MessageViewIOS8)
+            view = MessageView.viewFromNib(layout: .messageViewIOS8)
         }
         view.configureTheme(.error)
         view.configureContent(title: title, body: message)
