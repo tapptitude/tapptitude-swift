@@ -7,14 +7,14 @@
 //
 
 import UIKit
-import TextAttributes
 
 extension UITextView {
-    func add(_ attributes: TextAttributes, forString string: String?, options: NSString.CompareOptions = .caseInsensitive) {
+    func add(_ attributes: [NSAttributedStringKey:Any], forString string: String?, options: NSString.CompareOptions = .caseInsensitive) {
         if let string = string {
             if let newAttributes = attributedText?.mutableCopy() as? NSMutableAttributedString {
                 if let range = newAttributes.string.range(of: string, options: options) {
-                    newAttributes.addAttributes(attributes, range: newAttributes.string.nsRange(from: range))
+                    let nsRange = NSRange(range,in:string)
+                    newAttributes.addAttributes(attributes, range: nsRange)
                     self.attributedText = newAttributes
                 }
             }
@@ -23,23 +23,24 @@ extension UITextView {
 }
 
 extension UILabel {
-    func add(_ attributes: TextAttributes, forString string: String?, options: NSString.CompareOptions = .caseInsensitive) {
+    func add(_ attributes: [NSAttributedStringKey:Any], forString string: String?, options: NSString.CompareOptions = .caseInsensitive) {
         if let string = string {
             if let newAttributes = attributedText?.mutableCopy() as? NSMutableAttributedString {
                 if let range = newAttributes.string.range(of: string, options: options) {
-                    newAttributes.addAttributes(attributes, range: newAttributes.string.nsRange(from: range))
+                    let nsRange = NSRange(range,in:string)
+                    newAttributes.addAttributes(attributes, range: nsRange)
                     self.attributedText = newAttributes
                 }
             }
         }
     }
     
-    func append(_ string: String?, attributes: TextAttributes) {
+    func append(_ string: String?, attributes: [NSAttributedStringKey:Any]) {
         if let string = string {
-            if let oldAttributes = attributedText?.mutableCopy() as? NSMutableAttributedString {
-                let newAttributes = NSAttributedString(string: string, attributes: attributes)
-                oldAttributes.append(newAttributes)
-                self.attributedText = newAttributes
+            if let attributedString = attributedText?.mutableCopy() as? NSMutableAttributedString {
+                let newAttributedString = NSAttributedString(string: string, attributes: attributes)
+                attributedString.append(newAttributedString)
+                self.attributedText = attributedString
             }
         }
     }
@@ -48,22 +49,9 @@ extension UILabel {
 
 extension UIButton {
     func underline() {
-        let attrs = TextAttributes().font(self.titleLabel!.font)
-        attrs.underlineStyle = .styleSingle
-        
+        let attrs:[NSAttributedStringKey:Any] = [NSAttributedStringKey.underlineStyle: NSUnderlineStyle.styleSingle.rawValue]
         let attributedString = NSAttributedString(string: self.titleLabel!.text!, attributes: attrs)
         self.setAttributedTitle(attributedString, for: .normal)
-    }
-}
-
-
-extension String {
-    func nsRange(from range: Range<String.Index>) -> NSRange {
-        let utf16view = self.utf16
-        let from = range.lowerBound.samePosition(in: utf16view)
-        let to = range.upperBound.samePosition(in: utf16view)
-        return NSMakeRange(utf16view.distance(from: utf16view.startIndex, to: from!),
-                           utf16view.distance(from: from!, to: to!))
     }
 }
 
