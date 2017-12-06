@@ -1,27 +1,32 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ActionSheetCell" id="gTV-IL-0wX" customClass="ActionSheetCell" customModule="TTActionSheet" customModuleProvider="target">
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ActionSheetCell" id="gTV-IL-0wX" customClass="ActionSheetCell" customModule="Webcar" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="375" height="57"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                 <rect key="frame" x="0.0" y="0.0" width="375" height="57"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D3E-YH-Qru">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="57"/>
                         <connections>
-                            <action selector="selectedAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="jy0-J9-1Ae"/>
+                            <action selector="selectedAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="Ta2-ek-2FT"/>
                         </connections>
                     </button>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="037-s4-bhm">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
-                        <color key="backgroundColor" red="0.73333333333333328" green="0.73333333333333328" blue="0.74901960784313726" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.73333333333333328" green="0.73333333333333328" blue="0.74901960784313726" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="1Ag-5j-ceu"/>
                         </constraints>
@@ -29,13 +34,12 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZL9-iw-RBA">
                         <rect key="frame" x="8" y="17" width="359" height="24"/>
                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                        <color key="textColor" red="0.011764705882352941" green="0.47843137254901957" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="textColor" red="0.011764705882352941" green="0.47843137254901957" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
-            <color key="backgroundColor" red="0.8395815855704698" green="0.62704488255033553" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.8395815855704698" green="0.62704488255033553" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="ZL9-iw-RBA" secondAttribute="bottom" constant="16" id="2Or-Ub-7iQ"/>
                 <constraint firstAttribute="trailing" secondItem="ZL9-iw-RBA" secondAttribute="trailing" constant="8" id="BVQ-Nu-bqH"/>
@@ -51,10 +55,10 @@
             </constraints>
             <size key="customSize" width="352" height="98"/>
             <connections>
-                <outlet property="selectionButton" destination="D3E-YH-Qru" id="Bc4-0e-f1A"/>
+                <outlet property="selectionButton" destination="D3E-YH-Qru" id="HC4-RR-TA8"/>
                 <outlet property="title" destination="ZL9-iw-RBA" id="Jx8-BE-nws"/>
             </connections>
-            <point key="canvasLocation" x="248.5" y="374.5"/>
+            <point key="canvasLocation" x="188" y="110"/>
         </collectionViewCell>
     </objects>
 </document>

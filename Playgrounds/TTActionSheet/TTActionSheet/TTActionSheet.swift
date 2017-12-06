@@ -29,13 +29,15 @@ public class TTActionSheet: CollectionFeedController {
     var actions: [TTActionSheetAction] = []
     private var headerIsVisible: Bool = true
     
-    let transtionController = DimmingTransition()
+    let transtionController = DimmingBlurTransition()
+    
+    var selectedCallback:((TTActionSheetActionProtocol) -> ())?
     
     public init(title:String? = nil, message:String? = nil, cancelMessage: String? = nil) {
-        let bundle = NSBundle(forClass: TTActionSheet.self)
+        let bundle = Bundle(for: TTActionSheet.self)
         super.init(nibName: "TTActionSheet", bundle: bundle)
         
-        self.modalPresentationStyle = .OverCurrentContext
+        self.modalPresentationStyle = .overCurrentContext
         self.definesPresentationContext = true
         self.transitioningDelegate = transtionController
         self.sheetTitle = title
@@ -50,14 +52,14 @@ public class TTActionSheet: CollectionFeedController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.cellController = ActionSheetCellController()
+        self.cellController = ActionSheetCellController<TTActionSheetAction,ActionSheetCell>()
         
-        if NSBundle.allBundles().contains({ ($0.bundleIdentifier ?? "").hasPrefix("com.apple.dt.") }) {
+        if Bundle.allBundles.contains(where: { ($0.bundleIdentifier ?? "").hasPrefix("com.apple.dt.") }) {
             self.view.frame = CGRect(x: 0, y: 0, width: 350, height: 667) // harcoded value
             print("in playground --> TTActionSheet size harcoded to: ", self.view.frame.size)
         } else {
 //            print("not in playground")
-            self.view.frame = UIScreen.mainScreen().bounds
+            self.view.frame = UIScreen.main.bounds
         }
         
         self.configureUI()
@@ -68,12 +70,12 @@ public class TTActionSheet: CollectionFeedController {
         maskViewHeightConstraint.constant = contentHeight + (headerIsVisible ? self.headerView.frame.height : 0)
     }
     
-    override public func viewDidAppear(animated: Bool) {
+    override public func viewDidAppear(_ animated: Bool) {
         let contentHeight = self.collectionView!.contentSize.height
         if contentHeight <= self.collectionView!.frame.height {
-            self.collectionView!.scrollEnabled = false
+            self.collectionView!.isScrollEnabled = false
         } else {
-            self.collectionView!.scrollEnabled = true
+            self.collectionView!.isScrollEnabled = true
         }
     }
     
@@ -83,16 +85,16 @@ public class TTActionSheet: CollectionFeedController {
     }
     
     func configureUI() {
-        self.collectionView?.frame = CGRect(origin: self.collectionView!.frame.origin, size: CGSizeMake(self.collectionView!.frame.width, 0))
+        self.collectionView?.frame = CGRect(origin: self.collectionView!.frame.origin, size: CGSize(width:self.collectionView!.frame.width,height: 0))
         if sheetTitle == nil && message == nil {
             self.headerIsVisible = false
             var newConstraint: NSLayoutConstraint!
-            if topCollectionViewConstraint.firstAttribute == NSLayoutAttribute.Top {
-                newConstraint = NSLayoutConstraint(item: topCollectionViewConstraint.firstItem, attribute: topCollectionViewConstraint.firstAttribute, relatedBy: topCollectionViewConstraint.relation, toItem: self.maskView , attribute: .Top, multiplier: topCollectionViewConstraint.multiplier, constant: topCollectionViewConstraint.constant)
+            if topCollectionViewConstraint.firstAttribute == NSLayoutAttribute.top {
+                newConstraint = NSLayoutConstraint(item: topCollectionViewConstraint.firstItem, attribute: topCollectionViewConstraint.firstAttribute, relatedBy: topCollectionViewConstraint.relation, toItem: self.maskView , attribute: .top, multiplier: topCollectionViewConstraint.multiplier, constant: topCollectionViewConstraint.constant)
                 maskView.removeConstraint(topCollectionViewConstraint)
             }
             maskView.addConstraint(newConstraint)
-            self.headerView.hidden = true
+            self.headerView.isHidden = true
         }
         
         assert(headerIsVisible || actions.count > 0, "No additional information offered, you should have at least a title/message or any action")
@@ -106,22 +108,22 @@ public class TTActionSheet: CollectionFeedController {
         
         messageLabel.text = message
         sheetTitleLabel.text = sheetTitle
-        cancelButton.setTitle(cancelMessage, forState: .Normal)
+        cancelButton.setTitle(cancelMessage, for: .normal)
         
-        blurBgView.effect = UIBlurEffect(style: .ExtraLight)
+        blurBgView.effect = UIBlurEffect(style: .extraLight)
         maskView.clipsToBounds = true
         maskView.layer.cornerRadius = 12.5
         cancelButton.layer.cornerRadius = 12.5
     }
     
-    @IBAction func cancelAction(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func cancelAction(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
     }
     
     func reloadDataSource() {
         self.dataSource = DataSource(actions)
         
-        if isViewLoaded() {
+        if isViewLoaded {
             let contentHeight = self.collectionView!.contentSize.height
             maskViewHeightConstraint.constant = contentHeight + (headerIsVisible ? self.headerView.frame.height : 0)
         }

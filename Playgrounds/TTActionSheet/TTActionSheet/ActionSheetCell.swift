@@ -10,19 +10,20 @@ import UIKit
 import Tapptitude
 
 class ActionSheetCell: UICollectionViewCell {
-    var content: TTActionSheetAction!
+    var content: TTActionSheetActionProtocol!
     
     @IBOutlet weak var selectionButton: UIButton!
     @IBOutlet weak var title: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        selectionButton.setBackgroundImage(imageFromColor(UIColorFromRGB(0xBBBBBF)), forState: .Highlighted)
+        selectionButton.setBackgroundImage(imageFromColor(color: UIColorFromRGB(0xBBBBBF)), for: .highlighted)
     }
     
-    @IBAction func selectedAction(sender: AnyObject) {
+    @IBAction func selectedAction(_ sender: Any) {
         content.handler?()
         let parent = self.parentViewController as! TTActionSheet
+        parent.selectedCallback?(content)
         parent.cancelAction(self)
     }
 }

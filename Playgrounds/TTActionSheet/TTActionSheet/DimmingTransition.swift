@@ -21,46 +21,46 @@ class DimmingTransition: NSObject, UIViewControllerTransitioningDelegate, UIView
 		return self
 	}
 
-	func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
 		return 0.35
 	}
 
-	func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-		let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)!
-		let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
-		let containerView = transitionContext.containerView()
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+        let fromViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from)!
+        let toViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
+        let containerView = transitionContext.containerView
 
-		let animationDuration = self.transitionDuration(transitionContext)
+        let animationDuration = self.transitionDuration(using: transitionContext)
 		let dimmingViewKey = "dimmingView"
 
 		if !isReverse {
 			let dimmingView = UIView()
-			dimmingView.backgroundColor = UIColor.clearColor()
+            dimmingView.backgroundColor = UIColor.clear
 			dimmingView.frame = fromViewController.view.bounds
 			fromViewController.view.addSubview(dimmingView)
 			fromViewController.view.layer.setValue(dimmingView, forKey: dimmingViewKey)
 
-			toViewController.view.transform = CGAffineTransformMakeTranslation(0, toViewController.view.frame.height)
-			containerView!.addSubview(toViewController.view)
+            toViewController.view.transform = CGAffineTransform(translationX: 0, y: toViewController.view.frame.height)
+            containerView.addSubview(toViewController.view)
 
-			UIView.animateWithDuration(0.35, delay: 0, options: .CurveEaseInOut,
-				animations: { dimmingView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
-					toViewController.view.transform = CGAffineTransformIdentity
+            UIView.animate(withDuration: 0.35, delay: 0, options: .curveEaseInOut,
+                           animations: { dimmingView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+					toViewController.view.transform = CGAffineTransform.identity
 				},
 				completion: { (finished) -> Void in
 					transitionContext.completeTransition(finished) })
 		} else {
-			let dimmingView = toViewController.view.layer.valueForKey(dimmingViewKey) as! UIView
+            let dimmingView = toViewController.view.layer.value(forKey: dimmingViewKey) as! UIView
 
-			UIView.animateWithDuration(animationDuration, delay: 0, options: .CurveEaseInOut,
+            UIView.animate(withDuration: animationDuration, delay: 0, options: .curveEaseInOut,
 				animations: { () -> Void in
-					fromViewController.view.transform = CGAffineTransformMakeTranslation(0, fromViewController.view.frame.height)
-					dimmingView.backgroundColor = UIColor.clearColor()
+                    fromViewController.view.transform = CGAffineTransform(translationX: 0, y: fromViewController.view.frame.height)
+                    dimmingView.backgroundColor = UIColor.clear
 				},
 				completion: { (finished) -> Void in
 					fromViewController.view.removeFromSuperview()
 					dimmingView.removeFromSuperview()
-					transitionContext.completeTransition(!transitionContext.transitionWasCancelled())
+                    transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
 			})
 
 		}

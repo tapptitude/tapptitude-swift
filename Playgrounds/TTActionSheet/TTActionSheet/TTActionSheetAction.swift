@@ -8,9 +8,18 @@
 
 import UIKit
 
-public class TTActionSheetAction: NSObject {
+protocol TTActionSheetActionProtocol {
+    var title: String { get set }
+    var handler: (() -> Void)? { get set }
+}
+
+public class TTActionSheetAction: NSObject, TTActionSheetActionProtocol {
     var title: String
     var handler: (() -> Void)?
+    
+    public init(title: String) {
+        self.title = title
+    }
     
     public init(title: String, handler: (() -> Void)?) {
         self.title = title
