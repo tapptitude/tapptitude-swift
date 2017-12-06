@@ -26,10 +26,12 @@ public class TTActionSheet: CollectionFeedController {
     var sheetTitle:String? = nil
     var message: String? = nil
     var cancelMessage: String? = nil
-    var actions: [TTActionSheetAction] = []
+    var actions: [TTActionSheetActionProtocol] = []
     private var headerIsVisible: Bool = true
     
     let transtionController = DimmingBlurTransition()
+    
+    var actionSheetController: TTAnyCollectionCellController?
     
     var selectedCallback:((TTActionSheetActionProtocol) -> ())?
     
@@ -52,7 +54,11 @@ public class TTActionSheet: CollectionFeedController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.cellController = ActionSheetCellController<TTActionSheetAction,ActionSheetCell>()
+        if let controller = actionSheetController {
+            self.cellController = controller
+        } else {
+            self.cellController = ActionSheetCellController<TTActionSheetAction,ActionSheetCell>()
+        }
         
         if Bundle.allBundles.contains(where: { ($0.bundleIdentifier ?? "").hasPrefix("com.apple.dt.") }) {
             self.view.frame = CGRect(x: 0, y: 0, width: 350, height: 667) // harcoded value

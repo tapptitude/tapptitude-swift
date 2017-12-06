@@ -15,6 +15,11 @@ class ActionSheetCellController<Content:TTActionSheetActionProtocol,Cell:ActionS
         super.init(cellSize: CGSize(width: -1.0, height: 57.0))
     }
     
+    init(cellSize:CGSize) {
+        super.init(cellSize: cellSize)
+    }
+    
+    
     override func cellSize(for content: Content, in collection: UICollectionView) -> CGSize {
         let cell = sizeCalculationCell
         self.cellConfiguration(cell: cell!, forContent: content, indexPath: NSIndexPath(item: 0, section: 0))
@@ -25,7 +30,7 @@ class ActionSheetCellController<Content:TTActionSheetActionProtocol,Cell:ActionS
     }
     
     override func configureCell(_ cell: Cell, for content: Content, at indexPath: IndexPath) {
-        cell.content = content as! TTActionSheetAction
+        cell.content = content as TTActionSheetActionProtocol
         cell.title.text = content.title
     }
     
