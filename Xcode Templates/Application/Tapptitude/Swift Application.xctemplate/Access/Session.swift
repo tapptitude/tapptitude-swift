@@ -68,7 +68,7 @@ class Session {
     
     static func currentUser () -> User? {
         if let userID = currentUserID {
-            let user = User()
+            var user = User()
             user.userID = userID
             return user
         }

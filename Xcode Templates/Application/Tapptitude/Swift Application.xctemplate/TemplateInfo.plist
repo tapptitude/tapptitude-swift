@@ -100,13 +100,12 @@ fi</string>
 		<string>../bin/Natalie Source.zip</string>
 		<string>Access/API.swift</string>
 		<string>Access/API+Config.swift</string>
-		<string>Access/API+Mapping.swift</string>
-		<string>Access/ErrorParser.swift</string>
-		<string>Access/FeedDataStore.swift</string>
+		<string>Access/APIError.swift</string>
+		<string>Access/JSONDecoder+KeyPath.swift</string>
 		<string>Access/Facebook.swift</string>
 		<string>Access/Session.swift</string>
 		<string>Access/JSONCache.swift</string>
-		<string>Access/MapperCaching.swift</string>
+		<string>Access/CodableCaching.swift</string>
 		<string>Constants.swift</string>
 		<string>Model/User.swift</string>
 		<string>Helpers/ErrorDisplay.swift</string>
@@ -237,15 +236,6 @@ fi</string>
 			<key>Group</key>
 			<string>Access</string>
 		</dict>
-		<key>Access/FeedDataStore.swift</key>
-		<dict>
-			<key>SortOrder</key>
-			<integer>100</integer>
-			<key>Path</key>
-			<string>Access/FeedDataStore.swift</string>
-			<key>Group</key>
-			<string>Access</string>
-		</dict>
 		<key>Access/Facebook.swift</key>
 		<dict>
 			<key>SortOrder</key>
@@ -255,12 +245,12 @@ fi</string>
 			<key>Group</key>
 			<string>Access</string>
 		</dict>
-		<key>Access/ErrorParser.swift</key>
+		<key>Access/APIError.swift</key>
 		<dict>
 			<key>SortOrder</key>
 			<integer>100</integer>
 			<key>Path</key>
-			<string>Access/ErrorParser.swift</string>
+			<string>Access/APIError.swift</string>
 			<key>Group</key>
 			<string>Access</string>
 		</dict>
@@ -273,12 +263,12 @@ fi</string>
 			<key>Group</key>
 			<string>Access</string>
 		</dict>
-		<key>Access/API+Mapping.swift</key>
+		<key>Access/JSONDecoder+KeyPath.swift</key>
 		<dict>
 			<key>SortOrder</key>
 			<integer>100</integer>
 			<key>Path</key>
-			<string>Access/API+Mapping.swift</string>
+			<string>Access/JSONDecoder+KeyPath.swift</string>
 			<key>Group</key>
 			<string>Access</string>
 		</dict>
@@ -300,12 +290,12 @@ fi</string>
 			<key>Group</key>
 			<string>Access</string>
 		</dict>
-		<key>Access/MapperCaching.swift</key>
+		<key>Access/CodableCaching.swift</key>
 		<dict>
 			<key>SortOrder</key>
 			<integer>100</integer>
 			<key>Path</key>
-			<string>Access/MapperCaching.swift</string>
+			<string>Access/CodableCaching.swift</string>
 			<key>Group</key>
 			<string>Access</string>
 		</dict>

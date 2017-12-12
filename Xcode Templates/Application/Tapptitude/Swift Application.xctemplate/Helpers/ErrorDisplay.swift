@@ -114,6 +114,6 @@ extension UIViewController {
     }
     
     func checkAndShow(error : Error?) {
-        ErrorDisplay.checkAndShowError(error as? NSError , fromViewController:self)
+        ErrorDisplay.checkAndShowError(error as NSError? , fromViewController:self)
     }
 }

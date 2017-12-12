@@ -7,9 +7,8 @@
 //
 
 import Foundation
-import ObjectMapper
 
-final class User {
+struct User: Codable {
     var userID : String!
     
     var firstName : String?
@@ -20,12 +19,14 @@ final class User {
     }
 }
 
-extension User: Mappable {
-    convenience init?(map: Map) { self.init() }
+
+struct LoginSession: Decodable {
+    var driver: User
+    var token: String
     
-    func mapping(map: Map) {
-        userID <- map["_id"]
-        lastName <- map["lastName"]
-        firstName <- map["firstName"]
+    enum CodingKeys: String, CodingKey {
+        case driver
+        case token = "auth_key"
     }
 }
+

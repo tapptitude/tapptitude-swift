@@ -8,7 +8,7 @@
 
 import Foundation
 import Alamofire
-import ObjectMapper
+import Tapptitude
 
 struct APISettings {
     static let serverURL = Constants.API_URL
@@ -22,32 +22,33 @@ struct APISettings {
     }
 }
 
+typealias Result = Tapptitude.Result
 
 class API {
     
     @discardableResult
-    static func loginWithEmail(_ email:String, password:String, callback:@escaping (_ result: Result<User>)->()) -> Alamofire.Request? {
-        let params : [String: Any] = [ "email":email, "password":password]
+    static func loginWithEmail(_ email: String, password: String, callback: @escaping (_ result: Result<User>)->()) -> TTCancellable? {
+        let params : [String: Any] = [ "email":email, "password": password]
         
-        return request(.post, path: "driver/users/login", parameters: params).responseAPIMap(keyPath: "data.driver") { (response, result: Result<User>) in
-            if let dataDict = response.result.value, let user = result.value {
-                Session.accessToken = dataDict.value(forKeyPath: "data.auth_key") as? String
-                Session.currentUserID = user.userID
+        return request(.post, path: "/driver/users/login", parameters: params, encoding: .json).responseAPIDecode(keyPath: "data") { (response,  result: Result<LoginSession>) in
+            if let session = result.value {
+                Session.accessToken = session.token
+                Session.currentUserID = session.driver.userID
             }
             
-            callback(result)
+            callback(result.map({ $0.driver }))
         }
     }
     
     @discardableResult
-    static func getCurrentUser(_ callback:@escaping (_ result: Result<User>)->()) -> Alamofire.Request? {
-        return request(.get, path: "driver/users").responseAPIMap(keyPath: "data") { (response, result) in
+    static func getCurrentUser(_ callback:@escaping (_ result: Result<User>)->()) -> TTCancellable? {
+        return request(.get, path: "driver/users").responseAPIDecode(keyPath: "data", completion: { (response, result) in
             callback(result)
-        }
+        })
     }
     
     @discardableResult
-    static func logout(_ callback:@escaping (_ error:Error?)->()) -> Alamofire.Request? {
+    static func logout(_ callback:@escaping (_ error: Error?)->()) -> TTCancellable? {
         return request(.post, path: "driver/users/logout").responseAPI({ response in
             callback(response.result.error)
         })
@@ -55,13 +56,13 @@ class API {
     
     
 //    @discardableResult
-//    static func getBookingHistory(limit:Int, fromBookingId:String?, callback: @escaping (_ bookings: [Booking]?,  _ nextOffset: String?, _ error: Error?) ->()) -> Alamofire.Request?  {
+//    static func getBookingHistory(limit:Int, fromBookingId:String?, callback: @escaping (_ bookings: [Booking]?,  _ nextOffset: String?, _ error: Error?) ->()) -> TTCancellable?  {
 //        var params:[String:Any] = [:]
 //        params["limit"] = limit
 //        params["from_booking_id"] = fromBookingId
 //        params["statuses"] = []
-//        
-//        return request(.get, path: "driver/bookings", parameters: params, encoding: .url).responseAPIMap(keyPath: "data") { (response, bookings:[Booking]?) in
+//
+//        return request(.get, path: "driver/bookings", parameters: params, encoding: .url).responseAPIDecode(keyPath: "data") { (response, bookings: [Booking]?) in
 //            let lastBookingId = bookings?.last?.id
 //            callback(bookings, lastBookingId,  response.result.error)
 //        }

@@ -7,23 +7,26 @@
 //
 
 import Foundation
-import ObjectMapper
 
 /// Usage Ex:
 /// - loading -- `lazy var creditCards: [CreditCard]? = JSONCache.creditCards.loadFromFile()`
 /// - saving -- `JSONCache.creditCards.saveToFile(cards)`
 enum JSONCache {
     
-//    static var bookingHistory: MapperCaching<[Booking]> {
+//    static var bookingHistory: CodableCaching<[Booking]> {
 //        return userResource()
 //    }
-//    
-//    static var community: MapperCaching<[Post]> {
+//
+//    static var community: CodableCaching<[Post]> {
 //        return resource()
 //    }
     
+    static var currentUser: CodableCaching<User> {
+        return resource()
+    }
+    
     static func clearAllSavedResource() {
-        MapperCaching<Any>.deleteCachingDirectory()
+        CodableCaching<Any>.deleteCachingDirectory()
     }
 }
 
@@ -33,11 +36,12 @@ extension JSONCache {
         return function + "_" + id
     }
     
-    fileprivate static func userResource<T>(function: String = #function) -> MapperCaching<T> {
-        return MapperCaching(resourceID: userResourceID(function: function))
+    fileprivate static func userResource<T>(function: String = #function) -> CodableCaching<T> {
+        return CodableCaching(resourceID: userResourceID(function: function))
     }
     
-    fileprivate static func resource<T>(function: String = #function) -> MapperCaching<T> {
-        return MapperCaching(resourceID: function)
+    fileprivate static func resource<T>(function: String = #function) -> CodableCaching<T> {
+        return CodableCaching(resourceID: function)
     }
 }
+

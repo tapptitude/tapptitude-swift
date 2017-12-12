@@ -3,7 +3,6 @@ use_frameworks!
 
 target '___PROJECTNAME___' do
     pod 'Alamofire'
-    pod 'ObjectMapper'
     pod 'Kingfisher'
     pod 'SAMKeychain'
     pod 'FBSDKLoginKit'
@@ -12,15 +11,14 @@ target '___PROJECTNAME___' do
     pod 'Fabric'
     pod 'Crashlytics'
     pod 'SwiftMessages'
-    pod 'TextAttributes'
 end
 
-post_install do |installer|
-    installer.pods_project.targets.each do |target|
-        if ['TextAttributes'].include? target.name
-            target.build_configurations.each do |config|
-                config.build_settings['SWIFT_VERSION'] = '3.2'
-            end
-        end
-    end
-end
+#post_install do |installer|
+#    installer.pods_project.targets.each do |target|
+#        if ['XXXXXX'].include? target.name
+#            target.build_configurations.each do |config|
+#                config.build_settings['XXXXXX'] = '3.2'
+#            end
+#        end
+#    end
+#end
