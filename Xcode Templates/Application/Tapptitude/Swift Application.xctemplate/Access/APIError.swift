@@ -26,10 +26,17 @@ extension APIError: Decodable {
     }
     
     init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        code = try values.decode(String.self, forKey: .code)
-        message = try values.decode(String.self, forKey: .message)
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        //        container = container.nestedContainer(keyedBy: CodingKeys.self, forKey: .error) // fetch error container
+        code = try container.decode(String.self, forKey: .code)
+        message = try container.decode(String.self, forKey: .message)
         type = Type(rawValue: code) ?? .unkown
+    }
+}
+
+extension APIError: LocalizedError {
+    var localizedDescription: String {
+        return message
     }
 }
 
@@ -48,3 +55,4 @@ func ==(lhs: Error, rhs: APIError.`Type`) -> Bool {
     let error = lhs as NSError
     return error.domain == rhs.rawValue
 }
+
