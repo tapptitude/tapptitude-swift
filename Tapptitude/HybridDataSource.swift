@@ -13,8 +13,8 @@ public protocol RequireNewSection {
 }
 
 public struct HybridItem {
-    var element: Any
-    var cellController: TTAnyCollectionCellController
+    public var element: Any
+    public var cellController: TTAnyCollectionCellController
 }
 
 public protocol HybridCollectionCellController: TTAnyCollectionCellController {
