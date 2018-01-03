@@ -106,4 +106,18 @@ open class CollectionCellController<ContentName, CellName: UICollectionViewCell>
     open func allSupportedReuseIdentifiers() -> [String] {
         return [reuseIdentifier]
     }
+    
+    open func classToInstantiateCell(for content: ContentType) -> AnyClass? {
+        return CellType.self
+    }
+    
+    open func sectionInset(for content: ContentType, in collectionView: UICollectionView) -> UIEdgeInsets {
+        return sectionInset
+    }
+    open func minimumLineSpacing(for content: ContentType, in collectionView: UICollectionView) -> CGFloat {
+        return minimumLineSpacing
+    }
+    open func minimumInteritemSpacing(for content: ContentType, in collectionView: UICollectionView) -> CGFloat {
+        return minimumInteritemSpacing
+    }
 }

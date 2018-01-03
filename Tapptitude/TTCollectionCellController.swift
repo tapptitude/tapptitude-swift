@@ -166,39 +166,6 @@ extension TTCollectionCellControllerSize {
 
 
 extension TTCollectionCellController {
-    public func acceptsContent(_ content: Any) -> Bool {
-        return content is ContentType
-    }
-    
-    public func classToInstantiateCell(for content: ContentType) -> AnyClass? {
-        return CellType.self
-    }
-    
-    public func nibToInstantiateCell(for content: ContentType) -> UINib? {
-        let reuseIdentifier = self.reuseIdentifier(for: content)
-        if let _ = Bundle(for: CellType.self).path(forResource: reuseIdentifier, ofType: "nib") {
-            return UINib(nibName: reuseIdentifier, bundle: Bundle(for: CellType.self))
-        } else {
-            return nil
-        }
-    }
-    
-    public var reuseIdentifier: String {
-        return String(describing: CellType.self)
-    }
-    
-    public func reuseIdentifier(for content: ContentType) -> String {
-        return reuseIdentifier
-    }
-    
-    public func configureCell(_ cell: CellType, for content: ContentType, at indexPath: IndexPath) {
-        
-    }
-    
-    public func didSelectContent(_ content: ContentType, at indexPath: IndexPath, in collectionView: UICollectionView) {
-        
-    }
-    
     public func classToInstantiateCell(for content: Any) -> AnyClass? {
         return classToInstantiateCell(for: content as! ContentType)
     }
@@ -213,19 +180,6 @@ extension TTCollectionCellController {
     }
     public func didSelectContent(_ content: Any, at indexPath: IndexPath, in collectionView: UICollectionView) {
         didSelectContent(content as! ContentType, at: indexPath, in: collectionView)
-    }
-    
-    public func cellSize(for content: ContentType, in collectionView: UICollectionView) -> CGSize {
-        return cellSize
-    }
-    public func sectionInset(for content: ContentType, in collectionView: UICollectionView) -> UIEdgeInsets {
-        return sectionInset
-    }
-    public func minimumLineSpacing(for content: ContentType, in collectionView: UICollectionView) -> CGFloat {
-        return minimumLineSpacing
-    }
-    public func minimumInteritemSpacing(for content: ContentType, in collectionView: UICollectionView) -> CGFloat {
-        return minimumInteritemSpacing
     }
     
     public func cellSize(for content: Any, in collectionView: UICollectionView) -> CGSize {

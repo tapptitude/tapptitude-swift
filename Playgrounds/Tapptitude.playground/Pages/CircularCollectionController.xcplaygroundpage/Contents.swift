@@ -117,7 +117,7 @@ class CircularCollectionController: CollectionFeedController {
         //        }
     }
     
-    func scrollToNextPageAnimated() {
+    @objc func scrollToNextPageAnimated() {
         if let visibleIndex = collectionView?.indexPathsForVisibleItems.first {
             var currentPage = visibleIndex.row + 1
             if currentPage >= dataSource?.numberOfItems(inSection: 0) ?? Int.max {
