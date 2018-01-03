@@ -6,7 +6,8 @@ public extension UICollectionViewCell {
         case titleLabel
         case subtitleLabel
     }
-    var titleLabel: UILabel? {
+    
+    @IBOutlet var titleLabel: UILabel? {
         get {
             return layer.value(forKey: Labels.titleLabel.rawValue) as? UILabel
         }
@@ -16,7 +17,7 @@ public extension UICollectionViewCell {
         }
     }
     
-    var subtitleLabel: UILabel? {
+    @IBOutlet var subtitleLabel: UILabel? {
         get {
             return layer.value(forKey: Labels.subtitleLabel.rawValue) as? UILabel
         }
