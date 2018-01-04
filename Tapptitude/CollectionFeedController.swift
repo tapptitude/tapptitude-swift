@@ -110,7 +110,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         didSet { reloadSpinnerView = reloadIndicatorView }
     }
     /// any view that conforms to <TTSpinnerView> protocol { startAnimating | stopAnimating }
-    @IBOutlet open weak var reloadSpinnerView: UIView?
+    @IBOutlet open weak var reloadSpinnerView: (UIView & TTSpinnerView)?
     
     internal lazy var _emptyView: UIView? = {
         let emptyView = UILabel()
@@ -281,7 +281,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     }
     
     open func updateReloadingIndicatorView() {
-        let spinner = reloadSpinnerView as? TTSpinnerView
+        let spinner = reloadSpinnerView
         
         guard let dataSource = self.dataSource else {
             spinner?.stopAnimating()
