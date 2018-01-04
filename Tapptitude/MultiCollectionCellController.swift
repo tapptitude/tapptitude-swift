@@ -61,19 +61,10 @@ open class MultiCollectionCellController: TTAnyCollectionCellController {
         }
     }
     
-    open var cellSize : CGSize {
-        return CGSize.zero
-    }
-    
-    open var sectionInset : UIEdgeInsets {
-        return UIEdgeInsets.zero
-    }
-    open var minimumLineSpacing : CGFloat {
-        return 0.0
-    }
-    open var minimumInteritemSpacing : CGFloat {
-        return 0.0
-    }
+    open var cellSize = CGSize.zero
+    open var sectionInset = UIEdgeInsets.zero
+    open var minimumLineSpacing: CGFloat = 0.0
+    open var minimumInteritemSpacing: CGFloat = 0.0
 //}
 //
 //extension MultiCollectionCellController: TTCollectionCellControllerProtocol {
