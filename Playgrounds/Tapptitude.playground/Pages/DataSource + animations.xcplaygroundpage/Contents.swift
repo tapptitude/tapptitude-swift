@@ -13,7 +13,6 @@ feedController.dataSource = dataSource
 feedController.cellController = IntCellController()
 
 PlaygroundPage.current.liveView = feedController.view
-feedController.collectionView.backgroundColor = UIColor.black
 
 
 feedController.perfomBatchUpdates({

@@ -89,12 +89,13 @@ class TextCellController: CollectionCellController<String, SwipeCell> {
 
 
 
-let feedController = SwipeController(nibName: "CollectionFeedController", bundle: nil)
+let feedController = SwipeController()
 feedController.dataSource = dataSource
 feedController.cellController = TextCellController()
 feedController.animatedUpdates = true
 
 import PlaygroundSupport
+feedController.view.frame = CGRect(x: 0, y: 0, width: 320, height: 600)
 PlaygroundPage.current.liveView = feedController.view
 
 //: [Next](@next)

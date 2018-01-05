@@ -55,7 +55,7 @@ open class CollectionCellController<ContentName, CellName: UICollectionViewCell>
             }
             
             if cellSize.width < 0 || cellSize.height < 0 {
-                if let parent = self.parentViewController as? CollectionFeedController, let size = parent.collectionView?.bounds.size {
+                if let parent = self.parentViewController as? __CollectionFeedController, let size = parent.collectionView?.bounds.size {
                     var frame = sizeCalculationCell.frame
                     frame.size.width = cellSize.width < 0 ? size.width : cellSize.width
                     frame.size.height = cellSize.height < 0 ? size.height : cellSize.height

@@ -8,7 +8,7 @@
 
 import UIKit
 
-public protocol TTAnyCollectionCellController {
+public protocol TTAnyCollectionCellController: class {
     func acceptsContent(_ content: Any) -> Bool
     
     func classToInstantiateCell(for content: Any) -> AnyClass?
@@ -38,7 +38,7 @@ public protocol TTAnyCollectionCellController {
 
 extension TTCollectionCellController {
     public var dataSource: TTDataSource? {
-        return (self.parentViewController as? TTCollectionFeedController)?.dataSource
+        return (self.parentViewController as? TTCollectionFeedController)?._dataSource
     }
 }
 

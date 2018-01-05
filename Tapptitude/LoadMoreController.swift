@@ -80,8 +80,8 @@ open class LoadMoreFooterController: NSObject, TTLoadMoreController {
         }
     }
     open func registLoadMoreView(in collectionView: UICollectionView) {
-        let isInTappLibrary = Bundle(for: CollectionFeedController.self).path(forResource: loadMoreViewXIBName, ofType: "nib") != nil
-        let bundle: Bundle? = isInTappLibrary ? Bundle(for: CollectionFeedController.self) : nil
+        let isInTappLibrary = Bundle(for: __CollectionFeedController.self).path(forResource: loadMoreViewXIBName, ofType: "nib") != nil
+        let bundle: Bundle? = isInTappLibrary ? Bundle(for: __CollectionFeedController.self) : nil
         let nib = UINib(nibName: loadMoreViewXIBName, bundle: bundle)
         collectionView.register(nib, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: loadMoreViewXIBName)
     }

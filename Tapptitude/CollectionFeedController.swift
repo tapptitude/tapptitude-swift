@@ -8,7 +8,33 @@
 
 import UIKit
 
-open class CollectionFeedController: UIViewController, TTCollectionFeedController, TTDataFeedDelegate, TTDataSourceDelegate {
+public typealias MultiCollectionFeedController<U: TTDataSource> = _CollectionFeedController<U, MultiCollectionCellController>
+public typealias HybridCollectionFeedController = _CollectionFeedController<HybridDataSource, HybridCellController>
+public typealias CollectionFeedController = AnyCollectionFeedController
+
+open class _CollectionFeedController<D: TTDataSource, C: TTAnyCollectionCellController>: __CollectionFeedController {
+    open var dataSource: D? {
+        get { return _dataSource as? D }
+        set { _dataSource = newValue}
+    }
+    open var cellController: C! {
+        get { return _cellController as? C }
+        set { _cellController = newValue }
+    }
+}
+
+open class AnyCollectionFeedController: __CollectionFeedController {
+    open var dataSource: TTDataSource? {
+        get { return _dataSource }
+        set { _dataSource = newValue }
+    }
+    open var cellController: TTAnyCollectionCellController! {
+        get { return _cellController }
+        set { _cellController = newValue }
+    }
+}
+
+open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTDataSourceDelegate, TTCollectionFeedController {
     
     public struct Options {
         public var loadMoreIndicatorViewColor = UIColor.gray
@@ -22,7 +48,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         if emptyViewWasInsertedIntoHierarchy {
             emptyView?.removeFromSuperview()
         }
-        dataSource?.delegate = nil
+        _dataSource?.delegate = nil
     }
     
     open override func awakeFromNib() {
@@ -35,6 +61,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     open override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupCollectionViewIfMissing()
         updateReloadingIndicatorView()
         updateEmptyViewAppearence(animated: false)
     }
@@ -61,7 +88,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
                 } else if #available(iOS 10.0, *) {
                     layout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
                 } else {
-                    var size = self.cellController.cellSize
+                    var size = self._cellController.cellSize
                     size.width = size.width < 0 ? collectionView.bounds.size.width : size.width
                     size.height = size.height < 0 ? collectionView.bounds.size.height: size.height
                     layout.estimatedItemSize = size
@@ -137,20 +164,20 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     }
        
     
-    open var dataSource: TTDataSource? {
+    open var _dataSource: TTDataSource? {
         willSet {
-            if self == (dataSource?.delegate as? CollectionFeedController) {
-                dataSource?.delegate = nil
+            if self == (_dataSource?.delegate as? __CollectionFeedController) {
+                _dataSource?.delegate = nil
             }
         }
         
         didSet {
-            let feed = dataSource?.feed
+            let feed = _dataSource?.feed
             if feed?.canReload == true && feed?.shouldReload() == true {
                 feed?.reload()
             }
             
-            dataSource?.delegate = self
+            _dataSource?.delegate = self
             collectionView?.reloadData()
             
             updateReloadingIndicatorView()
@@ -161,12 +188,12 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     
     var prefetchController: CollectionCellPrefetcherDelegate?
     
-    open var cellController: TTAnyCollectionCellController! {
+    open var _cellController: TTAnyCollectionCellController! {
         willSet {
-            cellController?.parentViewController = nil
+            _cellController?.parentViewController = nil
         }
         didSet {
-            cellController.parentViewController = self
+            _cellController.parentViewController = self
             updateCollectionViewLayoutAttributes()
             updatePrefetcherController()
         }
@@ -211,32 +238,79 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     }
     
     internal func updateCollectionViewLayoutAttributes() {
-        if cellController == nil || collectionView == nil {
+        if _cellController == nil || collectionView == nil {
             return
         }
         
         if let layout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.sectionInset = cellController.sectionInset
-            layout.minimumLineSpacing = cellController.minimumLineSpacing
-            layout.minimumInteritemSpacing = cellController.minimumInteritemSpacing
-            if cellController.cellSize.width > 0.0 && cellController.cellSize.height > 0.0 {
-                layout.itemSize = cellController.cellSize
+            layout.sectionInset = _cellController.sectionInset
+            layout.minimumLineSpacing = _cellController.minimumLineSpacing
+            layout.minimumInteritemSpacing = _cellController.minimumInteritemSpacing
+            if _cellController.cellSize.width > 0.0 && _cellController.cellSize.height > 0.0 {
+                layout.itemSize = _cellController.cellSize
             }
         }
     }
     
     
     // UI appearence
+    internal func setupCollectionViewIfMissing() {
+        guard self.collectionView == nil else {
+            return
+        }
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.backgroundColor = .white
+        view.addSubview(collectionView)
+        self.collectionView = collectionView
+        
+        if #available(iOS 9.0, *) {
+            collectionView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+                collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                ])
+        } else {
+            collectionView.frame = view.bounds
+            collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        }
+        
+        setupReloadActivityIndicatorView()
+    }
+    
+    internal func setupReloadActivityIndicatorView() {
+        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        activityIndicatorView.hidesWhenStopped = true
+        activityIndicatorView.startAnimating()
+        view.addSubview(activityIndicatorView)
+        self.reloadIndicatorView = activityIndicatorView
+        
+        if #available(iOS 9.0, *) {
+            activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                activityIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                activityIndicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+                ])
+        } else {
+            collectionView.center = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
+            collectionView.autoresizingMask = [.flexibleLeftMargin, .flexibleTopMargin]
+        }
+    }
+    
     internal var emptyViewWasInsertedIntoHierarchy = false
     open func updateEmptyViewAppearence(animated: Bool) {
         guard let emptyView = self.emptyView else {
             return
         }
         
-        let feedIsLoading = (dataSource?.feed?.isReloading == true) || (dataSource?.feed?.isLoadingMore == true)
-        let hasContent = dataSource?.isEmpty == false
+        let feedIsLoading = (_dataSource?.feed?.isReloading == true) || (_dataSource?.feed?.isLoadingMore == true)
+        let hasContent = _dataSource?.isEmpty == false
         
-        if (feedIsLoading || hasContent || dataSource == nil) {
+        if (feedIsLoading || hasContent || _dataSource == nil) {
             if animated {
                 UIView.animate(withDuration: 0.3, animations: { () -> Void in
                     emptyView.alpha = 0
@@ -283,7 +357,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     open func updateReloadingIndicatorView() {
         let spinner = reloadSpinnerView
         
-        guard let dataSource = self.dataSource else {
+        guard let dataSource = self._dataSource else {
             spinner?.stopAnimating()
             return
         }
@@ -316,12 +390,12 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     //MARK: Pull to Refresh -
     @IBOutlet open  weak var refreshControl: UIRefreshControl?
     @objc open func pullToRefreshAction(_ sender: AnyObject!) {
-        dataSource!.feed!.reload()
+        _dataSource!.feed!.reload()
     }
     open func addPullToRefresh() {
         let refreshControl = UIRefreshControl()
         refreshControl.backgroundColor = collectionView.backgroundColor
-        refreshControl.addTarget(self, action: #selector(CollectionFeedController.pullToRefreshAction(_:)), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(pullToRefreshAction(_:)), for: .valueChanged)
         self.refreshControl = refreshControl
         collectionView.addSubview(refreshControl)
     }
@@ -362,11 +436,11 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     
     func checkIfShouldLoadMoreContent() {
         if lastFeedError == nil {
-            loadMoreController?.checkIfShouldLoadMoreContent(for: dataSource?.feed)
+            loadMoreController?.checkIfShouldLoadMoreContent(for: _dataSource?.feed)
         }
     }
     func updateCanShowLoadMoreViewAnimated(_ animated: Bool) {
-        loadMoreController?.updateCanShowLoadMoreView(for: dataSource?.feed, animated: animated)
+        loadMoreController?.updateCanShowLoadMoreView(for: _dataSource?.feed, animated: animated)
     }
 //}
 //
@@ -452,8 +526,8 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
 //extension CollectionFeedController : UICollectionViewDataSource {
     
     open func numberOfSections(in collectionView: UICollectionView) -> Int {
-        assert(cellController != nil, "cellController is nil, please set self.cellController = ...(YourCellController)")
-        guard let dataSource = self.dataSource else {
+        assert(_cellController != nil, "cellController is nil, please set self.cellController = ...(YourCellController)")
+        guard let dataSource = self._dataSource else {
             return 0
         }
         
@@ -467,18 +541,18 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     }
     
     open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dataSource!.numberOfItems(inSection: section)
+        return _dataSource!.numberOfItems(inSection: section)
     }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let content = dataSource![indexPath]
-        let reuseIdentifier = cellController.reuseIdentifier(for: content)
+        let content = _dataSource![indexPath]
+        let reuseIdentifier = _cellController.reuseIdentifier(for: content)
         
         if registeredCellIdentifiers.contains(reuseIdentifier) == false {
-            if let nib = cellController.nibToInstantiateCell(for: content) {
+            if let nib = _cellController.nibToInstantiateCell(for: content) {
                 collectionView.register(nib, forCellWithReuseIdentifier: reuseIdentifier)
             } else {
-                let cellClass: AnyClass? = cellController.classToInstantiateCell(for: content)
+                let cellClass: AnyClass? = _cellController.classToInstantiateCell(for: content)
                 collectionView.register(cellClass, forCellWithReuseIdentifier: reuseIdentifier)
             }
             
@@ -486,19 +560,19 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
         }
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-        assert(cellController.acceptsContent(content), "Can't produce cell for content \(content)")
-        assert(cell.reuseIdentifier == reuseIdentifier , "Cell returned from cell controller \(cellController) had reuseIdenfier \(cell.reuseIdentifier!), which must be equal to the cell controller's reuseIdentifierForContent, which returned \(reuseIdentifier)")
+        assert(_cellController.acceptsContent(content), "Can't produce cell for content \(content)")
+        assert(cell.reuseIdentifier == reuseIdentifier , "Cell returned from cell controller \(_cellController) had reuseIdenfier \(cell.reuseIdentifier!), which must be equal to the cell controller's reuseIdentifierForContent, which returned \(reuseIdentifier)")
         
         // pass parentViewController
-        cell.parentViewController = cellController.parentViewController;
+        cell.parentViewController = _cellController.parentViewController;
         
-        cellController.configureCell(cell, for: content, at: indexPath)
+        _cellController.configureCell(cell, for: content, at: indexPath)
         
         return cell;
     }
     
     open func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let dataSource = self.dataSource else {
+        guard let dataSource = self._dataSource else {
             return UICollectionReusableView()
         }
         
@@ -541,7 +615,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     }
     
     open func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        cell.parentViewController = cellController.parentViewController
+        cell.parentViewController = _cellController.parentViewController
         
         checkIfShouldLoadMoreContent()
         loadMoreController?.updateLoadMoreViewPosition(in: collectionView)
@@ -558,25 +632,25 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
 // MARK: Did Select -
 //extension CollectionFeedController {
     open func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let content = dataSource![indexPath]
-        cellController.didSelectContent(content, at: indexPath, in: collectionView)
+        let content = _dataSource![indexPath]
+        _cellController.didSelectContent(content, at: indexPath, in: collectionView)
     }
 
 
 // MARK: Layout Size -
 //extension CollectionFeedController {
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let content = dataSource![indexPath]
-        let size = cellController.cellSize(for: content, in: collectionView)
+        let content = _dataSource![indexPath]
+        let size = _cellController.cellSize(for: content, in: collectionView)
         let boundsSize = collectionView.bounds.size
         return CGSize(width: size.width < 0.0 ? boundsSize.width : size.width, height: size.height < 0.0 ? boundsSize.height : size.height)
     }
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         var insets = UIEdgeInsets.zero
-        if let dataSource = dataSource, dataSource.numberOfItems(inSection: section) > 0 {
+        if let dataSource = _dataSource, dataSource.numberOfItems(inSection: section) > 0 {
             let first = dataSource[section, 0]
-            insets = cellController.sectionInset(for: first, in: collectionView)
+            insets = _cellController.sectionInset(for: first, in: collectionView)
 //            let last = dataSource[section, dataSource.numberOfItems(inSection: section) - 1]
 //            insets.bottom = cellController.sectionInset(for: last, in: collectionView).bottom
         }
@@ -589,18 +663,18 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     }
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        if let dataSource = dataSource, dataSource.numberOfItems(inSection: section) > 0 {
+        if let dataSource = _dataSource, dataSource.numberOfItems(inSection: section) > 0 {
             let content = dataSource[section, 0]
-            return cellController.minimumInteritemSpacing(for: content, in: collectionView)
+            return _cellController.minimumInteritemSpacing(for: content, in: collectionView)
         } else {
             return 0.0
         }
     }
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        if let dataSource = dataSource, dataSource.numberOfItems(inSection: section) > 0 {
+        if let dataSource = _dataSource, dataSource.numberOfItems(inSection: section) > 0 {
             let content = dataSource[section, 0]
-            return cellController.minimumLineSpacing(for: content, in: collectionView)
+            return _cellController.minimumLineSpacing(for: content, in: collectionView)
         } else {
             return 0.0
         }
@@ -611,7 +685,7 @@ open class CollectionFeedController: UIViewController, TTCollectionFeedControlle
     }
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection  section: Int) -> CGSize {
-        if let dataSource = dataSource, dataSource.numberOfItems(inSection: section) > 0,
+        if let dataSource = _dataSource, dataSource.numberOfItems(inSection: section) > 0,
             let headerController = headerController,
             let item = dataSource.sectionHeaderItem(at: section), 
             headerController.acceptsContent(item) {

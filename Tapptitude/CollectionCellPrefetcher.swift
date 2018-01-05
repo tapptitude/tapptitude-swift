@@ -34,15 +34,15 @@ public protocol TTCollectionCellPrefetcher {
 }
 
 class CollectionCellPrefetcherDelegate: NSObject, UICollectionViewDataSourcePrefetching {
-    weak var collectionController: CollectionFeedController!
+    weak var collectionController: __CollectionFeedController!
     
-    init(collectionController: CollectionFeedController) {
+    init(collectionController: __CollectionFeedController) {
         self.collectionController = collectionController
     }
     
     public func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        if let prefetcher = collectionController.cellController as? TTCollectionCellPrefetcher {
-            let content: [Any] = indexPaths.map{ collectionController.dataSource![$0] }
+        if let prefetcher = collectionController._cellController as? TTCollectionCellPrefetcher {
+            let content: [Any] = indexPaths.map{ collectionController._dataSource![$0] }
             prefetcher.prefetchItems(content, at: indexPaths, in: collectionView)
         }
     }
@@ -50,8 +50,8 @@ class CollectionCellPrefetcherDelegate: NSObject, UICollectionViewDataSourcePref
     
     // indexPaths that previously were considered as candidates for pre-fetching, but were not actually used; may be a subset of the previous call to -collectionView:prefetchItemsAtIndexPaths:
     public func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
-        if let prefetcher = collectionController.cellController as? TTCollectionCellPrefetcher {
-            let content: [Any] = indexPaths.map{ collectionController.dataSource![$0] }
+        if let prefetcher = collectionController._cellController as? TTCollectionCellPrefetcher {
+            let content: [Any] = indexPaths.map{ collectionController._dataSource![$0] }
             prefetcher.cancelPrefetchItems(content, at: indexPaths, in: collectionView)
         }
     }
@@ -109,11 +109,11 @@ extension MultiCellController: TTCollectionCellPrefetcher {
 
 
 
-extension CollectionFeedController {
+extension __CollectionFeedController {
     internal func updatePrefetcherController() {
         if #available(iOS 10.0, *) {
             
-            if let cellController = self.cellController, cellController.supportsDataSourcePrefetching()  {
+            if let cellController = self._cellController, cellController.supportsDataSourcePrefetching()  {
                 prefetchController = CollectionCellPrefetcherDelegate(collectionController: self)
             } else {
                 prefetchController = nil

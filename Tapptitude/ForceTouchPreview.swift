@@ -20,7 +20,7 @@ public class ForceTouchPreview: NSObject, UIViewControllerPreviewingDelegate {
        setupForceTouchPreview()
     }
     
-    public init(collectionController: CollectionFeedController) {
+    public init(collectionController: __CollectionFeedController) {
         self.collectionController = collectionController
         self.parentViewController = collectionController
         super.init()
@@ -63,8 +63,8 @@ public class ForceTouchPreview: NSObject, UIViewControllerPreviewingDelegate {
             return nil
         }
         
-        let content = collectionController.dataSource![indexPath]
-        var cellController = collectionController.cellController
+        let content = collectionController._dataSource![indexPath]
+        let cellController = collectionController._cellController
         let previousParentController = cellController?.parentViewController
         let parentController = UIViewController()
         var dummyNavigationController: DummyNavigationController? = DummyNavigationController(rootViewController: parentController)

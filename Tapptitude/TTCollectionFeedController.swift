@@ -9,8 +9,8 @@
 import UIKit
 
 public protocol TTCollectionFeedController : class, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    var dataSource: TTDataSource? {get set}
-    var cellController: TTAnyCollectionCellController! {get set}
+    var _dataSource: TTDataSource? {get set}
+    var _cellController: TTAnyCollectionCellController! {get set}
     
     weak var collectionView: UICollectionView! {get set}
 
@@ -47,7 +47,7 @@ public protocol TTCollectionFeedController : class, UICollectionViewDelegateFlow
 
 extension TTCollectionFeedController {
     public func scrollToElement<T>(ofFirst filter: (_ item: T) -> Bool, animated: Bool) {
-        if let indexPath = dataSource!.indexPath(ofFirst: filter) {
+        if let indexPath = _dataSource!.indexPath(ofFirst: filter) {
             let layout = collectionView.collectionViewLayout
             var attribute = layout.layoutAttributesForItem(at: indexPath)
             if (attribute?.frame.size.width ?? 0.0) < 1.0 {

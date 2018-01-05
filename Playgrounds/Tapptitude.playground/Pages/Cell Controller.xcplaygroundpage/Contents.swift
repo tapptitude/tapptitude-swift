@@ -35,6 +35,7 @@ feedController.cellController = cellController
 print(cellController.parentViewController)
 
 let _ = feedController.view // load it's view
+feedController.view.frame = CGRect(x: 0, y: 0, width: 320, height: 600)
 feedController.collectionView?.backgroundColor = UIColor.gray
 
 import PlaygroundSupport

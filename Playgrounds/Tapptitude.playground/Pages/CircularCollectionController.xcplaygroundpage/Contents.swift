@@ -6,14 +6,14 @@ import PlaygroundSupport
 
 class CircularCollectionController: CollectionFeedController {
     
-    var sliderTimeInterval = 7.0 { // 0 to disable it
+    var sliderTimeInterval = 2.0 { // 0 to disable it
         didSet {
             if oldValue != sliderTimeInterval {
                 configureTimer()
             }
         }
     }
-    var content: [AnyObject] = [] {
+    var content: [Any] = [] {
         didSet {
             pageControl?.numberOfPages = content.count
             pageControl?.isHidden = content.count < 2
@@ -94,27 +94,27 @@ class CircularCollectionController: CollectionFeedController {
         
         pageControl?.currentPage = displayedPage
         
-        //        let collectionView = self.collectionView!
-        //        // Calculate where the collection view should be at the right-hand end item
-        //        let count = dataSource!.content.count
-        //        let contentOffsetWhenFullyScrolledRight = collectionView.frame.width * (CGFloat(count - 1))
-        //
-        //        if scrollView.contentOffset.x == contentOffsetWhenFullyScrolledRight {
-        //
-        //            // user is scrolling to the right from the last item to the 'fake' item 1.
-        //            // reposition offset to show the 'real' item 1 at the left-hand end of the collection view
-        //
-        //            let indexPath = IndexPath(item: 1, section: 0)
-        //
-        //            collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Left, animated: false)
-        //        } else if scrollView.contentOffset.x == 0  {
-        //
-        //            // user is scrolling to the left from the first item to the fake 'item N'.
-        //            // reposition offset to show the 'real' item N at the right end end of the collection view
-        //
-        //            let indexPath = IndexPath(item: count - 2, section: 0)
-        //            collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Left, animated: false)
-        //        }
+//        let collectionView = self.collectionView!
+//        // Calculate where the collection view should be at the right-hand end item
+//        let count = dataSource!.content.count
+//        let contentOffsetWhenFullyScrolledRight = collectionView.frame.width * (CGFloat(count - 1))
+//
+//        if scrollView.contentOffset.x == contentOffsetWhenFullyScrolledRight {
+//
+//            // user is scrolling to the right from the last item to the 'fake' item 1.
+//            // reposition offset to show the 'real' item 1 at the left-hand end of the collection view
+//
+//            let indexPath = IndexPath(item: 1, section: 0)
+//
+//            collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Left, animated: false)
+//        } else if scrollView.contentOffset.x == 0  {
+//
+//            // user is scrolling to the left from the first item to the fake 'item N'.
+//            // reposition offset to show the 'real' item N at the right end end of the collection view
+//
+//            let indexPath = IndexPath(item: count - 2, section: 0)
+//            collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .Left, animated: false)
+//        }
     }
     
     @objc func scrollToNextPageAnimated() {
@@ -190,7 +190,53 @@ class CircularCollectionController: CollectionFeedController {
             toDisplayPage = -1
         }
     }
+    
+    override var collectionView: UICollectionView! {
+        didSet {
+            collectionView.isPagingEnabled = true
+            scrollDirection = .horizontal
+        }
+    }
 }
+
+
+
+
+
+let cellController = CollectionCellController<UIColor, TextCell>(cellSize: CGSize(width: -1, height: -1))
+cellController.configureCell = { cell, content, indexPath in
+    cell.backgroundColor = content
+    cell.label.text = "Test \(indexPath.item)"
+}
+
+let feedController = CircularCollectionController()
+feedController.cellController = cellController
+
+let pageControl = UIPageControl(frame: CGRect(origin: CGPoint(x:160, y:600 - 30), size: CGSize(width:50, height: 10)))
+feedController.pageControl = pageControl
+feedController.view.addSubview(pageControl)
+feedController.content = [
+        UIColor(red: 131/255, green: 198/255, blue: 204/255, alpha:1.0),
+        UIColor(red: 120/255, green: 194/255, blue: 177/255, alpha: 1.0),
+        UIColor(red: 223/255, green: 205/255, blue: 140/255, alpha:1.0)]
+
+import PlaygroundSupport
+feedController.view.frame = CGRect(x: 0, y: 0, width: 320, height: 600)
+PlaygroundPage.current.liveView = feedController.view
+feedController.collectionView.reloadData()
+    
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 class TextCell : UICollectionViewCell {
@@ -200,59 +246,16 @@ class TextCell : UICollectionViewCell {
         
         label = UILabel(frame: bounds)
         label.textColor = UIColor.black
-        label.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
-        
-        contentView.frame = self.bounds
-        contentView.autoresizesSubviews = true
-        contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         contentView.addSubview(label)
-        contentView.translatesAutoresizingMaskIntoConstraints = false
         
+        label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor)
+        label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+        label.topAnchor.constraint(equalTo: contentView.topAnchor)
+        label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
-
-
-let cellController = CollectionCellController<UIColor, TextCell>(cellSize: CGSize(width: -1, height: -1))
-
-cellController.configureCell = { cell, content, indexPath in
-    cell.backgroundColor = content
-    cell.label.text = "Test \(indexPath.item)"
-}
-
-let feedController = CircularCollectionController()
-feedController.cellController = cellController
-
-feedController.view?.frame = CGRect(origin: CGPoint.zero, size: CGSize(width:300, height:300))
-let collectionView: UICollectionView = UICollectionView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width:300, height:300)), collectionViewLayout: UICollectionViewFlowLayout())
-collectionView.isPagingEnabled = true
-let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
-layout.scrollDirection = .horizontal
-feedController.collectionView = collectionView
-feedController.view.addSubview(collectionView)
-feedController.collectionView!.backgroundColor = UIColor.white
-
-let pageControl = UIPageControl(frame: CGRect(origin: CGPoint(x:125, y:270), size: CGSize(width:50, height: 10)))
-feedController.pageControl = pageControl
-feedController.view.addSubview(pageControl)
-feedController.content = [
-        UIColor(red: 131/255, green: 198/255, blue: 204/255, alpha:1.0),
-        UIColor(red: 120/255, green: 194/255, blue: 177/255, alpha: 1.0),
-        UIColor(red: 223/255, green: 205/255, blue: 140/255, alpha:1.0)]
-
-import PlaygroundSupport
-PlaygroundPage.current.liveView = feedController.view
-
-    
-
-
-
-
-
-
-
