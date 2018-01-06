@@ -6,7 +6,7 @@ import PlaygroundSupport
 
 class CircularCollectionController: CollectionFeedController {
     
-    var sliderTimeInterval = 2.0 { // 0 to disable it
+    var sliderTimeInterval = 3.0 { // 0 to disable it
         didSet {
             if oldValue != sliderTimeInterval {
                 configureTimer()
@@ -223,7 +223,6 @@ feedController.content = [
 import PlaygroundSupport
 feedController.view.frame = CGRect(x: 0, y: 0, width: 320, height: 600)
 PlaygroundPage.current.liveView = feedController.view
-feedController.collectionView.reloadData()
     
 
 
@@ -245,14 +244,18 @@ class TextCell : UICollectionViewCell {
         super.init(frame: frame)
         
         label = UILabel(frame: bounds)
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor.black
         label.textAlignment = .center
+        label.backgroundColor = .white
         contentView.addSubview(label)
         
-        label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor)
-        label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
-        label.topAnchor.constraint(equalTo: contentView.topAnchor)
-        label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        NSLayoutConstraint.activate([
+            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            label.heightAnchor.constraint(equalToConstant: 50),
+            label.topAnchor.constraint(equalTo: contentView.topAnchor),
+        ])
     }
     
     required init?(coder aDecoder: NSCoder) {

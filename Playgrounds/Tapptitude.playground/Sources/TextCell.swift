@@ -121,3 +121,5 @@ open class StringHeaderCellController : CollectionHeaderController<[String], Tex
         header.label.textColor = .gray
     }
 }
+
+
