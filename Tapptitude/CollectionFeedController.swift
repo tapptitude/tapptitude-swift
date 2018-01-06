@@ -636,14 +636,32 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
         _cellController.didSelectContent(content, at: indexPath, in: collectionView)
     }
 
+    override open func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        // cell size is depenent to either width | height of collectionView
+        if let size = trackedCollectionSize, collectionView.bounds.size != size {
+            print("found collectionView change size from ", size, " to ", collectionView.bounds.size)
+            print("invalidating cell layout because is depending on collection size")
+            self.collectionView.collectionViewLayout.invalidateLayout()
+            trackedCollectionSize = nil
+        }
+    }
 
 // MARK: Layout Size -
 //extension CollectionFeedController {
+    /// when some cell have it size dependant on collection size
+    internal var trackedCollectionSize: CGSize?
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let content = _dataSource![indexPath]
         let size = _cellController.cellSize(for: content, in: collectionView)
         let boundsSize = collectionView.bounds.size
-        return CGSize(width: size.width < 0.0 ? boundsSize.width : size.width, height: size.height < 0.0 ? boundsSize.height : size.height)
+        let newSize = CGSize(width: size.width < 0.0 ? (boundsSize.width * -size.width) : size.width,
+                             height: size.height < 0.0 ? (boundsSize.height * -size.height) : size.height)
+        if newSize != size && boundsSize != trackedCollectionSize {
+            trackedCollectionSize = boundsSize
+        }
+        return newSize
     }
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
