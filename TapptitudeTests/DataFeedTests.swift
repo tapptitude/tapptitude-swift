@@ -42,7 +42,7 @@ class DataFeedTests: XCTestCase {
         dataSource.feed?.reload()
         XCTAssert(dataSource.isEmpty == false)
         
-        XCTAssert(dataSource.content.map({$0 as! String}) == mockSimpleAPI.content!)
+        XCTAssert(dataSource.content == mockSimpleAPI.content!)
     }
     
     var feedDelayed: SimpleFeed<String> {
@@ -65,11 +65,11 @@ class DataFeedTests: XCTestCase {
         let asyncExpectation = expectation(description: "longRunningFunction")
         DispatchQueue.main.asyncAfter(deadline: .now() + DataFeedTests.delay + 0.0001) {
             XCTAssert(dataSource.isEmpty == false)
-            XCTAssert(dataSource.content.map({$0 as! String}) == self.mockSimpleAPI.content!)
+            XCTAssert(dataSource.content == self.mockSimpleAPI.content!)
             asyncExpectation.fulfill()
         }
         
-        self.waitForExpectations(timeout: DataFeedTests.delay + 0.0001) { (error) in
+        self.waitForExpectations(timeout: DataFeedTests.delay + 0.001) { (error) in
         }
     }
 

@@ -66,10 +66,12 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         feed?.delegate = nil
     }
     
-    open var content : [Any] {
-        get {
-            return _content.map({$0 as Any})
-        }
+    open var content : [[T]] {
+        return _content
+    }
+    
+    open var content_ : [Any] {
+        return content
     }
     
     open var isEmpty: Bool {
@@ -84,6 +86,10 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         return _content[section].count
     }
     
+    open func item(at indexPath: IndexPath) -> Any {
+        return self[indexPath]
+    }
+    
     open subscript(indexPath: IndexPath) -> T {
         get { return _content[indexPath.section][indexPath.item] }
         set {
@@ -94,35 +100,11 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         }
     }
     
-    open subscript(indexPath: IndexPath) -> Any {
-        get { return _content[indexPath.section][indexPath.item] }
-        set {
-            editContent { (delegate) in
-                _content[indexPath.section][indexPath.item] = (newValue as! T)
-                delegate?.dataSource(self, didUpdateItemsAt: [indexPath])
-            }
-        }
-    }
-    
     open subscript(section: Int, index: Int) -> T {
         get { return _content[section][index] }
         set {
-            editContent { (delegate) in
-                _content[section][index] = newValue
-                let indexPath = IndexPath(item: index, section: section)
-                delegate?.dataSource(self, didUpdateItemsAt: [indexPath])
-            }
-        }
-    }
-    
-    open subscript(section: Int, index: Int) -> Any {
-        get { return _content[section][index] }
-        set {
-            editContent { (delegate) in
-                _content[section][index] = (newValue as! T)
-                let indexPath = IndexPath(item: index, section: section)
-                delegate?.dataSource(self, didUpdateItemsAt: [indexPath])
-            }
+            let indexPath = IndexPath(item: index, section: section)
+            self[indexPath] = newValue
         }
     }
     

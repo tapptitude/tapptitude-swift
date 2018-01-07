@@ -37,7 +37,7 @@ public protocol TTAnyCollectionCellController: class {
 }
 
 extension TTCollectionCellController {
-    public var dataSource: TTDataSource? {
+    public var dataSource: TTAnyDataSource? {
         return (self.parentViewController as? TTCollectionFeedController)?._dataSource
     }
 }

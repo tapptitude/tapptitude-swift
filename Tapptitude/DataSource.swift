@@ -41,10 +41,11 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
         feed?.delegate = nil
     }
     
-    open var content : [Any] {
-        get {
-            return _content.map({$0 as Any})
-        }
+    open var content_ : [Any] {
+        return content
+    }
+    open var content: [T] {
+        return _content
     }
     
     open var isEmpty: Bool {
@@ -71,8 +72,8 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
         return index != nil ? IndexPath(item: index!, section: 0) : nil
     }
     
-    open subscript(indexPath: IndexPath) -> Any {
-        get { return _content[indexPath.item] }
+    open func item(at indexPath: IndexPath) -> Any {
+        return self[indexPath]
     }
     
     open subscript(indexPath: IndexPath) -> T {
@@ -81,10 +82,6 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
             _content[indexPath.item] = newValue
             delegate?.dataSource(self, didUpdateItemsAt: [indexPath])
             }}
-    }
-    
-    open subscript(section: Int, index: Int) -> Any {
-        get { return _content[index] }
     }
     
     open subscript(section: Int, index: Int) -> T {
@@ -98,11 +95,10 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
     
     open subscript(index: Int) -> T {
         get { return _content[index] }
-        set { editContent { delegate in
-            _content[index] = newValue
+        set {
             let indexPath = IndexPath(item: index, section: 0)
-            delegate?.dataSource(self, didUpdateItemsAt: [indexPath])
-            }}
+            self[indexPath] = newValue
+        }
     }
     
     public var sectionHeaders: [Any]? {
@@ -181,7 +177,7 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
     }
     
     open func append(contentsOf newElements: [T]) {
-        insert(contentsOf: newElements, at: IndexPath(item: content.count, section: 0))
+        insert(contentsOf: newElements, at: IndexPath(item: _content.count, section: 0))
     }
     
     open func insert(_ newElement: T, at indexPath: IndexPath) {
@@ -271,7 +267,7 @@ public extension Sequence {
 }
 
 public func += <T>(left: inout DataSource<T>, right: DataSource<T>) {
-    left.append(contentsOf: right.content.convertTo())
+    left.append(contentsOf: right._content)
 }
 
 public func += <T>(left: inout DataSource<T>, right: [T]) {

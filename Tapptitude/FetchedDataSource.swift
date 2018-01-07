@@ -40,13 +40,17 @@ class FetchedDataSource<T: NSManagedObject>: NSObject, TTDataSource, NSFetchedRe
         return fetchController.fetchedObjects!.isEmpty
     }
     
-    open var content : [Any]  {
+    open var content: [T]  {
         let content = fetchController.fetchedObjects ?? []
         if let key = returnValueAtKey {
-            return content.map({ $0.value(forKey: key)! })
+            return content.map({ $0.value(forKey: key) as! T })
         } else {
             return content
         }
+    }
+    
+    open var content_: [Any]  {
+        return content
     }
     
     public var predicate: NSPredicate? {
@@ -73,21 +77,17 @@ class FetchedDataSource<T: NSManagedObject>: NSObject, TTDataSource, NSFetchedRe
     
 //MARK: - TTDataSource
     
-    open func object(at indexPath: IndexPath) -> Any {
+    open subscript(indexPath: IndexPath) -> T {
         let object = fetchController.object(at: indexPath)
         if let key = returnValueAtKey {
-            return object.value(forKey: key)!
+            return object.value(forKey: key) as! T
         }
         
         return object
     }
     
-    open subscript(indexPath: IndexPath) -> Any {
-        get { return object(at: indexPath) }
-    }
-    
-    open subscript(section: Int, index: Int) -> Any {
-        get { return object(at: IndexPath(item: index, section: section)) }
+    open func item(at indexPath: IndexPath) -> Any {
+        return self[indexPath]
     }
     
     open func indexPath<S>(ofFirst filter: (_ item: S) -> Bool) -> IndexPath? {
@@ -193,7 +193,7 @@ class FetchedDataSource<T: NSManagedObject>: NSObject, TTDataSource, NSFetchedRe
     }
     
     @objc func dataSourceContentChanged(notification: NSNotification) {
-        let otherDataSource = notification.object as? TTDataSource
+        let otherDataSource = notification.object as? TTAnyDataSource
         if self === otherDataSource || !(otherDataSource?.dataSourceID == self.dataSourceID) {
             return
         }

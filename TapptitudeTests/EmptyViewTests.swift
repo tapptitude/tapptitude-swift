@@ -35,14 +35,20 @@ class EmptyViewTests: XCTestCase {
         controller.dataSource = dataSource
         XCTAssert(controller.emptyView?.isHidden == true, "dataSource !empty --> emptyView should be hidden")
         
+        XCTAssert(controller.collectionView.numberOfItems(inSection: 0) == 1, "dataSource !empty --> single item")
         dataSource.remove { (item) -> Bool in
             return true
         }
         XCTAssert(controller.emptyView?.isHidden == false, "dataSource empty --> emptyView should be !hidden")
         
+        XCTAssert(controller.collectionView.numberOfItems(inSection: 0) == 0, "dataSource empty")
         dataSource.append("12")
+        XCTAssert(controller.collectionView.numberOfItems(inSection: 0) == 1, "dataSource !empty --> single item")
+        
         let asyncExpectation = expectation(description: "longRunningFunction")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            dataSource.append("12")
+            XCTAssert(controller.collectionView.numberOfItems(inSection: 0) == 2, "dataSource !empty --> single item")
             XCTAssert(controller.emptyView?.isHidden == true, "dataSource !empty --> emptyView should be hidden")
             asyncExpectation.fulfill()
         }

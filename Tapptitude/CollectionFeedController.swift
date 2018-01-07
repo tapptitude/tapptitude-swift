@@ -8,11 +8,11 @@
 
 import UIKit
 
-public typealias MultiCollectionFeedController<U: TTDataSource> = _CollectionFeedController<U, MultiCollectionCellController>
+//public typealias MultiCollectionFeedController<D: TTDataSource> = _CollectionFeedController<D, MultiCollectionCellController>
 public typealias HybridCollectionFeedController = _CollectionFeedController<HybridDataSource, HybridCellController>
 public typealias CollectionFeedController = AnyCollectionFeedController
 
-open class _CollectionFeedController<D: TTDataSource, C: TTAnyCollectionCellController>: __CollectionFeedController {
+open class _CollectionFeedController<D: TTDataSource, C: TTCollectionCellController>: __CollectionFeedController where D.ContentType == C.ContentType {
     open var dataSource: D? {
         get { return _dataSource as? D }
         set { _dataSource = newValue}
@@ -24,7 +24,7 @@ open class _CollectionFeedController<D: TTDataSource, C: TTAnyCollectionCellCont
 }
 
 open class AnyCollectionFeedController: __CollectionFeedController {
-    open var dataSource: TTDataSource? {
+    open var dataSource: TTAnyDataSource? {
         get { return _dataSource }
         set { _dataSource = newValue }
     }
@@ -164,7 +164,7 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
     }
        
     
-    open var _dataSource: TTDataSource? {
+    open var _dataSource: TTAnyDataSource? {
         willSet {
             if self == (_dataSource?.delegate as? __CollectionFeedController) {
                 _dataSource?.delegate = nil
@@ -483,11 +483,11 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
         updateCollectionViewAnimatedUpdater()
     }
     
-    open func dataSourceWillChangeContent(_ dataSource: TTDataSource) {
+    open func dataSourceWillChangeContent(_ dataSource: TTAnyDataSource) {
         animatedUpdater?.collectionViewWillChangeContent(collectionView!)
     }
     
-    open func dataSourceDidChangeContent(_ dataSource: TTDataSource) {
+    open func dataSourceDidChangeContent(_ dataSource: TTAnyDataSource) {
         animatedUpdater?.collectionViewDidChangeContent(collectionView!, animationCompletion: nil)
         
         if dataSource.feed == nil || dataSource.feed!.isReloading == false { // check for the empty view
@@ -495,29 +495,29 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
         }
     }
     
-    open func dataSource(_ dataSource: TTDataSource, didUpdateItemsAt indexPaths: [IndexPath]) {
+    open func dataSource(_ dataSource: TTAnyDataSource, didUpdateItemsAt indexPaths: [IndexPath]) {
         animatedUpdater?.collectionView(collectionView!, didUpdateItemsAt: indexPaths)
     }
     
-    open func dataSource(_ dataSource: TTDataSource, didDeleteItemsAt indexPaths: [IndexPath]) {
+    open func dataSource(_ dataSource: TTAnyDataSource, didDeleteItemsAt indexPaths: [IndexPath]) {
         animatedUpdater?.collectionView(collectionView!, didDeleteItemsAt: indexPaths)
     }
     
-    open func dataSource(_ dataSource: TTDataSource, didInsertItemsAt indexPaths: [IndexPath]) {
+    open func dataSource(_ dataSource: TTAnyDataSource, didInsertItemsAt indexPaths: [IndexPath]) {
         animatedUpdater?.collectionView(collectionView!, didInsertItemsAt: indexPaths)
     }
     
-    open func dataSource(_ dataSource: TTDataSource, didMoveItemsFrom fromIndexPaths: [IndexPath], to toIndexPaths: [IndexPath]) {
+    open func dataSource(_ dataSource: TTAnyDataSource, didMoveItemsFrom fromIndexPaths: [IndexPath], to toIndexPaths: [IndexPath]) {
         animatedUpdater?.collectionView(collectionView!, didMoveItemsFrom: fromIndexPaths, to: toIndexPaths)
     }
     
-    open func dataSource(_ dataSource: TTDataSource, didInsertSections addedSections: IndexSet) {
+    open func dataSource(_ dataSource: TTAnyDataSource, didInsertSections addedSections: IndexSet) {
         animatedUpdater?.collectionView(collectionView!, didInsertSections: addedSections)
     }
-    open func dataSource(_ dataSource: TTDataSource, didDeleteSections deletedSections: IndexSet) {
+    open func dataSource(_ dataSource: TTAnyDataSource, didDeleteSections deletedSections: IndexSet) {
         animatedUpdater?.collectionView(collectionView!, didDeleteSections: deletedSections)
     }
-    open func dataSource(_ dataSource: TTDataSource, didUpdateSections updatedSections: IndexSet) {
+    open func dataSource(_ dataSource: TTAnyDataSource, didUpdateSections updatedSections: IndexSet) {
         animatedUpdater?.collectionView(collectionView!, didUpdateSections: updatedSections)
     }
 //}
@@ -545,7 +545,7 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
     }
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let content = _dataSource![indexPath]
+        let content = _dataSource!.item(at: indexPath)
         let reuseIdentifier = _cellController.reuseIdentifier(for: content)
         
         if registeredCellIdentifiers.contains(reuseIdentifier) == false {
@@ -632,7 +632,7 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
 // MARK: Did Select -
 //extension CollectionFeedController {
     open func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let content = _dataSource![indexPath]
+        let content = _dataSource!.item(at: indexPath)
         _cellController.didSelectContent(content, at: indexPath, in: collectionView)
     }
 
@@ -643,7 +643,9 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
         if let size = trackedCollectionSize, collectionView.bounds.size != size {
             print("found collectionView change size from ", size, " to ", collectionView.bounds.size)
             print("invalidating cell layout because is depending on collection size")
-            self.collectionView.collectionViewLayout.invalidateLayout()
+            DispatchQueue.main.async {
+                self.collectionView.collectionViewLayout.invalidateLayout()
+            }
             trackedCollectionSize = nil
         }
     }
@@ -653,7 +655,7 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
     /// when some cell have it size dependant on collection size
     internal var trackedCollectionSize: CGSize?
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let content = _dataSource![indexPath]
+        let content = _dataSource!.item(at: indexPath)
         let size = _cellController.cellSize(for: content, in: collectionView)
         let boundsSize = collectionView.bounds.size
         let newSize = CGSize(width: size.width < 0.0 ? (boundsSize.width * -size.width) : size.width,
@@ -667,7 +669,7 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         var insets = UIEdgeInsets.zero
         if let dataSource = _dataSource, dataSource.numberOfItems(inSection: section) > 0 {
-            let first = dataSource[section, 0]
+            let first = dataSource.item(at: IndexPath(item: 0, section: section))
             insets = _cellController.sectionInset(for: first, in: collectionView)
 //            let last = dataSource[section, dataSource.numberOfItems(inSection: section) - 1]
 //            insets.bottom = cellController.sectionInset(for: last, in: collectionView).bottom
@@ -682,7 +684,7 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         if let dataSource = _dataSource, dataSource.numberOfItems(inSection: section) > 0 {
-            let content = dataSource[section, 0]
+            let content = dataSource.item(at: IndexPath(item: 0, section: section))
             return _cellController.minimumInteritemSpacing(for: content, in: collectionView)
         } else {
             return 0.0
@@ -691,7 +693,7 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         if let dataSource = _dataSource, dataSource.numberOfItems(inSection: section) > 0 {
-            let content = dataSource[section, 0]
+            let content = dataSource.item(at: IndexPath(item: 0, section: section))
             return _cellController.minimumLineSpacing(for: content, in: collectionView)
         } else {
             return 0.0

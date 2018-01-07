@@ -61,7 +61,7 @@ class CircularCollectionController: CollectionFeedController {
     
     var lastContentOffsetX = CGFloat.leastNonzeroMagnitude
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let count = dataSource!.content.count
+        let count = dataSource!.content_.count
         if count < 2 {
             return
         }

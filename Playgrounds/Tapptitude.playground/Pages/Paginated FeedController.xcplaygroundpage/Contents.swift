@@ -52,9 +52,9 @@ class PaginatedCollectionController: CollectionFeedController {
     }
     
     var content: [Any] {
-        return dataSource?.content ?? []
+        return dataSource?.content_ ?? []
     }
-    override var dataSource: TTDataSource? {
+    override var _dataSource: TTAnyDataSource? {
         didSet {
             pageControl?.numberOfPages = content.count
             (pageControl as? UIView)?.isHidden = content.count < 2

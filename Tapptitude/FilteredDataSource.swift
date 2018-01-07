@@ -26,7 +26,7 @@ open class FilteredDataSource<T> : DataSource<T> {
                 originalContent = nil
             }
         } else {
-            originalContent = originalContent ?? content.convertTo()
+            originalContent = originalContent ?? content
             
             let filteredContent: [Any]? = originalContent!.filter(filterBy!).convertTo()
             let result = Result.success(filteredContent ?? [])
@@ -41,7 +41,7 @@ open class FilteredDataSource<T> : DataSource<T> {
     }
     
     open var unfilteredContent: [T] {
-        return originalContent ?? content.convertTo()
+        return originalContent ?? content
     }
     
     var originalContent: [T]?

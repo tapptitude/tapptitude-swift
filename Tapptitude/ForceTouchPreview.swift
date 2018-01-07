@@ -63,7 +63,7 @@ public class ForceTouchPreview: NSObject, UIViewControllerPreviewingDelegate {
             return nil
         }
         
-        let content = collectionController._dataSource![indexPath]
+        let content = collectionController._dataSource!.item(at: indexPath)
         let cellController = collectionController._cellController
         let previousParentController = cellController?.parentViewController
         let parentController = UIViewController()

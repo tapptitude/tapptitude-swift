@@ -10,7 +10,7 @@ import UIKit
 
 typealias MultiCellController = MultiCollectionCellController
 
-open class MultiCollectionCellController: TTAnyCollectionCellController {
+open class MultiCollectionCellController: TTCollectionCellController {
     public init (_ cellControllers: [TTAnyCollectionCellController]) {
         self.cellControllers = cellControllers
     }
@@ -21,14 +21,14 @@ open class MultiCollectionCellController: TTAnyCollectionCellController {
     
     open var cellControllers: [TTAnyCollectionCellController] = [] {
         willSet {
-            for var cellController in cellControllers {
+            for cellController in cellControllers {
                 cellController.parentViewController = nil
             }
             previousCellController = nil
         }
         
         didSet {
-            for var cellController in cellControllers {
+            for cellController in cellControllers {
                 cellController.parentViewController = parentViewController
             }
         }
@@ -55,7 +55,7 @@ open class MultiCollectionCellController: TTAnyCollectionCellController {
     // Stored properties for TTCollectionCellControllerProtocol
     open weak var parentViewController: UIViewController? {
         didSet {
-            for var cellController in cellControllers {
+            for cellController in cellControllers {
                 cellController.parentViewController = parentViewController
             }
         }

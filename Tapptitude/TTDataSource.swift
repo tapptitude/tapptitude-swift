@@ -8,15 +8,13 @@
 
 import Foundation
 
-public protocol TTDataSource : TTDataFeedDelegate, CustomStringConvertible {
+public protocol TTAnyDataSource : TTDataFeedDelegate, CustomStringConvertible {
     
-    var content : [Any] { get }
     var isEmpty: Bool { get }
     func numberOfSections() -> Int
     func numberOfItems(inSection section: Int) -> Int
     
-    subscript(indexPath: IndexPath) -> Any { get }
-    subscript(section: Int, index: Int) -> Any { get }
+    func item(at indexPath: IndexPath) -> Any
     
     weak var delegate: TTDataSourceDelegate? { get set }
     var feed: TTDataFeed? { get set }
@@ -26,8 +24,20 @@ public protocol TTDataSource : TTDataFeedDelegate, CustomStringConvertible {
     func indexPath<S>(ofFirst filter: (_ item: S) -> Bool) -> IndexPath?
     
     func sectionHeaderItem(at section: Int) -> Any?
+    var content_ : [Any] { get }
 }
 
+public protocol TTDataSource : TTAnyDataSource {
+    associatedtype ContentType
+    
+    subscript(indexPath: IndexPath) -> ContentType { get }
+}
+
+extension TTDataSource {
+    subscript(section: Int, index: Int) -> ContentType {
+        return self[IndexPath(item: index, section: section)]
+    }
+}
 
 
 
@@ -61,18 +71,18 @@ extension TTDataSourceMutable where Element == Any {
 
 
 public protocol TTDataSourceDelegate: class {
-    func dataSourceWillChangeContent(_ dataSource: TTDataSource)
+    func dataSourceWillChangeContent(_ dataSource: TTAnyDataSource)
     
-    func dataSource(_ dataSource: TTDataSource, didUpdateItemsAt indexPaths: [IndexPath])
-    func dataSource(_ dataSource: TTDataSource, didDeleteItemsAt indexPaths: [IndexPath])
-    func dataSource(_ dataSource: TTDataSource, didInsertItemsAt indexPaths: [IndexPath])
-    func dataSource(_ dataSource: TTDataSource, didMoveItemsFrom fromIndexPaths: [IndexPath], to toIndexPaths: [IndexPath])
+    func dataSource(_ dataSource: TTAnyDataSource, didUpdateItemsAt indexPaths: [IndexPath])
+    func dataSource(_ dataSource: TTAnyDataSource, didDeleteItemsAt indexPaths: [IndexPath])
+    func dataSource(_ dataSource: TTAnyDataSource, didInsertItemsAt indexPaths: [IndexPath])
+    func dataSource(_ dataSource: TTAnyDataSource, didMoveItemsFrom fromIndexPaths: [IndexPath], to toIndexPaths: [IndexPath])
     
-    func dataSource(_ dataSource: TTDataSource, didInsertSections addedSections: IndexSet)
-    func dataSource(_ dataSource: TTDataSource, didDeleteSections deletedSections: IndexSet)
-    func dataSource(_ dataSource: TTDataSource, didUpdateSections updatedSections: IndexSet)
+    func dataSource(_ dataSource: TTAnyDataSource, didInsertSections addedSections: IndexSet)
+    func dataSource(_ dataSource: TTAnyDataSource, didDeleteSections deletedSections: IndexSet)
+    func dataSource(_ dataSource: TTAnyDataSource, didUpdateSections updatedSections: IndexSet)
     
-    func dataSourceDidChangeContent(_ dataSource: TTDataSource)
+    func dataSourceDidChangeContent(_ dataSource: TTAnyDataSource)
 }
 
 
@@ -83,7 +93,7 @@ public enum CellPositionInSection {
     case single
 }
 
-extension TTDataSource {
+extension TTAnyDataSource {
     public  func itemPositionInSection(for indexPath: IndexPath) -> CellPositionInSection {
         let count = numberOfItems(inSection: indexPath.section)
         
@@ -101,8 +111,12 @@ extension TTDataSource {
 }
 
 
-extension TTDataSource {
+extension TTAnyDataSource {
     public var description: String {
-        return String(describing: type(of: self)) + ": " + content.description
+        return String(describing: type(of: self)) + ": " + content_.description
+    }
+    
+    public func item(at item: Int, section: Int) -> Any {
+        return self.item(at: IndexPath(item: item, section: section))
     }
 }
