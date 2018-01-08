@@ -70,7 +70,6 @@ public extension SwipeToEditOnCollection {
             }
             
             self.tapGestureRecognizer?.ignoreViews = [editCell.rightView]
-            self.tapGestureRecognizer?.isEnabled = true
             self.registerAnimationsToEditCell(editCell)
             
 //            let width = editCell.rightView.bounds.size.width
