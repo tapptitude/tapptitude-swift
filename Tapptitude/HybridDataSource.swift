@@ -113,6 +113,10 @@ open class GroupCellController<ItemType>: MultiCollectionCellController, HybridC
         self.acceptsContent = acceptsContent
     }
     
+    public convenience required init(arrayLiteral elements: TTAnyCollectionCellController...) {
+        self.init(elements.map({ $0 }))
+    }
+    
     open override func acceptsContent(_ content: Any) -> Bool {
         if let item = content as? ItemType {
             return acceptsContent(item)

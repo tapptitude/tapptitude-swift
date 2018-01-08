@@ -15,3 +15,6 @@ feedController.view.frame = CGRect(x: 0, y: 0, width: 320, height: 600)
 PlaygroundPage.current.liveView = feedController.view
 
 //: [Next](@next)
+
+var headerController1: MultiHeaderCellController = [IntHeaderCellController(), StringHeaderCellController()] //@protocol ExpressibleByArrayLiteral
+print(headerController1.headerControllers)

@@ -19,6 +19,10 @@ open class MultiCollectionCellController: TTCollectionCellController {
         self.cellControllers = cellControllers
     }
     
+    public convenience required init(arrayLiteral elements: TTAnyCollectionCellController...) {
+        self.init(elements.map({ $0 }))
+    }
+    
     open var cellControllers: [TTAnyCollectionCellController] = [] {
         willSet {
             for cellController in cellControllers {
@@ -111,4 +115,8 @@ open class MultiCollectionCellController: TTCollectionCellController {
         cellControllers.forEach{ allReuseIdentifiers += $0.allSupportedReuseIdentifiers() }
         return allReuseIdentifiers
     }
+}
+
+extension MultiCollectionCellController: ExpressibleByArrayLiteral {
+    
 }

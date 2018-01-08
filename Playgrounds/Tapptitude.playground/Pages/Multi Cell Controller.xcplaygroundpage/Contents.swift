@@ -18,3 +18,7 @@ PlaygroundPage.current.liveView = feedController.view
 
 
 //: [Next](@next)
+
+
+var multiCellControlle1: MultiCollectionCellController = [TextCellController(), IntCellController()] //@protocol ExpressibleByArrayLiteral
+print(multiCellControlle1.cellControllers)

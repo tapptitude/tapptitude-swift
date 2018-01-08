@@ -19,6 +19,10 @@ open class MultiHeaderCellController: TTAnyCollectionHeaderController {
         self.headerControllers = headerControllers
     }
     
+    public convenience required init(arrayLiteral elements: TTAnyCollectionHeaderController...) {
+        self.init(elements.map({ $0 }))
+    }
+    
     open var headerControllers: [TTAnyCollectionHeaderController] = [] {
         willSet {
             for var headerController in headerControllers {
@@ -86,3 +90,8 @@ open class MultiHeaderCellController: TTAnyCollectionHeaderController {
 
 
 }
+
+extension MultiHeaderCellController: ExpressibleByArrayLiteral {
+    
+}
+
