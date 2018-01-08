@@ -64,6 +64,22 @@ let newDataSource = DataSource([1]).dropLast()
  newDataSource.contains(1)
 let joined = DataSource(["12312", "ABCD"]).joined(separator: " ")
 
+dataSource = [1, 2, 3] //@protocol ExpressibleByArrayLiteral
 
-let sectionDataSource = SectionedDataSource([["Maria", "Ion"], ["Ghita"]])
+var sectionDataSource = SectionedDataSource([["Maria", "Ion"], ["Ghita"]])
 sectionDataSource.sectionHeaders = ["23", 323]
+print(sectionDataSource[0])
+sectionDataSource[0][0] = "Alex"
+print(sectionDataSource[0])
+sectionDataSource[0] = []
+print(sectionDataSource[0])
+
+//var literalItems: [[String]] = [["Flori", "Copaci"], ["John"]]
+//sectionDataSource = literalItems
+sectionDataSource = [["Flori", "Copaci"], ["John"]] //@protocol ExpressibleByArrayLiteral
+sectionDataSource[0]
+sectionDataSource[0][1]
+
+
+var filtered: FilteredDataSource<String> = ["1"]
+filtered[0]

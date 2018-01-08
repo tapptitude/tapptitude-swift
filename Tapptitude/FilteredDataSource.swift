@@ -14,6 +14,10 @@ open class FilteredDataSource<T> : DataSource<T> {
         super.init(content)
     }
     
+    public convenience required init(arrayLiteral: T...) {
+        self.init(arrayLiteral.map({ $0 }))
+    }
+    
     /// pass nil to reset filter
     open func filter(by filter: ((T) -> Bool)?) {
         self.filterBy = filter

@@ -27,6 +27,10 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
         _content = []
     }
     
+    public convenience required init(arrayLiteral elements: T...) {
+        self.init(elements.map({ $0 }))
+    }
+    
     open weak var delegate : TTDataSourceDelegate?
     open var feed : TTDataFeed? {
         willSet {
@@ -312,4 +316,8 @@ extension DataSource: BidirectionalCollection {
     public func index(before i: Int) -> Int {
         return i - 1
     }
+}
+
+extension DataSource: ExpressibleByArrayLiteral {
+    
 }

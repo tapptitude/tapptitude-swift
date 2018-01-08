@@ -18,6 +18,10 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         _unfilteredContent = content
     }
     
+    public convenience required init(arrayLiteral elements: Element...) {
+        self.init(elements.map({ $0 }))
+    }
+    
     public init(_ content : NSArray) {
         _content = content.map({
             let item = $0 as! Array<T>
@@ -113,6 +117,7 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         set {
             editContent { (delegate) in
                 _content[section] = newValue
+                print(#function, newValue)
                 delegate?.dataSource(self, didUpdateSections: IndexSet(integer: section))
             }
         }
@@ -297,12 +302,19 @@ open class GroupedByDataSource<T, U: Hashable> : SectionedDataSource<T> {
     
     open var groupBy: ((T) -> U)?
     
-    public init(content: [T] = [],  groupBy: @escaping ((T) -> U) ) {
+    public required init(content: [T] = [],  groupBy: @escaping ((T) -> U) ) {
         let groupedContent = content.groupBy(groupBy)
         
         super.init(groupedContent)
         _ungroupedContent = content
         self.groupBy = groupBy
+    }
+    
+    public required convenience init(arrayLiteral elements: Element...) {
+//        self.init(arrayLiteral: elements)
+//        self.groupBy = nil
+//        _ungroupedContent = elements.reduce([], +)
+        abort()
     }
     
     override open func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState.Load) {
@@ -400,3 +412,8 @@ extension SectionedDataSource: BidirectionalCollection {
         return i - 1
     }
 }
+
+extension SectionedDataSource: ExpressibleByArrayLiteral {
+
+}
+
