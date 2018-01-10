@@ -76,6 +76,10 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
         return index != nil ? IndexPath(item: index!, section: 0) : nil
     }
     
+    open func indexPath(where predicate: (T) -> Bool) -> IndexPath? {
+        return _content.index(where: predicate).map({ IndexPath(item: $0, section:0 ) })
+    }
+    
     open func item(at indexPath: IndexPath) -> Any {
         return self[indexPath]
     }

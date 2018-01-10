@@ -154,6 +154,16 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         return nil
     }
     
+    open func indexPath(where predicate: (T) -> Bool) -> IndexPath? {
+        for (section, subArray) in _content.enumerated() {
+            if let index = subArray.index(where: predicate) {
+                return IndexPath(item: index, section: section)
+            }
+        }
+        
+        return nil
+    }
+    
     public var propagateChangesToDelegate = true
     fileprivate func editContent(_ editBlock: (_ delegate: TTDataSourceDelegate?) -> Void) {
         let currenDelegate = propagateChangesToDelegate ? delegate : nil

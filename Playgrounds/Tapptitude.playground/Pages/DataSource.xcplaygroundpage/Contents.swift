@@ -80,6 +80,12 @@ sectionDataSource = [["Flori", "Copaci"], ["John"]] //@protocol ExpressibleByArr
 sectionDataSource[0]
 sectionDataSource[0][1]
 
+var indexPath = sectionDataSource.indexPath(where: { $0 == "Copaci"})
+print(indexPath!)
 
-var filtered: FilteredDataSource<String> = ["1"]
+
+var filtered: FilteredDataSource<String> = ["1", "2", "3"]
 filtered[0]
+
+indexPath = filtered.indexPath(where: { $0 == "2"})
+print(indexPath!.item)
