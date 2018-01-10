@@ -83,9 +83,14 @@ sectionDataSource[0][1]
 var indexPath = sectionDataSource.indexPath(where: { $0 == "Copaci"})
 print(indexPath!)
 
+indexPath = sectionDataSource.indexPath(of: "John")
+print(indexPath!)
+
 
 var filtered: FilteredDataSource<String> = ["1", "2", "3"]
-filtered[0]
 
 indexPath = filtered.indexPath(where: { $0 == "2"})
+print(indexPath!.item)
+
+indexPath = filtered.indexPath(of: "3")
 print(indexPath!.item)

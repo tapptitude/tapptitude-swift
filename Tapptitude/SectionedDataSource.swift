@@ -427,3 +427,15 @@ extension SectionedDataSource: ExpressibleByArrayLiteral {
 
 }
 
+extension SectionedDataSource where T: Equatable {
+    
+    open func indexPath(of item: T) -> IndexPath? {
+        for (section, subArray) in _content.enumerated() {
+            if let index = subArray.index(of: item) {
+                return IndexPath(item: index, section: section)
+            }
+        }
+        
+        return nil
+    }
+}

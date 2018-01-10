@@ -325,3 +325,9 @@ extension DataSource: BidirectionalCollection {
 extension DataSource: ExpressibleByArrayLiteral {
     
 }
+
+extension DataSource where T: Equatable {
+    open func indexPath(of item: T) -> IndexPath? {
+        return _content.index(of: item).map({ IndexPath(item: $0, section:0 ) })
+    }
+}
