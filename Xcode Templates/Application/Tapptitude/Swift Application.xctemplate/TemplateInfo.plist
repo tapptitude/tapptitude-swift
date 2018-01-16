@@ -26,13 +26,15 @@
 			<dict>
 				<key>Debug</key>
 				<dict>
+					<key>SWIFT_ACTIVE_COMPILATION_CONDITIONS</key>
+					<string>DEV</string>
 					<key>OTHER_SWIFT_FLAGS</key>
-					<string>$(inherited) -DDEV -DDEBUG</string>
+					<string>$(inherited) -DDEBUG</string>
 				</dict>
 				<key>Release</key>
 				<dict>
-					<key>OTHER_SWIFT_FLAGS</key>
-					<string>$(inherited) -DAPPSTORE</string>
+					<key>SWIFT_ACTIVE_COMPILATION_CONDITIONS</key>
+					<string>APPSTORE</string>
 				</dict>
 			</dict>
 			<key>BuildPhases</key>
