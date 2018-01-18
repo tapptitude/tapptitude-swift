@@ -112,7 +112,7 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
     public var sectionHeaders: [Any]? {
         didSet {
             if let sectionHeaders = sectionHeaders {
-                assert(sectionHeaders.count == _content.count, "We should have same count for number of sections")
+                assert(sectionHeaders.count == numberOfSections(), "We should have same count for number of sections")
             }
         }
     }
