@@ -103,7 +103,7 @@ extension DataRequest {
             
             var apiError = error
             if let data = data {
-                apiError = try? JSONDecoder().decode(APIError.self, from: data)
+                apiError = (try? JSONDecoder().decode(APIError.self, from: data)) ?? apiError
             }
             
             guard apiError == nil else {
