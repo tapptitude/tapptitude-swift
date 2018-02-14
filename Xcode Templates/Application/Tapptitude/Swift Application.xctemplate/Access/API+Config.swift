@@ -103,7 +103,20 @@ extension DataRequest {
             
             var apiError = error
             if let data = data {
-                apiError = (try? JSONDecoder().decode(APIError.self, from: data)) ?? apiError
+                do {
+                    apiError = try JSONDecoder().decode(APIError.self, from: data)
+                } catch DecodingError.dataCorrupted(let context) {
+                    print(context.debugDescription)
+                } catch DecodingError.keyNotFound(let key, let context) {
+                    //No error
+                    print("\(key.stringValue) was not found, \(context.debugDescription)")
+                } catch DecodingError.typeMismatch(let type, let context) {
+                    print("\(type) was expected, \(context.debugDescription)")
+                } catch DecodingError.valueNotFound(let type, let context) {
+                    print("no value was found for \(type), \(context.debugDescription)")
+                } catch {
+                    print("Unknown error")
+                }
             }
             
             guard apiError == nil else {
