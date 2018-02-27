@@ -41,7 +41,7 @@ class CollectionCellPrefetcherDelegate: NSObject, UICollectionViewDataSourcePref
     }
     
     public func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        if let prefetcher = collectionController._cellController as? TTCollectionCellPrefetcher {
+        if let prefetcher = collectionController?._cellController as? TTCollectionCellPrefetcher {
             let content: [Any] = indexPaths.map{ collectionController._dataSource!.item(at: $0) }
             prefetcher.prefetchItems(content, at: indexPaths, in: collectionView)
         }
@@ -50,7 +50,7 @@ class CollectionCellPrefetcherDelegate: NSObject, UICollectionViewDataSourcePref
     
     // indexPaths that previously were considered as candidates for pre-fetching, but were not actually used; may be a subset of the previous call to -collectionView:prefetchItemsAtIndexPaths:
     public func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
-        if let prefetcher = collectionController._cellController as? TTCollectionCellPrefetcher {
+        if let prefetcher = collectionController?._cellController as? TTCollectionCellPrefetcher {
             let content: [Any] = indexPaths.map{ collectionController._dataSource!.item(at: $0) }
             prefetcher.cancelPrefetchItems(content, at: indexPaths, in: collectionView)
         }

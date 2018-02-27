@@ -38,6 +38,7 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
     
     public struct Options {
         public var loadMoreIndicatorViewColor = UIColor.gray
+        public var animateEmptyViewAppearence = true
     }
     
     open var options = Options()
@@ -306,6 +307,8 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
         guard let emptyView = self.emptyView else {
             return
         }
+        
+        let animated = animated && options.animateEmptyViewAppearence
         
         let feedIsLoading = (_dataSource?.feed?.isReloading == true) || (_dataSource?.feed?.isLoadingMore == true)
         let hasContent = _dataSource?.isEmpty == false
