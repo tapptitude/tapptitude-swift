@@ -119,4 +119,17 @@ extension TTAnyDataSource {
     public func item(at item: Int, section: Int) -> Any {
         return self.item(at: IndexPath(item: item, section: section))
     }
+    
+    public var lastIndexPath: IndexPath? {
+        let section = numberOfSections() - 1
+        guard section >= 0 else {
+            return nil
+        }
+        
+        let item = numberOfItems(inSection: section) - 1
+        guard item >= 0 else {
+            return nil
+        }
+        return IndexPath(item: item, section: section)
+    }
 }
