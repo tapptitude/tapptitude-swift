@@ -17,3 +17,11 @@ struct Constants {
     static let API_KEY = "your api key"
     #endif
 }
+
+
+
+//MARK: - Notifications
+extension Notifications {
+//    static let userDidCheckin = Notification<User, String>() // payload, identity of payload
+//    static let userChangedTeam = Notification<Void, String>() // payload, identity of payload
+}

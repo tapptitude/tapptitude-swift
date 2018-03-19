@@ -111,6 +111,7 @@ fi</string>
 		<string>Constants.swift</string>
 		<string>Model/User.swift</string>
 		<string>Helpers/ErrorDisplay.swift</string>
+		<string>Helpers/Notifications.swift</string>
 		<string>Helpers/Utils.swift</string>
 		<string>Helpers/UIBarButton+Helpers.swift</string>
 		<string>Helpers/String+Email.swift</string>
@@ -129,6 +130,15 @@ fi</string>
 			<integer>100</integer>
 			<key>Path</key>
 			<string>Helpers/ErrorDisplay.swift</string>
+			<key>Group</key>
+			<string>Helpers</string>
+		</dict>
+		<key>Helpers/Notifications.swift</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>100</integer>
+			<key>Path</key>
+			<string>Helpers/Notifications.swift</string>
 			<key>Group</key>
 			<string>Helpers</string>
 		</dict>
