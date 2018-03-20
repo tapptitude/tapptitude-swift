@@ -8,6 +8,19 @@
 
 import UIKit
 
+
+extension NSAttributedString {
+    func replacing(key: String, with valueString: String) -> NSAttributedString {
+        if let range = self.string.range(of: key) {
+            let nsRange = self.string.nsRange(from: range)
+            let mutableText = NSMutableAttributedString(attributedString: self)
+            mutableText.replaceCharacters(in: nsRange, with: valueString)
+            return mutableText as NSAttributedString
+        }
+        return self
+    }
+}
+
 extension UITextView {
     func add(_ attributes: [NSAttributedStringKey:Any], forString string: String?, options: NSString.CompareOptions = .caseInsensitive) {
         if let string = string {
@@ -46,12 +59,28 @@ extension UILabel {
     }
 }
 
+extension UILabel  {
+    func replaceAttributedText(placeholder: String, with valueString: String) {
+        attributedText = attributedText?.replacing(key: placeholder, with: valueString)
+    }
+}
+
 
 extension UIButton {
     func underline() {
         let attrs:[NSAttributedStringKey:Any] = [NSAttributedStringKey.underlineStyle: NSUnderlineStyle.styleSingle.rawValue]
         let attributedString = NSAttributedString(string: self.titleLabel!.text!, attributes: attrs)
         self.setAttributedTitle(attributedString, for: .normal)
+    }
+}
+
+extension String {
+    func nsRange(from range: Range<String.Index>) -> NSRange {
+        let utf16view = self.utf16
+        let from = range.lowerBound.samePosition(in: utf16view)!
+        let to = range.upperBound.samePosition(in: utf16view)!
+        return NSMakeRange(utf16view.distance(from: utf16view.startIndex, to: from),
+                           utf16view.distance(from: from, to: to))
     }
 }
 
