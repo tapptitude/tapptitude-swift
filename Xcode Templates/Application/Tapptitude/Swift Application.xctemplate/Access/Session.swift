@@ -16,9 +16,6 @@ struct SessionInfo {
     static let keychainService = "Test"
     static let userID = "email"
     static let accessToken = "token"
-    
-    static let sessionClosedNotification = Notification.Name(rawValue: "sessionClosedNotification")
-    static let sessionClosedNotificationErrorKey = "error"
 }
 
 class Session {
@@ -47,12 +44,7 @@ class Session {
         
         UIApplication.shared.cancelAllLocalNotifications()
         
-        var userInfo : [AnyHashable: Any]? = nil
-        if (error != nil) {
-            userInfo = [SessionInfo.sessionClosedNotificationErrorKey : error!]
-        }
-        
-        NotificationCenter.default.post(name: SessionInfo.sessionClosedNotification, object: self, userInfo: userInfo)
+        Notifications.sessionClosed.post(error)
     }
     
     //MARK:User

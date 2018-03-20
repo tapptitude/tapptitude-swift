@@ -121,6 +121,8 @@ fi</string>
 		<string>Helpers/UILabel+TextAttributes.swift</string>
 		<string>Helpers/UIImageView+URL.swift</string>
 		<string>Helpers/Storyboards.swift</string>
+		<string>AppDelegate.swift:implementation:methods:registerSession(func registerSessionClosedNotification (\))</string>
+		<string>AppDelegate.swift:implementation:methods:registerSession:body</string>
 	</array>
 	<key>Definitions</key>
 	<dict>
@@ -394,6 +396,11 @@ fi</string>
 			<key>Path</key>
 			<string>Access</string>
 		</dict>
+		<key>AppDelegate.swift:implementation:methods:registerSession:body</key>
+		<string>Notifications.sessionClosed.addObserver(self) { (self, error) in
+//            self.window?.rootViewController = Storyboards.Main.instantiateInitialViewController()
+self.window?.rootViewController?.checkAndShow(error: error)
+}</string>
 	</dict>
 </dict>
 </plist>

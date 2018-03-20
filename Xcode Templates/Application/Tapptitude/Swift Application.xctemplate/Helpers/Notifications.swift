@@ -13,44 +13,44 @@ enum Notifications {
         internal var allObservers: [WeakContainer] = []
         
         public var observers: [RegisteredObserver] {
-            let observers = allObservers.flatMap({ $0.value })
+            observersRegisteredByOwners = observersRegisteredByOwners.filter({ $0.owner != nil }) // remove observers where owner is nil
+            let aliveObservers = allObservers.flatMap({ $0.value })
             
-            if observers.count != allObservers.count {
+            if aliveObservers.count != allObservers.count {
                 allObservers = allObservers.filter({ $0.value != nil }) // remove dead observers
             }
             
-            return observers
+            return aliveObservers
         }
         
         
-        public func register(identifier: Identifier?, callback: @escaping (T) -> Void) -> Any {
+        public func register(identifier: Identifier? = nil, callback: @escaping (T) -> Void) -> Any {
             let observation = RegisteredObserver(identifier: identifier, callback: callback)
             allObservers.append(WeakContainer(value: observation))
             return observation
         }
         
-        public func post(_ payload: T, identifier: Identifier?) {
+        public func post(_ payload: T, identifier: Identifier? = nil) {
             observers.filter({ $0.identifier == nil || $0.identifier == identifier }).forEach { $0.callback(payload) }
         }
         
         
         internal var observersRegisteredByOwners: [RegisteredObserver] = []
         /// only while onwer is alive, callback will be triggered. No need to unregister
-        public func register<Owner: AnyObject>(owner: Owner, identifier: Identifier?, callback: @escaping (Owner, T) -> Void) {
-            let observation = RegisteredObserver(identifier: identifier, callback: { [weak owner, unowned self] payload in
-                if let owner = owner {
-                    callback(owner, payload)
-                } else {
-                    self.observersRegisteredByOwners = self.observersRegisteredByOwners.filter({ $0.owner != nil }) // remove observers with owner nil
+        public func addObserver<Observer: AnyObject>(_ observer: Observer, identifier: Identifier? = nil, callback: @escaping (Observer, T) -> Void) {
+            let observation = RegisteredObserver(identifier: identifier, callback: { [weak observer] payload in
+                if let observer = observer {
+                    callback(observer, payload)
                 }
             })
-            observation.owner = owner
+            observation.owner = observer
             allObservers.append(WeakContainer(value: observation))
-            observersRegisteredByOwners.append(observation)
+            observersRegisteredByOwners.append(observation) // keep this observation alive until owner is deallocated
         }
         
+        /// remove all observations registered by owner
         public func remove(owner: AnyObject) {
-            observersRegisteredByOwners = observersRegisteredByOwners.filter({ $0.owner !== owner }) // remove all registered with owner
+            observersRegisteredByOwners = observersRegisteredByOwners.filter({ $0.owner !== owner })
         }
         
         public class RegisteredObserver: CustomDebugStringConvertible {
@@ -79,14 +79,23 @@ enum Notifications {
     }
 }
 
+
+
 extension Notifications.Notification where T == Void {
-    func post(identifier: Identifier? = nil) {
+    public func post(identifier: Identifier? = nil) {
         post((), identifier: identifier)
     }
     
-    func register(identifier: Identifier? = nil, callback: @escaping () -> Void) -> Any {
-        return register(identifier: identifier, callback: { (_) in
-            callback()
+    //    func register(identifier: Identifier? = nil, callback: @escaping () -> Void) -> Any {
+    //        return register(identifier: identifier, callback: { (_) in
+    //            callback()
+    //        })
+    //    }
+    
+    public func addObserver<Observer: AnyObject>(_ observer: Observer, identifier: Identifier? = nil, callback: @escaping (Observer) -> Void) -> Any {
+        return addObserver(observer, identifier: identifier, callback: { (observer, _) in
+            callback(observer)
         })
     }
 }
+

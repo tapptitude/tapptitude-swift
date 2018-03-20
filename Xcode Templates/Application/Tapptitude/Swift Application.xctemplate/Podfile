@@ -7,7 +7,7 @@ target '___PROJECTNAME___' do
     pod 'SAMKeychain'
     pod 'FBSDKLoginKit'
     pod 'Tapptitude', :path => '.'
-    pod 'JLRoutes'
+    pod 'URLNavigator'
     pod 'Fabric'
     pod 'Crashlytics'
     pod 'SwiftMessages'
