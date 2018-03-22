@@ -95,7 +95,7 @@ fi</string>
 	</array>
 	<key>Nodes</key>
 	<array>
-		<string>Screens/Main.storyboard</string>
+		<string>Base.lproj/Main.storyboard</string>
 		<string>../Podfile</string>
 		<string>../.gitignore</string>
 		<string>../bin/natalie</string>
@@ -111,6 +111,7 @@ fi</string>
 		<string>Constants.swift</string>
 		<string>Model/User.swift</string>
 		<string>Helpers/ErrorDisplay.swift</string>
+		<string>Helpers/Notifications.swift</string>
 		<string>Helpers/Utils.swift</string>
 		<string>Helpers/UIBarButton+Helpers.swift</string>
 		<string>Helpers/String+Email.swift</string>
@@ -120,6 +121,8 @@ fi</string>
 		<string>Helpers/UILabel+TextAttributes.swift</string>
 		<string>Helpers/UIImageView+URL.swift</string>
 		<string>Helpers/Storyboards.swift</string>
+		<string>AppDelegate.swift:implementation:methods:registerSession(func registerSessionClosedNotification (\))</string>
+		<string>AppDelegate.swift:implementation:methods:registerSession:body</string>
 	</array>
 	<key>Definitions</key>
 	<dict>
@@ -129,6 +132,15 @@ fi</string>
 			<integer>100</integer>
 			<key>Path</key>
 			<string>Helpers/ErrorDisplay.swift</string>
+			<key>Group</key>
+			<string>Helpers</string>
+		</dict>
+		<key>Helpers/Notifications.swift</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>100</integer>
+			<key>Path</key>
+			<string>Helpers/Notifications.swift</string>
 			<key>Group</key>
 			<string>Helpers</string>
 		</dict>
@@ -309,6 +321,8 @@ fi</string>
 			<string>.gitignore</string>
 			<key>Group</key>
 			<string>To Remove from Xcode</string>
+			<key>TargetIndices</key>
+			<array/>
 		</dict>
 		<key>../Podfile</key>
 		<dict>
@@ -318,6 +332,8 @@ fi</string>
 			<string>Podfile</string>
 			<key>Group</key>
 			<string>To Remove from Xcode</string>
+			<key>TargetIndices</key>
+			<array/>
 		</dict>
 		<key>../bin/natalie</key>
 		<dict>
@@ -327,6 +343,8 @@ fi</string>
 			<string>bin/natalie</string>
 			<key>Group</key>
 			<string>To Remove from Xcode</string>
+			<key>TargetIndices</key>
+			<array/>
 		</dict>
 		<key>../bin/Natalie Source.zip</key>
 		<dict>
@@ -336,15 +354,8 @@ fi</string>
 			<string>bin/Natalie Source.zip</string>
 			<key>Group</key>
 			<string>To Remove from Xcode</string>
-		</dict>
-		<key>Screens/Main.storyboard</key>
-		<dict>
-			<key>SortOrder</key>
-			<integer>100</integer>
-			<key>Path</key>
-			<string>Screens/Main.storyboard</string>
-			<key>Group</key>
-			<string>Screens</string>
+			<key>TargetIndices</key>
+			<array/>
 		</dict>
 		<key>Base.lproj/Main.storyboard</key>
 		<dict>
@@ -385,6 +396,11 @@ fi</string>
 			<key>Path</key>
 			<string>Access</string>
 		</dict>
+		<key>AppDelegate.swift:implementation:methods:registerSession:body</key>
+		<string>Notifications.sessionClosed.addObserver(self) { (self, error) in
+//            self.window?.rootViewController = Storyboards.Main.instantiateInitialViewController()
+self.window?.rootViewController?.checkAndShow(error: error)
+}</string>
 	</dict>
 </dict>
 </plist>

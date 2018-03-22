@@ -85,6 +85,13 @@ extension CodableCaching where T: Codable {
             save()
         }
     }
+    
+    /// will save result, on success only, as json file on disk
+    func saveToFile(_ result: Result<T>?, async: Bool = true) {
+        if let object = result?.value {
+            saveToFile(object, async: async)
+        }
+    }
 }
 
 
