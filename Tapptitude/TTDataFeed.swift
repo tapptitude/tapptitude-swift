@@ -29,10 +29,6 @@ extension FeedState {
     }
 }
 
-public enum TTLoadMoreType {
-    case asAppend /// load more content is appended at the end of datasource
-    case asInsert /// load more content is inserted at begining of datasource
-}
 
 public protocol TTDataFeed: class {
     
@@ -50,8 +46,6 @@ public protocol TTDataFeed: class {
     
     var lastReloadDate : Date? {get}
     var state: FeedState { get }
-    
-    var loadMoreType: TTLoadMoreType { get set }
 }
 
 extension TTDataFeed {

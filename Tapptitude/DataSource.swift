@@ -152,10 +152,10 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
             }
         case .loadingMore:
             if let content = result.value {
-                switch dataFeed?.loadMoreType {
-                case .some(.asAppend):
+                switch delegate?.dataSourceLoadMoreType {
+                case .some(.appendAtEnd):
                     append(contentsOf: content)
-                case .some(.asInsert):
+                case .some(.insertAtBeginning):
                     insert(contentsOf: content, at: IndexPath(item: 0, section: 0))
                 case .none:
                     break

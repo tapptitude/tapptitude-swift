@@ -290,10 +290,10 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         case .loadingMore:
             delegate?.dataSourceWillChangeContent(self)
             if let content = result.value {
-                switch dataFeed?.loadMoreType {
-                case .some(.asAppend):
+                switch delegate?.dataSourceLoadMoreType {
+                case .some(.appendAtEnd):
                     _unfilteredContent.append(contentsOf: content.map({$0 as! [T]}))
-                case .some(.asInsert):
+                case .some(.insertAtBeginning):
                     _unfilteredContent.insert(contentsOf: content.map({$0 as! [T]}), at: 0)
                 case .none:
                     break
@@ -354,10 +354,10 @@ open class GroupedByDataSource<T, U: Hashable> : SectionedDataSource<T> {
             
             if let content = result.value {
                 if let groupBy = groupBy {
-                    switch dataFeed?.loadMoreType {
-                    case .some(.asAppend):
+                    switch delegate?.dataSourceLoadMoreType {
+                    case .some(.appendAtEnd):
                         _ungroupedContent.append(contentsOf: content.map({$0 as! T}))
-                    case .some(.asInsert):
+                    case .some(.insertAtBeginning):
                         _ungroupedContent.insert(contentsOf: content.map({$0 as! T}), at: 0)
                     case .none:
                         break
@@ -365,10 +365,10 @@ open class GroupedByDataSource<T, U: Hashable> : SectionedDataSource<T> {
                     
                     _unfilteredContent = _ungroupedContent.groupBy(groupBy)
                 } else {
-                    switch dataFeed?.loadMoreType {
-                    case .some(.asAppend):
+                    switch delegate?.dataSourceLoadMoreType {
+                    case .some(.appendAtEnd):
                         _unfilteredContent.append(contentsOf: content.map({$0 as! [T]}))
-                    case .some(.asInsert):
+                    case .some(.insertAtBeginning):
                         _unfilteredContent.insert(contentsOf: content.map({$0 as! [T]}), at: 0)
                     case .none:
                         break

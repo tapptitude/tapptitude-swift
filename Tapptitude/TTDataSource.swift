@@ -70,6 +70,11 @@ extension TTDataSourceMutable where Element == Any {
 }
 
 
+public enum TTDataSourceLoadMoreType {
+    case appendAtEnd /// load more content is appended at the end of datasource
+    case insertAtBeginning /// load more content is inserted at begining of datasource
+}
+
 public protocol TTDataSourceDelegate: class {
     func dataSourceWillChangeContent(_ dataSource: TTAnyDataSource)
     
@@ -83,6 +88,9 @@ public protocol TTDataSourceDelegate: class {
     func dataSource(_ dataSource: TTAnyDataSource, didUpdateSections updatedSections: IndexSet)
     
     func dataSourceDidChangeContent(_ dataSource: TTAnyDataSource)
+    
+    /// how load more content is [appended / inserted ] in datasource
+    var dataSourceLoadMoreType: TTDataSourceLoadMoreType { get }
 }
 
 

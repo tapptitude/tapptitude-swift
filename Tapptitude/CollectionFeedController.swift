@@ -523,6 +523,23 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
     open func dataSource(_ dataSource: TTAnyDataSource, didUpdateSections updatedSections: IndexSet) {
         animatedUpdater?.collectionView(collectionView!, didUpdateSections: updatedSections)
     }
+    
+    /// how load more content is [appended / inserted ] in datasource
+    open var dataSourceLoadMoreType: TTDataSourceLoadMoreType = .appendAtEnd {
+        didSet {
+            switch dataSourceLoadMoreType {
+            case .appendAtEnd: // default behaviour
+                break
+            case .insertAtBeginning:
+                self.collectionView.collectionViewLayout = ChatCollectionViewFlowLayout()
+                
+                let loadMoreController = LoadMoreController()
+                loadMoreController.collectionView = collectionView!
+                loadMoreController.loadMorePosition = .top
+                self.loadMoreController = loadMoreController
+            }
+        }
+    }
 //}
 //
 // MARK: Data Source -
@@ -715,20 +732,6 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
             return headerController.headerSize(for: item, in: collectionView)
         } else {
             return CGSize.zero
-        }
-    }
-    
-    open var dataSourceLoadMoreInsertNewContentOnTop: Bool = false {
-        didSet {
-            if dataSourceLoadMoreInsertNewContentOnTop {
-                self.collectionView.collectionViewLayout = ChatCollectionViewFlowLayout()
-                self._dataSource!.feed!.loadMoreType = .asInsert
-                
-                let loadMoreController = LoadMoreController()
-                loadMoreController.collectionView = collectionView!
-                loadMoreController.loadMorePosition = .top
-                self.loadMoreController = loadMoreController
-            }
         }
     }
     

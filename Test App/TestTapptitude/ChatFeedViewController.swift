@@ -114,7 +114,7 @@ class ChatFeedViewController : __CollectionFeedController {
         
         collectionView.contentInset = .zero
         self.headerIsSticky = true
-        self.dataSourceLoadMoreInsertNewContentOnTop = true
+        self.dataSourceLoadMoreType = .insertAtBeginning
 //        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
 //            dataSource.insert("dasd", at: IndexPath(item: 0, section: 0))
 //        }
