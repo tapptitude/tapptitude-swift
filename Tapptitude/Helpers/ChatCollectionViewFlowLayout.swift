@@ -16,27 +16,7 @@ public class ChatCollectionViewFlowLayout: UICollectionViewFlowLayout {
     public var shouldChangeOffsetToKeepCellVisible = true
     
     
-    private var isInsertingCellsToTop: Bool = false
-    private var contentSizeWhenInsertingToTop: CGSize?
-    
-//    public override func prepare() {
-//        super.prepare()
-//
-//
-//        if isInsertingCellsToTop == true {
-//            if let collectionView = collectionView, let oldContentSize = contentSizeWhenInsertingToTop {
-//                let newContentSize = collectionViewContentSize
-//                let contentOffsetY = collectionView.contentOffset.y + (newContentSize.height - oldContentSize.height)
-//                let newOffset = CGPoint(x: collectionView.contentOffset.x, y: contentOffsetY)
-//                collectionView.contentOffset = newOffset
-//            }
-//            contentSizeWhenInsertingToTop = nil
-//            isInsertingCellsToTop = false
-//        }
-//    }
-    
     public override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        // Get layout attributes of all items
         visibleAttributes = super.layoutAttributesForElements(in: rect)
 
         return visibleAttributes
@@ -85,11 +65,6 @@ public class ChatCollectionViewFlowLayout: UICollectionViewFlowLayout {
             visibleAttributesToTrack = [] // no need to change offset
         }
 
-        if let oldAttribute = visibleAttributesToTrack?.first {
-            CATransaction.begin()
-            CATransaction.setDisableActions(true)
-        }
-
         super.prepare(forCollectionViewUpdates: updateItems)
     }
 
@@ -97,34 +72,32 @@ public class ChatCollectionViewFlowLayout: UICollectionViewFlowLayout {
         super.finalizeCollectionViewUpdates()
 
         guard let collectionView = self.collectionView else { return }
-
+        
+        let oldOffsetY = collectionView.contentOffset.y
+        var newOffsetY = oldOffsetY
+        
         if let oldAttribute = visibleAttributesToTrack?.first {
-//            collectionView.visibleCells.forEach({ $0.layer.removeAllAnimations() })
-
             let indexPath = oldAttribute.indexPath
             let attribute = layoutAttributesForItem(at: indexPath)!
             let oldOffsetDiff = oldAttribute.frame.origin.y - collectionView.contentOffset.y
-
-//            UIView.performWithoutAnimation {
-                collectionView.contentOffset.y = attribute.frame.origin.y - oldOffsetDiff
-//            }
-
-            // Commit/end transaction
-            CATransaction.commit()
+            
+            newOffsetY = attribute.frame.origin.y - oldOffsetDiff
+        }
+        
+        // on new content, keep bottom part of content in visible area
+        if collectionView.contentSize.height <= collectionView.bounds.height && collectionViewContentSize.height > collectionView.bounds.height {
+            newOffsetY = collectionViewContentSize.height - collectionView.bounds.height
+        }
+        
+        if newOffsetY != oldOffsetY {
+            collectionView.visibleCells.forEach({ $0.layer.removeAllAnimations() })
+            
+            let context = UICollectionViewFlowLayoutInvalidationContext()
+            context.contentOffsetAdjustment = CGPoint(x: 0, y: newOffsetY - oldOffsetY)
+            
+            UIView.performWithoutAnimation {
+                self.invalidateLayout(with: context)
+            }
         }
     }
-    
-//    public override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint) -> CGPoint {
-//        if let oldAttribute = visibleAttributes?.first, let collectionView = self.collectionView {
-////            collectionView.visibleCells.forEach({ $0.layer.removeAllAnimations() })
-//
-//            let indexPath = oldAttribute.indexPath
-//            let attribute = layoutAttributesForItem(at: indexPath)!
-//            let oldOffsetDiff = oldAttribute.frame.origin.y - collectionView.contentOffset.y
-//
-//            return CGPoint(x: proposedContentOffset.x, y: attribute.frame.origin.y - oldOffsetDiff)
-//        } else {
-//            return proposedContentOffset
-//        }
-//    }
 }

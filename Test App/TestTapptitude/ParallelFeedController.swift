@@ -133,7 +133,7 @@ class API {
         let newPage = page ?? 0
                 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
-            callback(.success(( ["\(newPage) Page\n\(newPage)\n\(newPage)"], newPage + 1) ))
+            callback(.success(( ["-----\(newPage) Page\n\(newPage)\n\(newPage)", "Page\n\(newPage)\n\(newPage)\n\(newPage)", "Page\n\(newPage)\n\(newPage)\n\(newPage)", "Page\n\(newPage)\n\(newPage)\n\(newPage)", "Page\n\(newPage)\n\(newPage)", "\(newPage)Page\n\(newPage) -----"], newPage + 1) ))
         })
         
         return nil

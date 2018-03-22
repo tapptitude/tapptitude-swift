@@ -110,7 +110,7 @@ class ChatFeedViewController : __CollectionFeedController {
         
 //        self.edgesForExtendedLayout = []
         
-        animatedUpdates = false
+        animatedUpdates = true
         
         collectionView.contentInset = .zero
         self.headerIsSticky = true
