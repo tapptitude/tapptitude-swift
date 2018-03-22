@@ -112,20 +112,31 @@ class API {
         let task = URLSession.shared.dataTask(with: url_request) { data , response , error  in
             DispatchQueue.global(qos: .background).async {
                 let stringResponse = data != nil ? String(data: data!, encoding: String.Encoding.utf8) : nil
-                let items: [String]? = stringResponse != nil ? [stringResponse!] : nil
+                let subString = stringResponse?.prefix(500).description
+                let items: [String]? = subString != nil ? [subString!] : nil
                 print(error ?? "")
                 
                 let nextPage = items?.isEmpty == false ? (newPage + 1) : nil
                 let result: Result<([String], Int?)> = error != nil ? .failure(error!) : .success((items!, nextPage))
                 
-                DispatchQueue.main.async {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                     callback(result)
-                }
+                })
             }
         }
         task.resume()
         
         return task
+    }
+    
+    static func getDummyPage(page: Int?, callback: @escaping TTCallback<([String], Int?)>) -> TTCancellable? {
+        let newPage = page ?? 0
+                
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+            callback(.success(( ["\(newPage) Page\n\(newPage)\n\(newPage)"], newPage + 1) ))
+        })
+        
+        return nil
     }
 }
 

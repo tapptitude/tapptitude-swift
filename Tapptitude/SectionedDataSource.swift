@@ -290,7 +290,14 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
         case .loadingMore:
             delegate?.dataSourceWillChangeContent(self)
             if let content = result.value {
-                _unfilteredContent.append(contentsOf: content.map({$0 as! [T]}))
+                switch dataFeed?.loadMoreType {
+                case .some(.asAppend):
+                    _unfilteredContent.append(contentsOf: content.map({$0 as! [T]}))
+                case .some(.asInsert):
+                    _unfilteredContent.insert(contentsOf: content.map({$0 as! [T]}), at: 0)
+                case .none:
+                    break
+                }
             }
             
             filterContent()
@@ -347,10 +354,25 @@ open class GroupedByDataSource<T, U: Hashable> : SectionedDataSource<T> {
             
             if let content = result.value {
                 if let groupBy = groupBy {
-                    _ungroupedContent.append(contentsOf: content.map({$0 as! T}))
+                    switch dataFeed?.loadMoreType {
+                    case .some(.asAppend):
+                        _ungroupedContent.append(contentsOf: content.map({$0 as! T}))
+                    case .some(.asInsert):
+                        _ungroupedContent.insert(contentsOf: content.map({$0 as! T}), at: 0)
+                    case .none:
+                        break
+                    }
+                    
                     _unfilteredContent = _ungroupedContent.groupBy(groupBy)
                 } else {
-                    _unfilteredContent.append(contentsOf: content.map({$0 as! [T]}))
+                    switch dataFeed?.loadMoreType {
+                    case .some(.asAppend):
+                        _unfilteredContent.append(contentsOf: content.map({$0 as! [T]}))
+                    case .some(.asInsert):
+                        _unfilteredContent.insert(contentsOf: content.map({$0 as! [T]}), at: 0)
+                    case .none:
+                        break
+                    }
                 }
             }
             

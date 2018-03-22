@@ -567,7 +567,7 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
         assert(cell.reuseIdentifier == reuseIdentifier , "Cell returned from cell controller \(_cellController) had reuseIdenfier \(cell.reuseIdentifier!), which must be equal to the cell controller's reuseIdentifierForContent, which returned \(reuseIdentifier)")
         
         // pass parentViewController
-        cell.parentViewController = _cellController.parentViewController;
+        cell.parentViewController = _cellController.parentViewController
         
         _cellController.configureCell(cell, for: content, at: indexPath)
         
@@ -718,10 +718,16 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
         }
     }
     
-    open var isReversed: Bool = false {
+    open var dataSourceLoadMoreInsertNewContentOnTop: Bool = false {
         didSet {
-            if isReversed {
-                self.collectionView.collectionViewLayout = ChatFlowLayout()
+            if dataSourceLoadMoreInsertNewContentOnTop {
+                self.collectionView.collectionViewLayout = ChatCollectionViewFlowLayout()
+                self._dataSource!.feed!.loadMoreType = .asInsert
+                
+                let loadMoreController = LoadMoreController()
+                loadMoreController.collectionView = collectionView!
+                loadMoreController.loadMorePosition = .top
+                self.loadMoreController = loadMoreController
             }
         }
     }

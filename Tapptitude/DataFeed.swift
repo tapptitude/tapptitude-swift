@@ -112,6 +112,9 @@ open class DataFeed<T, OffsetType>: TTDataFeed {
         }
     }
     
+    /// how load more content is [appended / inserted ] in datasource
+    open var loadMoreType: TTLoadMoreType = .asAppend
+    
     func executeOperation() {
         let runningOperation = RunningOperation()
         executingOperation?.cancel()

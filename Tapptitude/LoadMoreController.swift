@@ -213,7 +213,15 @@ open class LoadMoreController: NSObject, TTLoadMoreController {
         switch loadMorePosition {
         case .bottom: loadMoreView.center = CGPoint(x: collectionView.bounds.midX, y: contentSize.height - loadMoreView.bounds.midY)
         case .right: loadMoreView.center = CGPoint(x: contentSize.width - loadMoreView.bounds.midX, y: collectionView.bounds.midY)
-        case .top: loadMoreView.center = CGPoint(x: collectionView.bounds.midX, y: loadMoreView.bounds.midY)
+        case .top:
+            var yOffset: CGFloat = 0
+            // move load more view below header
+            if collectionView.numberOfSections >= 0 && collectionView.numberOfItems(inSection: 0) > 0 {
+                let indexPath = IndexPath(item: 0, section: 0)
+                let attribute = collectionView.collectionViewLayout.layoutAttributesForSupplementaryView(ofKind: UICollectionElementKindSectionHeader, at: indexPath)
+                yOffset += attribute?.size.height ?? 0
+            }
+            loadMoreView.center = CGPoint(x: collectionView.bounds.midX, y: loadMoreView.bounds.midY + yOffset)
         case .left: loadMoreView.center = CGPoint(x: loadMoreView.bounds.midX, y: collectionView.bounds.midY)
         }
     }

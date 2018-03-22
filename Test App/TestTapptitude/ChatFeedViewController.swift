@@ -76,9 +76,14 @@ extension ChatInputContainerView: UITextViewDelegate {
 }
 
 
-class ChatFeedViewController : CollectionFeedController {
+class ChatFeedViewController : __CollectionFeedController {
     @IBOutlet var inputContainerView: ChatInputContainerView!
-    var _dataSource: DataSource<String>!
+    var dataSource: DataSource<String>! {
+        didSet { _dataSource = dataSource }
+    }
+    var cellController: MultiCollectionCellController! {
+        didSet { _cellController = cellController }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,36 +94,48 @@ class ChatFeedViewController : CollectionFeedController {
         let keyboard = self.collectionView?.addKeyboardVisibilityController()
         keyboard?.dismissKeyboardTouchRecognizer = nil
         
-        let dataSource = DataSource<String>(loadPage: API.getHackerNews(page:callback:))
-//        let dataSource = DataSource<String>()
-        self.dataSource = dataSource
-        self._dataSource = dataSource
+        let dataSource = DataSource<String>(loadPage: API.getDummyPage(page:callback:))
+//        let dataSource = SectionedDataSource<String>([["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]])
+//        let dataSource = SectionedDataSource<String>([[]])
+        
         self.cellController = MultiCollectionCellController(TextItemCellController())
-        self.loadMoreController?.loadMorePosition = .bottom
+        let header = CollectionHeaderController<[String], UICollectionViewCell>(headerSize: CGSize(width: 20, height: 40))
+        header.configureHeader = { (header: UICollectionViewCell, content: [String], indexPath) in
+            header.backgroundColor = .red
+        }
+        self.headerController = header
+        self.dataSource = dataSource
         
-        self.collectionView.register(LoadMoreView.self, forSupplementaryViewOfKind: "test", withReuseIdentifier: "LoadMoreView")
         
-        self.edgesForExtendedLayout = []
         
-        animatedUpdates = true
-        self.isReversed = true
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { 
+//        self.edgesForExtendedLayout = []
+        
+        animatedUpdates = false
+        
+        collectionView.contentInset = .zero
+        self.headerIsSticky = true
+        self.dataSourceLoadMoreInsertNewContentOnTop = true
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
 //            dataSource.insert("dasd", at: IndexPath(item: 0, section: 0))
 //        }
-//        
+//
 //        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-//            dataSource.remove(at: IndexPath(item: 1, section: 0))
+//            dataSource.remove(at: IndexPath(item: 0, section: 0))
 //        }
-//        
+//
 //        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
 //            dataSource[IndexPath(item: 1, section: 0)] = "maria \n\n"
+//        }
+        
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+//            dataSource.append(sections: [["13", "14", "15", "16", "17", "18", "19", "20", "21", "22"]])
 //        }
     }
     
     @IBAction func sendAction(_ sender: AnyObject) {
-        let indexPath = IndexPath(item: 0, section: 0)
-        _dataSource.insert(self.inputContainerView.text, at: indexPath)
-        self.collectionView.scrollToItem(at: indexPath, at: .top, animated: true)
+        dataSource.append(self.inputContainerView.text)
+        let indexPath = dataSource.lastIndexPath!
+        self.collectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
         self.inputContainerView.text = ""
     }
     
@@ -130,4 +147,3 @@ class ChatFeedViewController : CollectionFeedController {
         return self.inputContainerView
     }
 }
-
