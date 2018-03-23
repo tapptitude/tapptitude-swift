@@ -62,6 +62,13 @@ class ChatInputContainerView: UIView {
     override func didMoveToWindow() {
         super.didMoveToWindow()
         
+        // enable only for iPhoneX
+        let SCREEN_MAX_LENGTH = max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.width)
+        let IS_IPHONE_X = UIDevice.current.userInterfaceIdiom == .phone && SCREEN_MAX_LENGTH == 812.0
+        guard IS_IPHONE_X else {
+            return
+        }
+        
         if #available(iOS 11.0, *) {
             if let window = self.window {
                 self.bottomAnchor.constraintLessThanOrEqualToSystemSpacingBelow(window.safeAreaLayoutGuide.bottomAnchor, multiplier: 1).isActive = true
