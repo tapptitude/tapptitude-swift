@@ -55,6 +55,20 @@ class ChatInputContainerView: UIView {
             self.invalidateIntrinsicContentSize()
         }
     }
+    
+    /* thist throws a constraint warning
+     This is clearly an Apple bug. My guess is that they have an errant constraint that holds the status bars height at 20 px but is broken when the call bar grows. This doesn't break or affect the app so it can safely be ignored for now. But an Apple Radar should be filled.
+     */
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        
+        if #available(iOS 11.0, *) {
+            if let window = self.window {
+                self.bottomAnchor.constraintLessThanOrEqualToSystemSpacingBelow(window.safeAreaLayoutGuide.bottomAnchor, multiplier: 1).isActive = true
+                self.textViewContainer.bottomAnchor.constraintLessThanOrEqualToSystemSpacingBelow(self.bottomAnchor, multiplier: 0.75).isActive = true
+            }
+        }
+    }
 }
 
 extension ChatInputContainerView: UITextViewDelegate {
