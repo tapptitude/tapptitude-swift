@@ -12,16 +12,16 @@ public protocol TTCollectionFeedController : class, UICollectionViewDelegateFlow
     var _dataSource: TTAnyDataSource? {get set}
     var _cellController: TTAnyCollectionCellController! {get set}
     
-    weak var collectionView: UICollectionView! {get set}
+    var collectionView: UICollectionView! {get set}
 
     var scrollDirection: UICollectionViewScrollDirection {get set}
     
-    weak var reloadIndicatorView: UIActivityIndicatorView? {get set}
+    var reloadIndicatorView: UIActivityIndicatorView? {get set}
     var emptyView: UIView? {get set} //set from XIB or overwrite
     
     
     /* Pull to Refresh functionality */
-    weak var refreshControl: UIRefreshControl? {get set}
+    var refreshControl: UIRefreshControl? {get set}
     func pullToRefreshAction(_ sender: AnyObject!)
     func addPullToRefresh()
     

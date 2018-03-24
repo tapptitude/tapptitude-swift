@@ -15,7 +15,7 @@ public protocol TTAnyCollectionHeaderController {
     
     var headerSize: CGSize {get}
     
-    weak var parentViewController : UIViewController? {get set}
+    var parentViewController : UIViewController? {get set}
     
     func acceptsContent(_ content: Any) -> Bool
     

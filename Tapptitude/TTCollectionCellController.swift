@@ -20,7 +20,7 @@ public protocol TTAnyCollectionCellController: class {
     
     func didSelectContent(_ content: Any, at indexPath: IndexPath, in collectionView: UICollectionView)
     
-    weak var parentViewController: UIViewController? { get set }
+    var parentViewController: UIViewController? { get set }
     
     var cellSize : CGSize { get }
     var sectionInset : UIEdgeInsets { get }

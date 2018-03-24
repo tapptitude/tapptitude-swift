@@ -32,7 +32,7 @@ extension FeedState {
 
 public protocol TTDataFeed: class {
     
-    weak var delegate: TTDataFeedDelegate? { get set }
+    var delegate: TTDataFeedDelegate? { get set }
     
     func shouldReload() -> Bool
     

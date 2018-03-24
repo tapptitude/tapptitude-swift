@@ -16,7 +16,7 @@ public protocol TTAnyDataSource : TTDataFeedDelegate, CustomStringConvertible {
     
     func item(at indexPath: IndexPath) -> Any
     
-    weak var delegate: TTDataSourceDelegate? { get set }
+    var delegate: TTDataSourceDelegate? { get set }
     var feed: TTDataFeed? { get set }
     
     var dataSourceID: String? { get set } //usefull information
