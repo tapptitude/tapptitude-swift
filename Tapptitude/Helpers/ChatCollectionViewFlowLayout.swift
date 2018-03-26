@@ -6,14 +6,12 @@
 //  Copyright © 2017 Tapptitude. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
 
 public class ChatCollectionViewFlowLayout: UICollectionViewFlowLayout {
     private var visibleAttributes: [UICollectionViewLayoutAttributes]?
     private var visibleAttributesToTrack: [UICollectionViewLayoutAttributes]?
-    public var shouldChangeOffsetToKeepCellVisible = true
     
     
     public override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
@@ -23,12 +21,8 @@ public class ChatCollectionViewFlowLayout: UICollectionViewFlowLayout {
     }
 
     public override func prepare(forCollectionViewUpdates updateItems: [UICollectionViewUpdateItem]) {
-
-        // Get collection view and layout attributes as non-optional object
-        guard let collectionView = self.collectionView       else { return }
-
-        if !shouldChangeOffsetToKeepCellVisible {
-            visibleAttributes = nil
+        guard let collectionView = self.collectionView else {
+            return
         }
 
         // track only cell
@@ -59,8 +53,6 @@ public class ChatCollectionViewFlowLayout: UICollectionViewFlowLayout {
             }
         }
 
-
-
         if !shouldChangeOffset {
             visibleAttributesToTrack = [] // no need to change offset
         }
@@ -71,29 +63,30 @@ public class ChatCollectionViewFlowLayout: UICollectionViewFlowLayout {
     public override func finalizeCollectionViewUpdates() {
         super.finalizeCollectionViewUpdates()
 
-        guard let collectionView = self.collectionView else { return }
+        guard let collectionView = self.collectionView else {
+            return
+        }
         
-        let oldOffsetY = collectionView.contentOffset.y
-        var newOffsetY = oldOffsetY
-        
-        if let oldAttribute = visibleAttributesToTrack?.first {
-            let indexPath = oldAttribute.indexPath
-            let attribute = layoutAttributesForItem(at: indexPath)!
-            let oldOffsetDiff = oldAttribute.frame.origin.y - collectionView.contentOffset.y
-            
-            newOffsetY = attribute.frame.origin.y - oldOffsetDiff
+        var offsetDiff: CGFloat = 0.0
+        let pageHeight = collectionView.bounds.height - collectionView.contentInset.bottom - collectionView.contentInset.top
+        if let oldAttribute = visibleAttributesToTrack?.first, collectionViewContentSize.height > pageHeight  {
+            let newAttribute = layoutAttributesForItem(at: oldAttribute.indexPath)!
+            offsetDiff = newAttribute.frame.minY - oldAttribute.frame.minY
         }
         
         // on new content, keep bottom part of content in visible area
-        if collectionView.contentSize.height <= collectionView.bounds.height && collectionViewContentSize.height > collectionView.bounds.height {
-            newOffsetY = collectionViewContentSize.height - collectionView.bounds.height
+//        let conteSizeLessThanFirstPage = collectionView.contentSize.height <= collectionView.bounds.height {
+        if collectionView.contentSize.height == 0.0 && collectionViewContentSize.height > pageHeight {
+            let newOffsetY = collectionViewContentSize.height - collectionView.bounds.height + collectionView.contentInset.bottom
+            let oldOffsetY = collectionView.contentOffset.y
+            offsetDiff = newOffsetY - oldOffsetY
         }
         
-        if newOffsetY != oldOffsetY {
+        if offsetDiff != 0.0 {
             collectionView.visibleCells.forEach({ $0.layer.removeAllAnimations() })
             
             let context = UICollectionViewFlowLayoutInvalidationContext()
-            context.contentOffsetAdjustment = CGPoint(x: 0, y: newOffsetY - oldOffsetY)
+            context.contentOffsetAdjustment = CGPoint(x: 0, y: offsetDiff)
             
             UIView.performWithoutAnimation {
                 self.invalidateLayout(with: context)

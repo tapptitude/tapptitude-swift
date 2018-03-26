@@ -11,68 +11,51 @@ import UIKit
 
 
 class ChatInputContainerView: UIView {
-    let maxTextviewHeight: CGFloat = 90.0
+    let maxHeight: CGFloat = 250.0
     
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var placeholderLabel: UILabel!
     @IBOutlet weak var sendButton: UIButton!
-    @IBOutlet weak var textViewContainer: UIView!
+    @IBOutlet weak var roundedView: UIView!
+    @IBOutlet weak var containerView: UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        textViewContainer.layer.borderWidth = 0.5
-        textViewContainer.layer.borderColor = UIColor.gray.withAlphaComponent(0.6).cgColor
-        textViewContainer.layer.cornerRadius = 2.0
-        placeholderLabel.text = "Scrie un mesaj aici..."
-        self.autoresizingMask = [.flexibleHeight] // mandatory to have textView autoresize
+        textView.delegate = self
+        // Disabling textView scrolling prevents some undesired effects,
+        // like incorrect contentOffset when adding new line,
+        // and makes the textView behave similar to Apple's Messages app
+        textView.isScrollEnabled = false
+        
+        roundedView.layer.cornerRadius = 2.0
     }
     
-    // taken from http://stackoverflow.com/questions/25816994/changing-the-frame-of-an-inputaccessoryview-in-ios-8
     override var intrinsicContentSize: CGSize {
-        let size = self.textView.sizeThatFits(CGSize(width: self.textView.frame.size.width, height: self.maxTextviewHeight))
-        let heightDiff = ceil(self.textView.frame.size.height - size.height)
-        
-        var desiredSize = bounds.size
-        if fabs(heightDiff) > 1 && (self.textView.contentSize.height < self.maxTextviewHeight || heightDiff > 0) {
-            let inputContainerFrame = UIEdgeInsetsInsetRect(self.frame, UIEdgeInsetsMake(heightDiff, 0, 0, 0))
-            desiredSize.height = inputContainerFrame.height
-        }
-        
-        return desiredSize
-    }
-    
-    func clearTextViewText() {
-        self.text = ""
+        return containerView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
     }
     
     var text: String {
         get { return textView.text ?? "" }
         set {
-            self.textView.text = newValue
-            self.placeholderLabel.isHidden = !newValue.isEmpty
-            self.sendButton.isEnabled = !newValue.isEmpty
-            self.invalidateIntrinsicContentSize()
+            textView.isScrollEnabled = false
+            textView.text = newValue
+            placeholderLabel.isHidden = !newValue.isEmpty || textView.isFirstResponder
+            sendButton.isEnabled = !newValue.isEmpty
+            textView.isScrollEnabled = textView.contentSize.height > maxHeight
         }
     }
     
-    /* thist throws a constraint warning
-     This is clearly an Apple bug. My guess is that they have an errant constraint that holds the status bars height at 20 px but is broken when the call bar grows. This doesn't break or affect the app so it can safely be ignored for now. But an Apple Radar should be filled.
-     */
+    // containerView - bottom priority to it's superview should be 750
+    // fix for iphone x
     override func didMoveToWindow() {
         super.didMoveToWindow()
         
-        // enable only for iPhoneX
-        let SCREEN_MAX_LENGTH = max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.width)
-        let IS_IPHONE_X = UIDevice.current.userInterfaceIdiom == .phone && SCREEN_MAX_LENGTH == 812.0
-        guard IS_IPHONE_X else {
-            return
-        }
-        
         if #available(iOS 11.0, *) {
             if let window = self.window {
-                self.bottomAnchor.constraintLessThanOrEqualToSystemSpacingBelow(window.safeAreaLayoutGuide.bottomAnchor, multiplier: 1).isActive = true
-                self.textViewContainer.bottomAnchor.constraintLessThanOrEqualToSystemSpacingBelow(self.bottomAnchor, multiplier: 0.75).isActive = true
+                   let constraint = self.containerView.bottomAnchor.constraintLessThanOrEqualToSystemSpacingBelow(window.safeAreaLayoutGuide.bottomAnchor, multiplier: 1)
+                constraint.priority = 900
+                constraint.isActive = true
             }
         }
     }
@@ -80,19 +63,22 @@ class ChatInputContainerView: UIView {
 
 extension ChatInputContainerView: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
-        self.placeholderLabel.isHidden = !textView.text.isEmpty
+        placeholderLabel.isHidden = !textView.text.isEmpty
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        self.sendButton.isEnabled = !textView.text.isEmpty
+        sendButton.isEnabled = !textView.text.isEmpty
+        placeholderLabel.isHidden = true
     }
     
     func textViewDidChange(_ textView: UITextView) {
-        self.placeholderLabel.isHidden = !textView.text.isEmpty
-        self.sendButton.isEnabled = !textView.text.isEmpty
-        
-        self.invalidateIntrinsicContentSize()
-        self.textView.isScrollEnabled = self.textView.bounds.height >= maxTextviewHeight
+        placeholderLabel.isHidden = !textView.text.isEmpty || textView.isFirstResponder
+        sendButton.isEnabled = !textView.text.isEmpty
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool{
+        textView.isScrollEnabled = textView.contentSize.height > maxHeight
+        return true
     }
 }
 
@@ -126,11 +112,6 @@ class ChatFeedViewController : __CollectionFeedController {
         }
         self.headerController = header
         self.dataSource = dataSource
-        
-        
-        
-//        self.edgesForExtendedLayout = []
-        
         animatedUpdates = true
         
         collectionView.contentInset = .zero
@@ -154,10 +135,12 @@ class ChatFeedViewController : __CollectionFeedController {
     }
     
     @IBAction func sendAction(_ sender: AnyObject) {
-        dataSource.append(self.inputContainerView.text)
+        dataSource.append(inputContainerView.text)
         let indexPath = dataSource.lastIndexPath!
-        self.collectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
-        self.inputContainerView.text = ""
+        inputContainerView.text = ""
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.collectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
+        }
     }
     
     override var canBecomeFirstResponder: Bool {
@@ -165,6 +148,6 @@ class ChatFeedViewController : __CollectionFeedController {
     }
     
     override var inputAccessoryView: UIView? {
-        return self.inputContainerView
+        return inputContainerView
     }
 }
