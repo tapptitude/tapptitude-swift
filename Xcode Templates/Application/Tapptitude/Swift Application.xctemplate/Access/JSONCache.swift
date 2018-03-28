@@ -22,7 +22,7 @@ enum JSONCache {
 //    }
     
     static var currentUser: CodableCaching<User> {
-        return resource()
+        return userResource()
     }
     
     static func clearAllSavedResource() {
