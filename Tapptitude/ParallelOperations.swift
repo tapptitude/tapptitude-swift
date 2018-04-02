@@ -179,7 +179,7 @@ fileprivate class RunningOperation: TTCancellable {
             allContent.append(contentsOf: content ?? [])
         }
         
-        let nextOffset = responses.flatMap({ $0.result.value?.1 }).first
+        let nextOffset = responses.compactMap({ $0.result.value?.1 }).first
         completion(.success( (allContent, nextOffset) ))
         
 //        let error = responses.filter{ $0.error != nil }.first?.error

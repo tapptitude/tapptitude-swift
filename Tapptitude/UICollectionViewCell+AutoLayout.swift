@@ -32,7 +32,7 @@ extension UICollectionViewCell {
 
 fileprivate extension UIView {
     func updateLabelsPreferredMaxWidhtBaseOnFrame() {
-        subviews.flatMap{ $0 as? UILabel }.filter{ $0.preferredMaxLayoutWidth == 0 }.forEach{ $0.preferredMaxLayoutWidth = $0.bounds.width }
+        subviews.compactMap{ $0 as? UILabel }.filter{ $0.preferredMaxLayoutWidth == 0 }.forEach{ $0.preferredMaxLayoutWidth = $0.bounds.width }
         subviews.forEach{ $0.updateLabelsPreferredMaxWidhtBaseOnFrame() }
     }
 }
