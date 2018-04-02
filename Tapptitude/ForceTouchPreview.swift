@@ -77,8 +77,12 @@ public class ForceTouchPreview: NSObject, UIViewControllerPreviewingDelegate {
         if let controller = controller {
             controller.preferredContentSize = CGSize.zero
             
-            let cell = collectionController.collectionView.cellForItem(at: indexPath)
-            previewingContext.sourceRect = cell!.convert(cell!.bounds, to:parentViewController!.view)
+            guard let cell = collectionController.collectionView.cellForItem(at: indexPath),
+                let parentView = parentViewController?.view else {
+                return nil
+            }
+            
+            previewingContext.sourceRect = cell.convert(cell.bounds, to: parentView)
         }
         
         return controller
