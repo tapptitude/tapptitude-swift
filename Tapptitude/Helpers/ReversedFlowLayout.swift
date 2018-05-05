@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class ChatFlowLayout: UICollectionViewFlowLayout {
+public class ReversedFlowLayout: UICollectionViewFlowLayout {
     override public func awakeFromNib() {
         super.awakeFromNib()
         

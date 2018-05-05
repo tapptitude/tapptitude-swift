@@ -641,6 +641,14 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
         loadMoreController?.updateLoadMoreViewPosition(in: collectionView)
     }
     
+    public func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
+        
+        let loadMoreReuseIdentifier = (loadMoreController as? LoadMoreFooterController)?.loadMoreViewXIBName
+        if view.reuseIdentifier == loadMoreReuseIdentifier, let feed = _dataSource?.feed, feed.canLoadMore, loadMoreController?.autoLoadMoreContent == true {
+            feed.loadMore()
+        }
+    }
+    
     open func collectionView(_ collectionView: UICollectionView, targetContentOffsetForProposedContentOffset proposedContentOffset: CGPoint) -> CGPoint {
         self.loadMoreController?.updateLoadMoreViewPosition(in: collectionView)
         return proposedContentOffset
