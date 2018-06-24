@@ -12,7 +12,7 @@ import UIKit
 class PageCachingFlowLayout: UICollectionViewFlowLayout {
     
     var enableCachingOfAdiacentCells: Bool = true
-    var cachingInset: UIEdgeInsets = UIEdgeInsetsMake(0, -1, 0, -1)
+    var cachingInset: UIEdgeInsets = UIEdgeInsets(top: 0, left: -1, bottom: 0, right: -1)
                                     // UIEdgeInsetsMake(0, -1, 0, -1) for horizontal scrolling,
                                     // UIEdgeInsetsMake(-1, 0, -1, 0) for vertical scrolling
     
@@ -22,7 +22,7 @@ class PageCachingFlowLayout: UICollectionViewFlowLayout {
             return super.layoutAttributesForElements(in: rect)
         }
 
-        let biggerRect = UIEdgeInsetsInsetRect(rect, cachingInset)
+        let biggerRect = rect.inset(by: cachingInset)
         let isHorizontalScrolling = self.scrollDirection == .horizontal
         
         let bounds = self.collectionView?.bounds

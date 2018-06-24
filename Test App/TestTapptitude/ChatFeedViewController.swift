@@ -114,7 +114,7 @@ class ChatFeedViewController : __CollectionFeedController {
         self.dataSource = dataSource
         animatedUpdates = true
         
-        collectionView.contentInset = .zero
+        collectionView.contentInset = UIEdgeInsets()
         self.headerIsSticky = true
         self.dataSourceLoadMoreType = .insertAtBeginning
 //        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {

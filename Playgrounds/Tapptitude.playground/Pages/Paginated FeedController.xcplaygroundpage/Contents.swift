@@ -126,7 +126,7 @@ class PaginatedCollectionController: CollectionFeedController {
     }
     
     func updateScollViewFrame () {
-        let frame = UIEdgeInsetsInsetRect(collectionView!.frame, collectionView!.contentInset)
+        let frame = collectionView!.frame.inset(by: collectionView!.contentInset)
         if frame != scrollView.frame {
             scrollView.frame = frame
             print("from frame: ", collectionView!.frame.size, " --> ", scrollView.frame.size, "\n")

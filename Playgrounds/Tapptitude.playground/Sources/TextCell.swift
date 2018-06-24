@@ -5,7 +5,7 @@ open class TextCell : UICollectionViewCell {
     public override init(frame: CGRect) {
         super.init(frame: frame)
         
-        label = UILabel(frame: UIEdgeInsetsInsetRect(bounds, UIEdgeInsetsMake(0, 5, 0, 5)))
+        label = UILabel(frame: bounds.inset(by: UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)))
         label.textColor = UIColor.black
         label.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         label.textAlignment = .center
@@ -27,7 +27,7 @@ open class TextCellController : CollectionCellController<String, TextCell> {
     public init() {
         super.init(cellSize: CGSize(width: 50, height: 50))
         
-        sectionInset = UIEdgeInsetsMake(0, 0, 10, 0)
+        sectionInset = UIEdgeInsets(top: 0, left: 0, bottom:10, right: 0)
         minimumInteritemSpacing = 10
         minimumLineSpacing = 10
     }
@@ -57,7 +57,7 @@ open class BrownTextCellController: CollectionCellController<String, TextCell> {
         super.init(cellSize: CGSize(width: -1, height: 50))
         minimumInteritemSpacing = 10
         minimumLineSpacing = 20
-        sectionInset = UIEdgeInsetsMake(0, 0, 10, 0)
+        sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
     }
     
     override open func configureCell(_ cell: TextCell, for content: String, at indexPath: IndexPath) {
@@ -79,7 +79,7 @@ open class IntCellController : CollectionCellController<Int, TextCell> {
     public init() {
         super.init(cellSize: CGSize(width: 50, height: 50))
         
-        sectionInset = UIEdgeInsetsMake(0, 0, 10, 0)
+        sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
         minimumInteritemSpacing = 10
     }
     

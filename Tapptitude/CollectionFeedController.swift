@@ -87,7 +87,7 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
                 if !useAutoLayoutEstimatedSize {
                     layout.estimatedItemSize = CGSize.zero
                 } else if #available(iOS 10.0, *) {
-                    layout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
+                    layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
                 } else {
                     var size = self._cellController.cellSize
                     size.width = size.width < 0 ? collectionView.bounds.size.width : size.width
@@ -213,7 +213,7 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
         }
     }
     
-    open var scrollDirection: UICollectionViewScrollDirection = .vertical {
+    open var scrollDirection: UICollectionView.ScrollDirection = .vertical {
         didSet {
             isScrollDirectionConfigured = true
             updateCollectionViewScrollDirection()
@@ -596,12 +596,12 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
             return UICollectionReusableView()
         }
         
-        if kind == UICollectionElementKindSectionFooter {
+        if kind == UICollectionView.elementKindSectionFooter {
             return loadMoreController!.loadMoreView(in: collectionView, at: indexPath)!
         }
         
         // header view
-        let showHeader = kind == UICollectionElementKindSectionHeader
+        let showHeader = kind == UICollectionView.elementKindSectionHeader
         if showHeader, let headerController = headerController  {
             let content = dataSource.sectionHeaderItem(at: indexPath.section)!
             let reuseIdentifier = headerController.reuseIdentifier(for: content)

@@ -147,7 +147,7 @@ class CircularCollectionController: CollectionFeedController {
             animateProgressBar()
             
             timer = Timer(timeInterval: sliderTimeInterval, target: self, selector: #selector(scrollToNextPageAnimated), userInfo: nil, repeats: false)
-            RunLoop.current.add(timer, forMode: RunLoopMode.defaultRunLoopMode)
+            RunLoop.current.add(timer, forMode: RunLoop.Mode.default)
         }
     }
     

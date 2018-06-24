@@ -96,9 +96,9 @@ public extension SwipeToEditOnCollection {
         
         gesture.targetPanView = editCell?.containerView
         let width = editCell?.rightView?.bounds.size.width
-        gesture.tippingPercentageEdgeInsets = UIEdgeInsetsMake(0, 0.5, 0, 0.5)
+        gesture.tippingPercentageEdgeInsets = UIEdgeInsets(top: 0, left: 0.5, bottom: 0, right: 0.5)
         gesture.targetTranslation = CGPoint(x: -width!, y: 0)
-        gesture.allowedTranslationEdgeInsets = UIEdgeInsetsMake(0, -width!, 0, 0)
+        gesture.allowedTranslationEdgeInsets = UIEdgeInsets(top: 0, left: -width!, bottom: 0, right: 0)
         
         gesture.moveView = {(transform, translationPercentInsets) in
             editCell?.didTranslate(transform, translationPercentInsets: translationPercentInsets)
@@ -115,11 +115,11 @@ public extension SwipeToEditOnCollection {
 
         let transform = CGAffineTransform(translationX: gesture.targetTranslation.x, y: gesture.targetTranslation.y)
         gesture.setTranslateAnimation({
-                editCell?.didTranslate(transform, translationPercentInsets: UIEdgeInsetsMake(0, 1.0, 0, 0))
+                editCell?.didTranslate(transform, translationPercentInsets: UIEdgeInsets(top: 0, left: 1.0, bottom: 0, right: 0))
             }, completion: {[weak self] _ in
                 if let wself = self {
                     wself.tapGestureRecognizer?.isEnabled = wself.panGestureRecognizer?.isTranslated ?? false
-                    editCell?.didTranslate(transform, translationPercentInsets: UIEdgeInsetsMake(0, 1.0, 0, 0))
+                    editCell?.didTranslate(transform, translationPercentInsets: UIEdgeInsets(top: 0, left: 1.0, bottom: 0, right: 0))
                 }
         })
     }

@@ -83,12 +83,12 @@ open class LoadMoreFooterController: NSObject, TTLoadMoreController {
         let isInTappLibrary = Bundle(for: __CollectionFeedController.self).path(forResource: loadMoreViewXIBName, ofType: "nib") != nil
         let bundle: Bundle? = isInTappLibrary ? Bundle(for: __CollectionFeedController.self) : nil
         let nib = UINib(nibName: loadMoreViewXIBName, bundle: bundle)
-        collectionView.register(nib, forSupplementaryViewOfKind: UICollectionElementKindSectionFooter, withReuseIdentifier: loadMoreViewXIBName)
+        collectionView.register(nib, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: loadMoreViewXIBName)
     }
 
     open func loadMoreView(in collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionReusableView? {
         // load more
-        let kind = UICollectionElementKindSectionFooter
+        let kind = UICollectionView.elementKindSectionFooter
         if shouldShowLoadMoreViewInSection(indexPath.section, collectionView: collectionView) {
             let reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: loadMoreViewXIBName, for: indexPath)
             if let loadMoreView = reusableView as? LoadMoreView {
@@ -218,7 +218,7 @@ open class LoadMoreController: NSObject, TTLoadMoreController {
             // move load more view below header
             if collectionView.numberOfSections >= 0 && collectionView.numberOfItems(inSection: 0) > 0 {
                 let indexPath = IndexPath(item: 0, section: 0)
-                let attribute = collectionView.collectionViewLayout.layoutAttributesForSupplementaryView(ofKind: UICollectionElementKindSectionHeader, at: indexPath)
+                let attribute = collectionView.collectionViewLayout.layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, at: indexPath)
                 yOffset += attribute?.size.height ?? 0
             }
             loadMoreView.center = CGPoint(x: collectionView.bounds.midX, y: loadMoreView.bounds.midY + yOffset)

@@ -14,7 +14,7 @@ public protocol TTCollectionFeedController : class, UICollectionViewDelegateFlow
     
     var collectionView: UICollectionView! {get set}
 
-    var scrollDirection: UICollectionViewScrollDirection {get set}
+    var scrollDirection: UICollectionView.ScrollDirection {get set}
     
     var reloadIndicatorView: UIActivityIndicatorView? {get set}
     var emptyView: UIView? {get set} //set from XIB or overwrite
