@@ -49,7 +49,7 @@ open class CollectionCellController<ContentName, CellName: UICollectionViewCell>
         if _sizeCalculationCell == nil {
             var sizeCalculationCell: CellType! = nil
             if let nib = nibToInstantiateCell() {
-                sizeCalculationCell = nib.instantiate(withOwner: nil, options: nil).last as! CellType
+                sizeCalculationCell = (nib.instantiate(withOwner: nil, options: nil).last as! CellType)
             } else {
                 sizeCalculationCell = CellType(frame: CGRect(origin: CGPoint.zero, size: self.cellSize))
             }

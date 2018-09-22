@@ -284,7 +284,7 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
     }
     
     internal func setupReloadActivityIndicatorView() {
-        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        let activityIndicatorView = UIActivityIndicatorView(style: .gray)
         activityIndicatorView.hidesWhenStopped = true
         activityIndicatorView.startAnimating()
         view.addSubview(activityIndicatorView)
@@ -581,7 +581,7 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
         assert(_cellController.acceptsContent(content), "Can't produce cell for content \(content)")
-        assert(cell.reuseIdentifier == reuseIdentifier , "Cell returned from cell controller \(_cellController) had reuseIdenfier \(cell.reuseIdentifier!), which must be equal to the cell controller's reuseIdentifierForContent, which returned \(reuseIdentifier)")
+        assert(cell.reuseIdentifier == reuseIdentifier , "Cell returned from cell controller \(String(describing: _cellController)) had reuseIdenfier \(cell.reuseIdentifier!), which must be equal to the cell controller's reuseIdentifierForContent, which returned \(reuseIdentifier)")
         
         // pass parentViewController
         cell.parentViewController = _cellController.parentViewController

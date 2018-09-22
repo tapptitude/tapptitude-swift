@@ -169,20 +169,20 @@ open class PanViewGestureRecognizer: UIPanGestureRecognizer, UIGestureRecognizer
         
         let targetTranslation = self.targetTranslation
         
-        let remPixels = fabs((xDirection ? targetTranslation?.x : targetTranslation?.y)!) - fabs(xDirection ? transform.tx : transform.ty)
+        let remPixels = abs((xDirection ? targetTranslation?.x : targetTranslation?.y)!) - abs(xDirection ? transform.tx : transform.ty)
         let velocity = xDirection ? velocityPoint.x : velocityPoint.y
         
-        let duration = min(TimeInterval(fabs(remPixels / velocity)), animationDuration)
+        let duration = min(TimeInterval(abs(remPixels / velocity)), animationDuration)
         translateWithDuration(duration, options:UIView.AnimationOptions())
     }
     
     func resetTranslationWithVelocity(_ velocityPoint: CGPoint) {
         let transform = self.targetPanView!.transform
         let xDirection = transform.tx != 0.0
-        let remPixels: CGFloat = fabs(xDirection ? transform.tx : transform.ty)
+        let remPixels: CGFloat = abs(xDirection ? transform.tx : transform.ty)
         let velocity = xDirection ? velocityPoint.x : velocityPoint.y
         
-        let duration = min(TimeInterval(fabs(remPixels / velocity)), animationDuration)
+        let duration = min(TimeInterval(abs(remPixels / velocity)), animationDuration)
         resetTranslationWithDuration(duration, options:UIView.AnimationOptions())
     }
     

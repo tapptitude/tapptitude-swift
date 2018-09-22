@@ -148,7 +148,7 @@ open class LoadMoreController: NSObject, TTLoadMoreController {
     }
     
     @IBOutlet var loadMoreView: UIView! = {
-        let spinner = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        let spinner = UIActivityIndicatorView(style: .gray)
         spinner.hidesWhenStopped = true
         spinner.frame.size = CGSize(width: 30, height: 40)
         return spinner
