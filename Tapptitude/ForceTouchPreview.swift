@@ -38,25 +38,19 @@ public class ForceTouchPreview: NSObject, UIViewControllerPreviewingDelegate {
     }
     
     internal func registerForceTouchPreview() {
-        if #available(iOS 9, *) {
-            if parentViewController!.traitCollection.forceTouchCapability == .available  && forceTouchPreviewContext == nil {
-                forceTouchPreviewContext = parentViewController!.registerForPreviewing(with: self, sourceView: parentViewController!.view!)
-            }
+        if parentViewController!.traitCollection.forceTouchCapability == .available  && forceTouchPreviewContext == nil {
+            forceTouchPreviewContext = parentViewController!.registerForPreviewing(with: self, sourceView: parentViewController!.view!)
         }
     }
     internal func unregisterForceTouchPreview() {
-        if #available(iOS 9, *) {
-            if parentViewController?.traitCollection.forceTouchCapability == .available {
-                if let context = forceTouchPreviewContext {
-                    parentViewController!.unregisterForPreviewing(withContext: context)
-                    forceTouchPreviewContext = nil
-                }
+        if parentViewController?.traitCollection.forceTouchCapability == .available {
+            if let context = forceTouchPreviewContext {
+                parentViewController!.unregisterForPreviewing(withContext: context)
+                forceTouchPreviewContext = nil
             }
         }
     }
     
-    
-    @available(iOS 9.0, *)
     open func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
         let point = collectionController.collectionView.convert(location, from: parentViewController!.view)
         guard let indexPath = collectionController.collectionView.indexPathForItem(at: point) else {

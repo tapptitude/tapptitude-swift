@@ -10,7 +10,6 @@ import UIKit
 
 extension UICollectionViewCell {
     
-    @available(iOS 9.0, *)
     open func preferredLayoutAttributesFitting_VerticalResizing(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         fixAutolayoutConstraintsForVerticalResizing()
         

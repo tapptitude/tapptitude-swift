@@ -207,9 +207,7 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
     
     open var headerIsSticky = false {
         didSet {
-            if #available(iOS 9.0, *) {
-                (self.collectionView!.collectionViewLayout as! UICollectionViewFlowLayout).sectionHeadersPinToVisibleBounds = headerIsSticky
-            }
+            (self.collectionView!.collectionViewLayout as! UICollectionViewFlowLayout).sectionHeadersPinToVisibleBounds = headerIsSticky
         }
     }
     
@@ -267,18 +265,14 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
         view.addSubview(collectionView)
         self.collectionView = collectionView
         
-        if #available(iOS 9.0, *) {
-            collectionView.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-                collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                ])
-        } else {
-            collectionView.frame = view.bounds
-            collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        }
+        // add constraints
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            ])
         
         setupReloadActivityIndicatorView()
     }
@@ -290,16 +284,11 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
         view.addSubview(activityIndicatorView)
         self.reloadIndicatorView = activityIndicatorView
         
-        if #available(iOS 9.0, *) {
-            activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                activityIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                activityIndicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-                ])
-        } else {
-            collectionView.center = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
-            collectionView.autoresizingMask = [.flexibleLeftMargin, .flexibleTopMargin]
-        }
+        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            activityIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            ])
     }
     
     internal var emptyViewWasInsertedIntoHierarchy = false
