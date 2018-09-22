@@ -22,7 +22,7 @@ extension NSAttributedString {
 }
 
 extension UITextView {
-    func add(_ attributes: [NSAttributedStringKey:Any], forString string: String?, options: NSString.CompareOptions = .caseInsensitive) {
+    func add(_ attributes: [NSAttributedString.Key:Any], forString string: String?, options: NSString.CompareOptions = .caseInsensitive) {
         if let string = string {
             if let newAttributes = attributedText?.mutableCopy() as? NSMutableAttributedString {
                 if let range = newAttributes.string.range(of: string, options: options) {
@@ -36,7 +36,7 @@ extension UITextView {
 }
 
 extension UILabel {
-    func add(_ attributes: [NSAttributedStringKey:Any], forString string: String?, options: NSString.CompareOptions = .caseInsensitive) {
+    func add(_ attributes: [NSAttributedString.Key:Any], forString string: String?, options: NSString.CompareOptions = .caseInsensitive) {
         if let string = string {
             if let newAttributes = attributedText?.mutableCopy() as? NSMutableAttributedString {
                 if let range = newAttributes.string.range(of: string, options: options) {
@@ -48,7 +48,7 @@ extension UILabel {
         }
     }
     
-    func append(_ string: String?, attributes: [NSAttributedStringKey:Any]) {
+    func append(_ string: String?, attributes: [NSAttributedString.Key:Any]) {
         if let string = string {
             if let attributedString = attributedText?.mutableCopy() as? NSMutableAttributedString {
                 let newAttributedString = NSAttributedString(string: string, attributes: attributes)
@@ -68,7 +68,7 @@ extension UILabel  {
 
 extension UIButton {
     func underline() {
-        let attrs:[NSAttributedStringKey:Any] = [NSAttributedStringKey.underlineStyle: NSUnderlineStyle.styleSingle.rawValue]
+        let attrs:[NSAttributedString.Key:Any] = [NSAttributedString.Key.underlineStyle: NSUnderlineStyle.single.rawValue]
         let attributedString = NSAttributedString(string: self.titleLabel!.text!, attributes: attrs)
         self.setAttributedTitle(attributedString, for: .normal)
     }

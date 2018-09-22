@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import SAMKeychain
+import UserNotifications
 
 struct SessionInfo {
     static let previouslyLoggedUser = "previouslyLoggedUser"
@@ -42,7 +43,7 @@ class Session {
             Session.clearUserCredentials()
         }
         
-        UIApplication.shared.cancelAllLocalNotifications()
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
         
         Notifications.sessionClosed.post(error)
     }

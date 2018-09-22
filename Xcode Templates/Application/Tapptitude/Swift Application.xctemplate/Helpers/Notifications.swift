@@ -14,7 +14,7 @@ enum Notifications {
         
         public var observers: [RegisteredObserver] {
             observersRegisteredByOwners = observersRegisteredByOwners.filter({ $0.owner != nil }) // remove observers where owner is nil
-            let aliveObservers = allObservers.flatMap({ $0.value })
+            let aliveObservers = allObservers.compactMap({ $0.value })
             
             if aliveObservers.count != allObservers.count {
                 allObservers = allObservers.filter({ $0.value != nil }) // remove dead observers

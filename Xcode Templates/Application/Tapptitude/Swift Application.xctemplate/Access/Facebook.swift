@@ -55,13 +55,9 @@ class Facebook {
         return FBSDKApplicationDelegate.sharedInstance().application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
     }
     
-    static func application(_ app: UIApplication, openURL url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
-        if #available(iOS 9.0, *) {
-            let sourceApplication = options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String
-            return FBSDKApplicationDelegate.sharedInstance().application(app, open: url, sourceApplication: sourceApplication, annotation: [])
-        } else {
-            return false
-        }
+    static func application(_ app: UIApplication, openURL url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
+        let sourceApplication = options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String
+        return FBSDKApplicationDelegate.sharedInstance().application(app, open: url, sourceApplication: sourceApplication, annotation: [])
     }
     
     static func application(_ application: UIApplication!, didFinishLaunchingWithOptions launchOptions: [AnyHashable: Any]!) -> Bool {

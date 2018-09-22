@@ -39,12 +39,7 @@ class ErrorDisplay {
     }
     
     static func showSuccesWith(title:String, andMessage message:String, fromViewController:UIViewController) {
-        var view:MessageView!
-        if #available(iOS 9.0, *) {
-            view = MessageView.viewFromNib(layout: .cardView)
-        } else {
-            view = MessageView.viewFromNib(layout: .messageViewIOS8)
-        }
+        let view = MessageView.viewFromNib(layout: .cardView)
         view.configureTheme(.success)
         view.configureContent(title: title, body: message)
         view.button?.setTitle("Ok", for: .normal)
@@ -54,19 +49,14 @@ class ErrorDisplay {
     }
     
     static func showErrorWithTitle(_ title:String, message:String, fromViewController:UIViewController?) {
-        var view:MessageView!
-        if #available(iOS 9.0, *) {
-            view = MessageView.viewFromNib(layout: .cardView)
-        } else {
-            view = MessageView.viewFromNib(layout: .messageViewIOS8)
-        }
+        let view = MessageView.viewFromNib(layout: .cardView)
         view.configureTheme(.error)
         view.configureContent(title: title, body: message)
         view.button?.removeFromSuperview()
         
         var config = SwiftMessages.Config()
         config.presentationStyle = .top
-        config.presentationContext = .window(windowLevel: UIWindowLevelStatusBar)
+        config.presentationContext = .window(windowLevel: UIWindow.Level.statusBar.rawValue)
         
         SwiftMessages.show(config: config, view: view)
         //        SwiftMessages.show(view: view)
@@ -98,8 +88,8 @@ class ErrorDisplay {
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         alertController.addAction(UIAlertAction(title: "Settings", style: .default, handler: { (_) -> Void in
-            let url = URL(string: UIApplicationOpenSettingsURLString)
-            UIApplication.shared.openURL(url!)
+            let url = URL(string: UIApplication.openSettingsURLString)!
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }))
         
         let controller = fromViewController ?? UIApplication.shared.keyWindow?.rootViewController
