@@ -31,10 +31,10 @@ class KeyboardAvoidingView: UIView {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: .UIKeyboardWillChangeFrame, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear), name: .UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResign), name: .UIApplicationWillResignActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResign), name: UIApplication.willResignActiveNotification, object: nil)
     }
     
     deinit {
@@ -68,7 +68,7 @@ class KeyboardAvoidingView: UIView {
     }
     
     @objc func keyboardWillChangeFrame(notification: Notification) {
-        let keyboardEndFrame = notification.userInfo![UIKeyboardFrameEndUserInfoKey] as? CGRect
+        let keyboardEndFrame = notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
 //        guard keyboardEndFrame != currentKeyboardFrame else {
 //            print("Ingnore keyboard change")
 //            return
@@ -85,7 +85,7 @@ class KeyboardAvoidingView: UIView {
             return //ingore
         }
         
-        let keyboardEndFrame = notification.userInfo![UIKeyboardFrameEndUserInfoKey] as? CGRect
+        let keyboardEndFrame = notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
         var toBeVisibleView: UIView? = self.toBeVisibleView
         
         if toBeVisibleView == nil {
@@ -171,7 +171,7 @@ public final class Keyboard {
     }
     
     public var dismissTouchRecognizer: KeyboardDismissTouchRecognizer? {
-        return self.view.gestureRecognizers?.flatMap({ $0 as? KeyboardDismissTouchRecognizer }).first
+        return self.view.gestureRecognizers?.compactMap({ $0 as? KeyboardDismissTouchRecognizer }).first
     }
 }
 
@@ -206,9 +206,9 @@ open class KeyboardDismissTouchRecognizer: UIGestureRecognizer {
     }
     
     private func observeKeyboarNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear), name: .UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResign), name: .UIApplicationWillResignActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResign), name: UIApplication.willResignActiveNotification, object: nil)
     }
     
     @objc private func touchRecongized(_ sender: UIGestureRecognizer) {
