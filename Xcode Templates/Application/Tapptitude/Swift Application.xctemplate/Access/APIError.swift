@@ -9,14 +9,14 @@
 import Foundation
 
 struct APIError: Error {
-    enum `Type`: String {
+    enum Type_: String {
         case missingSession = "MissingSession"
         case unkown
     }
     
     var code: String // switch to `Int` type if backend return
     var message: String
-    var type: Type
+    var type: Type_
 }
 
 
@@ -30,7 +30,7 @@ extension APIError: Decodable {
         //        container = container.nestedContainer(keyedBy: CodingKeys.self, forKey: .error) // fetch error container
         code = try container.decode(String.self, forKey: .code)
         message = try container.decode(String.self, forKey: .message)
-        type = Type(rawValue: code) ?? .unkown
+        type = Type_(rawValue: code) ?? .unkown
     }
 }
 
@@ -41,18 +41,29 @@ extension APIError: LocalizedError {
 }
 
 
+// -- helpers method for equality
+
+func ==(lhs: Error, rhs: APIError.Type_) -> Bool {
+    switch lhs {
+    case let error as APIError:
+        return error.type == rhs
+    default:
+        return false
+    }
+}
+
+func ==(lhs: Error?, rhs: APIError.Type_) -> Bool {
+    if let error = lhs {
+        return error == rhs
+    } else {
+        return false
+    }
+}
+
 func ==(lhs: APIError, rhs: Error) -> Bool {
-    let error = rhs as NSError
-    return error.domain == lhs.type.rawValue
+    return rhs == lhs.type
 }
 
 func ==(lhs: Error, rhs: APIError) -> Bool {
-    let error = lhs as NSError
-    return error.domain == rhs.type.rawValue
+    return lhs == rhs.type
 }
-
-func ==(lhs: Error, rhs: APIError.`Type`) -> Bool {
-    let error = lhs as NSError
-    return error.domain == rhs.rawValue
-}
-

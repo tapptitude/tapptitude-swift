@@ -126,7 +126,7 @@ extension DataRequest {
                       "\n\tResponse: " + (data.flatMap({ String(data:$0, encoding: .utf8) }) ?? ""))
                 
                 
-                let missingSession = (apiError as? APIError)?.type == .missingSession
+                let missingSession = apiError == .missingSession
                 let accessDenied = response?.statusCode == 403 || response?.statusCode == 401 || missingSession
                 if accessDenied {
                     DispatchQueue.main.async {
