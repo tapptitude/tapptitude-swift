@@ -23,7 +23,7 @@ enum Notifications {
             return aliveObservers
         }
         
-        
+        /// save returned token to have this observation alive.
         public func register(identifier: Identifier? = nil, callback: @escaping (T) -> Void) -> Any {
             let observation = RegisteredObserver(identifier: identifier, callback: callback)
             allObservers.append(WeakContainer(value: observation))
@@ -46,6 +46,13 @@ enum Notifications {
             observation.owner = observer
             allObservers.append(WeakContainer(value: observation))
             observersRegisteredByOwners.append(observation) // keep this observation alive until owner is deallocated
+        }
+        
+        /// only while onwer is alive, callback will be triggered. No need to unregister
+        public func addObserver<Observer: NSObject>(_ observer: Observer, identifier: Identifier? = nil, selector: Selector) {
+            addObserver(observer, identifier: identifier, callback: { (observer, type) in
+                observer.perform(selector, with: type)
+            })
         }
         
         /// remove all observations registered by owner
@@ -92,8 +99,8 @@ extension Notifications.Notification where T == Void {
     //        })
     //    }
     
-    public func addObserver<Observer: AnyObject>(_ observer: Observer, identifier: Identifier? = nil, callback: @escaping (Observer) -> Void) -> Any {
-        return addObserver(observer, identifier: identifier, callback: { (observer, _) in
+    public func addObserver<Observer: AnyObject>(_ observer: Observer, identifier: Identifier? = nil, callback: @escaping (Observer) -> Void) {
+        addObserver(observer, identifier: identifier, callback: { (observer, _) in
             callback(observer)
         })
     }
