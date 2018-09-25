@@ -10,7 +10,7 @@ import Foundation
 
 enum Notifications {
     public class Notification<T, Identifier: Equatable> {
-        internal var allObservers: [WeakContainer] = []
+        private var allObservers: [WeakContainer] = []
         
         public var observers: [RegisteredObserver] {
             observersRegisteredByOwners = observersRegisteredByOwners.filter({ $0.owner != nil }) // remove observers where owner is nil
@@ -35,7 +35,7 @@ enum Notifications {
         }
         
         
-        internal var observersRegisteredByOwners: [RegisteredObserver] = []
+        private var observersRegisteredByOwners: [RegisteredObserver] = []
         /// only while onwer is alive, callback will be triggered. No need to unregister
         public func addObserver<Observer: AnyObject>(_ observer: Observer, identifier: Identifier? = nil, callback: @escaping (Observer, T) -> Void) {
             let observation = RegisteredObserver(identifier: identifier, callback: { [weak observer] payload in
@@ -76,7 +76,7 @@ enum Notifications {
             }
         }
         
-        internal class WeakContainer {
+        private class WeakContainer {
             weak var value: RegisteredObserver?
             
             init(value: RegisteredObserver) {
