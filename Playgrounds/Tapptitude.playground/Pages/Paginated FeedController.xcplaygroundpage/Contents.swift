@@ -18,10 +18,10 @@ class PaginatedCollectionController: CollectionFeedController {
         return scrollView
     }()
     
-    private let contentSize = "contentSize"
-    private let contentOffset = "contentOffset"
-    private let frame = "frame"
-    private let contentInset = "contentInset"
+    private var contentSizeObserver: Any?
+    private var contentOffsetObserver: Any?
+    private var frameObserver: Any?
+    private var contentInsetObserver: Any?
     
     deinit {
         self.collectionView.delegate = nil
@@ -30,24 +30,13 @@ class PaginatedCollectionController: CollectionFeedController {
     }
     
     override var collectionView: UICollectionView! {
-        willSet {
-            if let collectionView  = collectionView {
-                collectionView.removeObserver(self, forKeyPath: contentSize)
-                collectionView.removeObserver(self, forKeyPath: contentInset)
-                collectionView.removeObserver(self, forKeyPath: frame)
-                scrollView.removeObserver(self, forKeyPath: contentOffset)
-            }
-        }
         didSet {
             if let collectionView = collectionView {
-                collectionView.addObserver(self, forKeyPath: contentSize, options: .new, context: nil)
-                collectionView.addObserver(self, forKeyPath: contentInset, options: .new, context: nil)
-                collectionView.addObserver(self, forKeyPath: frame, options: .new, context: nil)
-                scrollView.addObserver(self, forKeyPath: contentOffset, options: .new, context: nil)
-                
                 collectionView.removeGestureRecognizer(collectionView.panGestureRecognizer)
                 collectionView.addGestureRecognizer(scrollView.panGestureRecognizer)
             }
+            
+            setupObservers()
         }
     }
     
@@ -62,7 +51,7 @@ class PaginatedCollectionController: CollectionFeedController {
     }
     private var toDisplayPage: Int = -1 //ingore
     
-    @IBOutlet weak var pageControl: UIPageControl?
+    @IBOutlet weak var pageControl: PageControl?
     
     var displayedPage: Int {
         get {
@@ -100,18 +89,6 @@ class PaginatedCollectionController: CollectionFeedController {
         }
     }
     
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == contentOffset {
-            updateCollectionViewOffset()
-        } else if keyPath == contentSize || keyPath == frame || keyPath == contentInset {
-            self.updateScollViewFrame()
-            self.updateScrollViewContentSize()
-            //            updateCollectionViewOffset()
-        } else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-        }
-    }
-    
     func updateScrollViewContentSize() {
         if collectionView!.contentSize != scrollView.contentSize {
             print("from contentSize: ", scrollView.contentSize, " --> ", collectionView!.contentSize, "\n")
@@ -132,7 +109,33 @@ class PaginatedCollectionController: CollectionFeedController {
             print("from frame: ", collectionView!.frame.size, " --> ", scrollView.frame.size, "\n")
         }
     }
+    
+    func setupObservers() {
+        contentSizeObserver = collectionView.observe(\.contentSize) { [weak self] (_, _) in
+            self?.updateScollViewFrame()
+            self?.updateScrollViewContentSize()
+        }
+        contentInsetObserver = collectionView.observe(\.contentInset) { [weak self] (_, _) in
+            self?.updateScollViewFrame()
+            self?.updateScrollViewContentSize()
+        }
+        frameObserver = collectionView.observe(\.frame) { [weak self] (_, _) in
+            self?.updateScollViewFrame()
+            self?.updateScrollViewContentSize()
+        }
+        contentOffsetObserver = scrollView.observe(\.contentOffset) { [weak self] (_, _) in
+            self?.updateCollectionViewOffset()
+        }
+    }
 }
 
+let feedController = PaginatedCollectionController()
+feedController.scrollDirection = .horizontal
+feedController.cellController = FullIntCellController()
+feedController.dataSource = DataSource([1, 2, 3])
+
+import PlaygroundSupport
+feedController.view.frame = CGRect(x: 0, y: 0, width: 200, height: 300)
+PlaygroundPage.current.liveView = feedController.view
 
 //: [Next](@next)

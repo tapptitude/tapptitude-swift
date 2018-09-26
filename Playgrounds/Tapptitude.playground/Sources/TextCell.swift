@@ -98,6 +98,28 @@ open class IntCellController : CollectionCellController<Int, TextCell> {
 }
 
 
+open class FullIntCellController : CollectionCellController<Int, TextCell> {
+    public init() {
+        super.init(cellSize: CGSize(width: -1, height: -1))
+    }
+    
+    public init(cellSize : CGSize) {
+        super.init(cellSize: cellSize)
+    }
+    
+    open override func configureCell(_ cell: TextCell, for content: Int, at indexPath: IndexPath) {
+        cell.label.text = String(content)
+        cell.label.textColor = UIColor.brown
+        cell.layer.borderColor = UIColor.red.cgColor
+        cell.layer.borderWidth = 1
+    }
+    
+    open override func didSelectContent(_ content: Int, at indexPath: IndexPath, in collectionView: UICollectionView) {
+        print("did select", content)
+    }
+}
+
+
 
 open class IntHeaderCellController : CollectionHeaderController<[Int], TextCell> {
     public init() {
