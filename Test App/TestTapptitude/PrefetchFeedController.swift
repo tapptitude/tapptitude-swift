@@ -22,7 +22,7 @@ class PrefetchFeedController: CollectionFeedController {
 extension TextItemCellController: CollectionCellPrefetcher {
     
     public func prefetchItems(_ items: [String], at indexPaths: [IndexPath], in collectionView: UICollectionView) {
-        print("prefetch", items.first)
+        print("prefetch", items.first!)
     }
     
     public func cancelPrefetchItems(_ items: [String], at indexPaths: [IndexPath], in collectionView: UICollectionView) {

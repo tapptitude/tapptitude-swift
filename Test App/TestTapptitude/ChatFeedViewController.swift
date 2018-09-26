@@ -32,7 +32,7 @@ class ChatInputContainerView: UIView {
     }
     
     override var intrinsicContentSize: CGSize {
-        return containerView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        return containerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }
     
     var text: String {
@@ -53,8 +53,8 @@ class ChatInputContainerView: UIView {
         
         if #available(iOS 11.0, *) {
             if let window = self.window {
-                   let constraint = self.containerView.bottomAnchor.constraintLessThanOrEqualToSystemSpacingBelow(window.safeAreaLayoutGuide.bottomAnchor, multiplier: 1)
-                constraint.priority = 900
+                   let constraint = self.containerView.bottomAnchor.constraint(lessThanOrEqualToSystemSpacingBelow: window.safeAreaLayoutGuide.bottomAnchor, multiplier: 1)
+                constraint.priority = UILayoutPriority(rawValue: 900)
                 constraint.isActive = true
             }
         }

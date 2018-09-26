@@ -49,7 +49,7 @@ class ItemCellController: CollectionCellController<String, TextCell> {
         super.init(cellSize: CGSize(width: -1, height: 400), reuseIdentifier: "TextCell")
         minimumInteritemSpacing = 10
         minimumLineSpacing = 20
-        sectionInset = UIEdgeInsetsMake(0, 0, 10, 0)
+        sectionInset = UIEdgeInsets.init(top: 0, left: 0, bottom: 10, right: 0)
     }
     
     override func configureCell(_ cell: TextCell, for content: String, at indexPath: IndexPath) {
@@ -73,9 +73,9 @@ protocol CollectionController: class {
     var cellController: CellControllerType {get set}
     var collectionController: CollectionControllerType {get set}
     
-    weak var collectionView: UICollectionView! {get set}
+    var collectionView: UICollectionView! {get set}
     
-    weak var reloadIndicatorView: UIActivityIndicatorView? {get set}
+    var reloadIndicatorView: UIActivityIndicatorView? {get set}
     var emptyView: UIView? {get set} //set from XIB or overwrite
 }
 

@@ -47,7 +47,7 @@ class TextItemCellController: CollectionCellController<String, TextCell> {
         super.init(cellSize: CGSize(width: -1, height: 50))
         minimumInteritemSpacing = 10
         minimumLineSpacing = 20
-        sectionInset = UIEdgeInsetsMake(0, 0, 10, 0)
+        sectionInset = UIEdgeInsets.init(top: 0, left: 0, bottom: 10, right: 0)
     }
     
     override func configureCell(_ cell: TextCell, for content: String, at indexPath: IndexPath) {
@@ -73,7 +73,7 @@ class API {
         let task = URLSession.shared.dataTask(with: url_request) { data , response , error  in
             let stringResponse = data != nil ? String(data: data!, encoding: String.Encoding.utf8) : nil
             let items: [String]? = stringResponse != nil ? [stringResponse!] : nil
-            print(error)
+            print(error ?? "none" )
             let result: Result<[String]> = error != nil ? .failure(error!) : .success(items ?? [])
             
             DispatchQueue.main.async {
@@ -92,7 +92,7 @@ class API {
         let task = URLSession.shared.dataTask(with: url_request) { data , response , error  in
             let stringResponse = data != nil ? String(data: data!, encoding: String.Encoding.utf8) : nil
             let items: [String]? = stringResponse != nil ? [stringResponse!] : nil
-            print(error)
+            print(error ?? "none")
             let result: Result<[String]> = error != nil ? .failure(error!) : .success(items ?? [])
             
             DispatchQueue.main.async {

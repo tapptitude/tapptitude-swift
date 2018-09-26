@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14105" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BNk-BS-1aa">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BNk-BS-1aa">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -26,7 +24,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gxj-Jr-pho" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-670" y="18"/>
+            <point key="canvasLocation" x="-1072" y="16.191904047976013"/>
         </scene>
         <!--Test View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -55,7 +53,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dta-pc-l4Q">
-                                                    <rect key="frame" x="8" y="8" width="304" height="63"/>
+                                                    <rect key="frame" x="8" y="28" width="304" height="43"/>
                                                     <color key="backgroundColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -84,7 +82,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nwa-ss-WCa">
-                                                    <rect key="frame" x="8" y="8" width="304" height="63.5"/>
+                                                    <rect key="frame" x="8" y="28" width="304" height="43.5"/>
                                                     <color key="backgroundColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -152,7 +150,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-51.5" y="39.5"/>
+            <point key="canvasLocation" x="-82.400000000000006" y="35.532233883058474"/>
         </scene>
         <!--Prefetch Feed Controller-->
         <scene sceneID="Vwh-wj-WxY">
@@ -172,16 +170,7 @@
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
-                                <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="634-bd-OMX">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </view>
-                                    </collectionViewCell>
-                                </cells>
+                                <cells/>
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -194,7 +183,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aTG-1w-vSA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="489.5" y="39.5"/>
+            <point key="canvasLocation" x="783.20000000000005" y="35.532233883058474"/>
         </scene>
         <!--Chat-->
         <scene sceneID="KLC-qW-Gg2">
@@ -326,7 +315,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SVs-UI-V5r" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-76" y="870"/>
+            <point key="canvasLocation" x="-121.59999999999999" y="782.60869565217399"/>
         </scene>
         <!--Parallel Feed Controller-->
         <scene sceneID="ROE-D1-zUQ">
@@ -364,7 +353,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ecZ-nW-0CY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="460.5" y="817.5"/>
+            <point key="canvasLocation" x="736.79999999999995" y="735.38230884557731"/>
         </scene>
     </scenes>
 </document>
