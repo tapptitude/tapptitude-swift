@@ -333,6 +333,7 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
     internal func insertEmptyView(emptyView: UIView,  above view: UIView) {
         if emptyView.superview == nil && view.superview != nil {
             self.emptyViewWasInsertedIntoHierarchy = true
+            emptyView.translatesAutoresizingMaskIntoConstraints = false
             view.superview?.insertSubview(emptyView, aboveSubview: view)
             
             // keep same size / position as view
