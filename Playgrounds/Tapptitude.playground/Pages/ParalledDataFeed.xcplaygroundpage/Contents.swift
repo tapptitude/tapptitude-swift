@@ -93,8 +93,11 @@ class API {
             print(error ?? "")
             
             DispatchQueue.main.async {
-                let nextPage = items?.isEmpty == false ? (newPage + 1) : nil
+                var nextPage = items?.isEmpty == false ? (newPage + 1) : nil
 //                callback(items, nextPage, error)
+                if (nextPage == 5) {
+                    nextPage = nil //stop
+                }
                 
                 if let items = items {
                     let result = Result.success((items, nextPage))

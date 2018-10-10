@@ -112,7 +112,7 @@ open class ParallelOperations {
         toRunOperations.append { (offset, newCallback) -> TTCancellable? in
             
             return operation(offset as? Offset, { result in
-                newCallback(result.map({ ($0.map{ $0 as Any}, $1 as Any) }))
+                newCallback(result.map({ ($0, $1) }))
             })
         }
         tofailOnErrors.append(failOnError)
