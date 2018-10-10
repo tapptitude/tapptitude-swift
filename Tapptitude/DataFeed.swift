@@ -119,31 +119,33 @@ open class DataFeed<T, OffsetType>: TTDataFeed {
         
         let offset = isReloading ? nil : nextOffset
         let operation = loadPageOperation(offset, {[weak self] result in
-            let sameOperation = runningOperation === self?.executingOperation
+            guard let self = self else { return }
+            
+            let sameOperation = runningOperation === self.executingOperation
             if !sameOperation {
                 return
             }
             
-            self?.executingOperation = nil
+            self.executingOperation = nil
             
-            let state = self!.state.loadState!
-            let result = self?.transform?(result, state) ?? result.map{ ($0.0.map{$0 as Any}, $0.1) }
+            let state = self.state.loadState!
+            let result = self.transform?(result, state) ?? result.map{ ($0.0.map{$0 as Any}, $0.1) }
             
             switch result {
             case .success(_):
-                self?.nextOffset = result.value?.1
-                self?.hasMorePages = (self?.nextOffset != nil)
+                self.nextOffset = result.value?.1
+                self.hasMorePages = (self.nextOffset != nil)
                 
-                if self?.state == .reloading {
-                    self?.lastReloadDate = Date()
+                if self.state == .reloading {
+                    self.lastReloadDate = Date()
                 }
             case .failure(_):
                 break
             }
             
             let newResult = result.map{ $0.0 }
-            self?.delegate?.dataFeed(self, didLoadResult: newResult, forState: state)
-            self?.state = .idle
+            self.delegate?.dataFeed(self, didLoadResult: newResult, forState: state)
+            self.state = .idle
         })
         
         runningOperation.operation = operation
