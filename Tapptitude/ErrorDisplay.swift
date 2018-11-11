@@ -66,7 +66,7 @@ extension TTErrorDisplay {
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         alertController.addAction(UIAlertAction(title: settingsTitle, style: .default, handler: { (_) -> Void in
             let url = URL(string: UIApplication.openSettingsURLString)!
-            UIApplication.shared.openURL(url)
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }))
         
         fromViewController?.present(alertController, animated: true, completion: nil)
