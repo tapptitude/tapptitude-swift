@@ -277,9 +277,9 @@
 		5639EDB3219840AE00D37C3B /* Table Feed Controller */ = {
 			isa = PBXGroup;
 			children = (
+				5639EDB82198433700D37C3B /* TTTableFeedController.swift */,
 				5639EDB4219842F300D37C3B /* TTTableCellController.swift */,
 				5639EDB62198431500D37C3B /* TableCellController.swift */,
-				5639EDB82198433700D37C3B /* TTTableFeedController.swift */,
 				5639EDBA2198435C00D37C3B /* TableFeedController.swift */,
 			);
 			name = "Table Feed Controller";

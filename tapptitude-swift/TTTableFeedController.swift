@@ -15,21 +15,15 @@ public protocol TTTableFeedController: class, UITableViewDelegate, UITableViewDa
     
     var tableView: UITableView! { get set }
     
-    var reloadIndicatorView: UIActivityIndicatorView? { get set }
-    
-    //TODO: table view statefull controller
-    var emptyView: UIView? { get set }
+    var reloadIndicatorView: UIActivityIndicatorView? {get set}
+    var emptyView: UIView? {get set} //set from XIB or overwrite
     
     /* Pull to Refresh functionality */
     var refreshControl: UIRefreshControl? { get set }
-    
     func pullToRefreshAction(_ sender: AnyObject!)
     func addPullToRefresh()
     
     var loadMoreController: TableLoadMoreController? { get set }
-    
-    /* Index List */
-    //TODO:
     
     /* Helpers */
     func scrollToElement<T>(ofFirst filter: (_ item: T) -> Bool, animated: Bool)

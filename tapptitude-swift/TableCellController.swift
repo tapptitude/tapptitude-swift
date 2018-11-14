@@ -8,7 +8,7 @@
 
 import UIKit
 
-open class TableCellController<ContentName, CellName: UITableViewCell>: TTTableCellController, TTTableCellControllerSize {
+open class TableCellController<ContentName, CellName: UITableViewCell>: TTTableCellController {
     
     public typealias ContentType = ContentName
     public typealias CellType = CellName
@@ -18,8 +18,8 @@ open class TableCellController<ContentName, CellName: UITableViewCell>: TTTableC
     open var didSelectContent: ((_ content: ContentType, _ indexPath: IndexPath, _ tableView: UITableView) -> Void)?
     
     open var sectionInset = UIEdgeInsets.zero
-    open var cellHeight: CGFloat
-    open var reuseIdentifier: String
+    open var cellHeight: CGFloat = UITableView.automaticDimension
+    open var reuseIdentifier: String = String(describing: CellType.self)
     
     open weak var parentViewController: UIViewController?
     
@@ -42,13 +42,12 @@ open class TableCellController<ContentName, CellName: UITableViewCell>: TTTableC
         didSelectContent?(content, indexPath, tableView)
     }
     
-    var _sizeCalculationCell: CellType!
-    
-    open var sizeCalculationCell: CellType! {
-        //TODO:
-        return _sizeCalculationCell!
-    }
-    
+//    var _sizeCalculationCell: CellType!
+//
+//    open var sizeCalculationCell: CellType! {
+//        //TODO:
+//        return _sizeCalculationCell!
+//    }
     
     open func acceptsContent(_ content: Any) -> Bool {
         if let content = content as? ContentType {

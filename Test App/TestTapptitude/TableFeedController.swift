@@ -12,7 +12,7 @@ import Tapptitude
 class TestTableViewController : __TableFeedController {
     
     lazy var dataSource = DataSource<String>(loadPage: APIPaginateOffsetdSwiftMock.getResults(offset:callback:))
-    //    lazy var dataSource = DataSource(Example.allTest())
+    //  lazy var dataSource = DataSource(Example.allTest())
     var collectionController = CollectionFeedController()
     var forceTouchPreview: ForceTouchPreview!
     
@@ -21,6 +21,8 @@ class TestTableViewController : __TableFeedController {
         
         self._cellController = TextTableCellController()
         self._dataSource = dataSource
+        
+        addPullToRefresh()
     }
     
     override func viewDidAppear(_ animated: Bool) {
