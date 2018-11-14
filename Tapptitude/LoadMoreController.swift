@@ -289,11 +289,13 @@ open class TableLoadMoreController: NSObject {
     }()
     
     open func defaultLoadMoreView() -> UIView {
-        let loadMoreViewXIBName = "TableLoadMoreView"
+        let loadMoreViewXIBName = "LoadMoreView"
         let isInTappLibrary = Bundle(for: __TableFeedController.self).path(forResource: loadMoreViewXIBName, ofType: "nib") != nil
         let bundle: Bundle? = isInTappLibrary ? Bundle(for: __TableFeedController.self) : nil
         let nib = UINib(nibName: loadMoreViewXIBName, bundle: bundle)
-        return nib.instantiate(withOwner: nil, options: nil).last as! UIView
+        let view = nib.instantiate(withOwner: nil, options: nil).last as! LoadMoreView
+        view.startAnimating()
+        return view
     }
     
     open func updateCanShowLoadMoreView(for feed: TTDataFeed?,  animated: Bool) {

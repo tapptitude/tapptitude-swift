@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		230BAF2D219C920500F832C4 /* TableFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230BAF2C219C920500F832C4 /* TableFeedController.swift */; };
+		230BAF2F219C94AB00F832C4 /* TextTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230BAF2E219C94AB00F832C4 /* TextTableCell.swift */; };
+		230BAF31219C94C100F832C4 /* TextTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 230BAF30219C94C100F832C4 /* TextTableCell.xib */; };
+		230BAF33219C950000F832C4 /* TextTableCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230BAF32219C950000F832C4 /* TextTableCellController.swift */; };
 		2344DFEA1E62FBF700125C6A /* ChatFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2344DFE91E62FBF700125C6A /* ChatFeedViewController.swift */; };
 		2347DCB51D954D3200C311D8 /* Tapptitude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2347DCB41D954D2900C311D8 /* Tapptitude.framework */; };
 		2355FF9B1CA3350D00D7B393 /* TextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2355FF9A1CA3350D00D7B393 /* TextCell.xib */; };
@@ -58,6 +62,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		230BAF2C219C920500F832C4 /* TableFeedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableFeedController.swift; sourceTree = "<group>"; };
+		230BAF2E219C94AB00F832C4 /* TextTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextTableCell.swift; sourceTree = "<group>"; };
+		230BAF30219C94C100F832C4 /* TextTableCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextTableCell.xib; sourceTree = "<group>"; };
+		230BAF32219C950000F832C4 /* TextTableCellController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextTableCellController.swift; sourceTree = "<group>"; };
 		2344DFE91E62FBF700125C6A /* ChatFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedViewController.swift; sourceTree = "<group>"; };
 		2347DCAF1D954D2900C311D8 /* Tapptitude.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Tapptitude.xcodeproj; path = ../Tapptitude.xcodeproj; sourceTree = "<group>"; };
 		2355FF9A1CA3350D00D7B393 /* TextCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextCell.xib; sourceTree = "<group>"; };
@@ -109,6 +117,9 @@
 				2355FF9E1CA3367900D7B393 /* TextCellController.swift */,
 				2380FAC41E2CF90E005D8897 /* AutolayoutCell.swift */,
 				2380FAC21E2CF908005D8897 /* AutolayoutCell.xib */,
+				230BAF2E219C94AB00F832C4 /* TextTableCell.swift */,
+				230BAF30219C94C100F832C4 /* TextTableCell.xib */,
+				230BAF32219C950000F832C4 /* TextTableCellController.swift */,
 			);
 			name = "Test Cell";
 			sourceTree = "<group>";
@@ -137,6 +148,7 @@
 				23A550D91C78A1BC00695BF3 /* AppDelegate.swift */,
 				23A551101C78A32300695BF3 /* FeedController.swift */,
 				23670E6B1DF95FDE0059D5AA /* ParallelFeedController.swift */,
+				230BAF2C219C920500F832C4 /* TableFeedController.swift */,
 				2386882B1E2E6D3700521904 /* PrefetchFeedController.swift */,
 				2344DFE91E62FBF700125C6A /* ChatFeedViewController.swift */,
 				23567B521E8C40DD002AF74D /* DiffViewController.swift */,
@@ -245,6 +257,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2355FF9B1CA3350D00D7B393 /* TextCell.xib in Resources */,
+				230BAF31219C94C100F832C4 /* TextTableCell.xib in Resources */,
 				23A550E41C78A1BC00695BF3 /* LaunchScreen.storyboard in Resources */,
 				23A550E11C78A1BC00695BF3 /* Assets.xcassets in Resources */,
 				2380FAC31E2CF908005D8897 /* AutolayoutCell.xib in Resources */,
@@ -259,11 +272,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				230BAF2D219C920500F832C4 /* TableFeedController.swift in Sources */,
 				2386882C1E2E6D3700521904 /* PrefetchFeedController.swift in Sources */,
 				23670E6C1DF95FDE0059D5AA /* ParallelFeedController.swift in Sources */,
 				2355FF9D1CA3355F00D7B393 /* TextCell.swift in Sources */,
 				238BCFCE1E9E24BA006A869E /* ErrorDisplay.swift in Sources */,
+				230BAF33219C950000F832C4 /* TextTableCellController.swift in Sources */,
 				23A551111C78A32300695BF3 /* FeedController.swift in Sources */,
+				230BAF2F219C94AB00F832C4 /* TextTableCell.swift in Sources */,
 				2344DFEA1E62FBF700125C6A /* ChatFeedViewController.swift in Sources */,
 				23A550DA1C78A1BC00695BF3 /* AppDelegate.swift in Sources */,
 				23567B531E8C40DD002AF74D /* DiffViewController.swift in Sources */,

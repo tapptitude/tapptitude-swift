@@ -23,7 +23,7 @@ open class TableCellController<ContentName, CellName: UITableViewCell>: TTTableC
     
     open weak var parentViewController: UIViewController?
     
-    public init(cellHeight: CGFloat, reuseIdentifier: String = String(describing: CellType.self)) {
+    public init(cellHeight: CGFloat = UITableView.automaticDimension, reuseIdentifier: String = String(describing: CellType.self)) {
         self.cellHeight = cellHeight
         self.reuseIdentifier = reuseIdentifier
     }
