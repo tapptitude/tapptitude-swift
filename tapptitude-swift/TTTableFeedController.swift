@@ -26,7 +26,7 @@ public protocol TTTableFeedController: class, UITableViewDelegate, UITableViewDa
     func pullToRefreshAction(_ sender: AnyObject!)
     func addPullToRefresh()
     
-    var loadMoreController: TTLoadMoreController? { get set }   //TODO: Load more for Table View
+    var loadMoreController: TableLoadMoreController? { get set }
     
     /* Index List */
     //TODO:

@@ -55,11 +55,18 @@ class TableViewUpdater: TTTableViewUpdater {
             animationCompletion?()
         } else {
             if animatesUpdates {
-                tableView.performBatchUpdates({
-                    self.batchOperation?.forEach{ $0() }
-                }, completion: { finished in
-                    animationCompletion?()
-                })
+                if #available(iOS 11.0, *) {
+                    tableView.performBatchUpdates({
+                        self.batchOperation?.forEach{ $0() }
+                    }, completion: { finished in
+                        animationCompletion?()
+                    })
+                } else {
+                    UIView.performWithoutAnimation {
+                        self.batchOperation?.forEach{ $0() }
+                        animationCompletion?()
+                    }
+                }
             } else {
                 UIView.performWithoutAnimation {
                     self.batchOperation?.forEach{ $0() }

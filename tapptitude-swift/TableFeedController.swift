@@ -103,7 +103,7 @@ open class __TableFeedController: UIViewController, TTTableFeedController, TTDat
                 tableView.delegate = self
                 tableView.dataSource = self
                 
-                //Load More
+                loadMoreController?.tableView = tableView
             }
             updateTableViewAnimatedUpdater()
         }
@@ -293,7 +293,7 @@ open class __TableFeedController: UIViewController, TTTableFeedController, TTDat
     open var hideReloadViewIfHasContent: Bool = true
     
     //MARK: Load More
-    open var loadMoreController: TTLoadMoreController? //= LoadMoreFooterController()
+    open var loadMoreController: TableLoadMoreController? = TableLoadMoreController()
     
     //MARK: Pull to Refresh -
     @IBOutlet open  weak var refreshControl: UIRefreshControl?
@@ -326,10 +326,7 @@ open class __TableFeedController: UIViewController, TTTableFeedController, TTDat
         
         self.lastFeedError = result.error
         if let error = lastFeedError {
-            print(error.localizedDescription)
-            
-            //TODO: uncoment
-            //            checkAndShow(error: error)
+            checkAndShow(error: error)
         }
     }
     
@@ -348,15 +345,13 @@ open class __TableFeedController: UIViewController, TTTableFeedController, TTDat
     
     
     func updateCanShowLoadMoreView(animated: Bool) {
-        //TODO:- Fix Loadmorecontroller
-        //        loadMoreController?.updateCanShowLoadMoreView(for: _dataSource?.feed, animated: animated)
+        loadMoreController?.updateCanShowLoadMoreView(for: _dataSource?.feed, animated: animated)
     }
     
     func checkIfShouldLoadMoreContent() {
-        //TODO:- Fix Loadmorecontroller
-        //        if lastFeedError == nil {
-        //            loadMoreController?.checkIfShouldLoadMoreContent(for: _dataSource?.feed)
-        //        }
+        if lastFeedError == nil {
+            loadMoreController?.checkIfShouldLoadMoreContent(for: _dataSource?.feed)
+        }
     }
     
     
@@ -385,6 +380,7 @@ open class __TableFeedController: UIViewController, TTTableFeedController, TTDat
         }
     }
     
+    @available(iOS 11.0, *)
     open func perfomBatchUpdates(_ updates: @escaping (() -> Void), animationCompletion: (()->Void)?) {
         let animatedUpdater = BatchCollectionViewUpdater(animatesUpdates: animatedUpdates)
         self.animatedUpdater = animatedUpdater
@@ -438,20 +434,17 @@ open class __TableFeedController: UIViewController, TTTableFeedController, TTDat
         animatedUpdater?.tableView(tableView!, didUpdateSections: updatedSections)
     }
     
+    /// how load more content is [appended / inserted ] in datasource
     public var dataSourceLoadMoreType: TTDataSourceLoadMoreType = .appendAtEnd {
         didSet {
             switch dataSourceLoadMoreType {
             case .appendAtEnd: // default behaviour
                 break
             case .insertAtBeginning:
-                break
-                //TODO: insert cells at top
-                //                self.collectionView.collectionViewLayout = ChatCollectionViewFlowLayout()
-                //
-                //                let loadMoreController = LoadMoreController()
-                //                loadMoreController.collectionView = collectionView!
-                //                loadMoreController.loadMorePosition = .top
-                //                self.loadMoreController = loadMoreController
+                let loadMoreController = TableLoadMoreController()
+                loadMoreController.tableView = tableView!
+                loadMoreController.loadMorePosition = .top
+                self.loadMoreController = loadMoreController
             }
         }
     }
@@ -491,15 +484,13 @@ open class __TableFeedController: UIViewController, TTTableFeedController, TTDat
     //TODO: loadmore
     
     public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        //        cell.parentViewController = nil
-        //        loadMoreController?.updateLoadMoreViewPosition(in: collectionView)
+        cell.parentViewController = nil
     }
     
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        //        cell.parentViewController = _cellController.parentViewController
+        cell.parentViewController = _cellController.parentViewController
         
         checkIfShouldLoadMoreContent()
-        //        loadMoreController?.updateLoadMoreViewPosition(in: collectionView)
     }
     
     

@@ -68,10 +68,6 @@ public protocol TTTableCellControllerSize: TTTableCellController {
 
 extension TTTableCellControllerSize {
     
-    public func cellHeight(for content: Any, in tableView: UITableView) -> CGFloat {
-        return 44
-    }
-    
     public func cellHeightToFit(text: String, label: UILabel, maxHeight: CGFloat = 2040) -> CGFloat {
         var size = sizeCalculationCell.bounds.size
         var maxHeight = maxHeight
