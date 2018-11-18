@@ -19,7 +19,8 @@ class TestTableViewController : __TableFeedController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self._cellController = TextTableCellController()
+//        self._cellController = TextTableCellController()
+        self._cellController = MultiTableCellController(TextTableCellController())
         self._dataSource = dataSource
         
         addPullToRefresh()

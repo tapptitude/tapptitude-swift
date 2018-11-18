@@ -41,14 +41,7 @@ open class TableCellController<ContentName, CellName: UITableViewCell>: TTTableC
     open func didSelectContent(_ content: ContentType, at indexPath: IndexPath, in tableView: UITableView) {
         didSelectContent?(content, indexPath, tableView)
     }
-    
-//    var _sizeCalculationCell: CellType!
-//
-//    open var sizeCalculationCell: CellType! {
-//        //TODO:
-//        return _sizeCalculationCell!
-//    }
-    
+
     open func acceptsContent(_ content: Any) -> Bool {
         if let content = content as? ContentType {
             return acceptsContent(content)

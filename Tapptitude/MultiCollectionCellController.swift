@@ -8,6 +8,7 @@
 
 import UIKit
 
+@available(*, deprecated, message: "Use MultiCollectionCellController instead")
 typealias MultiCellController = MultiCollectionCellController
 
 open class MultiCollectionCellController: TTCollectionCellController {

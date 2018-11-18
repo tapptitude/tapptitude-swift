@@ -57,6 +57,7 @@
 		5639EDBB2198435C00D37C3B /* TableFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5639EDBA2198435C00D37C3B /* TableFeedController.swift */; };
 		5639EDBD219843A700D37C3B /* TTTableViewUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5639EDBC219843A700D37C3B /* TTTableViewUpdater.swift */; };
 		5639EDBF219843F700D37C3B /* BatchCollectionViewUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5639EDBE219843F700D37C3B /* BatchCollectionViewUpdater.swift */; };
+		5650DAEC21A1DD090074F194 /* MultiTableCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5650DAEB21A1DD090074F194 /* MultiTableCellController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,6 +124,7 @@
 		5639EDBA2198435C00D37C3B /* TableFeedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableFeedController.swift; sourceTree = "<group>"; };
 		5639EDBC219843A700D37C3B /* TTTableViewUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTTableViewUpdater.swift; sourceTree = "<group>"; };
 		5639EDBE219843F700D37C3B /* BatchCollectionViewUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatchCollectionViewUpdater.swift; sourceTree = "<group>"; };
+		5650DAEB21A1DD090074F194 /* MultiTableCellController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiTableCellController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -281,6 +283,7 @@
 				5639EDB4219842F300D37C3B /* TTTableCellController.swift */,
 				5639EDB62198431500D37C3B /* TableCellController.swift */,
 				5639EDBA2198435C00D37C3B /* TableFeedController.swift */,
+				5650DAEB21A1DD090074F194 /* MultiTableCellController.swift */,
 			);
 			name = "Table Feed Controller";
 			sourceTree = "<group>";
@@ -430,6 +433,7 @@
 				235A91061F01053E001E8BC4 /* TTSpinnerView.swift in Sources */,
 				235500AE1CA4569200D7B393 /* CollectionCellController.swift in Sources */,
 				5639EDBF219843F700D37C3B /* BatchCollectionViewUpdater.swift in Sources */,
+				5650DAEC21A1DD090074F194 /* MultiTableCellController.swift in Sources */,
 				2362CBD91E912B0400213918 /* LoadMoreController.swift in Sources */,
 				5639EDB92198433700D37C3B /* TTTableFeedController.swift in Sources */,
 				5639EDB5219842F300D37C3B /* TTTableCellController.swift in Sources */,
