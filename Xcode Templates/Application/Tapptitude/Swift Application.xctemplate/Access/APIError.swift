@@ -35,7 +35,7 @@ extension APIError: Decodable {
 }
 
 extension APIError: LocalizedError {
-    var localizedDescription: String {
+    public var errorDescription: String? {
         return message
     }
 }
