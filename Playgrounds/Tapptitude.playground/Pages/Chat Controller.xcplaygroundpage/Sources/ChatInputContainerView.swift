@@ -1,5 +1,9 @@
 import UIKit
 
+/*
+ Custom input accesory view example useful for a chat view
+ */
+
 public class ChatInputContainerView: UIView {
     let maxHeight: CGFloat = 250.0
     

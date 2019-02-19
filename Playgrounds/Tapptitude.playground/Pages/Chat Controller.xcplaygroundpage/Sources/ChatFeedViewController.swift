@@ -1,6 +1,11 @@
 import UIKit
 import Tapptitude
 
+/*
+ Working chat code outside of playgrounds. Input accesory views doesn't work in Playgrounds, only in Xcode.
+ Datasource can be linked to a feed for automatic content retrieval and pagination.
+ */
+
 public class ChatFeedViewController : __CollectionFeedController {
     @IBOutlet var inputContainerView: ChatInputContainerView!
     
@@ -25,6 +30,7 @@ public class ChatFeedViewController : __CollectionFeedController {
 //        let dataSource = SectionedDataSource<String>([[]])
         
         self.cellController = TextCellController()
+        self.dataSourceLoadMoreType = .insertAtBeginning
         let header = CollectionHeaderController<[String], UICollectionViewCell>(headerSize: CGSize(width: 20, height: 40))
         header.configureHeader = { (header: UICollectionViewCell, content: [String], indexPath) in
             header.backgroundColor = .red

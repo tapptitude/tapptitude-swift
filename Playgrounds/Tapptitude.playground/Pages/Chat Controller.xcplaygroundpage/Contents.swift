@@ -2,20 +2,21 @@ import UIKit
 import Tapptitude
 import PlaygroundSupport
 
-
-
-
-print(String(describing: ChatFeedViewController()))
+/*
+ Check classes in Sources and storyboard in Resources for working example
+ */
 
 let storyboard = UIStoryboard(name: "Main", bundle: nil)
-let controller = storyboard.instantiateInitialViewController()!
 
-print(String(describing:controller))
+print(storyboard)
 
-//controller.view.frame.size = CGSize(width: 320, height: 480)
-//let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 480))
-//window.rootViewController = controller
-//window.makeKeyAndVisible()
+let controller = storyboard.instantiateInitialViewController() as! ChatFeedViewController
 
-PlaygroundPage.current.liveView = controller
+print(controller)
+print(String(describing: controller))
+
+controller.view.frame = CGRect(x: 20, y: 20, width: 250, height: 550)
+
+PlaygroundPage.current.liveView = controller.view
 PlaygroundPage.current.needsIndefiniteExecution = true
+
