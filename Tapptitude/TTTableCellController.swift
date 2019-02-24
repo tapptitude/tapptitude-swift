@@ -26,10 +26,9 @@ public protocol TTAnyTableCellController: class {
     var parentViewController: UIViewController? { get set }
     
     var cellHeight: CGFloat { get }
-    var sectionInset: UIEdgeInsets { get }
+    var estimatedRowHeight: CGFloat { get }
     
     func cellHeight(for content: Any, in tableView: UITableView) -> CGFloat
-    func sectionInset(for content: Any, in tableView: UITableView) -> UIEdgeInsets
     
     func allSupportedReuseIdentifiers() -> [String]
 }
@@ -55,7 +54,6 @@ public protocol TTTableCellController: TTAnyTableCellController {
     func didSelectContent(_ content: ContentType, at indexPath: IndexPath, in tableView: UITableView)
     
     func cellHeight(for content: ContentType, in tableView: UITableView) -> CGFloat
-    func sectionInset(for content: ContentType, in tableView: UITableView) -> UIEdgeInsets
 }
 
 public protocol TTTableCellControllerSize: TTTableCellController {

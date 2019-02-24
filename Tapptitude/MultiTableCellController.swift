@@ -63,6 +63,11 @@ open class MultiTableCellController: TTTableCellController {
     }
     
     open var cellHeight = UITableView.automaticDimension
+
+    open var estimatedRowHeight: CGFloat {
+        return round(cellControllers.reduce(0, { $0 + $1.estimatedRowHeight }) / CGFloat(cellControllers.count))
+    }
+
     open var sectionInset = UIEdgeInsets.zero
     
     public func acceptsContent(_ content: Any) -> Bool {

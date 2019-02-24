@@ -29,6 +29,9 @@
 		23A550E11C78A1BC00695BF3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23A550E01C78A1BC00695BF3 /* Assets.xcassets */; };
 		23A550E41C78A1BC00695BF3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23A550E21C78A1BC00695BF3 /* LaunchScreen.storyboard */; };
 		23A551111C78A32300695BF3 /* FeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A551101C78A32300695BF3 /* FeedController.swift */; };
+		5641689221C256E100C22A9F /* FixCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5641688F21C256E100C22A9F /* FixCell.swift */; };
+		5641689321C256E100C22A9F /* FixCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5641689021C256E100C22A9F /* FixCellController.swift */; };
+		5641689421C256E100C22A9F /* FixCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5641689121C256E100C22A9F /* FixCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +88,9 @@
 		23A550E31C78A1BC00695BF3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		23A550E51C78A1BC00695BF3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		23A551101C78A32300695BF3 /* FeedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedController.swift; sourceTree = "<group>"; };
+		5641688F21C256E100C22A9F /* FixCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FixCell.swift; path = ../FixCell.swift; sourceTree = "<group>"; };
+		5641689021C256E100C22A9F /* FixCellController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FixCellController.swift; path = ../FixCellController.swift; sourceTree = "<group>"; };
+		5641689121C256E100C22A9F /* FixCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = FixCell.xib; path = ../FixCell.xib; sourceTree = "<group>"; };
 		B42782466A469DCD51ADB03C /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -120,6 +126,9 @@
 				230BAF2E219C94AB00F832C4 /* TextTableCell.swift */,
 				230BAF30219C94C100F832C4 /* TextTableCell.xib */,
 				230BAF32219C950000F832C4 /* TextTableCellController.swift */,
+				5641688F21C256E100C22A9F /* FixCell.swift */,
+				5641689021C256E100C22A9F /* FixCellController.swift */,
+				5641689121C256E100C22A9F /* FixCell.xib */,
 			);
 			name = "Test Cell";
 			sourceTree = "<group>";
@@ -258,6 +267,7 @@
 			files = (
 				2355FF9B1CA3350D00D7B393 /* TextCell.xib in Resources */,
 				230BAF31219C94C100F832C4 /* TextTableCell.xib in Resources */,
+				5641689421C256E100C22A9F /* FixCell.xib in Resources */,
 				23A550E41C78A1BC00695BF3 /* LaunchScreen.storyboard in Resources */,
 				23A550E11C78A1BC00695BF3 /* Assets.xcassets in Resources */,
 				2380FAC31E2CF908005D8897 /* AutolayoutCell.xib in Resources */,
@@ -285,6 +295,8 @@
 				23567B531E8C40DD002AF74D /* DiffViewController.swift in Sources */,
 				2355FF9F1CA3367900D7B393 /* TextCellController.swift in Sources */,
 				2393482C1CA5D268005EB280 /* API.swift in Sources */,
+				5641689321C256E100C22A9F /* FixCellController.swift in Sources */,
+				5641689221C256E100C22A9F /* FixCell.swift in Sources */,
 				2380FAC51E2CF90E005D8897 /* AutolayoutCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

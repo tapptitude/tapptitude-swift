@@ -26,7 +26,7 @@ open class _TableFeedController<D: TTDataSource, C: TTTableCellController>: __Ta
 }
 
 open class AnyTableFeedController: __TableFeedController {
-    
+
     open var dataSource: TTAnyDataSource? {
         get { return _dataSource }
         set { _dataSource = newValue }
@@ -71,6 +71,9 @@ open class __TableFeedController: UIViewController, TTTableFeedController, TTDat
         setupTableViewIfMissing()
         updateReloadingIndicatorView()
         updateEmptyViewAppearence(animated: false)
+
+        tableView.separatorStyle = .none
+        tableView.allowsSelection = false
     }
     
     /// pass all cellControllers, were cell are created in storyboard
@@ -104,6 +107,8 @@ open class __TableFeedController: UIViewController, TTTableFeedController, TTDat
                 tableView.dataSource = self
                 
                 loadMoreController?.tableView = tableView
+
+                tableView.estimatedRowHeight = _cellController?.estimatedRowHeight ?? 44
             }
             updateTableViewAnimatedUpdater()
         }
@@ -173,6 +178,8 @@ open class __TableFeedController: UIViewController, TTTableFeedController, TTDat
         }
         didSet {
             _cellController.parentViewController = self
+
+            tableView?.estimatedRowHeight = _cellController.estimatedRowHeight
         }
     }
     
@@ -492,7 +499,11 @@ open class __TableFeedController: UIViewController, TTTableFeedController, TTDat
         
         checkIfShouldLoadMoreContent()
     }
-    
+
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let content = _dataSource!.item(at: indexPath)
+        return _cellController.cellHeight(for: content, in: tableView)
+    }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let content = _dataSource!.item(at: indexPath)

@@ -16,15 +16,15 @@ open class TableCellController<ContentName, CellName: UITableViewCell>: TTTableC
     open var cellHeightForContent: ((_ content: ContentType, _ tableView: UITableView) -> CGFloat)?
     open var configureCell: ((_ cell: CellType, _ content: ContentType, _ indexPath: IndexPath) -> Void)?
     open var didSelectContent: ((_ content: ContentType, _ indexPath: IndexPath, _ tableView: UITableView) -> Void)?
-    
-    open var sectionInset = UIEdgeInsets.zero
+
     open var cellHeight: CGFloat = UITableView.automaticDimension
+    open var estimatedRowHeight: CGFloat
     open var reuseIdentifier: String = String(describing: CellType.self)
     
     open weak var parentViewController: UIViewController?
     
-    public init(cellHeight: CGFloat = UITableView.automaticDimension, reuseIdentifier: String = String(describing: CellType.self)) {
-        self.cellHeight = cellHeight
+    public init(rowEstimatedHeight: CGFloat, reuseIdentifier: String = String(describing: CellType.self)) {
+        self.estimatedRowHeight = rowEstimatedHeight
         self.reuseIdentifier = reuseIdentifier
     }
     
@@ -81,10 +81,6 @@ open class TableCellController<ContentName, CellName: UITableViewCell>: TTTableC
     
     open func classToInstantiateCell(for content: ContentType) -> AnyClass? {
         return CellType.self
-    }
-    
-    open func sectionInset(for content: ContentType, in tableView: UITableView) -> UIEdgeInsets {
-        return sectionInset
     }
 }
 

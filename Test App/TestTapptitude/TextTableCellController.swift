@@ -10,13 +10,14 @@ import UIKit
 import Tapptitude
 
 class TextTableCellController: TableCellController<String, TextTableCell> {
+
     init() {
-        super.init(cellHeight: 400)
+        super.init(rowEstimatedHeight: 500)
     }
     
     override func configureCell(_ cell: TextTableCell, for content: String, at indexPath: IndexPath) {
-        cell.label.text = content
-        cell.subtitleLabel?.text = content
+//        cell.label.text = content
+//        cell.subtitleLabel?.text = content
     }
     
     override func didSelectContent(_ content: String, at indexPath: IndexPath, in tableView: UITableView) {
