@@ -14,15 +14,12 @@ class ___VARIABLE_productName___CellController: TableCellController<___VARIABLE_
     init() {
         super.init(rowEstimatedHeight: <#height#>)
     }
-    
-//    custom cell height
-//    override func cellHeight(for content: ___VARIABLE_contentType___, in tableView: UITableView) -> CGFloat {
-//        return <#height#>
-//    }
 
     override func configureCell(_ cell: ___VARIABLE_productName___Cell, for content: ___VARIABLE_contentType___, at indexPath: IndexPath) {
+        <#code#>
     }
     
     override func didSelectContent(_ content: ___VARIABLE_contentType___, at indexPath: IndexPath, in tableView: UITableView) {
+        <#code#>
     }
 }
