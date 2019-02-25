@@ -65,7 +65,7 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
     }
     
     open func indexPath<S>(ofFirst filter: (_ item: S) -> Bool) -> IndexPath? {
-        let index = _content.index { (item) -> Bool in
+        let index = _content.firstIndex { (item) -> Bool in
             if let item = item as? S {
                 return filter(item)
             } else {
@@ -77,7 +77,7 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
     }
     
     open func indexPath(where predicate: (T) -> Bool) -> IndexPath? {
-        return _content.index(where: predicate).map({ IndexPath(item: $0, section:0 ) })
+        return _content.firstIndex(where: predicate).map({ IndexPath(item: $0, section:0 ) })
     }
     
     open func item(at indexPath: IndexPath) -> Any {
@@ -335,6 +335,6 @@ extension DataSource: ExpressibleByArrayLiteral {
 
 extension DataSource where T: Equatable {
     open func indexPath(of item: T) -> IndexPath? {
-        return _content.index(of: item).map({ IndexPath(item: $0, section:0 ) })
+        return _content.firstIndex(of: item).map({ IndexPath(item: $0, section:0 ) })
     }
 }

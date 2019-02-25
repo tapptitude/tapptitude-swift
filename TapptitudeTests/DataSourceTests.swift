@@ -63,7 +63,7 @@ class DataSourceTests: XCTestCase {
         
         
         dataSource.remove{$0 == appendItem}
-        XCTAssert(dataSource.index(of: appendItem) == nil, "remove not working")
+        XCTAssert(dataSource.firstIndex(of: appendItem) == nil, "remove not working")
         
         let fromIndexPath = IndexPath(item:1, section:0)
         let toIndexPath = IndexPath(item:0, section:0)

@@ -138,7 +138,7 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
     
     open func indexPath<S>(ofFirst filter: (_ item: S) -> Bool) -> IndexPath? {
         for (section, subArray) in _content.enumerated() {
-            let index = subArray.index(where: { (searchedItem) -> Bool in
+            let index = subArray.firstIndex(where: { (searchedItem) -> Bool in
                 if let item = searchedItem as? S {
                     return filter(item)
                 } else {
@@ -156,7 +156,7 @@ open class SectionedDataSource <T>: TTDataSource, TTDataFeedDelegate {
     
     open func indexPath(where predicate: (T) -> Bool) -> IndexPath? {
         for (section, subArray) in _content.enumerated() {
-            if let index = subArray.index(where: predicate) {
+            if let index = subArray.firstIndex(where: predicate) {
                 return IndexPath(item: index, section: section)
             }
         }
@@ -453,7 +453,7 @@ extension SectionedDataSource where T: Equatable {
     
     open func indexPath(of item: T) -> IndexPath? {
         for (section, subArray) in _content.enumerated() {
-            if let index = subArray.index(of: item) {
+            if let index = subArray.firstIndex(of: item) {
                 return IndexPath(item: index, section: section)
             }
         }
