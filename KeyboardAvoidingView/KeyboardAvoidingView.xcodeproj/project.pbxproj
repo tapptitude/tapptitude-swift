@@ -12,7 +12,7 @@
 		2327234520205E2C00BCDA6A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2327234320205E2C00BCDA6A /* Main.storyboard */; };
 		2327234720205E2C00BCDA6A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2327234620205E2C00BCDA6A /* Assets.xcassets */; };
 		2327234A20205E2C00BCDA6A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2327234820205E2C00BCDA6A /* LaunchScreen.storyboard */; };
-		2327235220205E5200BCDA6A /* KeyboardAvoidingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2327235120205E5200BCDA6A /* KeyboardAvoidingView.swift */; };
+		2374F0462224021400556E04 /* KeyboardAvoidingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2374F0452224021400556E04 /* KeyboardAvoidingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,7 +23,7 @@
 		2327234620205E2C00BCDA6A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2327234920205E2C00BCDA6A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2327234B20205E2C00BCDA6A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2327235120205E5200BCDA6A /* KeyboardAvoidingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardAvoidingView.swift; sourceTree = "<group>"; };
+		2374F0452224021400556E04 /* KeyboardAvoidingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KeyboardAvoidingView.swift; path = ../../Tapptitude/Helpers/KeyboardAvoidingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,9 +56,9 @@
 		2327233E20205E2C00BCDA6A /* KeyboardAvoidingView */ = {
 			isa = PBXGroup;
 			children = (
+				2374F0452224021400556E04 /* KeyboardAvoidingView.swift */,
 				2327233F20205E2C00BCDA6A /* AppDelegate.swift */,
 				2327234120205E2C00BCDA6A /* TestViewController.swift */,
-				2327235120205E5200BCDA6A /* KeyboardAvoidingView.swift */,
 				2327234320205E2C00BCDA6A /* Main.storyboard */,
 				2327234620205E2C00BCDA6A /* Assets.xcassets */,
 				2327234820205E2C00BCDA6A /* LaunchScreen.storyboard */,
@@ -142,7 +142,7 @@
 			files = (
 				2327234220205E2C00BCDA6A /* TestViewController.swift in Sources */,
 				2327234020205E2C00BCDA6A /* AppDelegate.swift in Sources */,
-				2327235220205E5200BCDA6A /* KeyboardAvoidingView.swift in Sources */,
+				2374F0462224021400556E04 /* KeyboardAvoidingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
