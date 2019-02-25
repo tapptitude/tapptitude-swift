@@ -46,7 +46,6 @@
 		565B01C821B7CBC300E4EF1C /* TouchRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565B01A521B7CBC300E4EF1C /* TouchRecognizer.swift */; };
 		565B01C921B7CBC300E4EF1C /* UICollectionViewCell+AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565B01A621B7CBC300E4EF1C /* UICollectionViewCell+AutoLayout.swift */; };
 		565B01CA21B7CBC300E4EF1C /* FetchedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565B01A721B7CBC300E4EF1C /* FetchedDataSource.swift */; };
-		565B01CB21B7CBC300E4EF1C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 565B01A821B7CBC300E4EF1C /* Info.plist */; };
 		565B01CC21B7CBC300E4EF1C /* CollectionCellPrefetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565B01A921B7CBC300E4EF1C /* CollectionCellPrefetcher.swift */; };
 		565B01CD21B7CBC300E4EF1C /* TTLoadMore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565B01AA21B7CBC300E4EF1C /* TTLoadMore.swift */; };
 		565B01D821B7CC2900E4EF1C /* TTTableCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565B01CE21B7CC2800E4EF1C /* TTTableCellController.swift */; };
@@ -341,7 +340,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				565B01DA21B7CC2900E4EF1C /* CollectionFeedController.xib in Resources */,
-				565B01CB21B7CBC300E4EF1C /* Info.plist in Resources */,
 				565B01B321B7CBC300E4EF1C /* LoadMoreView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -573,7 +571,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = Tapptitude/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tapptitude.tapptitude-swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -594,7 +592,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = Tapptitude/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.tapptitude.tapptitude-swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";

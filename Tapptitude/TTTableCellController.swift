@@ -122,8 +122,4 @@ extension TTTableCellController {
     public func cellHeight(for content: Any, in tableView: UITableView) -> CGFloat {
         return cellHeight(for: content as! ContentType, in: tableView)
     }
-    
-    public func sectionInset(for content: Any, in tableView: UITableView) -> UIEdgeInsets {
-        return sectionInset(for: content as! ContentType, in: tableView)
-    }
 }
