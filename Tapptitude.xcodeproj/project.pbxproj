@@ -46,7 +46,6 @@
 		238BCFCB1E9E1DF3006A869E /* ErrorDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238BCFCA1E9E1DF3006A869E /* ErrorDisplay.swift */; };
 		23BB7AE81F28EABC0083A04A /* MultiHeaderCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BB7AE71F28EABC0083A04A /* MultiHeaderCellController.swift */; };
 		23C46B211E8EF1AD00DC9187 /* ChatCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C46B201E8EF1AD00DC9187 /* ChatCollectionViewFlowLayout.swift */; };
-		23C46B231E8FA8F100DC9187 /* ChatCollectionFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C46B221E8FA8F100DC9187 /* ChatCollectionFeedController.swift */; };
 		23C5A6F01CB82B6E00FE5152 /* FilteredDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C5A6EF1CB82B6E00FE5152 /* FilteredDataSource.swift */; };
 		23C8ADEE1CAC1D0600BC47E3 /* HybridDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C8ADED1CAC1D0600BC47E3 /* HybridDataSource.swift */; };
 		23D6608C1CBF901C0005470F /* TTCollectionHeaderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D6608B1CBF901C0005470F /* TTCollectionHeaderController.swift */; };
@@ -106,7 +105,6 @@
 		238BCFCA1E9E1DF3006A869E /* ErrorDisplay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ErrorDisplay.swift; path = Tapptitude/ErrorDisplay.swift; sourceTree = SOURCE_ROOT; };
 		23BB7AE71F28EABC0083A04A /* MultiHeaderCellController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MultiHeaderCellController.swift; path = Tapptitude/MultiHeaderCellController.swift; sourceTree = SOURCE_ROOT; };
 		23C46B201E8EF1AD00DC9187 /* ChatCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
-		23C46B221E8FA8F100DC9187 /* ChatCollectionFeedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChatCollectionFeedController.swift; path = Tapptitude/ChatCollectionFeedController.swift; sourceTree = SOURCE_ROOT; };
 		23C5A6EF1CB82B6E00FE5152 /* FilteredDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilteredDataSource.swift; path = Tapptitude/FilteredDataSource.swift; sourceTree = SOURCE_ROOT; };
 		23C8ADED1CAC1D0600BC47E3 /* HybridDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HybridDataSource.swift; path = Tapptitude/HybridDataSource.swift; sourceTree = SOURCE_ROOT; };
 		23D6608B1CBF901C0005470F /* TTCollectionHeaderController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TTCollectionHeaderController.swift; path = Tapptitude/TTCollectionHeaderController.swift; sourceTree = SOURCE_ROOT; };
@@ -197,7 +195,6 @@
 				235500A21CA4569200D7B393 /* TTCollectionFeedController.swift */,
 				2355009B1CA4569200D7B393 /* CollectionFeedController.swift */,
 				2362CBDA1E917BE900213918 /* ForceTouchPreview.swift */,
-				23C46B221E8FA8F100DC9187 /* ChatCollectionFeedController.swift */,
 				235500A71CA4569200D7B393 /* CollectionFeedController.xib */,
 				23EFA9EC1E981D370051C4DD /* TTLoadMore.swift */,
 				235A91051F01053E001E8BC4 /* TTSpinnerView.swift */,
@@ -390,7 +387,6 @@
 				23EFA9ED1E981D370051C4DD /* TTLoadMore.swift in Sources */,
 				2362CBDB1E917BE900213918 /* ForceTouchPreview.swift in Sources */,
 				23604B691DD216680085FD15 /* FetchedDataSource.swift in Sources */,
-				23C46B231E8FA8F100DC9187 /* ChatCollectionFeedController.swift in Sources */,
 				235500B21CA4569200D7B393 /* TTDataFeed.swift in Sources */,
 				238688291E2E618D00521904 /* CollectionCellPrefetcher.swift in Sources */,
 				235A91061F01053E001E8BC4 /* TTSpinnerView.swift in Sources */,

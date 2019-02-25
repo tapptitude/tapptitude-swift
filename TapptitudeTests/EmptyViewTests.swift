@@ -102,7 +102,7 @@ class EmptyViewTests: XCTestCase {
             asyncExpectation.fulfill()
         }
         
-        self.waitForExpectations(timeout: DataFeedTests.delay + 0.0001) { (error) in
+        self.waitForExpectations(timeout: DataFeedTests.delay + 0.01) { (error) in
         }
     }
     
