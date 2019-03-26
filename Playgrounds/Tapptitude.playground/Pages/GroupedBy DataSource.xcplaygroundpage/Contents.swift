@@ -5,11 +5,11 @@ import Tapptitude
 
 let items = ["Test", "Ghita", "Maria", "Collection", "Cell", "Controller"]
 print(items)
-print(items.groupBy({ $0.characters.first!.debugDescription }))
+print(items.groupBy({ $0.first!.debugDescription }))
 
 //[["Test", "Ghita"], ["Maria"], ["Collection", "Cell", "Controller"]]
-let dataSource = GroupedByDataSource(content: items, groupBy: { $0.characters.first!.debugDescription })
-dataSource.filter { $0.characters.count > 4 }
+let dataSource = GroupedByDataSource(content: items, groupBy: { $0.first!.debugDescription })
+dataSource.filter { $0.count > 4 }
 
 
 let feedController = CollectionFeedController()

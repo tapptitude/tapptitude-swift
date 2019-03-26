@@ -276,7 +276,7 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
 }
 
 public extension Sequence {
-    public func convertTo<NewType>() -> [NewType] {
+    func convertTo<NewType>() -> [NewType] {
         return self.map {$0 as! NewType }
     }
 }

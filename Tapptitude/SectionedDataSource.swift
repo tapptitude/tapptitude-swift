@@ -385,7 +385,7 @@ open class GroupedByDataSource<T, U: Hashable> : SectionedDataSource<T> {
 }
 
 public extension Sequence {
-    public func groupBy<U : Hashable>(_ keyFunc: (Iterator.Element) -> U) -> [[Iterator.Element]] {
+    func groupBy<U : Hashable>(_ keyFunc: (Iterator.Element) -> U) -> [[Iterator.Element]] {
         
         var keys: [U] = []
         var dict: [U: [Iterator.Element]] = [:]

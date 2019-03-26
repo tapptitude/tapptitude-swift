@@ -232,6 +232,8 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
         switch scrollDirection {
         case .horizontal: loadMoreController?.loadMorePosition = .right
         case .vertical: loadMoreController?.loadMorePosition = .bottom
+        @unknown default:
+            fatalError()
         }
         
     }
@@ -616,7 +618,7 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
         
         assert(true, "Could not show load more view -> there is some bug in dataSource implementation as we should not get here")
         
-        return UICollectionReusableView() // just to ingore compilation error
+        return UICollectionReusableView() // just to ignore compilation error
     }
     
     open func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {

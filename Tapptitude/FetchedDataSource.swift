@@ -126,6 +126,8 @@ class FetchedDataSource<T: NSManagedObject>: NSObject, TTDataSource, NSFetchedRe
             self.delegate?.dataSource(self, didDeleteSections: IndexSet(integer: sectionIndex))
         case .move, .update:
             break
+        @unknown default:
+            fatalError()
         }
     }
 
@@ -141,6 +143,8 @@ class FetchedDataSource<T: NSManagedObject>: NSObject, TTDataSource, NSFetchedRe
         case .move:
             delegate?.dataSource(self, didDeleteItemsAt: [indexPath!])
             delegate?.dataSource(self, didInsertItemsAt: [newIndexPath!])
+        @unknown default:
+            fatalError()
         }
     }
     

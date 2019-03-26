@@ -6,10 +6,10 @@ import Tapptitude
 
 let items = ["Test", "Ghita", "Maria", "Collection", "Cell", "Controller"]
 print(items)
-print(items.groupBy({ $0.characters.first!.debugDescription }))
+print(items.groupBy({ $0.first!.debugDescription }))
 
 let dataSource = SectionedDataSource([["Test", "Ghita"], ["Maria"], ["Collection", "Cell", "Controller"]])
-dataSource.filter { $0.characters.count > 4 }
+dataSource.filter { $0.count > 4 }
 
 let feedController = CollectionFeedController()
 feedController.dataSource = dataSource

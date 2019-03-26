@@ -53,6 +53,8 @@ public class ChatCollectionViewFlowLayout: UICollectionViewFlowLayout {
             case .move: break
             case .reload: break
             case .none: break
+            @unknown default:
+                fatalError()
             }
         }
         

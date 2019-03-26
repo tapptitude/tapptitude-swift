@@ -190,7 +190,7 @@ public extension UIView {
         static var viewExtension = "viewExtensionKeyboardVisibilityController"
     }
     
-    public var keyboardVisibilityController: KeyboardVisibilityController? {
+    var keyboardVisibilityController: KeyboardVisibilityController? {
         get {
             return objc_getAssociatedObject(self, &KeyboardAssociatedKey.viewExtension) as? KeyboardVisibilityController ?? nil
         }
@@ -200,7 +200,7 @@ public extension UIView {
     }
     
     @discardableResult
-    public func addKeyboardVisibilityController() -> KeyboardVisibilityController {
+    func addKeyboardVisibilityController() -> KeyboardVisibilityController {
         var keyboardController = self.keyboardVisibilityController
         
         if keyboardController == nil {
@@ -219,14 +219,14 @@ public extension UIView {
         return keyboardVisibilityController!
     }
     
-    public func removeKeyboardVisibilityController() {
+    func removeKeyboardVisibilityController() {
         keyboardVisibilityController = nil
     }
 }
 
 public extension UIView {
     
-    public func findFirstResponder() -> UIView? {
+    func findFirstResponder() -> UIView? {
         if isFirstResponder {
             return self
         }

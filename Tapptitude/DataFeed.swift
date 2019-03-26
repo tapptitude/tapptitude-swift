@@ -192,7 +192,7 @@ fileprivate class RunningOperation: TTCancellable {
 
 public extension DataFeed where OffsetType: BinaryInteger {
 
-    convenience public init(pageSize: OffsetType,
+    convenience init(pageSize: OffsetType,
                             enableLoadMoreOnlyForCompletePage: Bool = true,
                             loadPage: @escaping (_ offset:OffsetType, _ pageSize:Int, _ callback: @escaping TTCallback<[T]>) -> TTCancellable?) {
         self.init { (offset, callback) -> TTCancellable? in
