@@ -10,25 +10,33 @@ extension URLSessionTask: TTCancellable {
 let url = URL(string: "https://httpbin.org/get")
 var url_request = URLRequest(url: url!)
 
-let feed = SimpleFeed<String> { (callback) -> TTCancellable? in
-    let task = URLSession.shared.dataTask(with: url_request) { data , response , error  in
-        let stringResponse = data != nil ? String(data: data!, encoding: String.Encoding.utf8) : nil
-        let items: [String]? = stringResponse != nil ? [stringResponse!] : nil
-        print(error as Any)
-        
-        DispatchQueue.main.async {
-            if let items = items {
-                callback(.success(items))
-            } else {
-                callback(.failure(error!))
+class API {
+    class func getPage(callback: @escaping TTCallback<[String]> ) -> TTCancellable? {
+        let task = URLSession.shared.dataTask(with: url_request) { data , response , error  in
+            let stringResponse = data != nil ? String(data: data!, encoding: String.Encoding.utf8) : nil
+            let items: [String]? = stringResponse != nil ? [stringResponse!] : nil
+            print(error as Any)
+            
+            DispatchQueue.main.async {
+                if let items = items {
+                    callback(.success(items))
+                } else {
+                    callback(.failure(error!))
+                }
             }
         }
+        task.resume()
+        
+        return task
     }
-    task.resume()
-    
-    return task
 }
 
+// short version
+let feed = DataFeed(load: API.getPage)
+// long version
+//let feed = DataFeed { (callback) -> TTCancellable? in
+//    return API.getPage(callback: callback)
+//}
 let feedController = CollectionFeedController()
 feedController.dataSource = DataSource<String>(feed: feed)
 feedController.cellController = BrownTextCellController()

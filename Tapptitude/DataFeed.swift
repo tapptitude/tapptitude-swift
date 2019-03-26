@@ -38,16 +38,9 @@ open class DataFeed<T, OffsetType>: TTDataFeed {
         }
     }
     
+    /// load multiple pages of content
     public init(loadPage: @escaping TTLoadPageOperation<T, OffsetType>) {
         self.loadPageOperation = loadPage
-    }
-    
-    public convenience init (load: @escaping (_ callback: @escaping TTCallback<[T]>) -> TTCancellable?) {
-        self.init(loadPage: {(offset, callback) in
-            return load({ result in
-                callback(result.map { ($0, nil) })
-            })
-        })
     }
     
     /// nextOffset == nil --> reload operation, else load more operation
@@ -164,15 +157,20 @@ open class DataFeed<T, OffsetType>: TTDataFeed {
     }
 }
 
-
-public class SimpleFeed<T>: DataFeed<T, Void> {
-    public init (load: @escaping (_ callback: @escaping TTCallback<[T]>) -> TTCancellable?) {
-        super.init(loadPage: {(offset, callback) in
+extension DataFeed where OffsetType == Void {
+    /// load a single page only
+    public convenience init (load: @escaping (_ callback: @escaping TTCallback<[T]>) -> TTCancellable?) {
+        self.init(loadPage: {(offset, callback) in
             return load({ result in
                 callback(result.map { ($0, nil) })
             })
         })
     }
+}
+
+
+@available(*, unavailable, message: "Use DataFeed(load: ...) or if offset type is not inferred: DataFeed<T, Void>(load: ...)")
+public class SimpleFeed<T>: DataFeed<T, Void> {
 }
 
 
@@ -191,6 +189,7 @@ fileprivate class RunningOperation: TTCancellable {
 
 public extension DataFeed where OffsetType: BinaryInteger {
 
+    /// load multiple pages where next offset is calculated based on returned content count
     convenience init(pageSize: OffsetType,
                             enableLoadMoreOnlyForCompletePage: Bool = true,
                             loadPage: @escaping (_ offset:OffsetType, _ pageSize:Int, _ callback: @escaping TTCallback<[T]>) -> TTCancellable?) {
@@ -224,7 +223,7 @@ extension DataSource {
     
     public convenience init <T>(load: @escaping (_ callback: @escaping TTCallback<[T]>) -> TTCancellable?) {
         self.init()
-        feed = SimpleFeed(load: load)
+        feed = DataFeed(load: load)
         feed?.delegate = self
     }
     

@@ -30,7 +30,7 @@ class DataFeedTests: XCTestCase {
     }
     
     func testSimpleDataFeedLoadDataImediatly() {
-        let feed = SimpleFeed<String>(load: { callback in
+        let feed = DataFeed<String, Void>(load: { callback in
             let api = self.mockSimpleAPI
             api.callback = callback
             api.run()
@@ -45,8 +45,8 @@ class DataFeedTests: XCTestCase {
         XCTAssert(dataSource.content == mockSimpleAPI.content!)
     }
     
-    var feedDelayed: SimpleFeed<String> {
-        return SimpleFeed<String>(load: { callback in
+    var feedDelayed: DataFeed<String, Void> {
+        return DataFeed(load: { callback in
             let api = self.mockSimpleAPI
             api.callback = callback
             api.delay = DataFeedTests.delay
@@ -91,8 +91,8 @@ class DataFeedTests: XCTestCase {
         }
     }
     
-    var feedIgnoringCancel: SimpleFeed<String> {
-        return SimpleFeed<String>(load: { callback in
+    var feedIgnoringCancel: DataFeed<String, Void> {
+        return DataFeed(load: { callback in
             let api = self.mockSimpleAPI
             DispatchQueue.main.asyncAfter(deadline: .now() + DataFeedTests.delay) {
                 if let content = api.content {
@@ -127,7 +127,7 @@ class DataFeedTests: XCTestCase {
     
     func testSimpleDataFeedDealloc() {
         let delay = 0.0001
-        var feed: SimpleFeed<String>? = feedIgnoringCancel
+        var feed: DataFeed<String, Void>? = feedIgnoringCancel
         let dataSource = DataSource<String>(feed: feed!)
         feed = nil
         

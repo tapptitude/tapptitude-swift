@@ -107,8 +107,8 @@ class EmptyViewTests: XCTestCase {
     }
     
     
-    var feedDelayedError: SimpleFeed<String> {
-        return SimpleFeed<String>(load: { callback in
+    var feedDelayedError: DataFeed<String, Void> {
+        return DataFeed(load: { callback in
             let api = APIMock()
             api.content = nil
             api.error = NSError(domain: "dummy error", code: 1, userInfo: nil)
