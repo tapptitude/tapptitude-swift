@@ -8,9 +8,9 @@
 
 import Foundation
 
-public enum Result<Value> {
-    case success(Value)
-    case failure(Error)
+public typealias Result<Value> = Swift.Result<Value, Error>
+
+extension Result {
     
     /// Returns `true` if the result is a success, `false` otherwise.
     public var isSuccess: Bool {
@@ -28,7 +28,7 @@ public enum Result<Value> {
     }
     
     /// Returns the associated value if the result is a success, `nil` otherwise.
-    public var value: Value? {
+    public var value: Success? {
         switch self {
         case .success(let value):
             return value
@@ -48,34 +48,8 @@ public enum Result<Value> {
     }
 }
 
-extension Result {
-    /**
-     Transform the result value, or propagate any errors gracefully.
-     This can be used to transform the result without having to verify its content
-     - parameters:
-     - transform: the closure used to transform the original value
-     - returns: a result with the transformed value, or the original error
-     */
-    public func map<NewValue>(_ transform: (Value) -> NewValue) -> Result<NewValue> {
-        switch self {
-        case .success(let value):
-            return .success(transform(value))
-        case .failure(let error):
-            return .failure(error)
-        }
-    }
-    
-//    public func map<NewValue: Collection>() -> Result<NewValue> {
-//        switch self {
-//        case .success(let value):
-//            return .success(value.)
-//        case .failure(let error):
-//            return .failure(error)
-//        }
-//    }
-}
 
-extension Result where Value: Collection {
+extension Result where Success: Collection {
     public func map<NewValue>(as type: NewValue.Type) -> Result<[NewValue]> {
         switch self {
         case .success(let value):
@@ -94,5 +68,3 @@ extension Result where Value: Collection {
         }
     }
 }
-
-public typealias ResultTransform<From, Into> = ((Result<From>) -> (Result<Into>))
