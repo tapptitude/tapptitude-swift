@@ -33,55 +33,8 @@ open class ParallelDataFeed: DataFeed<Any, Any> {
         
     }
 }
-//
-//
-//extension DataSource where Element: Any {
-//    fileprivate var parallelOperation: ParallelOperations? {
-//        get { return info["ParallelOperation"] as? ParallelOperations }
-//        set { info["ParallelOperation"] = parallelOperation }
-//    }
-//    
-//    public func addOperation<T>(failOnError: Bool = true, load: @escaping (_ callback: @escaping TTCallback<T>) -> TTCancellable?) {
-//        if self.feed == nil {
-//            let feed = ParallelDataFeed()
-//            feed.reloadOperation.append(failOnError: failOnError, operation: load)
-//            self.feed = feed
-//        } else if let feed = self.feed as? ParallelDataFeed {
-//            feed.reloadOperation.append(failOnError: failOnError, operation: load)
-//        } else {
-//            assert(false, "Only ParallelDataFeed supports more parallel operations")
-//        }
-//    }
-//    
-//    public func addOperation<T>(failOnError: Bool = true, load: @escaping (_ callback: @escaping (_ content: T?, _ error: Error?) -> ()) -> TTCancellable?) {
-//        if self.feed == nil {
-//            let feed = ParallelDataFeed()
-//            feed.reloadOperation.append(failOnError: failOnError, operation: load)
-//            self.feed = feed
-//        } else if let feed = self.feed as? ParallelDataFeed {
-//            feed.reloadOperation.append(failOnError: failOnError, operation: load)
-//        } else {
-//            assert(false, "Only ParallelDataFeed supports more parallel operations")
-//        }
-//    }
-//    
-//    
-//    public func addLoadMoreOperation<T, Offset>(failOnError: Bool = true, load: @escaping (_ offset: Offset?, _ callback: TTCallbackNextOffset<T, Offset>) -> TTCancellable?) {
-//        if let feed = self.feed as? ParallelDataFeed {
-//            feed.loadMoreOperation = ParallelOperations()
-//            feed.loadMoreOperation.append(failOnError: failOnError, operation: load)
-//        } else {
-//            assert(false, "Only ParallelDataFeed supports more parallel operations")
-//        }
-//    }
-//}
-//
-//
-//
-//
-//
-//
-//
+
+
 /// Construct an operation that containts multiple operations --> that will be run in parallel.
 /// this operation can be treated as a single operation
 /// In the end content from all operations are passed into a single array, in the order of the append
@@ -128,6 +81,10 @@ open class ParallelOperations {
             let position = index
             let failOnError = tofailOnErrors[index]
             let operation = task(offset, {[unowned runningOperation] (result) in
+                guard !runningOperation.isCancelled else {
+                    return
+                }
+                
                 if failOnError, let error = result.error {
                     runningOperation.failNow(error: error)
                 } else {

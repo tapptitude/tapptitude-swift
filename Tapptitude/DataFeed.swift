@@ -45,8 +45,7 @@ open class DataFeed<T, OffsetType>: TTDataFeed {
     public convenience init (load: @escaping (_ callback: @escaping TTCallback<[T]>) -> TTCancellable?) {
         self.init(loadPage: {(offset, callback) in
             return load({ result in
-                let offsetResult: Result<([T], OffsetType?)> = result.map { ($0, nil) }
-                callback(offsetResult)
+                callback(result.map { ($0, nil) })
             })
         })
     }
