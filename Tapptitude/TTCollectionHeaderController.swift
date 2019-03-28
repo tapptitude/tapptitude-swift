@@ -1,6 +1,6 @@
 //
 //  CollectionHeaderController.swift
-//  Pods
+//  Tapptitude
 //
 //  Created by Alexandru Tudose on 11/04/16.
 //

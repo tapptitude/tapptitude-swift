@@ -1,6 +1,6 @@
 //
 //  MultiHeaderCellController.swift
-//  Pods
+//  Tapptitude
 //
 //  Created by Efraim Budusan on 7/25/17.
 //

@@ -270,3 +270,95 @@ open class LoadMoreController: NSObject, TTLoadMoreController {
 }
 
 
+
+
+
+
+
+
+open class TableLoadMoreController: NSObject {
+    open var autoLoadMoreContent: Bool = true
+    open var numberOfPagesToPreload: CGFloat = 2 // load more content when last 2 pages are visible
+    open var canShowLoadMoreView : Bool = false
+    open var loadMorePosition = LoadMoreController.Position.bottom
+    
+    @IBOutlet public weak var tableView: UITableView?
+    
+    lazy open var loadMoreView: UIView! = {
+        return defaultLoadMoreView()
+    }()
+    
+    open func defaultLoadMoreView() -> UIView {
+        let loadMoreViewXIBName = "LoadMoreView"
+        let isInTappLibrary = Bundle(for: __TableFeedController.self).path(forResource: loadMoreViewXIBName, ofType: "nib") != nil
+        let bundle: Bundle? = isInTappLibrary ? Bundle(for: __TableFeedController.self) : nil
+        let nib = UINib(nibName: loadMoreViewXIBName, bundle: bundle)
+        let view = nib.instantiate(withOwner: nil, options: nil).last as! LoadMoreView
+        view.startAnimating()
+        return view
+    }
+    
+    open func updateCanShowLoadMoreView(for feed: TTDataFeed?,  animated: Bool) {
+        let showLoadMore = (feed?.canLoadMore == true || feed?.isLoadingMore == true)
+        
+        if feed != nil {
+            print("showLoadMore = \(showLoadMore)")
+        }
+        
+        if canShowLoadMoreView != showLoadMore {
+            canShowLoadMoreView = showLoadMore
+            
+            if let _ = self.tableView {
+                if animated {
+                    UIView.animate(withDuration: 0.3) {
+                        self.updateTableLoadMoreView()
+                    }
+                } else {
+                    self.updateTableLoadMoreView()
+                }
+            }
+            print("canShowLoadMoreView = \(canShowLoadMoreView)")
+        }
+    }
+    
+    func updateTableLoadMoreView() {
+        switch loadMorePosition {
+        case .top:
+            tableView?.tableHeaderView = self.canShowLoadMoreView ? self.loadMoreView : nil
+        case .bottom:
+            tableView?.tableFooterView = self.canShowLoadMoreView ? self.loadMoreView : nil
+        default:
+            abort()
+        }
+    }
+    
+    open func checkIfShouldLoadMoreContent(for feed: TTDataFeed?) {
+        guard let feed = feed, let tableView = tableView else {
+            return
+        }
+        
+        guard autoLoadMoreContent && feed.canLoadMore == true else {
+            return
+        }
+        
+        var preloadMoreContent = false
+        let numberOfPagesToPreload = self.numberOfPagesToPreload
+        let bounds = tableView.bounds
+        let contentSize = tableView.contentSize
+        
+        switch loadMorePosition {
+        case .bottom: preloadMoreContent = (contentSize.height - bounds.maxY) < (numberOfPagesToPreload * bounds.size.height)
+        case .right: preloadMoreContent = (contentSize.width - bounds.maxX) < (numberOfPagesToPreload * bounds.size.width)
+        case .top: preloadMoreContent = bounds.origin.y < (numberOfPagesToPreload * bounds.size.height)
+        case .left: preloadMoreContent = bounds.origin.x < (numberOfPagesToPreload * bounds.size.width)
+        }
+        
+        if preloadMoreContent {
+            feed.loadMore()
+        }
+    }
+}
+
+
+
+
