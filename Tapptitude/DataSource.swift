@@ -174,7 +174,10 @@ open class DataSource<T> : TTDataSource, TTDataFeedDelegate, TTDataSourceMutable
 //
 //
 //extension DataSource : TTDataSourceMutable {
+    
+    /// On `false` will not propagate dataSource changes to `CollectionView`, in this case manually call `collectionView.reloadData()`
     public var propagateChangesToDelegate = true
+    
     fileprivate func editContent(_ editBlock: (_ delegate: TTDataSourceDelegate?) -> Void) {
         let currenDelegate = propagateChangesToDelegate ? delegate : nil
         currenDelegate?.dataSourceWillChangeContent(self)
