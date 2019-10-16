@@ -5,7 +5,7 @@
 ![alt text](https://img.shields.io/badge/license-MIT-green)
 
 
-Tapptitude Swift is a Xcode library to speed up iOS development including Xcode App Template that automates the process of creating the foundation for the new iOS Application.
+Tapptitude Swift is a Xcode library to speed up iOS development for usual scenario. Dispaying a scrollable list with multiple kinds of cells, handling loading more data for you. Support for empty view and reloading data is also present.
 
 ## Installation
 
@@ -22,6 +22,10 @@ pod 'Tapptitude', :git => 'https://github.com/tapptitude/tapptitude-swift'
 * TableFeedController
 * TableCellController
 * DataSource
+* SectionedDataSource
+* GroupedByDataSource
+* FilteredDataSource
+* SwipeToEditOnCollection
 
 ## Usage
 
