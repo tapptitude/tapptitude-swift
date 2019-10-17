@@ -9,11 +9,13 @@
 import UIKit
 
 class ___VARIABLE_productName___Cell: UICollectionViewCell {
+
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var dividerImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        // Initialization code
     }
 }
