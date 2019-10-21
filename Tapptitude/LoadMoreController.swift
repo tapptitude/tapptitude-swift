@@ -216,7 +216,7 @@ open class LoadMoreController: NSObject, TTLoadMoreController {
         case .top:
             var yOffset: CGFloat = 0
             // move load more view below header
-            if collectionView.numberOfSections >= 0 && collectionView.numberOfItems(inSection: 0) > 0 {
+            if collectionView.numberOfSections > 0 && collectionView.numberOfItems(inSection: 0) > 0 {
                 let indexPath = IndexPath(item: 0, section: 0)
                 let attribute = collectionView.collectionViewLayout.layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, at: indexPath)
                 yOffset += attribute?.size.height ?? 0
