@@ -10,7 +10,8 @@ import Foundation
 
 /// allow an operation to be canceled at any time
 public protocol TTCancellable: class {
-    func cancel()
+    @discardableResult
+    func cancel() -> Self
 }
 
 /// DataFeed expected closure callback
@@ -177,8 +178,9 @@ public class SimpleFeed<T>: DataFeed<T, Void> {
 fileprivate class RunningOperation: TTCancellable {
     var operation: TTCancellable?
     
-    func cancel() {
-        operation?.cancel()
+    @discardableResult
+    func cancel() -> Self {
+        operation?.cancel() as! Self
     }
 }
 

@@ -156,10 +156,13 @@ fileprivate class RunningOperation: TTCancellable {
         completion(.failure(error))
     }
     
-    public func cancel() {
+    @discardableResult
+    public func cancel() -> Self {
         operations.forEach { $0?.cancel() }
         operations = []
         isCancelled = true
+        
+        return self
     }
     var isCancelled = false
 }
