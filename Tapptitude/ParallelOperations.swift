@@ -116,7 +116,7 @@ fileprivate class RunningOperation: TTCancellable {
     var completion: TTCallback<([Any], Any?)>!
     
     deinit {
-        cancel()
+        cancelRequest()
     }
     
     func checkIfCompleted() {
@@ -152,17 +152,14 @@ fileprivate class RunningOperation: TTCancellable {
     }
     
     func failNow(error: Error) {
-        cancel()
+        cancelRequest()
         completion(.failure(error))
     }
     
-    @discardableResult
-    public func cancel() -> Self {
-        operations.forEach { $0?.cancel() }
+    public func cancelRequest() {
+        operations.forEach { $0?.cancelRequest() }
         operations = []
         isCancelled = true
-        
-        return self
     }
     var isCancelled = false
 }

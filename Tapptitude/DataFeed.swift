@@ -10,8 +10,7 @@ import Foundation
 
 /// allow an operation to be canceled at any time
 public protocol TTCancellable: class {
-    @discardableResult
-    func cancel() -> Self
+    func cancelRequest()
 }
 
 /// DataFeed expected closure callback
@@ -30,7 +29,7 @@ open class DataFeed<T, OffsetType>: TTDataFeed {
     fileprivate var executingOperation: RunningOperation?
     
     deinit {
-        executingOperation?.cancel()
+        executingOperation?.cancelRequest()
     }
     
     open var state: FeedState = .idle {
@@ -73,7 +72,7 @@ open class DataFeed<T, OffsetType>: TTDataFeed {
     }
     open func cancelReload() {
         if isReloading {
-            executingOperation?.cancel()
+            executingOperation?.cancelRequest()
             executingOperation = nil
             
             self.state = .idle
@@ -98,7 +97,7 @@ open class DataFeed<T, OffsetType>: TTDataFeed {
     
     open func cancelLoadMore() {
         if isLoadingMore {
-            executingOperation?.cancel()
+            executingOperation?.cancelRequest()
             executingOperation = nil
             
             self.state = .idle
@@ -107,7 +106,7 @@ open class DataFeed<T, OffsetType>: TTDataFeed {
     
     func executeOperation() {
         let runningOperation = RunningOperation()
-        executingOperation?.cancel()
+        executingOperation?.cancelRequest()
         executingOperation = runningOperation
         
         let offset = isReloading ? nil : nextOffset
@@ -178,9 +177,8 @@ public class SimpleFeed<T>: DataFeed<T, Void> {
 fileprivate class RunningOperation: TTCancellable {
     var operation: TTCancellable?
     
-    @discardableResult
-    func cancel() -> Self {
-        operation?.cancel() as! Self
+    func cancelRequest() {
+        operation?.cancelRequest()
     }
 }
 
