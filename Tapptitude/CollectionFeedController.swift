@@ -211,6 +211,10 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
         }
     }
     
+    open var shouldInvalidateLayoutForBoundsChange:Bool {
+        return true
+    }
+    
     open var scrollDirection: UICollectionView.ScrollDirection = .vertical {
         didSet {
             isScrollDirectionConfigured = true
@@ -660,13 +664,15 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
         super.viewDidLayoutSubviews()
         
         // cell size is depenent to either width | height of collectionView
-        if let size = trackedCollectionSize, collectionView.bounds.size != size {
-            print("found collectionView change size from ", size, " to ", collectionView.bounds.size)
-            print("invalidating cell layout because is depending on collection size")
-            DispatchQueue.main.async {
-                self.collectionView.collectionViewLayout.invalidateLayout()
+        if shouldInvalidateLayoutForBoundsChange {
+            if let size = trackedCollectionSize, collectionView.bounds.size != size {
+                print("found collectionView change size from ", size, " to ", collectionView.bounds.size)
+                print("invalidating cell layout because is depending on collection size")
+                DispatchQueue.main.async {
+                    self.collectionView.collectionViewLayout.invalidateLayout()
+                }
+                trackedCollectionSize = nil
             }
-            trackedCollectionSize = nil
         }
     }
 
