@@ -10,7 +10,9 @@ import UIKit
 import Tapptitude
 
 extension URLSessionTask: TTCancellable {
-    
+    public func cancelRequest() {
+        cancel()
+    }
 }
 
 

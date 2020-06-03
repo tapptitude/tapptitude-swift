@@ -15,7 +15,7 @@ class TestTableViewController : __TableFeedController {
         super.viewDidLoad()
 
         self._cellController = MultiTableCellController(TextTableCellController(), FixCellController())
-        self._dataSource = DataSource(["abc", 2, "a", 3, 5])
+        self._dataSource = DataSource<Any>(loadPage: API.getTableDummyContent(offset:callback:))
 
         addPullToRefresh()
 

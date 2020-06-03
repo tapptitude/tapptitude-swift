@@ -10,7 +10,7 @@ import Foundation
 import Tapptitude
 
 class APIMock: TTCancellable {
-    func cancel() {
+    func cancelRequest() {
         wasCancelled = true
     }
     
@@ -31,7 +31,7 @@ class APIMock: TTCancellable {
 
 
 class APIPaginatedMock: TTCancellable {
-    func cancel() {
+    func cancelRequest() {
         wasCancelled = true
     }
     
@@ -57,7 +57,7 @@ class APIPaginatedMock: TTCancellable {
 
 
 class APIPaginateOffsetdMock: TTCancellable {
-    func cancel() {
+    func cancelRequest() {
         wasCancelled = true
     }
     
@@ -89,7 +89,7 @@ class APIPaginateOffsetdMock: TTCancellable {
 }
 
 class APIPaginateOffsetdSwiftMock: TTCancellable {
-    func cancel() {
+    func cancelRequest() {
     }
     
     

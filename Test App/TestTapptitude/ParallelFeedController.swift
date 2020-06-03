@@ -138,5 +138,14 @@ class API {
         
         return nil
     }
+    
+    static func getTableDummyContent(offset:String?, callback: @escaping TTCallback<([Any], String?)> ) -> TTCancellable? {
+    
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            callback(.success((["abc", 2, "a", 3, 5], "1")))
+        }
+        
+        return nil
+    }
 }
 
