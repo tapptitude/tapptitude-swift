@@ -326,7 +326,9 @@ open class __TableFeedController: UIViewController, TTTableFeedController, TTDat
     public func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState.Load) {
         switch forState {
         case .reloading:
-            refreshControl?.endRefreshing()
+            DispatchQueue.main.async { [weak self] in
+                self?.refreshControl?.endRefreshing()
+            }
         case .loadingMore:
             break
         }
