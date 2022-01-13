@@ -14,9 +14,11 @@ class BatchCollectionViewUpdater: TTCollectionViewUpdater, TTTableViewUpdater {
     var batchOperation: [() -> Void]? = []
     
     var animatesUpdates: Bool = true
-    
-    init(animatesUpdates: Bool) {
+    var animationConfig: TTRowAnimationConfig
+
+    init(animatesUpdates: Bool, animationConfig: TTRowAnimationConfig = TTRowAnimationConfig()) {
         self.animatesUpdates = animatesUpdates
+        self.animationConfig = animationConfig
     }
     
     open func perfomBatchUpdates(_ updates: (() -> Void), animationCompletion:(()->Void)?) {
@@ -86,20 +88,20 @@ class BatchCollectionViewUpdater: TTCollectionViewUpdater, TTTableViewUpdater {
     
     // MARK: - items operation
     func tableView(_ tableView: UITableView, didUpdateItemsAt indexPaths: [IndexPath]) {
-        batchOperation?.append({
-            tableView.reloadRows(at: indexPaths, with: .automatic)
+        batchOperation?.append({[weak self] in
+            tableView.reloadRows(at: indexPaths, with: self?.animationConfig.itemsReload ?? .automatic)
         })
     }
     
     func tableView(_ tableView: UITableView, didDeleteItemsAt indexPaths: [IndexPath]) {
-        batchOperation?.append({
-            tableView.deleteRows(at: indexPaths, with: .automatic)
+        batchOperation?.append({[weak self] in
+            tableView.deleteRows(at: indexPaths, with: self?.animationConfig.itemsDelete ?? .automatic)
         })
     }
     
     func tableView(_ tableView: UITableView, didInsertItemsAt indexPaths: [IndexPath]) {
-        batchOperation?.append({
-            tableView.insertRows(at: indexPaths, with: .automatic)
+        batchOperation?.append({[weak self] in
+            tableView.insertRows(at: indexPaths, with: self?.animationConfig.itemsInsert ?? .automatic)
         })
     }
     
@@ -113,20 +115,20 @@ class BatchCollectionViewUpdater: TTCollectionViewUpdater, TTTableViewUpdater {
     }
     
     func tableView(_ tableView: UITableView, didInsertSections sections: IndexSet) {
-        batchOperation?.append({
-            tableView.insertSections(sections, with: .automatic)
+        batchOperation?.append({[weak self] in
+            tableView.insertSections(sections, with: self?.animationConfig.sectionsInsert ?? .automatic)
         })
     }
     
     func tableView(_ tableView: UITableView, didDeleteSections sections: IndexSet) {
-        batchOperation?.append({
-            tableView.deleteSections(sections, with: .automatic)
+        batchOperation?.append({[weak self] in
+            tableView.deleteSections(sections, with: self?.animationConfig.sectionsDelete ?? .automatic)
         })
     }
     
     func tableView(_ tableView: UITableView, didUpdateSections sections: IndexSet) {
-        batchOperation?.append({
-            tableView.reloadSections(sections, with: .automatic)
+        batchOperation?.append({[weak self] in
+            tableView.reloadSections(sections, with: self?.animationConfig.sectionsReload ?? .automatic)
         })
     }
 }

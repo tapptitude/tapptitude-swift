@@ -8,7 +8,18 @@
 
 import UIKit
 
-protocol TTTableViewUpdater {
+public struct TTRowAnimationConfig {
+    let itemsReload = UITableView.RowAnimation.automatic
+    let itemsDelete = UITableView.RowAnimation.automatic
+    let itemsInsert = UITableView.RowAnimation.automatic
+    let sectionsReload = UITableView.RowAnimation.automatic
+    let sectionsDelete = UITableView.RowAnimation.automatic
+    let sectionsInsert = UITableView.RowAnimation.automatic
+}
+
+public protocol TTTableViewUpdater {
+    var animatesUpdates: Bool { get set }
+    var animationConfig: TTRowAnimationConfig { get set }
     
     func tableViewWillChangeContent(_ tableView: UITableView)
     func tableViewDidChangeContent(_ tableView: UITableView, animationCompletion: (() -> Void)?)
@@ -26,14 +37,16 @@ protocol TTTableViewUpdater {
 }
 
 class TableViewUpdater: TTTableViewUpdater {
-    
+        
     fileprivate var shouldReloadCollectionView = false
     fileprivate var batchOperation: [() -> Void]?
     
     var animatesUpdates: Bool = true
+    var animationConfig: TTRowAnimationConfig
     
-    init(animatesUpdates: Bool) {
+    init(animatesUpdates: Bool, animationConfig: TTRowAnimationConfig = TTRowAnimationConfig()) {
         self.animatesUpdates = animatesUpdates
+        self.animationConfig = animationConfig
     }
     
     func tableViewWillChangeContent(_ tableView: UITableView) {
@@ -79,8 +92,8 @@ class TableViewUpdater: TTTableViewUpdater {
     
     // MARK: - items operation
     func tableView(_ tableView: UITableView, didUpdateItemsAt indexPaths: [IndexPath]) {
-        batchOperation?.append({
-            tableView.reloadRows(at: indexPaths, with: .automatic)
+        batchOperation?.append({[weak self] in
+            tableView.reloadRows(at: indexPaths, with: self?.animationConfig.itemsReload ?? .automatic)
         })
     }
     
@@ -92,16 +105,16 @@ class TableViewUpdater: TTTableViewUpdater {
         if tableView.numberOfRows(inSection: indexPath.section) == 1 {
             shouldReloadCollectionView = true
         } else {
-            batchOperation?.append({
-                tableView.deleteRows(at: indexPaths, with: .automatic)
+            batchOperation?.append({[weak self] in
+                tableView.deleteRows(at: indexPaths, with: self?.animationConfig.itemsDelete ?? .automatic)
             })
         }
     }
     
     func tableView(_ tableView: UITableView, didInsertItemsAt indexPaths: [IndexPath]) {
         if tableView.numberOfSections > 0 {
-            batchOperation?.append({
-                tableView.insertRows(at: indexPaths, with: .automatic)
+            batchOperation?.append({[weak self] in
+                tableView.insertRows(at: indexPaths, with: self?.animationConfig.itemsInsert ?? .automatic)
             })
         } else {
             shouldReloadCollectionView = true
@@ -118,20 +131,20 @@ class TableViewUpdater: TTTableViewUpdater {
     }
     
     func tableView(_ tableView: UITableView, didInsertSections sections: IndexSet) {
-        batchOperation?.append({
-            tableView.insertSections(sections, with: .automatic)
+        batchOperation?.append({[weak self] in
+            tableView.insertSections(sections, with: self?.animationConfig.sectionsInsert ?? .automatic)
         })
     }
     
     func tableView(_ tableView: UITableView, didDeleteSections sections: IndexSet) {
-        batchOperation?.append({
-            tableView.deleteSections(sections, with: .automatic)
+        batchOperation?.append({[weak self] in
+            tableView.deleteSections(sections, with: self?.animationConfig.sectionsDelete ?? .automatic)
         })
     }
     
     func tableView(_ tableView: UITableView, didUpdateSections sections: IndexSet) {
-        batchOperation?.append({
-            tableView.reloadSections(sections, with: .automatic)
+        batchOperation?.append({[weak self] in
+            tableView.reloadSections(sections, with: self?.animationConfig.sectionsReload ?? .automatic)
         })
     }
 }

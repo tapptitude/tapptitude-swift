@@ -374,7 +374,20 @@ open class __TableFeedController: UIViewController, TTTableFeedController, TTDat
         didSet { updateTableViewAnimatedUpdater() }
     }
     
+    public var customAnimatedUpdater: TTTableViewUpdater? {
+        didSet {
+            updateTableViewAnimatedUpdater()
+        }
+    }
+    
     fileprivate var animatedUpdater: TTTableViewUpdater?
+    
+    fileprivate var updatedAnimatedUpdater: TTTableViewUpdater {
+        var updater = customAnimatedUpdater ?? animatedUpdater
+        updater?.animatesUpdates = animatedUpdates
+        
+        return updater ?? TableViewUpdater(animatesUpdates: animatedUpdates)
+    }
     
     func updateTableViewAnimatedUpdater() {
         guard let _ = self.tableView else {
@@ -382,21 +395,16 @@ open class __TableFeedController: UIViewController, TTTableFeedController, TTDat
             return
         }
         
-        switch (propagateDataSourceChangesIntoCollectionView, animatedUpdates) {
-        case (false, _):
-            animatedUpdater = nil
-        case (true, _):
-            animatedUpdater = TableViewUpdater(animatesUpdates: animatedUpdates)
-        }
+        animatedUpdater = propagateDataSourceChangesIntoCollectionView ? updatedAnimatedUpdater : nil
     }
     
     @available(iOS 11.0, *)
     open func perfomBatchUpdates(_ updates: @escaping (() -> Void), animationCompletion: (()->Void)?) {
-        let animatedUpdater = BatchCollectionViewUpdater(animatesUpdates: animatedUpdates)
-        self.animatedUpdater = animatedUpdater
+        let batchOperationsCollector = BatchCollectionViewUpdater(animatesUpdates: animatedUpdates, animationConfig: updatedAnimatedUpdater.animationConfig)
+        self.animatedUpdater = batchOperationsCollector
         tableView.performBatchUpdates({
             updates()
-            animatedUpdater.batchOperation?.forEach{ $0() }
+            batchOperationsCollector.batchOperation?.forEach{ $0() }
         }) { (completed) in
             animationCompletion?()
         }
