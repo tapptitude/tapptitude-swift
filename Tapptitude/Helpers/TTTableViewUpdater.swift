@@ -59,7 +59,7 @@ open class TableViewUpdater: TTTableViewUpdater {
     var animatesUpdates: Bool = true
     var animationConfig: TTRowAnimationConfig
     
-    init(animatesUpdates: Bool, animationConfig: TTRowAnimationConfig = TTRowAnimationConfig()) {
+    public init(animatesUpdates: Bool, animationConfig: TTRowAnimationConfig = TTRowAnimationConfig()) {
         self.animatesUpdates = animatesUpdates
         self.animationConfig = animationConfig
     }

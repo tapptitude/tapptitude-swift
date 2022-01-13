@@ -32,7 +32,7 @@ public class CollectionViewUpdater: TTCollectionViewUpdater {
     
     var animatesUpdates: Bool = true
     
-    init(animatesUpdates: Bool) {
+    public init(animatesUpdates: Bool) {
         self.animatesUpdates = animatesUpdates
     }
     
