@@ -9,12 +9,27 @@
 import UIKit
 
 public struct TTRowAnimationConfig {
-    let itemsReload = UITableView.RowAnimation.automatic
-    let itemsDelete = UITableView.RowAnimation.automatic
-    let itemsInsert = UITableView.RowAnimation.automatic
-    let sectionsReload = UITableView.RowAnimation.automatic
-    let sectionsDelete = UITableView.RowAnimation.automatic
-    let sectionsInsert = UITableView.RowAnimation.automatic
+    let itemsReload: UITableView.RowAnimation
+    let itemsDelete: UITableView.RowAnimation
+    let itemsInsert: UITableView.RowAnimation
+    let sectionsReload: UITableView.RowAnimation
+    let sectionsDelete: UITableView.RowAnimation
+    let sectionsInsert: UITableView.RowAnimation
+    
+    public init(itemsReload: UITableView.RowAnimation = .automatic,
+                itemsDelete: UITableView.RowAnimation = .automatic,
+                itemsInsert: UITableView.RowAnimation = .automatic,
+                sectionsReload: UITableView.RowAnimation = .automatic,
+                sectionsDelete: UITableView.RowAnimation = .automatic,
+                sectionsInsert: UITableView.RowAnimation = .automatic) {
+        
+        self.itemsReload = itemsReload
+        self.itemsDelete = itemsDelete
+        self.itemsInsert = itemsInsert
+        self.sectionsReload = sectionsReload
+        self.sectionsDelete = sectionsDelete
+        self.sectionsInsert = sectionsInsert
+    }
 }
 
 protocol TTTableViewUpdater {
@@ -36,7 +51,7 @@ protocol TTTableViewUpdater {
     func tableView(_ tableView: UITableView, didUpdateSections sections: IndexSet)
 }
 
-public class TableViewUpdater: TTTableViewUpdater {
+open class TableViewUpdater: TTTableViewUpdater {
         
     fileprivate var shouldReloadCollectionView = false
     fileprivate var batchOperation: [() -> Void]?
