@@ -454,29 +454,16 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
     public var propagateDataSourceChangesIntoCollectionView = true {
         didSet { updateCollectionViewAnimatedUpdater() }
     }
-    
-    public var customAnimatedUpdater: CollectionViewUpdater? {
-        didSet {
-            updateCollectionViewAnimatedUpdater()
-        }
-    }
 
     fileprivate var animatedUpdater: TTCollectionViewUpdater?
         
     func updateCollectionViewAnimatedUpdater() {
-        guard let _ = self.collectionView else {
+        guard let _ = self.collectionView, propagateDataSourceChangesIntoCollectionView else {
             animatedUpdater = nil
             return
         }
         
-        var updatedAnimatedUpdater: TTCollectionViewUpdater {
-            var updater = customAnimatedUpdater ?? animatedUpdater
-            updater?.animatesUpdates = animatedUpdates
-            
-            return updater ?? CollectionViewUpdater(animatesUpdates: animatedUpdates)
-        }
-        
-        animatedUpdater = propagateDataSourceChangesIntoCollectionView ? updatedAnimatedUpdater : nil
+        animatedUpdater = CollectionViewUpdater(animatesUpdates: animatedUpdates)
     }
     
     open func perfomBatchUpdates(_ updates: @escaping (() -> Void), animationCompletion:(()->Void)?) {

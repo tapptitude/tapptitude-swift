@@ -26,13 +26,13 @@ protocol TTCollectionViewUpdater {
     func collectionView(_ collectionView: UICollectionView, didUpdateSections sections: IndexSet)
 }
 
-public class CollectionViewUpdater: TTCollectionViewUpdater {
+class CollectionViewUpdater: TTCollectionViewUpdater {
     fileprivate var shouldReloadCollectionView = false
     fileprivate var batchOperation: [() -> Void]?
     
     var animatesUpdates: Bool = true
     
-    public init(animatesUpdates: Bool) {
+    init(animatesUpdates: Bool) {
         self.animatesUpdates = animatesUpdates
     }
     

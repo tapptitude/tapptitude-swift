@@ -8,13 +8,13 @@
 
 import UIKit
 
-public struct TTRowAnimationConfig {
-    let itemsReload: UITableView.RowAnimation
-    let itemsDelete: UITableView.RowAnimation
-    let itemsInsert: UITableView.RowAnimation
-    let sectionsReload: UITableView.RowAnimation
-    let sectionsDelete: UITableView.RowAnimation
-    let sectionsInsert: UITableView.RowAnimation
+public class TTRowAnimationConfig {
+    var itemsReload: UITableView.RowAnimation
+    var itemsDelete: UITableView.RowAnimation
+    var itemsInsert: UITableView.RowAnimation
+    var sectionsReload: UITableView.RowAnimation
+    var sectionsDelete: UITableView.RowAnimation
+    var sectionsInsert: UITableView.RowAnimation
     
     public init(itemsReload: UITableView.RowAnimation = .automatic,
                 itemsDelete: UITableView.RowAnimation = .automatic,
@@ -51,7 +51,7 @@ protocol TTTableViewUpdater {
     func tableView(_ tableView: UITableView, didUpdateSections sections: IndexSet)
 }
 
-open class TableViewUpdater: TTTableViewUpdater {
+class TableViewUpdater: TTTableViewUpdater {
         
     fileprivate var shouldReloadCollectionView = false
     fileprivate var batchOperation: [() -> Void]?
@@ -59,7 +59,7 @@ open class TableViewUpdater: TTTableViewUpdater {
     var animatesUpdates: Bool = true
     var animationConfig: TTRowAnimationConfig
     
-    public init(animatesUpdates: Bool, animationConfig: TTRowAnimationConfig = TTRowAnimationConfig()) {
+    init(animatesUpdates: Bool, animationConfig: TTRowAnimationConfig = TTRowAnimationConfig()) {
         self.animatesUpdates = animatesUpdates
         self.animationConfig = animationConfig
     }
