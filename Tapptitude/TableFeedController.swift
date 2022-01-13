@@ -374,7 +374,7 @@ open class __TableFeedController: UIViewController, TTTableFeedController, TTDat
         didSet { updateTableViewAnimatedUpdater() }
     }
     
-    public var customAnimatedUpdater: TTTableViewUpdater? {
+    public var customAnimatedUpdater: TableViewUpdater? {
         didSet {
             updateTableViewAnimatedUpdater()
         }

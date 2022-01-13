@@ -17,7 +17,7 @@ public struct TTRowAnimationConfig {
     let sectionsInsert = UITableView.RowAnimation.automatic
 }
 
-public protocol TTTableViewUpdater {
+protocol TTTableViewUpdater {
     var animatesUpdates: Bool { get set }
     var animationConfig: TTRowAnimationConfig { get set }
     
@@ -36,7 +36,7 @@ public protocol TTTableViewUpdater {
     func tableView(_ tableView: UITableView, didUpdateSections sections: IndexSet)
 }
 
-class TableViewUpdater: TTTableViewUpdater {
+public class TableViewUpdater: TTTableViewUpdater {
         
     fileprivate var shouldReloadCollectionView = false
     fileprivate var batchOperation: [() -> Void]?

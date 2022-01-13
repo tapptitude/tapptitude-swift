@@ -8,7 +8,7 @@
 
 import UIKit
 
-public protocol TTCollectionViewUpdater {
+protocol TTCollectionViewUpdater {
     var animatesUpdates: Bool { get set }
 
     func collectionViewWillChangeContent(_ collectionView: UICollectionView)
@@ -26,7 +26,7 @@ public protocol TTCollectionViewUpdater {
     func collectionView(_ collectionView: UICollectionView, didUpdateSections sections: IndexSet)
 }
 
-class CollectionViewUpdater: TTCollectionViewUpdater {
+public class CollectionViewUpdater: TTCollectionViewUpdater {
     fileprivate var shouldReloadCollectionView = false
     fileprivate var batchOperation: [() -> Void]?
     

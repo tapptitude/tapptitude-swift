@@ -455,7 +455,7 @@ open class __CollectionFeedController: UIViewController, TTDataFeedDelegate, TTD
         didSet { updateCollectionViewAnimatedUpdater() }
     }
     
-    public var customAnimatedUpdater: TTCollectionViewUpdater? {
+    public var customAnimatedUpdater: CollectionViewUpdater? {
         didSet {
             updateCollectionViewAnimatedUpdater()
         }
