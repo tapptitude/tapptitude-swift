@@ -9,8 +9,6 @@
 import UIKit
 
 protocol TTCollectionViewUpdater {
-    var animatesUpdates: Bool { get set }
-
     func collectionViewWillChangeContent(_ collectionView: UICollectionView)
     func collectionViewDidChangeContent(_ collectionView: UICollectionView, animationCompletion: (() -> Void)?)
     

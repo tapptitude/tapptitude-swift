@@ -32,10 +32,7 @@ public class TTRowAnimationConfig {
     }
 }
 
-protocol TTTableViewUpdater {
-    var animatesUpdates: Bool { get set }
-    var animationConfig: TTRowAnimationConfig { get set }
-    
+protocol TTTableViewUpdater {    
     func tableViewWillChangeContent(_ tableView: UITableView)
     func tableViewDidChangeContent(_ tableView: UITableView, animationCompletion: (() -> Void)?)
     
