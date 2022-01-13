@@ -9,12 +9,12 @@
 import UIKit
 
 public class TTRowAnimationConfig {
-    var itemsReload: UITableView.RowAnimation
-    var itemsDelete: UITableView.RowAnimation
-    var itemsInsert: UITableView.RowAnimation
-    var sectionsReload: UITableView.RowAnimation
-    var sectionsDelete: UITableView.RowAnimation
-    var sectionsInsert: UITableView.RowAnimation
+    public var itemsReload: UITableView.RowAnimation
+    public var itemsDelete: UITableView.RowAnimation
+    public var itemsInsert: UITableView.RowAnimation
+    public var sectionsReload: UITableView.RowAnimation
+    public var sectionsDelete: UITableView.RowAnimation
+    public var sectionsInsert: UITableView.RowAnimation
     
     public init(itemsReload: UITableView.RowAnimation = .automatic,
                 itemsDelete: UITableView.RowAnimation = .automatic,
