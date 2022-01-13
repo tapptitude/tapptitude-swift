@@ -323,7 +323,7 @@ open class __TableFeedController: UIViewController, TTTableFeedController, TTDat
     /// last error, if any, that we got from feed reload/loadMore operation
     var lastFeedError: Error?
     
-    public func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState.Load) {
+    open func dataFeed(_ dataFeed: TTDataFeed?, didLoadResult result: Result<[Any]>, forState: FeedState.Load) {
         switch forState {
         case .reloading:
             // endRefreshing() has to be executed on another run loop to prevent visual glitches 
@@ -340,7 +340,7 @@ open class __TableFeedController: UIViewController, TTTableFeedController, TTDat
         }
     }
     
-    public func dataFeed(_ dataFeed: TTDataFeed?, stateChangedFrom fromState: FeedState, toState: FeedState) {
+    open func dataFeed(_ dataFeed: TTDataFeed?, stateChangedFrom fromState: FeedState, toState: FeedState) {
         //TODO:- Check statefull tableview
         switch (fromState, toState) {
         case (_, .reloading), (.reloading, _):
@@ -412,11 +412,11 @@ open class __TableFeedController: UIViewController, TTTableFeedController, TTDat
     }
     
     
-    public func dataSourceWillChangeContent(_ dataSource: TTAnyDataSource) {
+    open func dataSourceWillChangeContent(_ dataSource: TTAnyDataSource) {
         animatedUpdater?.tableViewWillChangeContent(tableView!)
     }
     
-    public func dataSourceDidChangeContent(_ dataSource: TTAnyDataSource) {
+    open func dataSourceDidChangeContent(_ dataSource: TTAnyDataSource) {
         animatedUpdater?.tableViewDidChangeContent(tableView!, animationCompletion: nil)
         
         if dataSource.feed == nil || dataSource.feed!.isReloading == false { // check for the empty view
@@ -501,11 +501,11 @@ open class __TableFeedController: UIViewController, TTTableFeedController, TTDat
     
     //TODO: loadmore
     
-    public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    open func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.parentViewController = nil
     }
     
-    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    open func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.parentViewController = _cellController.parentViewController
         
         checkIfShouldLoadMoreContent()
