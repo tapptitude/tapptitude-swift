@@ -8,7 +8,7 @@
 
 import UIKit
 
-public protocol TTTableFeedController: class, UITableViewDelegate, UITableViewDataSource {
+public protocol TTTableFeedController: UITableViewDelegate, UITableViewDataSource {
     
     var _dataSource: TTAnyDataSource? { get set }
     var _cellController: TTAnyTableCellController! { get set }

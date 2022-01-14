@@ -8,7 +8,7 @@
 
 import UIKit
 
-public protocol TTAnyCollectionCellController: class {
+public protocol TTAnyCollectionCellController: AnyObject {
     func acceptsContent(_ content: Any) -> Bool
     
     func classToInstantiateCell(for content: Any) -> AnyClass?

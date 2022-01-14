@@ -8,7 +8,7 @@
 
 import UIKit
 
-public protocol TTAnyTableCellController: class {
+public protocol TTAnyTableCellController: AnyObject {
     
     func acceptsContent(_ content: Any) -> Bool
     

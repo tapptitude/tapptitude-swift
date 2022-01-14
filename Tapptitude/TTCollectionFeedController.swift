@@ -8,7 +8,7 @@
 
 import UIKit
 
-public protocol TTCollectionFeedController : class, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+public protocol TTCollectionFeedController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     var _dataSource: TTAnyDataSource? {get set}
     var _cellController: TTAnyCollectionCellController! {get set}
     

@@ -8,14 +8,14 @@
 
 import UIKit
 
-public protocol SwipeToEditOnCollection : class {
+public protocol SwipeToEditOnCollection: AnyObject {
     var panGestureRecognizer : PanViewGestureRecognizer? {get set}
     var tapGestureRecognizer : TouchRecognizer? {get set}
     
     var collectionView : UICollectionView! {get}
 }
 
-@objc public protocol SwipeToEditCell : class {
+@objc public protocol SwipeToEditCell: AnyObject {
     var containerView : UIView! {get}
     var rightView : UIView! {get}
     
