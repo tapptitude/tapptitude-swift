@@ -23,7 +23,7 @@ class APIMock: TTCancellable {
         
     }
     
-    func cancel() {
+    func cancelRequest() {
         wasCancelled = true
     }
     

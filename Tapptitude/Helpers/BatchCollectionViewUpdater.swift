@@ -14,9 +14,11 @@ class BatchCollectionViewUpdater: TTCollectionViewUpdater, TTTableViewUpdater {
     var batchOperation: [() -> Void]? = []
     
     var animatesUpdates: Bool = true
-    
-    init(animatesUpdates: Bool) {
+    var animationConfig: TTRowAnimationConfig
+
+    init(animatesUpdates: Bool, animationConfig: TTRowAnimationConfig = TTRowAnimationConfig()) {
         self.animatesUpdates = animatesUpdates
+        self.animationConfig = animationConfig
     }
     
     open func perfomBatchUpdates(_ updates: (() -> Void), animationCompletion:(()->Void)?) {
@@ -86,20 +88,23 @@ class BatchCollectionViewUpdater: TTCollectionViewUpdater, TTTableViewUpdater {
     
     // MARK: - items operation
     func tableView(_ tableView: UITableView, didUpdateItemsAt indexPaths: [IndexPath]) {
+        let config = self.animationConfig
         batchOperation?.append({
-            tableView.reloadRows(at: indexPaths, with: .automatic)
+            tableView.reloadRows(at: indexPaths, with: config.itemsReload)
         })
     }
     
     func tableView(_ tableView: UITableView, didDeleteItemsAt indexPaths: [IndexPath]) {
+        let config = self.animationConfig
         batchOperation?.append({
-            tableView.deleteRows(at: indexPaths, with: .automatic)
+            tableView.deleteRows(at: indexPaths, with: config.itemsDelete)
         })
     }
     
     func tableView(_ tableView: UITableView, didInsertItemsAt indexPaths: [IndexPath]) {
+        let config = self.animationConfig
         batchOperation?.append({
-            tableView.insertRows(at: indexPaths, with: .automatic)
+            tableView.insertRows(at: indexPaths, with: config.itemsInsert)
         })
     }
     
@@ -113,20 +118,23 @@ class BatchCollectionViewUpdater: TTCollectionViewUpdater, TTTableViewUpdater {
     }
     
     func tableView(_ tableView: UITableView, didInsertSections sections: IndexSet) {
+        let config = self.animationConfig
         batchOperation?.append({
-            tableView.insertSections(sections, with: .automatic)
+            tableView.insertSections(sections, with: config.sectionsInsert)
         })
     }
     
     func tableView(_ tableView: UITableView, didDeleteSections sections: IndexSet) {
+        let config = self.animationConfig
         batchOperation?.append({
-            tableView.deleteSections(sections, with: .automatic)
+            tableView.deleteSections(sections, with: config.sectionsDelete)
         })
     }
     
     func tableView(_ tableView: UITableView, didUpdateSections sections: IndexSet) {
+        let config = self.animationConfig
         batchOperation?.append({
-            tableView.reloadSections(sections, with: .automatic)
+            tableView.reloadSections(sections, with: config.sectionsReload)
         })
     }
 }
